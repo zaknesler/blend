@@ -1,0 +1,6 @@
+# rust
+target/
+
+# js
+node_modules/
+dist/

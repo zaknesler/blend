@@ -1,0 +1,32 @@
+{
+  "name": "blend",
+  "version": "0.0.0",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite ui",
+    "build": "vite build ui",
+    "serve": "vite preview ui"
+  },
+  "dependencies": {
+    "@solidjs/router": "^0.10.5",
+    "dayjs": "^1.11.10",
+    "solid-js": "^1.8.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.2",
+    "postcss": "^8.4.32",
+    "prettier-plugin-tailwindcss": "^0.5.10",
+    "solid-icons": "^1.1.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.10",
+    "vite-plugin-solid": "^2.8.0"
+  }
+}
