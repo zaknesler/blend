@@ -7,6 +7,8 @@ use ts_rs::TS;
 pub struct Feed {
     id: String,
     title: Option<String>,
+    published_at: Option<chrono::DateTime<chrono::Utc>>,
+    updated_at: Option<chrono::DateTime<chrono::Utc>>,
     entries: Vec<Entry>,
 }
 
@@ -16,7 +18,8 @@ pub struct Feed {
 pub struct Entry {
     id: String,
     title: Option<String>,
-    date: Option<chrono::DateTime<chrono::Utc>>,
+    published_at: Option<chrono::DateTime<chrono::Utc>>,
+    updated_at: Option<chrono::DateTime<chrono::Utc>>,
 }
 
 impl From<feed_rs::model::Feed> for Feed {
@@ -24,13 +27,16 @@ impl From<feed_rs::model::Feed> for Feed {
         Self {
             id: value.id,
             title: value.title.map(|value| value.content),
+            published_at: value.published,
+            updated_at: value.updated,
             entries: value
                 .entries
                 .into_iter()
                 .map(|entry| Entry {
                     id: entry.id,
                     title: entry.title.map(|value| value.content),
-                    date: entry.updated,
+                    published_at: entry.published,
+                    updated_at: entry.updated,
                 })
                 .collect::<Vec<_>>(),
         }
