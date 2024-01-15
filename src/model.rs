@@ -16,6 +16,7 @@ pub struct Feed {
 pub struct Entry {
     id: String,
     title: Option<String>,
+    date: Option<chrono::DateTime<chrono::Utc>>,
 }
 
 impl From<feed_rs::model::Feed> for Feed {
@@ -29,6 +30,7 @@ impl From<feed_rs::model::Feed> for Feed {
                 .map(|entry| Entry {
                     id: entry.id,
                     title: entry.title.map(|value| value.content),
+                    date: entry.updated,
                 })
                 .collect::<Vec<_>>(),
         }
