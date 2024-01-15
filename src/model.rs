@@ -1,5 +1,8 @@
 use serde::Serialize;
+use ts_rs::TS;
 
+#[derive(TS)]
+#[ts(export)]
 #[derive(Debug, Serialize)]
 pub struct Feed {
     id: String,
@@ -7,6 +10,8 @@ pub struct Feed {
     entries: Vec<Entry>,
 }
 
+#[derive(TS)]
+#[ts(export)]
 #[derive(Debug, Serialize)]
 pub struct Entry {
     id: String,

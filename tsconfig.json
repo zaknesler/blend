@@ -21,8 +21,13 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+
+    "paths": {
+      "~/*": ["./ui/src/*"],
+      "~bindings/*": ["./bindings/*"]
+    }
   },
-  "include": ["ui"],
+  "include": ["ui", "./bindings/*.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,9 +1,5 @@
 import { createSignal } from 'solid-js';
-
-type Feed = {
-  id: string;
-  title?: string;
-};
+import { Feed } from '~bindings/Feed';
 
 export const Demo = () => {
   const [input, setInput] = createSignal('');
