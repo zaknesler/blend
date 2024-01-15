@@ -22,7 +22,6 @@
     "noFallthroughCasesInSwitch": true,
 
     "types": ["vite/client"],
-
     "paths": {
       "~/*": ["./ui/src/*"],
       "~bindings/*": ["./bindings/*"]
