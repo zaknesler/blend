@@ -3,12 +3,12 @@ import { Link } from '../components/link';
 import { HiSolidPlus } from 'solid-icons/hi';
 import { useNavigate } from '@solidjs/router';
 
-export default ({ children }: ParentProps) => {
+export const Base = ({ children }: ParentProps) => {
   const navigate = useNavigate();
 
   return (
     <div class="flex h-full w-full">
-      <div class="w-gutter flex h-full flex-col gap-4 bg-gray-500 p-2">
+      <div class="flex h-full w-gutter flex-col gap-4 bg-gray-500 p-2">
         <button
           class="flex aspect-square items-center justify-center rounded-lg bg-gray-400 p-2 transition hover:bg-gray-600"
           onClick={() => {
@@ -19,7 +19,7 @@ export default ({ children }: ParentProps) => {
         </button>
       </div>
 
-      <div class="w-sidebar h-full bg-white shadow-md"></div>
+      <div class="h-full w-sidebar bg-white shadow-md"></div>
 
       <div class="h-full w-full flex-1 overflow-y-auto overflow-x-hidden">
         <div class="flex max-w-4xl flex-col gap-8 p-8 font-serif md:p-16">
@@ -42,7 +42,8 @@ export default ({ children }: ParentProps) => {
             </a>
 
             <nav class="flex items-baseline gap-4 text-sm">
-              <Link href="/">Bookmarks</Link>
+              <Link href="/">Home</Link>
+              <Link href="/article">Article</Link>
             </nav>
           </header>
 

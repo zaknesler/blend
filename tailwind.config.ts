@@ -4,7 +4,7 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 import formsPlugin from '@tailwindcss/forms';
 
 export default {
-  content: ['./ui/index.html', './ui/**/*.{js,ts,jsx,tsx}'],
+  content: ['./ui/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       fontFamily: {

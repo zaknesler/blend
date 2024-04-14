@@ -1,33 +1,37 @@
 {
-  "name": "blend",
-  "version": "0.0.0",
+  "name": "blend-ui",
   "type": "module",
-  "license": "MIT",
   "scripts": {
-    "dev": "vite ui",
-    "build": "vite build ui",
-    "serve": "vite preview ui"
+    "dev": "vinxi dev",
+    "build": "vinxi build",
+    "start": "vinxi start",
+    "version": "vinxi version"
   },
   "dependencies": {
-    "@solidjs/router": "^0.10.5",
+    "@solidjs/meta": "^0.29.3",
+    "@solidjs/router": "^0.13.2",
+    "@solidjs/start": "1.0.0-rc.0",
     "dayjs": "^1.11.10",
-    "solid-js": "^1.8.7"
+    "solid-js": "^1.8.16"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
-    "@typescript-eslint/eslint-plugin": "^6.16.0",
-    "@typescript-eslint/parser": "^6.16.0",
-    "autoprefixer": "^10.4.16",
+    "@typescript-eslint/eslint-plugin": "^7.6.0",
+    "@typescript-eslint/parser": "^7.6.0",
+    "autoprefixer": "^10.4.19",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.1.2",
-    "postcss": "^8.4.32",
-    "prettier-plugin-tailwindcss": "^0.5.10",
+    "eslint-plugin-prettier": "^5.1.3",
+    "postcss": "^8.4.38",
+    "prettier-plugin-tailwindcss": "^0.5.13",
     "solid-icons": "^1.1.0",
-    "tailwindcss": "^3.4.0",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.10",
-    "vite-plugin-solid": "^2.8.0",
-    "vite-tsconfig-paths": "^4.2.3"
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.5",
+    "vinxi": "^0.3.11",
+    "vite": "^5.2.8",
+    "vite-tsconfig-paths": "^4.3.2"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

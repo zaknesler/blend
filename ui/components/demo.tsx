@@ -32,7 +32,6 @@ export const Demo = () => {
       </div>
 
       {error() && <div>Error: {error()}</div>}
-
       {feed() && <div>{feed()?.id}</div>}
     </div>
   );

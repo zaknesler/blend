@@ -1,6 +1,13 @@
 # rust
-target/
+target
 
 # js
-node_modules/
-dist/
+node_modules
+dist
+.solid
+.output
+.vinxi
+
+# environment
+.env
+.env*.local
