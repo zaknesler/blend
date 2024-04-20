@@ -2,9 +2,11 @@ import { ParentProps } from 'solid-js';
 import { Link } from '../components/link';
 import { HiSolidPlus } from 'solid-icons/hi';
 import { useNavigate } from '@solidjs/router';
+import { useFeedContext } from '~/contexts/feed';
 
 export const Base = ({ children }: ParentProps) => {
   const navigate = useNavigate();
+  const { feeds } = useFeedContext();
 
   return (
     <div class="flex h-full w-full">
@@ -19,7 +21,11 @@ export const Base = ({ children }: ParentProps) => {
         </button>
       </div>
 
-      <div class="h-full w-sidebar bg-white shadow-md"></div>
+      <div class="h-full w-sidebar bg-white p-8 shadow-md">
+        {feeds().map(feed => (
+          <div>{feed.title}</div>
+        ))}
+      </div>
 
       <div class="h-full w-full flex-1 overflow-y-auto overflow-x-hidden">
         <div class="flex max-w-4xl flex-col gap-8 p-8 font-serif md:p-16">
