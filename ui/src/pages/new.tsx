@@ -1,8 +1,8 @@
-import { Demo } from '~/components/demo';
-import { useFeedContext } from '~/contexts/feed';
+import { Demo } from '~/src/components/demo';
+import { useFeedContext } from '~/src/contexts/feed';
 
 export default () => {
-  const { feeds, setFeeds } = useFeedContext();
+  const { setFeeds } = useFeedContext();
 
   const handleClick = () => {
     setFeeds(value => [

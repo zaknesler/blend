@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+
+    "paths": {
+      "~/*": ["./ui/*"],
+      "~bindings/*": ["./bindings/*"]
+    }
+  },
+  "include": ["./ui/vite.config.ts", "./bindings/*.ts"]
+}

@@ -1,10 +1,9 @@
-import { ParentProps } from 'solid-js';
 import { Link } from '../components/link';
 import { HiSolidPlus } from 'solid-icons/hi';
-import { useNavigate } from '@solidjs/router';
-import { useFeedContext } from '~/contexts/feed';
+import { type RouteSectionProps, useNavigate } from '@solidjs/router';
+import { useFeedContext } from '~/src/contexts/feed';
 
-export const Base = ({ children }: ParentProps) => {
+export default ({ children }: RouteSectionProps) => {
   const navigate = useNavigate();
   const { feeds } = useFeedContext();
 
@@ -49,7 +48,7 @@ export const Base = ({ children }: ParentProps) => {
 
             <nav class="flex items-baseline gap-4 text-sm">
               <Link href="/">Home</Link>
-              <Link href="/article">Article</Link>
+              <Link href="/articles/test">Article</Link>
             </nav>
           </header>
 

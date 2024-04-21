@@ -3,8 +3,9 @@ import { Feed } from '~bindings/Feed';
 
 export const useFeedContext = () => {
   const feeds = useContext(FeedContext);
+  console.log({ feeds });
   if (!feeds) {
-    throw new Error('useFeedContext was not calld inside its ContextProvider');
+    throw new Error('useFeedContext was not called');
   }
 
   return feeds;

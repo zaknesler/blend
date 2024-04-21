@@ -3,7 +3,7 @@ import { Feed } from '~bindings/Feed';
 
 export const Demo = () => {
   const [input, setInput] = createSignal('');
-  const [feed, setFeed] = createSignal<Feed | null>(null);
+  const [feed] = createSignal<Feed | null>(null);
   const [error, setError] = createSignal<string | null>(null);
 
   const handleClick = async () => {
