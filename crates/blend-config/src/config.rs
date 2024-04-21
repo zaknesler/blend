@@ -4,13 +4,12 @@ use serde::{Deserialize, Serialize};
 pub struct BlendConfig {
     pub debug: bool,
     pub web: WebConfig,
-    pub db: DatabaseConfig,
+    pub database: DatabaseConfig,
     pub crypto: CryptoConfig,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct WebConfig {
-    pub public_url: String,
     pub host: String,
     pub port: u16,
     pub allowed_origins: Vec<String>,
@@ -18,7 +17,7 @@ pub struct WebConfig {
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct DatabaseConfig {
-    pub url: String,
+    pub file: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]

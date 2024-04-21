@@ -13,5 +13,5 @@ pub fn router(ctx: Context) -> Router {
 }
 
 async fn index() -> impl IntoResponse {
-    "hi"
+    "users"
 }

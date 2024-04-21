@@ -11,3 +11,7 @@ dist
 # environment
 .env
 .env*.local
+
+# config
+.config/*
+!.config/default.toml

@@ -19,10 +19,18 @@ pub async fn serve(ctx: Context) -> WebResult<()> {
         ctx.config.web.port,
     );
 
+    let allowed_origins = ctx
+        .config
+        .web
+        .allowed_origins
+        .iter()
+        .map(|origin| origin.parse::<HeaderValue>().map_err(|err| err.into()))
+        .collect::<WebResult<Vec<_>>>()?;
+
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST, Method::PATCH, Method::DELETE])
         .allow_headers([header::AUTHORIZATION, header::ACCEPT, header::CONTENT_TYPE])
-        .allow_origin(ctx.config.web.public_url.parse::<HeaderValue>()?)
+        .allow_origin(allowed_origins)
         .allow_credentials(true);
 
     let app = crate::router::router(ctx.clone())
