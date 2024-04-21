@@ -2,7 +2,6 @@
 version = "0.1.0"
 edition = "2021"
 authors = ["Zak Nesler"]
-rust-version = "1.74.0"
 
 [workspace]
 members = ["crates/*"]
