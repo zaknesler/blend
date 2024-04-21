@@ -1,14 +1,33 @@
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Zak Nesler"]
+rust-version = "1.74.0"
+
+[workspace]
+members = ["crates/*"]
+
+[workspace.dependencies]
+chrono = { version = "0", features = ["serde"] }
+feed-rs = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+tracing = "0"
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
 [package]
 name = "blend"
-version = "0.0.0"
-edition = "2021"
+version = { workspace = true }
+edition = { workspace = true }
 
 [dependencies]
-serde_json = "1.0"
-thiserror = "1.0.52"
-serde = { version = "1.0.193", features = ["derive"] }
-feed-rs = "1.3.0"
-reqwest = { version = "0.11.23", features = ["json"] }
-tokio = { version = "1.35.1", features = ["macros", "rt-multi-thread"] }
-ts-rs = { version = "7.1.0", features = ["chrono-impl"] }
-chrono = { version = "0.4.31", features = ["serde"] }
+blend-cli = { path = "./crates/blend-cli" }
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+thiserror = { workspace = true }

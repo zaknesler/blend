@@ -1,0 +1,13 @@
+[package]
+name = "blend-crypto"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+blend-config = { path = "../blend-config" }
+argon2 = { version = "0", features = ["std"] }
+chrono = { workspace = true, features = ["serde"] }
+hmac = "0"
+jwt = "0"
+sha2 = "0"
+thiserror = { workspace = true }

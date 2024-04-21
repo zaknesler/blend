@@ -1,0 +1,10 @@
+[package]
+name = "blend-config"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+config = "0"
+thiserror = { workspace = true }
+tracing = { workspace = true }
+serde = { workspace = true, features = ["derive"] }

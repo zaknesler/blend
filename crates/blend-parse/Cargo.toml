@@ -1,0 +1,13 @@
+[package]
+name = "blend-parse"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+blend-entity = { path = "../blend-entity" }
+chrono = { workspace = true, features = ["serde"] }
+feed-rs = { workspace = true }
+reqwest = "0"
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
