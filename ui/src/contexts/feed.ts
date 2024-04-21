@@ -3,7 +3,6 @@ import { Feed } from '../types/bindings/feed';
 
 export const useFeedContext = () => {
   const feeds = useContext(FeedContext);
-  console.log({ feeds });
   if (!feeds) {
     throw new Error('useFeedContext was not called');
   }

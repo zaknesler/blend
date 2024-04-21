@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import article from '../article.json';
-import { type RouteSectionProps } from '@solidjs/router';
+import { A, type RouteSectionProps } from '@solidjs/router';
 
 export default ({ params }: RouteSectionProps) => {
   console.log(params.slug);
@@ -10,7 +10,7 @@ export default ({ params }: RouteSectionProps) => {
       <nav class="flex items-baseline gap-2 text-sm">
         {article.breadcrumbs.map((text, index) => (
           <>
-            <a href="/">{text}</a>
+            <A href="/">{text}</A>
             {index !== article.breadcrumbs.length - 1 && <span class="select-none self-center text-gray-400">/</span>}
           </>
         ))}

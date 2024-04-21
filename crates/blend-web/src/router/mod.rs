@@ -1,7 +1,8 @@
-use super::{error::WebResult, middleware::guest};
+use super::error::WebResult;
 use crate::context::Context;
-use axum::{middleware, response::IntoResponse, routing::get, Router};
+use axum::{response::IntoResponse, routing::get, Router};
 
+mod feed;
 mod ui;
 mod user;
 
@@ -18,9 +19,9 @@ pub fn router(ctx: Context) -> Router {
 pub fn api_router(ctx: Context) -> Router {
     Router::new()
         .route("/", get(index))
-        .route_layer(middleware::from_fn(guest::middleware))
         .with_state(ctx.clone())
-        .nest("/users", user::router(ctx))
+        .nest("/users", user::router(ctx.clone()))
+        .nest("/feeds", feed::router(ctx))
 }
 
 async fn index() -> WebResult<impl IntoResponse> {

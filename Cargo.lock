@@ -338,6 +338,7 @@ dependencies = [
  "blend-crypto",
  "blend-db",
  "blend-entity",
+ "blend-parse",
  "chrono",
  "futures",
  "futures-util",

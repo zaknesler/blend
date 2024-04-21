@@ -6,6 +6,7 @@ edition.workspace = true
 [dependencies]
 blend-config = { path = "../blend-config" }
 blend-crypto = { path = "../blend-crypto" }
+blend-parse = { path = "../blend-parse" }
 blend-db = { path = "../blend-db" }
 blend-entity = { path = "../blend-entity" }
 axum = "0"

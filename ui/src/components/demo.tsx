@@ -1,17 +1,16 @@
 import { createSignal } from 'solid-js';
-import { Feed } from '../types/bindings/feed';
+import { useFeedContext } from '../contexts/feed';
+import { getFeeds } from '../api/feeds';
 
 export const Demo = () => {
   const [input, setInput] = createSignal('');
-  const [feed] = createSignal<Feed | null>(null);
-  const [error, setError] = createSignal<string | null>(null);
+  const { setFeeds } = useFeedContext();
 
   const handleClick = async () => {
     if (!input()) return;
 
-    //
-
-    setError(null);
+    const feeds = await getFeeds();
+    setFeeds(feeds);
   };
 
   return (
@@ -30,9 +29,6 @@ export const Demo = () => {
           Get feed
         </button>
       </div>
-
-      {error() && <div>Error: {error()}</div>}
-      {feed() && <div>{feed()?.id}</div>}
     </div>
   );
 };
