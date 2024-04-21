@@ -1,4 +1,4 @@
-use crate::error::{DbError, DbResult};
+use crate::error::DbResult;
 
 pub async fn init(url: &str) -> DbResult<()> {
     //
