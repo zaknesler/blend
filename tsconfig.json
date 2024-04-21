@@ -5,8 +5,6 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-
-    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
@@ -14,19 +12,15 @@
     "noEmit": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-
-    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-
     "types": ["vite/client"],
     "paths": {
-      "~/*": ["./ui/*"],
-      "~bindings/*": ["./bindings/*"]
+      "~/*": ["./ui/*"]
     }
   },
-  "include": ["ui", "./bindings/*.ts"],
+  "include": ["ui"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

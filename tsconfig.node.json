@@ -5,11 +5,9 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
-
     "paths": {
-      "~/*": ["./ui/*"],
-      "~bindings/*": ["./bindings/*"]
+      "~/*": ["./ui/*"]
     }
   },
-  "include": ["./ui/vite.config.ts", "./bindings/*.ts"]
+  "include": ["./ui/vite.config.ts"]
 }

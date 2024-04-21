@@ -2,7 +2,7 @@ use serde::Serialize;
 use ts_rs::TS;
 
 #[derive(TS)]
-#[ts(export)]
+#[ts(export, export_to = "../../../ui/src/types/bindings/feed.ts")]
 #[derive(Debug, Serialize)]
 pub struct Feed {
     id: String,
@@ -13,7 +13,7 @@ pub struct Feed {
 }
 
 #[derive(TS)]
-#[ts(export)]
+#[ts(export, export_to = "../../../ui/src/types/bindings/entry.ts")]
 #[derive(Debug, Serialize)]
 pub struct Entry {
     id: String,

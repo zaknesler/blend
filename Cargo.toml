@@ -28,6 +28,10 @@ version = { workspace = true }
 edition = { workspace = true }
 
 [dependencies]
-blend-cli = { path = "./crates/blend-cli" }
-tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+blend-config = { path = "./crates/blend-config" }
+blend-web = { path = "./crates/blend-web" }
+clap = { version = "4", features = ["derive"] }
 thiserror = { workspace = true }
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+tracing = { workspace = true }
+tracing-subscriber = { version = "0", features = ["serde"] }

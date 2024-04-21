@@ -1,5 +1,5 @@
 import { createContext, createSignal, useContext } from 'solid-js';
-import { Feed } from '~bindings/Feed';
+import { Feed } from '../types/bindings/feed';
 
 export const useFeedContext = () => {
   const feeds = useContext(FeedContext);

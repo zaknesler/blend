@@ -11,6 +11,7 @@ render(() => {
         <Route path="/" component={lazy(() => import('./pages/index'))} />
         <Route path="/new" component={lazy(() => import('./pages/new'))} />
         <Route path="/articles/:slug" component={lazy(() => import('./pages/article'))} />
+        <Route path="*" component={lazy(() => import('./pages/404'))} />
       </Router>
     </FeedContext.Provider>
   );

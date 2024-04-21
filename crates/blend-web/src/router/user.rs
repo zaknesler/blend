@@ -1,6 +1,5 @@
-use axum::{middleware, response::IntoResponse, routing::get, Router};
-
 use crate::context::Context;
+use axum::{middleware, response::IntoResponse, routing::get, Router};
 
 pub fn router(ctx: Context) -> Router {
     Router::new()
