@@ -68,7 +68,7 @@ jobs:
         with:
           targets: "${{ matrix.target }}"
       - uses: Swatinem/rust-cache@v2
-      - run: cargo test --verbose --release --workspace
+      - run: cargo test --verbose --workspace
       - run: pnpm install
       - run: pnpm run build
       - run: cargo build --verbose --locked --release --target ${{ matrix.target }}
