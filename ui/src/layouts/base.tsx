@@ -1,11 +1,10 @@
 import { Link } from '../components/link';
 import { HiSolidPlus } from 'solid-icons/hi';
 import { type RouteSectionProps, useNavigate } from '@solidjs/router';
-import { useFeedContext } from '~/src/contexts/feed';
+import { Sidebar } from '../components/sidebar';
 
 export default ({ children }: RouteSectionProps) => {
   const navigate = useNavigate();
-  const { feeds } = useFeedContext();
 
   return (
     <div class="flex h-full w-full">
@@ -20,11 +19,7 @@ export default ({ children }: RouteSectionProps) => {
         </button>
       </div>
 
-      <div class="h-full w-sidebar bg-white p-8 shadow-md">
-        {feeds().map(feed => (
-          <div>{feed.title}</div>
-        ))}
-      </div>
+      <Sidebar />
 
       <div class="h-full w-full flex-1 overflow-y-auto overflow-x-hidden">
         <div class="flex max-w-4xl flex-col gap-8 p-8 font-serif md:p-16">

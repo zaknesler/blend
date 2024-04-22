@@ -11,6 +11,12 @@ importers:
       '@solidjs/router':
         specifier: ^0.13.2
         version: 0.13.2(solid-js@1.8.16)
+      '@tanstack/solid-query':
+        specifier: ^5.31.0
+        version: 5.31.0(solid-js@1.8.16)
+      '@tanstack/solid-query-devtools':
+        specifier: ^5.31.0
+        version: 5.31.0(@tanstack/solid-query@5.31.0(solid-js@1.8.16))(solid-js@1.8.16)
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
@@ -477,6 +483,23 @@ packages:
     resolution: {integrity: sha512-QE7X69iQI+ZXwldE+rzasvbJiyV/ju1FGHH0Qn2W3FKbuYtqp8LKcy6iSw79fVUT5/Vvf+0XgLCeYVG+UV6hOw==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || >= 3.0.0-alpha.1'
+
+  '@tanstack/query-core@5.31.0':
+    resolution: {integrity: sha512-r1V6RXB1LUGoEp7HGHVK4Tl59kOvAfwI9/kNNwPsb6cR5oHgfn1683sQnoH/3xEDUKOen3fEO90EnGE+OjRw5A==}
+
+  '@tanstack/query-devtools@5.28.10':
+    resolution: {integrity: sha512-5UN629fKa5/1K/2Pd26gaU7epxRrYiT1gy+V+pW5K6hnf1DeUKK3pANSb2eHKlecjIKIhTwyF7k9XdyE2gREvQ==}
+
+  '@tanstack/solid-query-devtools@5.31.0':
+    resolution: {integrity: sha512-PtI7ypN9RjkJ8hOYZgAeeVpnwZN2LlP+vbUuGA7pK208VCkR1bsV3RHPJlSyuGnaEWgnabn8ANbTUt/5sh4Pnw==}
+    peerDependencies:
+      '@tanstack/solid-query': ^5.31.0
+      solid-js: ^1.8.14
+
+  '@tanstack/solid-query@5.31.0':
+    resolution: {integrity: sha512-m5n9djOHqYp9qGoguBzqw2h9qVAZujeBM2O3SP2X70MiQ+IdXTkoYkz/WB5pSYYfOI7s44/ZUmSTwO7OSiiGNQ==}
+    peerDependencies:
+      solid-js: ^1.6.0
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -1912,6 +1935,21 @@ snapshots:
     dependencies:
       mini-svg-data-uri: 1.4.4
       tailwindcss: 3.4.3
+
+  '@tanstack/query-core@5.31.0': {}
+
+  '@tanstack/query-devtools@5.28.10': {}
+
+  '@tanstack/solid-query-devtools@5.31.0(@tanstack/solid-query@5.31.0(solid-js@1.8.16))(solid-js@1.8.16)':
+    dependencies:
+      '@tanstack/query-devtools': 5.28.10
+      '@tanstack/solid-query': 5.31.0(solid-js@1.8.16)
+      solid-js: 1.8.16
+
+  '@tanstack/solid-query@5.31.0(solid-js@1.8.16)':
+    dependencies:
+      '@tanstack/query-core': 5.31.0
+      solid-js: 1.8.16
 
   '@types/babel__core@7.20.5':
     dependencies:

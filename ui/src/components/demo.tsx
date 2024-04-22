@@ -1,16 +1,11 @@
 import { createSignal } from 'solid-js';
-import { useFeedContext } from '../contexts/feed';
-import { getFeeds } from '../api/feeds';
 
 export const Demo = () => {
   const [input, setInput] = createSignal('');
-  const { setFeeds } = useFeedContext();
 
   const handleClick = async () => {
     if (!input()) return;
-
-    const feeds = await getFeeds();
-    setFeeds(feeds);
+    alert('clicky');
   };
 
   return (

@@ -2,17 +2,23 @@ import { render } from 'solid-js/web';
 import { Router, Route } from '@solidjs/router';
 import { lazy } from 'solid-js';
 import 'tailwindcss/tailwind.css';
-import { FeedContext, makeFeedContext } from './contexts/feed';
+import { QueryClient, QueryClientProvider } from '@tanstack/solid-query';
+import { SolidQueryDevtools } from '@tanstack/solid-query-devtools';
 
-render(() => {
-  return (
-    <FeedContext.Provider value={makeFeedContext()}>
+const queryClient = new QueryClient();
+
+render(
+  () => (
+    <QueryClientProvider client={queryClient}>
       <Router root={lazy(() => import('./layouts/base'))}>
         <Route path="/" component={lazy(() => import('./pages/index'))} />
         <Route path="/new" component={lazy(() => import('./pages/new'))} />
         <Route path="/articles/:slug" component={lazy(() => import('./pages/article'))} />
         <Route path="*" component={lazy(() => import('./pages/404'))} />
       </Router>
-    </FeedContext.Provider>
-  );
-}, document.getElementById('root')!);
+
+      <SolidQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  ),
+  document.getElementById('root')!,
+);
