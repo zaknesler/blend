@@ -56,7 +56,7 @@ pub fn parse(override_path: Option<String>) -> ConfigResult<BlendConfig> {
             config_dir
                 .join(LOCAL_CONFIG_FILE)
                 .to_str()
-                .expect("path sould be valid unicode"),
+                .expect("path should be valid unicode"),
         ))
         .merge(Env::prefixed(ENV_PREFIX).map(|key| {
             key.as_str()
