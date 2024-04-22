@@ -4,7 +4,7 @@ pub type ConfigResult<T> = Result<T, ConfigError>;
 
 #[derive(Error, Debug)]
 pub enum ConfigError {
-    #[error("user config directory not found")]
+    #[error("user system config directory not found")]
     ConfigDirNotFound,
 
     #[error(transparent)]
