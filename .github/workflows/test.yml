@@ -4,7 +4,7 @@ on: [push, pull_request]
 env:
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: full
-  BLEND_HOME: /home/runner/work/blend_home
+  BLEND_HOME: ${{ vars.GITHUB_WORKSPACE }}/blend_home
 
 jobs:
   test:
@@ -36,6 +36,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
       # - uses: crate-ci/typos@master
+      - run: mkdir ${{ vars.GITHUB_WORKSPACE }}/ui/dist
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - run: cargo test --workspace --verbose
