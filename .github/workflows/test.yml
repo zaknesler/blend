@@ -84,4 +84,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: bin
-          path: ${{ vars.GITHUB_WORKSPACE }}/bin-out/*
+          path: ${{ github.workspace }}/bin-out/*
