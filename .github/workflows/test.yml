@@ -83,5 +83,5 @@ jobs:
           mv "${BIN_OUTPUT}" "${GITHUB_WORKSPACE}/bin-out/${BIN_RELEASE}"
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ PROJECT_NAME }}-${{ matrix.name }}
+          name: ${{ vars.PROJECT_NAME }}-${{ matrix.name }}
           path: ${{ github.workspace }}/bin-out/*
