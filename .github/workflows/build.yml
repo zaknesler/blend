@@ -60,7 +60,10 @@ jobs:
           # echo "PKG_CONFIG_SYSROOT_DIR=/usr/aarch64-linux-gnu" >> $GITHUB_ENV
           # echo "PKG_CONFIG_PATH=/usr/aarch64-linux-gnu/lib/pkgconfig" >> $GITHUB_ENV
           # echo "PKG_CONFIG=/usr/bin/aarch64-linux-gnu-pkg-config" >> $GITHUB_ENV
-      - run: mkdir $GITHUB_WORKSPACE/ui/dist
+      - name: Create dummy dist directory
+        shell: bash
+        run: |
+          mkdir $GITHUB_WORKSPACE/ui/dist
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: "${{ matrix.target }}"
