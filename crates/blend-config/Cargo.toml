@@ -4,7 +4,9 @@ version.workspace = true
 edition.workspace = true
 
 [dependencies]
-config = "0"
+figment = { version = "0", features = ["env", "toml"] }
+directories = "5"
+rust-embed = { workspace = true, features = ["interpolate-folder-path"] }
+serde = { workspace = true, features = ["derive"] }
 thiserror = { workspace = true }
 tracing = { workspace = true }
-serde = { workspace = true, features = ["derive"] }

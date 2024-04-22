@@ -15,11 +15,12 @@ mod util;
 pub async fn serve(ctx: Context) -> WebResult<()> {
     tracing::info!(
         "Starting web server on {}:{}",
-        ctx.config.web.host,
-        ctx.config.web.port,
+        ctx.blend.config.web.host,
+        ctx.blend.config.web.port,
     );
 
     let allowed_origins = ctx
+        .blend
         .config
         .web
         .allowed_origins
@@ -39,7 +40,11 @@ pub async fn serve(ctx: Context) -> WebResult<()> {
         .layer(CookieManagerLayer::new());
 
     axum::serve(
-        TcpListener::bind(format!("{}:{}", ctx.config.web.host, ctx.config.web.port)).await?,
+        TcpListener::bind(format!(
+            "{}:{}",
+            ctx.blend.config.web.host, ctx.blend.config.web.port
+        ))
+        .await?,
         app.into_make_service(),
     )
     .await?;

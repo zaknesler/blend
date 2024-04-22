@@ -1,7 +1,14 @@
 use serde::{Deserialize, Serialize};
+use std::path::PathBuf;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct BlendConfig {
+    pub dir: PathBuf,
+    pub config: BaseConfig,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct BaseConfig {
     pub debug: bool,
     pub web: WebConfig,
     pub database: DatabaseConfig,

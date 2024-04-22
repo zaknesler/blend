@@ -13,7 +13,7 @@ axum = "0"
 chrono = { workspace = true, features = ["serde"] }
 futures = "0"
 futures-util = "0"
-rust-embed = { version = "8", features = ["interpolate-folder-path"] }
+rust-embed = { workspace = true, features = ["interpolate-folder-path"] }
 axum-embed = "0"
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }

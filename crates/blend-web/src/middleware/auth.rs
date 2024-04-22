@@ -16,7 +16,11 @@ pub async fn middleware(
     next: Next,
 ) -> WebResult<impl IntoResponse> {
     let user_id = cookies.get(JWT_COOKIE).and_then(|cookie| {
-        jwt::verify_jwt(ctx.config.crypto.jwt_signing_key.as_ref(), cookie.value()).ok()
+        jwt::verify_jwt(
+            ctx.blend.config.crypto.jwt_signing_key.as_ref(),
+            cookie.value(),
+        )
+        .ok()
     });
 
     let user = match user_id {
