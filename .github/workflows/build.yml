@@ -72,7 +72,7 @@ jobs:
       - run: pnpm install
       - run: pnpm run build
       - run: cargo build --verbose --locked --release --target ${{ matrix.target }}
-      - name: Release Binary
+      - name: Prepare binary
         shell: bash
         run: |
           BIN_SUFFIX=""
