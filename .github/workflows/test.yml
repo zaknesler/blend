@@ -6,13 +6,13 @@ env:
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: full
   BLEND_HOME: ${{ vars.GITHUB_WORKSPACE }}/blend_home
+  NODE_VERSION: 20.x
 
 jobs:
   test:
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        node-version: [20.x]
         include:
           - name: linux-amd64
             runner: ubuntu-latest
@@ -32,9 +32,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        name: Install Node.js ${{ matrix.node-version }}
+        name: Install Node.js ${{ vars.NODE_VERSION }}
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ vars.NODE_VERSION }}
       - uses: pnpm/action-setup@v3
         id: pnpm-install
         with:
