@@ -54,7 +54,7 @@ jobs:
       # - uses: crate-ci/typos@master
       - name: Install OpenSSL
         if: matrix.name == 'linux-arm64'
-        run: sudo apt-get update && sudo apt-get install -y openssl
+        run: sudo apt-get update && sudo apt-get install -y openssl pkg-config
       - run: mkdir $GITHUB_WORKSPACE/ui/dist
       - uses: dtolnay/rust-toolchain@stable
         with:
