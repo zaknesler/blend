@@ -48,9 +48,9 @@ jobs:
         name: Setup pnpm cache
         with:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ matrix.target }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+            ${{ matrix.target }}-pnpm-store-
       # - uses: crate-ci/typos@master
       - name: Configure linux-arm64
         if: matrix.name == 'linux-arm64'
