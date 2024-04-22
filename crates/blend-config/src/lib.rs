@@ -40,16 +40,23 @@ fn get_config_dir() -> ConfigResult<PathBuf> {
 }
 
 fn get_default_data() -> Vec<u8> {
-    let default = ConfigStubs::get(DEFAULT_STUB).expect("missing default.toml config stub");
+    let default = ConfigStubs::get(DEFAULT_STUB).expect("default.toml stub should exist");
     default.data.as_ref().to_owned()
 }
 
-/// Initialize config directory with config.toml
-pub fn init(force: bool) -> ConfigResult<PathBuf> {
+/// Initialize config directory
+pub fn init_config_dir() -> ConfigResult<PathBuf> {
     let config_dir = get_config_dir()?;
 
     // Create project config directory if it doesn't exist
     fs::create_dir_all(config_dir.clone())?;
+
+    Ok(config_dir)
+}
+
+/// Initialize config directory and config.toml
+pub fn init_config_file(force: bool) -> ConfigResult<PathBuf> {
+    let config_dir = init_config_dir()?;
 
     // Create local config if it doesn't exist
     let local_config_file = config_dir.join(LOCAL_CONFIG_FILE);

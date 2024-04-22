@@ -14,7 +14,7 @@ async fn main() -> error::BlendResult<()> {
 
     match args.command {
         crate::args::Command::PublishConfig { force } => {
-            let path = blend_config::init(force)?;
+            let path = blend_config::init_config_file(force)?;
             if let Some(path) = path.to_str() {
                 tracing::info!(
                     "{} config to {}",
@@ -27,6 +27,7 @@ async fn main() -> error::BlendResult<()> {
                 )
             }
         }
+
         crate::args::Command::Web => {
             let blend = blend_config::parse(args.config)?;
             let context = blend_web::context::Context { blend };
