@@ -19,9 +19,9 @@ jobs:
           # - name: linux-arm64
           #   runner: ubuntu-latest
           #   target: aarch64-unknown-linux-gnu
-          - name: win-amd64
-            runner: windows-latest
-            target: x86_64-pc-windows-msvc
+          # - name: win-amd64
+          #   runner: windows-latest
+          #   target: x86_64-pc-windows-msvc
           - name: macos-amd64
             runner: macos-latest
             target: x86_64-apple-darwin
@@ -80,7 +80,7 @@ jobs:
           mkdir "${GITHUB_WORKSPACE}/bin-out"
 
           # Move the built binary where you want it
-          mv "${BIN_OUTPUT}" "./bin-out/${BIN_RELEASE}"
+          mv "${BIN_OUTPUT}" "${GITHUB_WORKSPACE}/bin-out/${BIN_RELEASE}"
       - uses: actions/upload-artifact@v4
         with:
           name: bin
