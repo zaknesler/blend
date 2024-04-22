@@ -25,33 +25,49 @@ const LOCAL_CONFIG_FILE: &str = "config.toml";
 #[folder = "$CARGO_MANIFEST_DIR/stubs"]
 struct ConfigStubs;
 
-pub fn parse(override_path: Option<String>) -> ConfigResult<BlendConfig> {
-    let config_dir = match std::env::var(ENV_CONFIG_HOME_PATH)
+fn get_config_dir() -> ConfigResult<PathBuf> {
+    let override_path = std::env::var(ENV_CONFIG_HOME_PATH)
         .ok()
         .map(|dir| PathBuf::from_str(&dir).ok())
-        .flatten()
-    {
-        Some(override_dir) => override_dir,
+        .flatten();
+
+    Ok(match override_path {
+        Some(path) => path,
         None => directories::ProjectDirs::from("", "", PROJECT_DIR)
             .map(|dirs| dirs.config_dir().to_path_buf())
             .ok_or_else(|| ConfigError::ConfigDirNotFound)?,
-    };
+    })
+}
 
+fn get_default_data() -> Vec<u8> {
     let default = ConfigStubs::get(DEFAULT_STUB).expect("missing default.toml config stub");
-    let default_data = default.data.as_ref();
+    default.data.as_ref().to_owned()
+}
+
+/// Initialize config directory with config.toml
+pub fn init(force: bool) -> ConfigResult<PathBuf> {
+    let config_dir = get_config_dir()?;
 
     // Create project config directory if it doesn't exist
     fs::create_dir_all(config_dir.clone())?;
 
     // Create local config if it doesn't exist
     let local_config_file = config_dir.join(LOCAL_CONFIG_FILE);
-    if !local_config_file.try_exists()? {
+    if !local_config_file.try_exists()? || force {
         let mut local_config = File::create(local_config_file)?;
-        local_config.write_all(default_data)?;
+        local_config.write_all(get_default_data().as_ref())?;
     }
 
+    Ok(config_dir)
+}
+
+pub fn parse(override_path: Option<String>) -> ConfigResult<BlendConfig> {
+    let config_dir = get_config_dir()?;
+
     let mut config = Figment::new()
-        .merge(Toml::string(std::str::from_utf8(default_data)?))
+        .merge(Toml::string(std::str::from_utf8(
+            get_default_data().as_ref(),
+        )?))
         .merge(Toml::file(
             config_dir
                 .join(LOCAL_CONFIG_FILE)
