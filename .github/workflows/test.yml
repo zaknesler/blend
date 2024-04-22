@@ -37,7 +37,7 @@ jobs:
       - uses: crate-ci/typos@master
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
-      - run: cargo test --verbose
+      - run: cargo test --workspace --verbose
       - run: pnpm install
       - run: pnpm run build
       - run: cargo build --verbose
