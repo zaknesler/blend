@@ -41,5 +41,11 @@ opt-level = 3
 [workspace.metadata.cross.target.aarch64-unknown-linux-gnu]
 pre-build = [
   "dpkg --add-architecture $CROSS_DEB_ARCH",
-  "apt-get update && apt-get install --assume-yes pkg-config openssl libssl-dev:$CROSS_DEB_ARCH",
+  "apt-get update && apt-get install --assume-yes pkg-config openssl libsasl2-dev libssl-dev",
+]
+
+[package.metadata.cross.target.aarch64-unknown-linux-gnu]
+pre-build = [
+  "dpkg --add-architecture $CROSS_DEB_ARCH",
+  "apt-get update && apt-get install --assume-yes pkg-config openssl libsasl2-dev libssl-dev",
 ]
