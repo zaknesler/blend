@@ -129,7 +129,6 @@ jobs:
           path: ${{ github.workspace }}/_artifacts/*
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: _artifacts/*
-          # artifacts: _artifacts/blend-*/blend-*
+          artifacts: _artifacts/blend-*/blend-*
           body: "(Draft)"
           draft: true
