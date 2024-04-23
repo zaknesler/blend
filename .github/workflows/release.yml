@@ -12,10 +12,16 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/download-artifact@v4
+      - uses: dawidd6/action-download-artifact@v3
+        id: download-artifact
+        with:
+          workflow: build.yml
+          workflow_conclusion: success
+          branch: main
+          path: _artifacts
       - run: ls -R
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "blend-*"
+          artifacts: _artifacts/*
           body: "(Draft)"
           draft: true
