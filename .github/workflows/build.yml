@@ -61,42 +61,39 @@ jobs:
 
       # - uses: crate-ci/typos@master
 
-      - name: Create dummy dist directory
+      - run: mkdir $GITHUB_WORKSPACE/ui/dist
         shell: bash
-        run: |
-          mkdir $GITHUB_WORKSPACE/ui/dist
 
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: "${{ matrix.target }}"
       - uses: Swatinem/rust-cache@v2
 
-      - name: Install binstall
+      - run: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
         shell: bash
-        run: |
-          curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 
-      - name: Install Cross
+      - run: cargo binstall --no-confirm cross
         if: matrix.command == 'cross'
-        shell: bash
-        run: |
-          cargo binstall --no-confirm cross
 
-      - name: Configure sqlx
+      - run: echo "DATABASE_URL=sqlite:blend.db" >> .env
         shell: bash
-        run: |
-          echo "DATABASE_URL=sqlite:blend.db" >> .env
 
       - run: cargo binstall sqlx-cli
       - run: sqlx db create
       - run: sqlx migrate run --source crates/blend-db/migrations
 
-      - run: ${{ matrix.command }} test --verbose --workspace --target ${{ matrix.target }}
+      - run: cargo test --verbose --workspace
+        if: matrix.command == 'cargo'
+      - run: cross test --verbose --workspace --target ${{ matrix.target }}
+        if: matrix.command == 'cross'
 
       - run: pnpm install
       - run: pnpm run build
 
-      - run: ${{ matrix.command }} build --verbose --locked --release --target ${{ matrix.target }}
+      - run: cargo build --verbose --locked --release
+        if: matrix.command == 'cargo'
+      - run: cross build --verbose --locked --release --target ${{ matrix.target }}
+        if: matrix.command == 'cross'
 
       - name: Prepare binary
         shell: bash
