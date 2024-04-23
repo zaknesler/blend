@@ -58,7 +58,7 @@ jobs:
         if: matrix.name == 'linux-arm64'
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-aarch64-linux-gnu libssl-dev pkg-config
+          sudo apt-get install -y gcc-aarch64-linux-gnu libssl-dev pkg-config libudev-dev
           echo "PKG_CONFIG_SYSROOT_DIR=/usr/aarch64-linux-gnu" >> $GITHUB_ENV
           echo "PKG_CONFIG_PATH=/usr/aarch64-linux-gnu/lib/pkgconfig" >> $GITHUB_ENV
           echo "PKG_CONFIG=/usr/bin/aarch64-linux-gnu-pkg-config" >> $GITHUB_ENV
@@ -70,7 +70,7 @@ jobs:
         with:
           targets: "${{ matrix.target }}"
       - uses: Swatinem/rust-cache@v2
-      - run: cargo install sqlx-cli --no-default-features --features native-tls,sqlite
+      - run: cargo install sqlx-cli --no-default-features --features native-tls,openssl-vendored,sqlite
       - run: sqlx db create
       - run: sqlx migrate run --source crates/blend-db/migrations
       - run: cargo test --verbose --workspace
