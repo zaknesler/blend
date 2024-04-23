@@ -6,7 +6,7 @@ env:
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: full
   BLEND_HOME: ${{ github.workspace }}/blend_home
-  DATABASE_URL: blend.db
+  DATABASE_URL: sqlite:${{ github.workspace }}/blend.db
 
 jobs:
   test:
