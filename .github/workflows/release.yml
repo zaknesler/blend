@@ -17,22 +17,22 @@ jobs:
             runner: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             command: cargo
-          - name: linux-arm64
-            runner: ubuntu-latest
-            target: aarch64-unknown-linux-gnu
-            command: cross
-          - name: win-amd64
-            runner: windows-latest
-            target: x86_64-pc-windows-msvc
-            command: cargo
-          - name: macos-amd64
-            runner: macos-latest
-            target: x86_64-apple-darwin
-            command: cargo
-          - name: macos-arm64
-            runner: macos-latest
-            target: aarch64-apple-darwin
-            command: cargo
+          # - name: linux-arm64
+          #   runner: ubuntu-latest
+          #   target: aarch64-unknown-linux-gnu
+          #   command: cross
+          # - name: win-amd64
+          #   runner: windows-latest
+          #   target: x86_64-pc-windows-msvc
+          #   command: cargo
+          # - name: macos-amd64
+          #   runner: macos-latest
+          #   target: x86_64-apple-darwin
+          #   command: cargo
+          # - name: macos-arm64
+          #   runner: macos-latest
+          #   target: aarch64-apple-darwin
+          #   command: cargo
     steps:
       - uses: actions/checkout@v4
 
@@ -126,9 +126,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          path: ${{ github.workspace }}/_artifacts/*
+          path: ${{ github.workspace }}/_artifacts
       - uses: ncipollo/release-action@v1
         with:
           artifacts: _artifacts/blend-*/blend-*
-          body: "(Draft)"
+          body: "[wip]"
           draft: true
