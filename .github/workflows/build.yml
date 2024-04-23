@@ -69,7 +69,7 @@ jobs:
         with:
           targets: "${{ matrix.target }}"
       - uses: Swatinem/rust-cache@v2
-      - run: cargo install sqlx-cli
+      - run: cargo install sqlx-cli --no-default-features --features native-tls,sqlite
       - run: sqlx db create
       - run: sqlx migrate run --source crates/blend-db/migrations
       - run: cargo test --verbose --workspace
