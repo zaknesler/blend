@@ -5,6 +5,7 @@ env:
   PROJECT_NAME: blend
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: full
+  NODE_VERSION: 21.x
   BLEND_HOME: ${{ github.workspace }}/blend_home
   DATABASE_URL: sqlite:${{ github.workspace }}/blend.db
 
@@ -17,9 +18,9 @@ jobs:
           - name: linux-amd64
             runner: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-          # - name: linux-arm64
-          #   runner: ubuntu-latest
-          #   target: aarch64-unknown-linux-gnu
+          - name: linux-arm64
+            runner: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
           - name: win-amd64
             runner: windows-latest
             target: x86_64-pc-windows-msvc
@@ -32,9 +33,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        name: Install Node.js 20.x
+        name: Install Node.js ${{ env.NODE_VERSION }}
         with:
-          node-version: 20.x
+          node-version: ${{ env.NODE_VERSION }}
       - uses: pnpm/action-setup@v3
         id: pnpm-install
         with:
@@ -53,14 +54,14 @@ jobs:
           restore-keys: |
             ${{ matrix.target }}-pnpm-store-
       # - uses: crate-ci/typos@master
-      # - name: Configure linux-arm64
-      #   if: matrix.name == 'linux-arm64'
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y gcc-aarch64-linux-gnu libssl-dev pkg-config
-      #     echo "PKG_CONFIG_SYSROOT_DIR=/usr/aarch64-linux-gnu" >> $GITHUB_ENV
-      #     echo "PKG_CONFIG_PATH=/usr/aarch64-linux-gnu/lib/pkgconfig" >> $GITHUB_ENV
-      #     echo "PKG_CONFIG=/usr/bin/aarch64-linux-gnu-pkg-config" >> $GITHUB_ENV
+      - name: Configure linux-arm64
+        if: matrix.name == 'linux-arm64'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu libssl-dev pkg-config
+          echo "PKG_CONFIG_SYSROOT_DIR=/usr/aarch64-linux-gnu" >> $GITHUB_ENV
+          echo "PKG_CONFIG_PATH=/usr/aarch64-linux-gnu/lib/pkgconfig" >> $GITHUB_ENV
+          echo "PKG_CONFIG=/usr/bin/aarch64-linux-gnu-pkg-config" >> $GITHUB_ENV
       - name: Create dummy dist directory
         shell: bash
         run: |
