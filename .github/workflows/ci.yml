@@ -41,7 +41,7 @@ jobs:
           restore-keys: |
             ${{ matrix.target }}-pnpm-store-
 
-      # - uses: crate-ci/typos@master
+      - uses: crate-ci/typos@master
 
       - run: mkdir $GITHUB_WORKSPACE/ui/dist
         shell: bash
