@@ -79,7 +79,7 @@ jobs:
           curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
           cargo binstall --no-confirm cross
 
-      - run: cargo install sqlx-cli --no-default-features --features native-tls,openssl-vendored,sqlite
+      - run: cargo binstall sqlx-cli --no-default-features --features native-tls,openssl-vendored,sqlite
       - run: sqlx db create
       - run: sqlx migrate run --source crates/blend-db/migrations
 
