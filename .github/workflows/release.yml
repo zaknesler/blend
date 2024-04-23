@@ -69,13 +69,13 @@ jobs:
       - run: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
         shell: bash
 
-      - run: cargo binstall --no-confirm cross
+      - run: cargo binstall --no-confirm --force cross
         if: matrix.command == 'cross'
 
       - run: echo "DATABASE_URL=sqlite:blend.db" >> .env
         shell: bash
 
-      - run: cargo binstall --no-confirm sqlx-cli
+      - run: cargo binstall --no-confirm --force sqlx-cli
       - run: sqlx db create
       - run: sqlx migrate run --source crates/blend-db/migrations
 
