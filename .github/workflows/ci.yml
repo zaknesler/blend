@@ -1,0 +1,67 @@
+name: CI
+on: [push, pull_request]
+
+env:
+  PROJECT_NAME: blend
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: full
+  NODE_VERSION: 21.x
+
+jobs:
+  ci:
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - name: linux-amd64
+            runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        name: Install Node.js ${{ env.NODE_VERSION }}
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: pnpm/action-setup@v3
+        id: pnpm-install
+        with:
+          version: 9
+          run_install: false
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v4
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ matrix.target }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ matrix.target }}-pnpm-store-
+
+      # - uses: crate-ci/typos@master
+
+      - run: mkdir $GITHUB_WORKSPACE/ui/dist
+        shell: bash
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: "${{ matrix.target }}"
+      - uses: Swatinem/rust-cache@v2
+
+      - run: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+        shell: bash
+
+      - run: echo "DATABASE_URL=sqlite:blend.db" >> .env
+        shell: bash
+
+      - run: cargo binstall --no-confirm sqlx-cli
+      - run: sqlx db create
+      - run: sqlx migrate run --source crates/blend-db/migrations
+
+      - run: cargo test --verbose --workspace
+
+      # - run: pnpm install
+      # - run: pnpm test
