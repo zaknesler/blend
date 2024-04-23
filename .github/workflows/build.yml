@@ -6,6 +6,7 @@ env:
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: full
   BLEND_HOME: ${{ github.workspace }}/blend_home
+  DATABASE_URL: ${{ github.workspace }}/blend.db
 
 jobs:
   test:
@@ -68,6 +69,9 @@ jobs:
         with:
           targets: "${{ matrix.target }}"
       - uses: Swatinem/rust-cache@v2
+      - run: cargo install sqlx-cli
+      - run: sqlx db create
+      - run: sqlx migrate run --source crates/blend-db/migrations
       - run: cargo test --verbose --workspace
       - run: pnpm install
       - run: pnpm run build

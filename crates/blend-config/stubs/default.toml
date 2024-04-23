@@ -6,8 +6,7 @@ port = 4000
 allowed_origins = ["http://localhost:4000"]
 
 [database]
-# File is relative to the blend data directory (~/.config/blend)
-file = "database.sqlite"
+file = "blend.db"
 
 [crypto]
 jwt_signing_key = "change_me_to_something_random"

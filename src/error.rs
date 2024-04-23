@@ -6,5 +6,8 @@ pub enum BlendError {
     ConfigError(#[from] blend_config::error::ConfigError),
 
     #[error(transparent)]
+    DatabaseError(#[from] blend_db::error::DbError),
+
+    #[error(transparent)]
     WebError(#[from] blend_web::error::WebError),
 }

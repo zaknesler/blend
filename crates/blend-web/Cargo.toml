@@ -8,15 +8,15 @@ blend-config = { path = "../blend-config" }
 blend-crypto = { path = "../blend-crypto" }
 blend-parse = { path = "../blend-parse" }
 blend-db = { path = "../blend-db" }
-blend-entity = { path = "../blend-entity" }
 axum = "0"
+axum-embed = "0"
 chrono = { workspace = true, features = ["serde"] }
 futures = "0"
 futures-util = "0"
 rust-embed = { workspace = true, features = ["interpolate-folder-path"] }
-axum-embed = "0"
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
+sqlx = { workspace = true, features = ["runtime-tokio", "sqlite", "chrono"] }
 thiserror = { workspace = true }
 tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
 tower-cookies = "0.10"

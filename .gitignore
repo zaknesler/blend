@@ -1,5 +1,7 @@
 # rust
 target
+.env
+*.db
 
 # js
 node_modules

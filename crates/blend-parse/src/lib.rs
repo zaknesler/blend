@@ -1,5 +1,5 @@
-use blend_entity::feed::Feed;
 use error::ParseResult;
+use feed_rs::model::Feed;
 
 pub mod error;
 

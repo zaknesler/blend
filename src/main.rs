@@ -30,7 +30,8 @@ async fn main() -> error::BlendResult<()> {
 
         crate::args::Command::Web => {
             let blend = blend_config::parse(args.config)?;
-            let context = blend_web::context::Context { blend };
+            let db = blend_db::client::init(blend.clone()).await?;
+            let context = blend_web::context::Context { blend, db };
 
             blend_web::serve(context).await?;
         }

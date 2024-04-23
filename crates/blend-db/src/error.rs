@@ -4,6 +4,18 @@ pub type DbResult<T> = Result<T, DbError>;
 
 #[derive(Error, Debug)]
 pub enum DbError {
-    #[error("invalid id")]
-    InvalidId,
+    #[error("invalid database name")]
+    InvalidDatabaseName,
+
+    #[error(transparent)]
+    SqlError(#[from] sqlx::Error),
+
+    #[error(transparent)]
+    MigrateError(#[from] sqlx::migrate::MigrateError),
+
+    #[error(transparent)]
+    IoError(#[from] std::io::Error),
+
+    #[error(transparent)]
+    ConfigError(#[from] blend_config::error::ConfigError),
 }

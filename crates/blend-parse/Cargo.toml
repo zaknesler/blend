@@ -4,7 +4,6 @@ version.workspace = true
 edition.workspace = true
 
 [dependencies]
-blend-entity = { path = "../blend-entity" }
 chrono = { workspace = true, features = ["serde"] }
 feed-rs = { workspace = true }
 reqwest = "0"

@@ -33,6 +33,9 @@ pub enum WebError {
     IOError(#[from] std::io::Error),
 
     #[error(transparent)]
+    SqlError(#[from] sqlx::Error),
+
+    #[error(transparent)]
     CryptoError(#[from] blend_crypto::error::CryptoError),
 
     #[error(transparent)]
