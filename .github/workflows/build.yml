@@ -7,7 +7,6 @@ env:
   RUST_BACKTRACE: full
   NODE_VERSION: 21.x
   BLEND_HOME: ${{ github.workspace }}/blend_home
-  DATABASE_URL: sqlite:${{ github.workspace }}/blend.db
 
 jobs:
   test:
@@ -82,6 +81,11 @@ jobs:
         shell: bash
         run: |
           cargo binstall --no-confirm cross
+
+      - name: Configure sqlx
+        shell: bash
+        run: |
+          echo "DATABASE_URL=sqlite:${{ github.workspace }}/blend.db" >> .env
 
       - run: cargo binstall sqlx-cli
       - run: sqlx db create
