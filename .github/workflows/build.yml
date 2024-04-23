@@ -72,11 +72,15 @@ jobs:
           targets: "${{ matrix.target }}"
       - uses: Swatinem/rust-cache@v2
 
+      - name: Install binstall
+        shell: bash
+        run: |
+          curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+
       - name: Install Cross
         if: matrix.command == 'cross'
         shell: bash
         run: |
-          curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
           cargo binstall --no-confirm cross
 
       - run: cargo binstall sqlx-cli
