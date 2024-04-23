@@ -18,20 +18,26 @@ jobs:
           - name: linux-amd64
             runner: ubuntu-latest
             target: x86_64-unknown-linux-gnu
+            command: cargo
           - name: linux-arm64
             runner: ubuntu-latest
             target: aarch64-unknown-linux-gnu
+            command: cross
           - name: win-amd64
             runner: windows-latest
             target: x86_64-pc-windows-msvc
+            command: cargo
           - name: macos-amd64
             runner: macos-latest
             target: x86_64-apple-darwin
+            command: cargo
           - name: macos-arm64
             runner: macos-latest
             target: aarch64-apple-darwin
+            command: cargo
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         name: Install Node.js ${{ env.NODE_VERSION }}
         with:
@@ -53,30 +59,37 @@ jobs:
           key: ${{ matrix.target }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ matrix.target }}-pnpm-store-
+
       # - uses: crate-ci/typos@master
-      - name: Configure linux-arm64
-        if: matrix.name == 'linux-arm64'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-aarch64-linux-gnu libssl-dev pkg-config libudev-dev
-          echo "PKG_CONFIG_SYSROOT_DIR=/usr/aarch64-linux-gnu" >> $GITHUB_ENV
-          echo "PKG_CONFIG_PATH=/usr/aarch64-linux-gnu/lib/pkgconfig" >> $GITHUB_ENV
-          echo "PKG_CONFIG=/usr/bin/aarch64-linux-gnu-pkg-config" >> $GITHUB_ENV
+
       - name: Create dummy dist directory
         shell: bash
         run: |
           mkdir $GITHUB_WORKSPACE/ui/dist
+
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: "${{ matrix.target }}"
       - uses: Swatinem/rust-cache@v2
+
+      - name: Install Cross
+        if: matrix.command == 'cross'
+        shell: bash
+        run: |
+          curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+          cargo binstall --no-confirm cross
+
       - run: cargo install sqlx-cli --no-default-features --features native-tls,openssl-vendored,sqlite
       - run: sqlx db create
       - run: sqlx migrate run --source crates/blend-db/migrations
-      - run: cargo test --verbose --workspace
+
+      - run: ${{ matrix.command }} test --verbose --workspace --target ${{ matrix.target }}
+
       - run: pnpm install
       - run: pnpm run build
-      - run: cargo build --verbose --locked --release --target ${{ matrix.target }}
+
+      - run: ${{ matrix.command }} build --verbose --locked --release --target ${{ matrix.target }}
+
       - name: Prepare binary
         shell: bash
         run: |
@@ -97,6 +110,7 @@ jobs:
 
           # Move the built binary where you want it
           mv "${BIN_OUTPUT}" "${GITHUB_WORKSPACE}/bin-out/${BIN_RELEASE}"
+
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PROJECT_NAME }}-${{ matrix.name }}
