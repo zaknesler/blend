@@ -78,7 +78,7 @@ jobs:
       - run: echo "DATABASE_URL=sqlite:blend.db" >> .env
         shell: bash
 
-      - run: cargo binstall sqlx-cli
+      - run: cargo binstall --no-confirm sqlx-cli
       - run: sqlx db create
       - run: sqlx migrate run --source crates/blend-db/migrations
 
