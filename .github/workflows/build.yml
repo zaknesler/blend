@@ -9,7 +9,7 @@ env:
   BLEND_HOME: ${{ github.workspace }}/blend_home
 
 jobs:
-  test:
+  build:
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
