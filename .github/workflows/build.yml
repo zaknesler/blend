@@ -90,10 +90,7 @@ jobs:
       - run: pnpm install
       - run: pnpm run build
 
-      - run: cargo build --verbose --locked --release
-        if: matrix.command == 'cargo'
-      - run: cross build --verbose --locked --release --target ${{ matrix.target }}
-        if: matrix.command == 'cross'
+      - run: ${{ matrix.target }} build --verbose --locked --release --target ${{ matrix.target }}
 
       - name: Prepare binary
         shell: bash
