@@ -19,9 +19,8 @@ jobs:
           workflow_conclusion: success
           branch: main
           path: _artifacts
-      - run: ls -R
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: _artifacts/*
+          artifacts: _artifacts/**/blend-*
           body: "(Draft)"
           draft: true
