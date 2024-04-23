@@ -85,7 +85,7 @@ jobs:
       - name: Configure sqlx
         shell: bash
         run: |
-          echo "DATABASE_URL=sqlite:${{ github.workspace }}/blend.db" >> .env
+          echo "DATABASE_URL=sqlite:blend.db" >> .env
 
       - run: cargo binstall sqlx-cli
       - run: sqlx db create
