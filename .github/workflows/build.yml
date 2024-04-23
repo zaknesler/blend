@@ -90,7 +90,7 @@ jobs:
       - run: pnpm install
       - run: pnpm run build
 
-      - run: ${{ matrix.target }} build --verbose --locked --release --target ${{ matrix.target }}
+      - run: ${{ matrix.command }} build --verbose --locked --release --target ${{ matrix.target }}
 
       - name: Prepare binary
         shell: bash
