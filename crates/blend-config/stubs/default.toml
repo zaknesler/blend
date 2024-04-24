@@ -3,7 +3,7 @@ debug = true
 [web]
 host = "127.0.0.1"
 port = 4000
-allowed_origins = ["http://localhost:4000"]
+allowed_origins = ["*"]
 
 [database]
 file = "blend.db"
