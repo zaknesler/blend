@@ -295,7 +295,7 @@ dependencies = [
 
 [[package]]
 name = "blend"
-version = "0.0.1"
+version = "0.0.0"
 dependencies = [
  "blend-config",
  "blend-db",
@@ -309,7 +309,7 @@ dependencies = [
 
 [[package]]
 name = "blend-config"
-version = "0.0.1"
+version = "0.0.0"
 dependencies = [
  "directories",
  "figment",
@@ -321,7 +321,7 @@ dependencies = [
 
 [[package]]
 name = "blend-crypto"
-version = "0.0.1"
+version = "0.0.0"
 dependencies = [
  "argon2",
  "blend-config",
@@ -334,7 +334,7 @@ dependencies = [
 
 [[package]]
 name = "blend-db"
-version = "0.0.1"
+version = "0.0.0"
 dependencies = [
  "blend-config",
  "chrono",
@@ -349,7 +349,7 @@ dependencies = [
 
 [[package]]
 name = "blend-parse"
-version = "0.0.1"
+version = "0.0.0"
 dependencies = [
  "chrono",
  "feed-rs",
@@ -361,7 +361,7 @@ dependencies = [
 
 [[package]]
 name = "blend-web"
-version = "0.0.1"
+version = "0.0.0"
 dependencies = [
  "axum",
  "axum-embed",
