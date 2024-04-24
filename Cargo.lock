@@ -295,7 +295,7 @@ dependencies = [
 
 [[package]]
 name = "blend"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "blend-config",
  "blend-db",
@@ -309,7 +309,7 @@ dependencies = [
 
 [[package]]
 name = "blend-config"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "directories",
  "figment",
@@ -321,7 +321,7 @@ dependencies = [
 
 [[package]]
 name = "blend-crypto"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "argon2",
  "blend-config",
@@ -334,7 +334,7 @@ dependencies = [
 
 [[package]]
 name = "blend-db"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "blend-config",
  "chrono",
@@ -349,7 +349,7 @@ dependencies = [
 
 [[package]]
 name = "blend-parse"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "chrono",
  "feed-rs",
@@ -361,7 +361,7 @@ dependencies = [
 
 [[package]]
 name = "blend-web"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "axum",
  "axum-embed",
@@ -1937,9 +1937,9 @@ checksum = "d626bb9dae77e28219937af045c257c28bfd3f69333c512553507f5f9798cb76"
 
 [[package]]
 name = "rustix"
-version = "0.38.32"
+version = "0.38.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "65e04861e65f21776e67888bfbea442b3642beaa0138fdb1dd7a84a52dffdb89"
+checksum = "70dc5ec042f7a43c4a73241207cecc9873a06d45debb38b329f8541d85c2730f"
 dependencies = [
  "bitflags 2.5.0",
  "errno",
@@ -1960,9 +1960,9 @@ dependencies = [
 
 [[package]]
 name = "rustls-pki-types"
-version = "1.4.1"
+version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ecd36cc4259e3e4514335c4a138c6b43171a8d61d8f5c9348f9fc7529416f247"
+checksum = "beb461507cee2c2ff151784c52762cf4d9ff6a61f3e80968600ed24fa837fa54"
 
 [[package]]
 name = "rustversion"
@@ -3109,11 +3109,11 @@ checksum = "ac3b87c63620426dd9b991e5ce0329eff545bccbbb34f3be09ff6fb6ab51b7b6"
 
 [[package]]
 name = "winapi-util"
-version = "0.1.6"
+version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f29e6f9198ba0d26b4c9f07dbe6f9ed633e1f3d5b8b414090084349e46a52596"
+checksum = "134306a13c5647ad6453e8deaec55d3a44d6021970129e6188735e74bf546697"
 dependencies = [
- "winapi",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]

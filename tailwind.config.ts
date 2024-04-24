@@ -14,8 +14,7 @@ export default {
         gray: colors.stone,
       },
       width: {
-        gutter: '4rem',
-        sidebar: '16rem',
+        sidebar: '20rem',
       },
     },
   },
