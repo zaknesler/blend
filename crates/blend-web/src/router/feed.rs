@@ -1,19 +1,18 @@
-use crate::{context::Context, error::WebResult};
+use crate::error::WebResult;
 use axum::{
     extract::State,
     response::IntoResponse,
     routing::{get, post},
     Json, Router,
 };
-use blend_db::model;
-use serde::{Deserialize, Serialize};
+use blend_db::repo;
+use serde::Deserialize;
 use serde_json::json;
 
-pub fn router(ctx: Context) -> Router {
+pub fn router(ctx: blend_context::Context) -> Router {
     Router::new()
         .route("/", get(index))
-        .route("/create", get(create))
-        .route("/parse", post(parse))
+        .route("/add", post(add))
         // .route_layer(middleware::from_fn_with_state(
         //     ctx.clone(),
         //     crate::middleware::auth::middleware,
@@ -21,51 +20,30 @@ pub fn router(ctx: Context) -> Router {
         .with_state(ctx)
 }
 
-async fn index(State(ctx): State<Context>) -> WebResult<impl IntoResponse> {
-    let feeds: Vec<model::Feed> = sqlx::query_as!(model::Feed, "SELECT * FROM feeds")
-        .fetch_all(&ctx.db)
-        .await?;
-
+async fn index(State(ctx): State<blend_context::Context>) -> WebResult<impl IntoResponse> {
+    let feeds = repo::feed::FeedRepo::new(ctx).get_feeds().await?;
     Ok(Json(json!({ "data": feeds })))
 }
 
-async fn create(State(ctx): State<Context>) -> WebResult<impl IntoResponse> {
-    let mut conn = ctx.db.acquire().await?;
-
-    let title = "Rust Blog";
-    let url = "https://blog.rust-lang.org/feed.xml";
-
-    // Insert the task, then obtain the ID of this row
-    sqlx::query!(
-        r#"
-        INSERT INTO feeds ( title, url )
-        VALUES ( ?1, ?2 )
-        "#,
-        title,
-        url
-    )
-    .execute(&mut *conn)
-    .await?
-    .last_insert_rowid();
-
-    Ok("ok")
-}
-
 #[derive(Debug, Deserialize)]
-struct ParseFeedParams {
+struct AddFeedParams {
     url: String,
 }
 
-async fn parse(Json(data): Json<ParseFeedParams>) -> WebResult<impl IntoResponse> {
+async fn add(
+    State(ctx): State<blend_context::Context>,
+    Json(data): Json<AddFeedParams>,
+) -> WebResult<impl IntoResponse> {
     let parsed = blend_parse::parse_url(&data.url).await?;
 
-    let title = parsed.title.map(|title| title.content);
+    let feed = repo::feed::FeedRepo::new(ctx)
+        .create_feed(repo::feed::CreateFeedParams {
+            title: parsed.title.map(|title| title.content),
+            url: Some("https://blog.rust-lang.org/feed.xml".to_string()),
+            published_at: parsed.published,
+            updated_at: parsed.updated,
+        })
+        .await?;
 
-    #[derive(Debug, Serialize)]
-    struct Response {
-        title: Option<String>,
-    }
-
-    let res = Response { title };
-    Ok(Json(json!({"data": res})))
+    Ok(Json(json!({ "data": feed })))
 }

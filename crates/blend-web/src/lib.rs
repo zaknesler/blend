@@ -1,18 +1,16 @@
 use self::error::WebResult;
 use axum::http::{header, HeaderValue, Method};
-use context::Context;
 use tokio::net::TcpListener;
 use tower_cookies::CookieManagerLayer;
 use tower_http::{cors, trace::TraceLayer};
 
-pub mod context;
 pub mod error;
 mod middleware;
 mod response;
 mod router;
 mod util;
 
-pub async fn serve(ctx: Context) -> WebResult<()> {
+pub async fn serve(ctx: blend_context::Context) -> WebResult<()> {
     tracing::info!(
         "Starting web server on {}:{}",
         ctx.blend.config.web.host,

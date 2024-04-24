@@ -5,6 +5,7 @@ edition.workspace = true
 
 [dependencies]
 blend-config = { path = "../blend-config" }
+blend-context = { path = "../blend-context" }
 blend-crypto = { path = "../blend-crypto" }
 blend-parse = { path = "../blend-parse" }
 blend-db = { path = "../blend-db" }

@@ -5,6 +5,7 @@ edition.workspace = true
 
 [dependencies]
 blend-config = { path = "../blend-config" }
+blend-context = { path = "../blend-context" }
 chrono = { workspace = true, features = ["serde"] }
 futures = "0"
 serde = { workspace = true, features = ["derive"] }

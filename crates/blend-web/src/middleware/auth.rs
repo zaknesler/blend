@@ -1,11 +1,11 @@
-use crate::{context::Context, error::WebResult, router::JWT_COOKIE};
+use crate::{error::WebResult, router::JWT_COOKIE};
 use axum::{body::Body, extract::State, http::Request, middleware::Next, response::IntoResponse};
 use blend_crypto::jwt;
 use tower_cookies::Cookies;
 
 pub async fn middleware(
     cookies: Cookies,
-    State(ctx): State<Context>,
+    State(ctx): State<blend_context::Context>,
     req: Request<Body>,
     next: Next,
 ) -> WebResult<impl IntoResponse> {

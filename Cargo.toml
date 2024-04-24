@@ -24,6 +24,7 @@ edition = { workspace = true }
 
 [dependencies]
 blend-config = { path = "./crates/blend-config" }
+blend-context = { path = "./crates/blend-context" }
 blend-db = { path = "./crates/blend-db" }
 blend-web = { path = "./crates/blend-web" }
 clap = { version = "4", features = ["derive"] }

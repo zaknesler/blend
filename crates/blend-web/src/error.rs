@@ -39,5 +39,8 @@ pub enum WebError {
     CryptoError(#[from] blend_crypto::error::CryptoError),
 
     #[error(transparent)]
+    DbError(#[from] blend_db::error::DbError),
+
+    #[error(transparent)]
     ParseError(#[from] blend_parse::error::ParseError),
 }

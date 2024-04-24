@@ -11,11 +11,11 @@ export const getFeeds = async () => {
   return res.data.data;
 };
 
-export const parseFeed = async (params: { url: string }) => {
+export const addFeed = async (params: { url: string }) => {
   type Response = ApiResponse<{
     title: string;
   }>;
 
-  const res = await axios.post<Response>(apiUrl('/feeds/parse'), params);
+  const res = await axios.post<Response>(apiUrl('/feeds/add'), params);
   return res.data.data;
 };

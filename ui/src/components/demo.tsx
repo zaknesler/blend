@@ -1,19 +1,21 @@
-import { createMutation } from '@tanstack/solid-query';
+import { createMutation, useQueryClient } from '@tanstack/solid-query';
 import { type Component, Match, Switch, createSignal } from 'solid-js';
-import { parseFeed } from '../api/feeds';
+import { addFeed } from '../api/feeds';
 import { Button } from './form/button';
 
 export const Demo: Component = () => {
+  const queryClient = useQueryClient();
   const [input, setInput] = createSignal('https://blog.rust-lang.org/feed.xml');
 
-  const parse = createMutation(() => ({
-    mutationKey: ['feed.parse'],
-    mutationFn: parseFeed,
+  const add = createMutation(() => ({
+    mutationKey: ['feed.add'],
+    mutationFn: addFeed,
   }));
 
   const handleClick = async () => {
     if (!input()) return;
-    parse.mutateAsync({ url: input() });
+    await add.mutateAsync({ url: input() });
+    queryClient.invalidateQueries({ queryKey: ['feeds'] });
   };
 
   return (
@@ -29,16 +31,16 @@ export const Demo: Component = () => {
       </div>
 
       <Switch>
-        <Match when={parse.isPending}>
+        <Match when={add.isPending}>
           <p>Loading...</p>
         </Match>
 
-        <Match when={parse.isError}>
-          <p>Error: {parse.error?.message}</p>
+        <Match when={add.isError}>
+          <p>Error: {add.error?.message}</p>
         </Match>
 
-        <Match when={parse.isSuccess}>
-          <pre>{JSON.stringify(parse.data, null, 2)}</pre>
+        <Match when={add.isSuccess}>
+          <pre>{JSON.stringify(add.data, null, 2)}</pre>
         </Match>
       </Switch>
     </div>
