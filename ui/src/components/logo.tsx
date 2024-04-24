@@ -1,4 +1,6 @@
-export const Logo = () => (
+import { type Component } from 'solid-js';
+
+export const Logo: Component = () => (
   <a href="/" class="select-none text-gray-500 transition-colors hover:text-gray-800">
     <svg
       class="h-auto w-16 fill-current"

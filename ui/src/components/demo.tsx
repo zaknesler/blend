@@ -1,9 +1,9 @@
 import { createMutation } from '@tanstack/solid-query';
-import { Match, Switch, createSignal } from 'solid-js';
+import { type Component, Match, Switch, createSignal } from 'solid-js';
 import { parseFeed } from '../api/feeds';
 import { Button } from './form/button';
 
-export const Demo = () => {
+export const Demo: Component = () => {
   const [input, setInput] = createSignal('https://blog.rust-lang.org/feed.xml');
 
   const parse = createMutation(() => ({

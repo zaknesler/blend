@@ -1,4 +1,4 @@
-import { For, Match, Switch } from 'solid-js';
+import { type Component, For, Match, Switch } from 'solid-js';
 import { useFeeds } from '../hooks/useFeeds';
 import { HiOutlineMoon, HiSolidPlus } from 'solid-icons/hi';
 import { useNavigate } from '@solidjs/router';
@@ -6,7 +6,7 @@ import { Button } from './form/button';
 import { Logo } from './logo';
 import { Link } from './link';
 
-export const Sidebar = () => {
+export const Sidebar: Component = () => {
   const navigate = useNavigate();
   const feeds = useFeeds();
 
