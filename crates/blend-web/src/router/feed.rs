@@ -1,12 +1,19 @@
 use crate::{context::Context, error::WebResult};
-use axum::{extract::State, response::IntoResponse, routing::get, Json, Router};
+use axum::{
+    extract::State,
+    response::IntoResponse,
+    routing::{get, post},
+    Json, Router,
+};
 use blend_db::model;
+use serde::{Deserialize, Serialize};
 use serde_json::json;
 
 pub fn router(ctx: Context) -> Router {
     Router::new()
         .route("/", get(index))
         .route("/create", get(create))
+        .route("/parse", post(parse))
         // .route_layer(middleware::from_fn_with_state(
         //     ctx.clone(),
         //     crate::middleware::auth::middleware,
@@ -15,8 +22,6 @@ pub fn router(ctx: Context) -> Router {
 }
 
 async fn index(State(ctx): State<Context>) -> WebResult<impl IntoResponse> {
-    // let parsed = parse_url("https://blog.rust-lang.org/feed.xml").await?;
-
     let feeds: Vec<model::Feed> = sqlx::query_as!(model::Feed, "SELECT * FROM feeds")
         .fetch_all(&ctx.db)
         .await?;
@@ -31,7 +36,7 @@ async fn create(State(ctx): State<Context>) -> WebResult<impl IntoResponse> {
     let url = "https://blog.rust-lang.org/feed.xml";
 
     // Insert the task, then obtain the ID of this row
-    let id = sqlx::query!(
+    sqlx::query!(
         r#"
         INSERT INTO feeds ( title, url )
         VALUES ( ?1, ?2 )
@@ -43,7 +48,24 @@ async fn create(State(ctx): State<Context>) -> WebResult<impl IntoResponse> {
     .await?
     .last_insert_rowid();
 
-    dbg!(&id);
-
     Ok("ok")
+}
+
+#[derive(Debug, Deserialize)]
+struct ParseFeedParams {
+    url: String,
+}
+
+async fn parse(Json(data): Json<ParseFeedParams>) -> WebResult<impl IntoResponse> {
+    let parsed = blend_parse::parse_url(&data.url).await?;
+
+    let title = parsed.title.map(|title| title.content);
+
+    #[derive(Debug, Serialize)]
+    struct Response {
+        title: Option<String>,
+    }
+
+    let res = Response { title };
+    Ok(Json(json!({"data": res})))
 }

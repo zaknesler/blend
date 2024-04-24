@@ -1,11 +1,18 @@
-import { createSignal } from 'solid-js';
+import { createMutation } from '@tanstack/solid-query';
+import { Match, Switch, createSignal } from 'solid-js';
+import { parseFeed } from '../api/feeds';
 
 export const Demo = () => {
-  const [input, setInput] = createSignal('');
+  const [input, setInput] = createSignal('https://blog.rust-lang.org/feed.xml');
+
+  const parse = createMutation(() => ({
+    mutationKey: ['feed.parse'],
+    mutationFn: parseFeed,
+  }));
 
   const handleClick = async () => {
     if (!input()) return;
-    alert('clicky');
+    parse.mutateAsync({ url: input() });
   };
 
   return (
@@ -24,6 +31,20 @@ export const Demo = () => {
           Get feed
         </button>
       </div>
+
+      <Switch>
+        <Match when={parse.isPending}>
+          <p>Loading...</p>
+        </Match>
+
+        <Match when={parse.isError}>
+          <p>Error: {parse.error?.message}</p>
+        </Match>
+
+        <Match when={parse.isSuccess}>
+          <pre>{JSON.stringify(parse.data, null, 2)}</pre>
+        </Match>
+      </Switch>
     </div>
   );
 };

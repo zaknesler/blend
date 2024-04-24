@@ -1,5 +1,3 @@
-#![allow(unused_variables, dead_code)]
-
 use self::error::WebResult;
 use axum::http::{header, HeaderValue, Method};
 use context::Context;

@@ -1,9 +1,21 @@
+import { ApiResponse } from '.';
 import { Feed } from '../types/bindings/feed';
 import { apiUrl } from '../utils/api';
+import axios from 'axios';
 
 export const getFeeds = async () => {
-  const res = await fetch(apiUrl('/feeds'));
-  const { data } = await res.json();
+  type Response = ApiResponse<Feed[]>;
 
-  return data as Feed[];
+  const res = await axios.get<Response>(apiUrl('/feeds'));
+
+  return res.data.data;
+};
+
+export const parseFeed = async (params: { url: string }) => {
+  type Response = ApiResponse<{
+    title: string;
+  }>;
+
+  const res = await axios.post<Response>(apiUrl('/feeds/parse'), params);
+  return res.data.data;
 };
