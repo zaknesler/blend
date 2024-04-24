@@ -1,6 +1,7 @@
 import { createMutation } from '@tanstack/solid-query';
 import { Match, Switch, createSignal } from 'solid-js';
 import { parseFeed } from '../api/feeds';
+import { Button } from './form/button';
 
 export const Demo = () => {
   const [input, setInput] = createSignal('https://blog.rust-lang.org/feed.xml');
@@ -24,12 +25,7 @@ export const Demo = () => {
           onChange={e => setInput(e.target.value)}
           class="w-full rounded-md px-3 py-2 font-sans text-sm"
         />
-        <button
-          onClick={handleClick}
-          class="flex-shrink-0 rounded-md bg-gray-500 px-4 py-2 font-sans text-sm font-semibold text-white"
-        >
-          Get feed
-        </button>
+        <Button onClick={handleClick}>Get feed</Button>
       </div>
 
       <Switch>
