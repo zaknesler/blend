@@ -43,12 +43,13 @@ opt-level = 3
 env.passthrough = ["DATABASE_URL", "RUSTFLAGS"]
 pre-build = [
   "dpkg --add-architecture $CROSS_DEB_ARCH",
-  "apt-get update && apt-get install --assume-yes libssl-dev:$CROSS_DEB_ARCH",
+  "apt-get update",
+  "apt-get install --assume-yes libssl-dev:$CROSS_DEB_ARCH",
 ]
 
 [package.metadata.cross.target.aarch64-unknown-linux-musl]
 env.passthrough = ["DATABASE_URL", "RUSTFLAGS", "TARGET_CC=gcc"]
-image.name = "multiarch/alpine:arm64-latest-stable"
+image = "multiarch/alpine:arm64-latest-stable"
 pre-build = [
   "apk add --no-cache gcc musl-dev pkgconfig openssl-dev libressl-dev openssl libc-dev git",
 ]
