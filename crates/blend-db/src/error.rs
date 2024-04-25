@@ -1,8 +1,6 @@
-use thiserror::Error;
-
 pub type DbResult<T> = Result<T, DbError>;
 
-#[derive(Error, Debug)]
+#[derive(thiserror::Error, Debug)]
 pub enum DbError {
     #[error("invalid database name")]
     InvalidDatabaseName,

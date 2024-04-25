@@ -1,6 +1,6 @@
 pub type BlendResult<T> = Result<T, BlendError>;
 
-#[derive(Debug, thiserror::Error)]
+#[derive(thiserror::Error, Debug)]
 pub enum BlendError {
     #[error(transparent)]
     ConfigError(#[from] blend_config::error::ConfigError),

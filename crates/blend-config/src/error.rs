@@ -1,8 +1,6 @@
-use thiserror::Error;
-
 pub type ConfigResult<T> = Result<T, ConfigError>;
 
-#[derive(Error, Debug)]
+#[derive(thiserror::Error, Debug)]
 pub enum ConfigError {
     #[error("user system config directory not found")]
     ConfigDirNotFound,

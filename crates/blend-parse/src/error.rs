@@ -1,6 +1,6 @@
 pub type ParseResult<T> = Result<T, ParseError>;
 
-#[derive(Debug, thiserror::Error)]
+#[derive(thiserror::Error, Debug)]
 pub enum ParseError {
     #[error(transparent)]
     Io(#[from] std::io::Error),

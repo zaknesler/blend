@@ -1,8 +1,6 @@
-use thiserror::Error;
-
 pub type CryptoResult<T> = Result<T, CryptoError>;
 
-#[derive(Error, Debug)]
+#[derive(thiserror::Error, Debug)]
 pub enum CryptoError {
     #[error("jwt expired")]
     JwtExpired,
