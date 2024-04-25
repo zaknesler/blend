@@ -14,19 +14,19 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: linux-amd64-gnu
+          - name: linux-gnu-x86_64
             runner: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             command: cargo
-          - name: linux-aarch64-gnu
+          - name: linux-gnu-aarch64
             runner: ubuntu-latest
             target: aarch64-unknown-linux-gnu
             command: cross
-          - name: win-amd64
+          - name: win-x86_64
             runner: windows-latest
             target: x86_64-pc-windows-msvc
             command: cargo
-          - name: macos-amd64
+          - name: macos-x86_64
             runner: macos-latest
             target: x86_64-apple-darwin
             command: cargo
