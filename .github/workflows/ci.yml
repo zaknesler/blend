@@ -10,6 +10,7 @@ env:
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: full
   NODE_VERSION: 21.x
+  DATABASE_URL: sqlite:blend.db
 
 jobs:
   ci:
@@ -56,9 +57,6 @@ jobs:
       - uses: Swatinem/rust-cache@v2
 
       - run: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-        shell: bash
-
-      - run: echo "DATABASE_URL=sqlite:blend.db" >> .env
         shell: bash
 
       - run: cargo binstall --no-confirm --force sqlx-cli

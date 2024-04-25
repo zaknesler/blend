@@ -23,11 +23,6 @@ version = { workspace = true }
 edition = { workspace = true }
 
 [dependencies]
-axum-valid = { version = "0.18.0", default-features = false, features = [
-  "garde",
-  "basic",
-  "into_json",
-] }
 blend-config = { path = "./crates/blend-config" }
 blend-context = { path = "./crates/blend-context" }
 blend-db = { path = "./crates/blend-db" }
@@ -38,6 +33,9 @@ tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
 tracing = { workspace = true }
 tracing-subscriber = { version = "0.3", features = ["serde"] }
 
+[target.'cfg(not(target_os = "windows"))'.dependencies]
+openssl = { version = "0.10", features = ["vendored"] }
+
 [profile.dev]
 opt-level = 1
 
@@ -45,10 +43,7 @@ opt-level = 1
 opt-level = 3
 
 [package.metadata.cross.target.aarch64-unknown-linux-gnu]
-pre-build = [
-  "dpkg --add-architecture $CROSS_DEB_ARCH",
-  "apt-get update && apt-get install --assume-yes libssl-dev:$CROSS_DEB_ARCH",
-]
+env.passthrough = ["DATABASE_URL"]
 
 [profile.release]
 strip = true

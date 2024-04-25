@@ -18,8 +18,8 @@ pub struct Args {
 #[derive(Debug, Parser)]
 pub enum Command {
     /// Publish default config to $BLEND_HOME or the OS-default config directory
-    PublishConfig {
-        /// Override existing config if one already exists
+    Publish {
+        /// Override existing config file if it already exists
         #[clap(long, short)]
         force: bool,
     },
