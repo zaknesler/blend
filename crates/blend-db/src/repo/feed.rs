@@ -1,4 +1,7 @@
-use crate::{error::DbResult, model};
+use crate::{
+    error::{DbError, DbResult},
+    model,
+};
 use chrono::{DateTime, Utc};
 
 pub struct FeedRepo {
@@ -24,14 +27,21 @@ impl FeedRepo {
             .map_err(|err| err.into())
     }
 
-    pub async fn create_feed(&self, data: CreateFeedParams) -> DbResult<i64> {
+    pub async fn get_feed(&self, id: i64) -> DbResult<Option<model::Feed>> {
+        sqlx::query_as!(model::Feed, "SELECT * FROM feeds WHERE id = ?1", id)
+            .fetch_optional(&self.ctx.db)
+            .await
+            .map_err(|err| err.into())
+    }
+
+    pub async fn create_feed(&self, data: CreateFeedParams) -> DbResult<model::Feed> {
         let mut conn = self.ctx.db.acquire().await?;
 
         let id: i64 = sqlx::query!(
             r#"
-                INSERT INTO feeds ( title, url, published_at, updated_at )
-                VALUES ( ?1, ?2, ?3, ?4 )
-                "#,
+            INSERT INTO feeds ( title, url, published_at, updated_at )
+            VALUES ( ?1, ?2, ?3, ?4 )
+            "#,
             data.title,
             data.url,
             data.published_at,
@@ -41,6 +51,11 @@ impl FeedRepo {
         .await?
         .last_insert_rowid();
 
-        Ok(id)
+        let feed = self
+            .get_feed(id)
+            .await?
+            .ok_or_else(|| DbError::CouldNotFindInsertedRow)?;
+
+        Ok(feed)
     }
 }

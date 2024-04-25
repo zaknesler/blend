@@ -2,20 +2,21 @@ import { createMutation, useQueryClient } from '@tanstack/solid-query';
 import { type Component, Match, Switch, createSignal } from 'solid-js';
 import { addFeed } from '../api/feeds';
 import { Button } from './form/button';
+import { QUERY_KEYS } from '../constants/query';
 
 export const Demo: Component = () => {
   const queryClient = useQueryClient();
   const [input, setInput] = createSignal('https://blog.rust-lang.org/feed.xml');
 
   const add = createMutation(() => ({
-    mutationKey: ['feed.add'],
+    mutationKey: [QUERY_KEYS.FEEDS_ADD],
     mutationFn: addFeed,
   }));
 
   const handleClick = async () => {
     if (!input()) return;
     await add.mutateAsync({ url: input() });
-    queryClient.invalidateQueries({ queryKey: ['feeds'] });
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS] });
   };
 
   return (
