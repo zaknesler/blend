@@ -18,12 +18,6 @@ pub enum WebError {
     AddrParseError(#[from] std::net::AddrParseError),
 
     #[error(transparent)]
-    ValidationError(#[from] validator::ValidationError),
-
-    #[error(transparent)]
-    ValidationErrors(#[from] validator::ValidationErrors),
-
-    #[error(transparent)]
     InvalidHeaderValueError(#[from] axum::http::header::InvalidHeaderValue),
 
     #[error(transparent)]

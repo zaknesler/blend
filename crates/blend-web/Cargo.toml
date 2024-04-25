@@ -9,11 +9,13 @@ blend-context = { path = "../blend-context" }
 blend-crypto = { path = "../blend-crypto" }
 blend-parse = { path = "../blend-parse" }
 blend-db = { path = "../blend-db" }
-axum = "0"
+axum = { workspace = true }
+axum_garde = "0"
 axum-embed = "0"
 chrono = { workspace = true, features = ["serde"] }
 futures = "0"
 futures-util = "0"
+garde = { version = "0", features = ["derive", "url"] }
 rust-embed = { workspace = true, features = ["interpolate-folder-path"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
@@ -23,4 +25,3 @@ tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
 tower-cookies = "0.10"
 tower-http = { version = "0", features = ["trace", "cors", "fs"] }
 tracing = { workspace = true }
-validator = { version = "0", features = ["derive"] }

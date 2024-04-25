@@ -39,11 +39,6 @@ fn get_response(error: &WebError) -> Option<(StatusCode, Value)> {
         WebError::InvalidFormData(err) => {
             (StatusCode::UNPROCESSABLE_ENTITY, Value::String(err.clone()))
         }
-        WebError::ValidationErrors(err) => (
-            StatusCode::UNPROCESSABLE_ENTITY,
-            json!({ "fields": err.field_errors() }),
-        ),
-        WebError::ValidationError(err) => (StatusCode::UNPROCESSABLE_ENTITY, json!(err)),
         _ => return None,
     })
 }
