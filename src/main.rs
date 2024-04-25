@@ -13,7 +13,7 @@ async fn main() -> error::BlendResult<()> {
         .init();
 
     match args.command {
-        crate::args::Command::PublishConfig { force } => {
+        crate::args::Command::Publish { force } => {
             let path = blend_config::init_config_file(force)?;
             if let Some(path) = path.to_str() {
                 tracing::info!(
