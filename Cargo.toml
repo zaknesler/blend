@@ -43,10 +43,6 @@ opt-level = 3
 [package.metadata.cross.target.aarch64-unknown-linux-gnu]
 env.passthrough = ["DATABASE_URL"]
 
-[package.metadata.cross.target.aarch64-unknown-linux-musl]
-env.passthrough = ["DATABASE_URL"]
-image = "messense/rust-musl-cross:aarch64-musl"
-
 [profile.release]
 strip = true
 opt-level = "s"
