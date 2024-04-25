@@ -5,6 +5,5 @@ edition.workspace = true
 
 [dependencies]
 blend-config = { path = "../blend-config" }
-axum = { workspace = true }
 sqlx = { workspace = true, features = ["sqlite"] }
 thiserror = { workspace = true }

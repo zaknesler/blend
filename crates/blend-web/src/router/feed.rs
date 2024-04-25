@@ -5,11 +5,10 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
-use axum_garde::WithValidation;
 use blend_db::repo;
-use garde::Validate;
 use serde::Deserialize;
 use serde_json::json;
+use validator::Validate;
 
 pub fn router(ctx: blend_context::Context) -> Router {
     Router::new()
@@ -29,16 +28,17 @@ async fn index(State(ctx): State<blend_context::Context>) -> WebResult<impl Into
 
 #[derive(Debug, Deserialize, Validate)]
 struct AddFeedParams {
-    #[garde(url)]
+    #[validate(url(message = "Must be a valid URL"))]
     url: String,
 }
 
 async fn add(
     State(ctx): State<blend_context::Context>,
-    WithValidation(data): WithValidation<Json<AddFeedParams>>,
+    Json(data): Json<AddFeedParams>,
 ) -> WebResult<impl IntoResponse> {
-    let parsed = blend_parse::parse_url(&data.url).await?;
+    data.validate()?;
 
+    let parsed = blend_parse::parse_url(&data.url).await?;
     let feed = repo::feed::FeedRepo::new(ctx)
         .create_feed(repo::feed::CreateFeedParams {
             title: parsed.title.map(|title| title.content),
