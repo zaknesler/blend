@@ -49,10 +49,10 @@ pre-build = [
 
 [package.metadata.cross.target.aarch64-unknown-linux-musl]
 env.passthrough = ["DATABASE_URL", "RUSTFLAGS", "TARGET_CC=gcc"]
-image = "multiarch/alpine:arm64-latest-stable"
-pre-build = [
-  "apk add --no-cache gcc musl-dev pkgconfig openssl-dev libressl-dev openssl libc-dev git",
-]
+image = "messense/rust-musl-cross:aarch64-musl"
+# pre-build = [
+#   "apk add --no-cache gcc musl-dev pkgconfig openssl-dev libressl-dev openssl libc-dev git",
+# ]
 
 [profile.release]
 strip = true
