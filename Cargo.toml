@@ -42,8 +42,8 @@ opt-level = 1
 [profile.dev.package."*"]
 opt-level = 3
 
-[package.metadata.cross.target.aarch64-unknown-linux-gnu]
-env.passthrough = ["DATABASE_URL"]
+[package.metadata.cross.build.env]
+passthrough = ["DATABASE_URL"]
 
 [profile.release]
 strip = true
