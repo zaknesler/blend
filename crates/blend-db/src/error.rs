@@ -6,7 +6,7 @@ pub enum DbError {
     InvalidDatabaseName,
 
     #[error("could not fetch row after insertion")]
-    CouldNotFindInsertedRow,
+    CouldNotFetchRowAfterInsertion,
 
     #[error(transparent)]
     SqlError(#[from] sqlx::Error),

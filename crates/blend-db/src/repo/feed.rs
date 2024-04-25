@@ -54,7 +54,7 @@ impl FeedRepo {
         let feed = self
             .get_feed(id)
             .await?
-            .ok_or_else(|| DbError::CouldNotFindInsertedRow)?;
+            .ok_or_else(|| DbError::CouldNotFetchRowAfterInsertion)?;
 
         Ok(feed)
     }
