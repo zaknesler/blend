@@ -28,6 +28,7 @@ blend-context = { path = "./crates/blend-context" }
 blend-db = { path = "./crates/blend-db" }
 blend-web = { path = "./crates/blend-web" }
 clap = { version = "4", features = ["derive"] }
+openssl = { version = "0", features = ["vendored"] }
 thiserror = { workspace = true }
 tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
 tracing = { workspace = true }
@@ -40,17 +41,11 @@ opt-level = 1
 opt-level = 3
 
 [package.metadata.cross.target.aarch64-unknown-linux-gnu]
-env.passthrough = ["DATABASE_URL", "RUSTFLAGS"]
-pre-build = [
-  "dpkg --add-architecture $CROSS_DEB_ARCH",
-  "apt-get update",
-  "apt-get install --assume-yes libssl-dev:$CROSS_DEB_ARCH",
-]
+env.passthrough = ["DATABASE_URL"]
 
 [package.metadata.cross.target.aarch64-unknown-linux-musl]
-env.passthrough = ["DATABASE_URL", "RUSTFLAGS", "TARGET_CC=gcc"]
+env.passthrough = ["DATABASE_URL"]
 image = "messense/rust-musl-cross:aarch64-musl"
-pre-build = ["apt-get update", "apt-get install --assume-yes libssl-dev"]
 
 [profile.release]
 strip = true
