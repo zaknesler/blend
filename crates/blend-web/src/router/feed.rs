@@ -8,11 +8,12 @@ use axum::{
 use blend_db::repo;
 use serde::Deserialize;
 use serde_json::json;
+use validator::Validate;
 
 pub fn router(ctx: blend_context::Context) -> Router {
     Router::new()
         .route("/", get(index))
-        .route("/add", post(add))
+        .route("/", post(add))
         // .route_layer(middleware::from_fn_with_state(
         //     ctx.clone(),
         //     crate::middleware::auth::middleware,
@@ -25,8 +26,9 @@ async fn index(State(ctx): State<blend_context::Context>) -> WebResult<impl Into
     Ok(Json(json!({ "data": feeds })))
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Validate)]
 struct AddFeedParams {
+    #[validate(url(message = "Must be a valid URL"))]
     url: String,
 }
 
@@ -34,8 +36,9 @@ async fn add(
     State(ctx): State<blend_context::Context>,
     Json(data): Json<AddFeedParams>,
 ) -> WebResult<impl IntoResponse> {
-    let parsed = blend_parse::parse_url(&data.url).await?;
+    data.validate()?;
 
+    let parsed = blend_parse::parse_url(&data.url).await?;
     let feed = repo::feed::FeedRepo::new(ctx)
         .create_feed(repo::feed::CreateFeedParams {
             title: parsed.title.map(|title| title.content),

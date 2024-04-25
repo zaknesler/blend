@@ -4,8 +4,8 @@ version.workspace = true
 edition.workspace = true
 
 [dependencies]
-directories = "5"
-figment = { version = "0", features = ["env", "toml"] }
+directories = "5.0"
+figment = { version = "0.10", features = ["env", "toml"] }
 rust-embed = { workspace = true, features = ["interpolate-folder-path"] }
 serde = { workspace = true, features = ["derive"] }
 thiserror = { workspace = true }

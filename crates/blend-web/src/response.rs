@@ -36,10 +36,7 @@ fn get_response(error: &WebError) -> Option<(StatusCode, Value)> {
         | WebError::CryptoError(CryptoError::JwtExpired | CryptoError::JwtInvalid) => {
             (StatusCode::UNAUTHORIZED, Value::String(error.to_string()))
         }
-        WebError::InvalidFormData(err) => {
-            (StatusCode::UNPROCESSABLE_ENTITY, Value::String(err.clone()))
-        }
-        WebError::ValidationErrors(err) => (
+        WebError::ValidationErrorMap(err) => (
             StatusCode::UNPROCESSABLE_ENTITY,
             json!({ "fields": err.field_errors() }),
         ),

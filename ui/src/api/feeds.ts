@@ -16,6 +16,6 @@ export const addFeed = async (params: { url: string }) => {
     title: string;
   }>;
 
-  const res = await axios.post<Response>(apiUrl('/feeds/add'), params);
+  const res = await axios.post<Response>(apiUrl('/feeds'), params);
   return res.data.data;
 };
