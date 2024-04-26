@@ -28,8 +28,7 @@ struct ConfigStubs;
 fn get_config_dir() -> ConfigResult<PathBuf> {
     let override_path = std::env::var(ENV_CONFIG_HOME_PATH)
         .ok()
-        .map(|dir| PathBuf::from_str(&dir).ok())
-        .flatten();
+        .and_then(|dir| PathBuf::from_str(&dir).ok());
 
     Ok(match override_path {
         Some(path) => path,
@@ -71,23 +70,20 @@ pub fn init_config_file(force: bool) -> ConfigResult<PathBuf> {
 pub fn parse(override_path: Option<String>) -> ConfigResult<BlendConfig> {
     let config_dir = get_config_dir()?;
 
-    let mut config = Figment::new()
-        .merge(Toml::string(std::str::from_utf8(
-            get_default_data().as_ref(),
-        )?))
-        .merge(Toml::file(
-            config_dir
-                .join(LOCAL_CONFIG_FILE)
-                .to_str()
-                .expect("path should be valid unicode"),
-        ))
-        .merge(Env::prefixed(ENV_PREFIX).map(|key| {
-            key.as_str()
-                .to_lowercase()
-                .trim_matches('_')
-                .replacen('_', ".", 1)
-                .into()
-        }));
+    let mut config =
+        Figment::new()
+            .merge(Toml::string(std::str::from_utf8(
+                get_default_data().as_ref(),
+            )?))
+            .merge(Toml::file(
+                config_dir
+                    .join(LOCAL_CONFIG_FILE)
+                    .to_str()
+                    .expect("path should be valid unicode"),
+            ))
+            .merge(Env::prefixed(ENV_PREFIX).map(|key| {
+                key.as_str().to_lowercase().trim_matches('_').replacen('_', ".", 1).into()
+            }));
 
     if let Some(path) = override_path {
         config = config.merge(Toml::file(path))

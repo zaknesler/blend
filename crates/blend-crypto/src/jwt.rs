@@ -47,8 +47,5 @@ pub fn verify_jwt(secret: &str, jwt: &str) -> CryptoResult<String> {
     }
 
     // Attempt to extract the user ID
-    Ok(claims
-        .get(JWT_CLAIM_USER)
-        .ok_or_else(|| CryptoError::JwtInvalid)?
-        .to_owned())
+    Ok(claims.get(JWT_CLAIM_USER).ok_or_else(|| CryptoError::JwtInvalid)?.to_owned())
 }
