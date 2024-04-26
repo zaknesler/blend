@@ -1,5 +1,5 @@
 <p>
-  <img width="80px" src="./ui/public/logo.svg" alt="blend logo" />
+  <img width="120px" src="./ui/public/logo.svg" alt="blend logo" />
 </p>
 
 [![CI](https://github.com/zaknesler/blend/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/zaknesler/blend/actions/workflows/ci.yml)
