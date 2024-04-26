@@ -36,6 +36,11 @@ tracing-subscriber = { version = "0.3", features = ["serde"] }
 [target.'cfg(not(target_os = "windows"))'.dependencies]
 openssl = { version = "0.10", features = ["vendored"] }
 
+[profile.release]
+strip = true
+opt-level = "s"
+lto = true
+
 [profile.dev]
 opt-level = 1
 
@@ -43,9 +48,4 @@ opt-level = 1
 opt-level = 3
 
 [package.metadata.cross.build.env]
-passthrough = ["DATABASE_URL"]
-
-[profile.release]
-strip = true
-opt-level = "s"
-lto = true
+passthrough = ["DATABASE_URL", "BLEND_HOME"]
