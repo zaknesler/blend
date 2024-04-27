@@ -12,7 +12,9 @@ Demo is available at [blend.zak.fm](https://blend.zak.fm), but there's currently
 #### Roadmap
 
 - [ ] Source from any RSS feed format
-- [ ] Fetch entries in background
+- [ ] Fetch metadata and feed entries in background
+- [ ] Trigger refresh manually
+- [ ] Organize feeds into folders
 - [ ] Scrape HTML if entries do not contain article content
 - [ ] Automatic syncing
 - [ ] User options for theme, font, etc.
