@@ -14,7 +14,7 @@ env:
 
 jobs:
   build:
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: endsWith(github.ref, 'main')
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
