@@ -15,7 +15,6 @@ env:
 
 jobs:
   build:
-    if: endsWith(github.ref, 'main')
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
