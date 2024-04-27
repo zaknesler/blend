@@ -18,7 +18,7 @@
     "noFallthroughCasesInSwitch": true,
     "types": ["vite/client"],
     "paths": {
-      "~/*": ["./ui/*"]
+      "~/*": ["./ui/src/*"]
     }
   },
   "include": ["ui"],

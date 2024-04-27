@@ -7,10 +7,13 @@
     "serve": "vite preview ui"
   },
   "dependencies": {
+    "@kobalte/core": "^0.12.6",
+    "@kobalte/tailwindcss": "^0.9.0",
     "@solidjs/router": "^0.13.2",
     "@tanstack/solid-query": "^5.32.0",
     "@tanstack/solid-query-devtools": "^5.32.0",
     "axios": "^1.6.8",
+    "class-variance-authority": "^0.7.0",
     "dayjs": "^1.11.10",
     "solid-icons": "^1.1.0",
     "solid-js": "^1.8.17"

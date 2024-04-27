@@ -1,17 +1,20 @@
 import { type Component, For, Match, Switch } from 'solid-js';
 import { useFeeds } from '../hooks/useFeeds';
-import { HiOutlineMoon, HiSolidPlus } from 'solid-icons/hi';
-import { useNavigate } from '@solidjs/router';
-import { Button } from './form/button';
+import { HiOutlineMoon } from 'solid-icons/hi';
 import { Logo } from './logo';
 import { Link } from './link';
+import { CreateFeed } from './modals/create-feed';
+import { cx } from 'class-variance-authority';
 
-export const Sidebar: Component = () => {
-  const navigate = useNavigate();
+type SidebarProps = {
+  class?: string;
+};
+
+export const Sidebar: Component<SidebarProps> = ({ class: className }) => {
   const feeds = useFeeds();
 
   return (
-    <div class="relative flex h-full w-sidebar flex-col items-start gap-8 bg-white p-8 shadow-md">
+    <div class={cx('relative flex h-full flex-col items-start gap-8 bg-white p-8 shadow-md', className)}>
       <Logo />
 
       <nav class="flex flex-col items-start gap-2 text-sm">
@@ -19,10 +22,7 @@ export const Sidebar: Component = () => {
         <Link href="/articles/test">Article</Link>
       </nav>
 
-      <Button onClick={() => navigate('/new')} class="absolute bottom-4 right-4 inline-flex items-center gap-2 text-sm">
-        Add feed
-        <HiSolidPlus class="h-4 w-4 text-gray-300" />
-      </Button>
+      <CreateFeed triggerClass="absolute bottom-4 right-4" />
 
       <button class="absolute bottom-4 left-4 appearance-none rounded-lg bg-gray-100 p-2 transition duration-100 hover:bg-gray-200">
         <HiOutlineMoon class="h-6 w-6 text-gray-500" />
