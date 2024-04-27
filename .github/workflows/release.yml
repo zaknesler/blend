@@ -6,6 +6,7 @@ on:
       - v*
 
 env:
+  GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
   PROJECT_NAME: blend
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: full
