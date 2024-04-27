@@ -9,6 +9,8 @@
 
 Demo is available at [blend.zak.fm](https://blend.zak.fm), but it has very limited functionality. The database resets every hour.
 
+Development builds are released manually and can be downloaded [here](https://github.com/zaknesler/blend/releases).
+
 #### Roadmap
 
 - [ ] Source from any RSS feed format
