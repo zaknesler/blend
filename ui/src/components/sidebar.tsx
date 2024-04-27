@@ -1,5 +1,4 @@
 import { type Component, For, Match, Switch } from 'solid-js';
-import { HiOutlineMoon } from 'solid-icons/hi';
 import { Logo } from './logo';
 import { Link } from './link';
 import { CreateFeed } from './modals/create-feed';
@@ -28,12 +27,6 @@ export const Sidebar: Component<SidebarProps> = ({ class: className }) => {
         <Link href="/articles/test">Article</Link>
       </nav>
 
-      <CreateFeed triggerClass="absolute bottom-4 right-4" />
-
-      <button class="absolute bottom-4 left-4 appearance-none rounded-lg bg-gray-100 p-2 transition duration-100 hover:bg-gray-200">
-        <HiOutlineMoon class="h-6 w-6 text-gray-500" />
-      </button>
-
       <div class="flex flex-col items-start gap-2">
         <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500">Feeds</h3>
         <Switch>
@@ -56,6 +49,8 @@ export const Sidebar: Component<SidebarProps> = ({ class: className }) => {
           </Match>
         </Switch>
       </div>
+
+      <CreateFeed triggerClass="absolute bottom-4 right-4" />
     </div>
   );
 };
