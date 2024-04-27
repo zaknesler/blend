@@ -24,7 +24,7 @@ export const Sidebar: Component<SidebarProps> = ({ class: className }) => {
 
       <nav class="flex flex-col items-start gap-2 text-sm">
         <Link href="/">Home</Link>
-        <Link href="/articles/test">Article</Link>
+        <Link href="/article">Article</Link>
       </nav>
 
       <div class="flex flex-col items-start gap-2">
