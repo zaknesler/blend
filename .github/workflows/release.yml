@@ -1,5 +1,9 @@
 name: Release
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - v*
 
 env:
   PROJECT_NAME: blend
@@ -10,6 +14,7 @@ env:
 
 jobs:
   build:
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
@@ -132,4 +137,4 @@ jobs:
         with:
           artifacts: _artifacts/${{ env.PROJECT_NAME }}-*/${{ env.PROJECT_NAME }}-*
           body: "[wip]"
-          draft: true
+          draft: false
