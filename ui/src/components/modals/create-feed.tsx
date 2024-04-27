@@ -7,6 +7,8 @@ import { QUERY_KEYS } from '~/constants/query';
 import { inputClass } from '~/constants/ui/input';
 import { Button } from '../ui/button';
 import { cx } from 'class-variance-authority';
+import { useNavigate } from '@solidjs/router';
+import { Spinner } from '../ui/spinner';
 
 type CreateFeedProps = {
   triggerClass?: string;
@@ -14,7 +16,9 @@ type CreateFeedProps = {
 
 export const CreateFeed: Component<CreateFeedProps> = ({ triggerClass }) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
+  const [open, setOpen] = createSignal(false);
   const [value, setValue] = createSignal('https://blog.rust-lang.org/feed.xml');
   const [inputElement, setInputElement] = createSignal<HTMLDivElement>();
 
@@ -29,8 +33,10 @@ export const CreateFeed: Component<CreateFeedProps> = ({ triggerClass }) => {
 
     if (!value()) return;
 
-    await add.mutateAsync({ url: value() });
+    const feed = await add.mutateAsync({ url: value() });
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS] });
+    navigate(`/feeds/${feed.uuid}`);
+    setOpen(false);
   };
 
   const handleOpenAutoFocus = (event: Event) => {
@@ -38,13 +44,9 @@ export const CreateFeed: Component<CreateFeedProps> = ({ triggerClass }) => {
     inputElement()?.focus();
   };
 
-  const handleOpenChange = (open: boolean) => {
-    if (open) add.reset();
-  };
-
   return (
     <>
-      <Dialog.Root onOpenChange={handleOpenChange}>
+      <Dialog.Root open={open()} onOpenChange={setOpen}>
         <Dialog.Trigger asChild>
           <As component={Button} class={cx('inline-flex items-center gap-2 text-sm', triggerClass)} size="sm">
             Add feed
@@ -53,11 +55,11 @@ export const CreateFeed: Component<CreateFeedProps> = ({ triggerClass }) => {
         </Dialog.Trigger>
 
         <Dialog.Portal>
-          <Dialog.Overlay class="animate-overlayHide ui-expanded:animate-overlayShow fixed inset-0 z-50 bg-black/25 backdrop-blur" />
+          <Dialog.Overlay class="fixed inset-0 z-50 animate-overlayHide bg-black/25 backdrop-blur ui-expanded:animate-overlayShow" />
 
           <div class="fixed inset-0 z-50 flex items-end justify-center p-8 sm:items-center">
             <Dialog.Content
-              class="animate-contentHide ui-expanded:animate-contentShow z-50 w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-all md:max-w-sm"
+              class="z-50 w-full animate-contentHide overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-all ui-expanded:animate-contentShow md:max-w-sm"
               onOpenAutoFocus={handleOpenAutoFocus}
             >
               <div class="flex flex-col gap-2 border-b bg-gray-50 p-4">
@@ -91,15 +93,11 @@ export const CreateFeed: Component<CreateFeedProps> = ({ triggerClass }) => {
 
                 <Switch>
                   <Match when={add.isPending}>
-                    <p>Loading...</p>
+                    <Spinner />
                   </Match>
 
                   <Match when={add.isError}>
                     <p>Error: {add.error?.message}</p>
-                  </Match>
-
-                  <Match when={add.isSuccess}>
-                    <pre class="w-full overflow-x-auto">{JSON.stringify(add.data, null, 2)}</pre>
                   </Match>
                 </Switch>
               </div>

@@ -12,10 +12,15 @@ export const getFeeds = async () => {
 };
 
 export const addFeed = async (params: { url: string }) => {
-  type Response = ApiResponse<{
-    title: string;
-  }>;
+  type Response = ApiResponse<Feed>;
 
   const res = await axios.post<Response>(apiUrl('/feeds'), params);
+  return res.data.data;
+};
+
+export const getFeed = async (uuid: string) => {
+  type Response = ApiResponse<Feed>;
+
+  const res = await axios.get<Response>(apiUrl(`/feeds/${uuid}`));
   return res.data.data;
 };
