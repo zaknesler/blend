@@ -8,13 +8,19 @@ use tokio::sync::mpsc;
 
 pub struct Worker {
     blend: blend_config::Config,
+    db: sqlx::SqlitePool,
     recv: Arc<Mutex<mpsc::Receiver<Job>>>,
 }
 
 impl Worker {
-    pub fn new(blend: blend_config::Config, recv: mpsc::Receiver<Job>) -> Self {
+    pub fn new(
+        blend: blend_config::Config,
+        db: sqlx::SqlitePool,
+        recv: mpsc::Receiver<Job>,
+    ) -> Self {
         Self {
             blend,
+            db,
             recv: Arc::new(Mutex::new(recv)),
         }
     }

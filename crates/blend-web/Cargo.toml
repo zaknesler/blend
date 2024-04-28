@@ -5,7 +5,6 @@ edition.workspace = true
 
 [dependencies]
 blend-config = { path = "../blend-config" }
-blend-context = { path = "../blend-context" }
 blend-crypto = { path = "../blend-crypto" }
 blend-feed = { path = "../blend-feed" }
 blend-db = { path = "../blend-db" }
@@ -16,7 +15,7 @@ chrono = { workspace = true, features = ["serde"] }
 futures = "0.3"
 futures-util = "0.3"
 rust-embed = { workspace = true, features = ["interpolate-folder-path"] }
-serde = { workspace = true, features = ["derive"] }
+serde = { workspace = true }
 serde_json = { workspace = true }
 sqlx = { workspace = true, features = ["chrono"] }
 thiserror = { workspace = true }

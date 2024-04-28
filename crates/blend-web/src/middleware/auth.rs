@@ -5,7 +5,7 @@ use tower_cookies::Cookies;
 
 pub async fn middleware(
     cookies: Cookies,
-    State(ctx): State<blend_context::Context>,
+    State(ctx): State<crate::Context>,
     req: Request<Body>,
     next: Next,
 ) -> WebResult<impl IntoResponse> {

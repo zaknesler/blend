@@ -298,7 +298,6 @@ name = "blend"
 version = "0.0.0"
 dependencies = [
  "blend-config",
- "blend-context",
  "blend-db",
  "blend-feed",
  "blend-web",
@@ -325,17 +324,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "blend-context"
-version = "0.0.0"
-dependencies = [
- "blend-config",
- "blend-worker",
- "sqlx",
- "thiserror",
- "tokio",
-]
-
-[[package]]
 name = "blend-crypto"
 version = "0.0.0"
 dependencies = [
@@ -353,7 +341,6 @@ name = "blend-db"
 version = "0.0.0"
 dependencies = [
  "blend-config",
- "blend-context",
  "chrono",
  "futures",
  "serde",
@@ -384,7 +371,6 @@ dependencies = [
  "axum",
  "axum-embed",
  "blend-config",
- "blend-context",
  "blend-crypto",
  "blend-db",
  "blend-feed",
@@ -410,10 +396,12 @@ name = "blend-worker"
 version = "0.0.0"
 dependencies = [
  "blend-config",
+ "blend-db",
  "blend-feed",
  "reqwest",
  "serde",
  "serde_json",
+ "sqlx",
  "thiserror",
  "tokio",
 ]

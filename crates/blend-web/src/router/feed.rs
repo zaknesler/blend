@@ -11,7 +11,7 @@ use serde_json::json;
 use uuid::Uuid;
 use validator::Validate;
 
-pub fn router(ctx: blend_context::Context) -> Router {
+pub fn router(ctx: crate::Context) -> Router {
     Router::new()
         .route("/", get(index))
         .route("/", post(create))
@@ -23,8 +23,8 @@ pub fn router(ctx: blend_context::Context) -> Router {
         .with_state(ctx)
 }
 
-async fn index(State(ctx): State<blend_context::Context>) -> WebResult<impl IntoResponse> {
-    let feeds = repo::feed::FeedRepo::new(ctx).get_feeds().await?;
+async fn index(State(ctx): State<crate::Context>) -> WebResult<impl IntoResponse> {
+    let feeds = repo::feed::FeedRepo::new(ctx.db).get_feeds().await?;
     Ok(Json(json!({ "data": feeds })))
 }
 
@@ -35,7 +35,7 @@ struct AddFeedParams {
 }
 
 async fn create(
-    State(ctx): State<blend_context::Context>,
+    State(ctx): State<crate::Context>,
     Json(data): Json<AddFeedParams>,
 ) -> WebResult<impl IntoResponse> {
     data.validate()?;
@@ -43,7 +43,7 @@ async fn create(
     let parsed = blend_feed::parse_url(&data.url).await?;
 
     let parsed2 = parsed.clone();
-    let feed = repo::feed::FeedRepo::new(ctx.clone())
+    let feed = repo::feed::FeedRepo::new(ctx.db)
         .create_feed(repo::feed::CreateFeedParams {
             title: parsed2.title,
             url: parsed2.url,
@@ -65,10 +65,10 @@ struct ViewFeedParams {
 }
 
 async fn view(
-    State(ctx): State<blend_context::Context>,
+    State(ctx): State<crate::Context>,
     Path(params): Path<ViewFeedParams>,
 ) -> WebResult<impl IntoResponse> {
-    let feed = repo::feed::FeedRepo::new(ctx)
+    let feed = repo::feed::FeedRepo::new(ctx.db)
         .get_feed(params.uuid)
         .await?
         .ok_or_else(|| WebError::NotFoundError)?;

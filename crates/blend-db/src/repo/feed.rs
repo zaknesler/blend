@@ -2,7 +2,7 @@ use crate::{error::DbResult, model};
 use chrono::{DateTime, Utc};
 
 pub struct FeedRepo {
-    ctx: blend_context::Context,
+    db: sqlx::SqlitePool,
 }
 
 pub struct CreateFeedParams {
@@ -13,13 +13,13 @@ pub struct CreateFeedParams {
 }
 
 impl FeedRepo {
-    pub fn new(ctx: blend_context::Context) -> Self {
-        Self { ctx }
+    pub fn new(db: sqlx::SqlitePool) -> Self {
+        Self { db }
     }
 
     pub async fn get_feeds(&self) -> DbResult<Vec<model::Feed>> {
         sqlx::query_as::<_, model::Feed>("SELECT * FROM feeds")
-            .fetch_all(&self.ctx.db)
+            .fetch_all(&self.db)
             .await
             .map_err(|err| err.into())
     }
@@ -27,7 +27,7 @@ impl FeedRepo {
     pub async fn get_feed(&self, uuid: uuid::Uuid) -> DbResult<Option<model::Feed>> {
         sqlx::query_as::<_, model::Feed>("SELECT * FROM feeds WHERE uuid = ?1")
             .bind(uuid)
-            .fetch_optional(&self.ctx.db)
+            .fetch_optional(&self.db)
             .await
             .map_err(|err| err.into())
     }
@@ -45,7 +45,7 @@ impl FeedRepo {
         .bind(data.url)
         .bind(data.published_at)
         .bind(data.updated_at)
-        .fetch_one(&self.ctx.db)
+        .fetch_one(&self.db)
         .await?;
 
         Ok(feed)

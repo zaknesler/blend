@@ -5,10 +5,9 @@ edition.workspace = true
 
 [dependencies]
 blend-config = { path = "../blend-config" }
-blend-context = { path = "../blend-context" }
 chrono = { workspace = true, features = ["serde"] }
 futures = "0.3"
-serde = { workspace = true, features = ["derive"] }
+serde = { workspace = true }
 serde_json = { workspace = true }
 sqlx = { workspace = true, features = ["migrate", "uuid"] }
 thiserror = { workspace = true }

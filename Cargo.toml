@@ -11,7 +11,7 @@ chrono = "0.4"
 feed-rs = "1.4"
 reqwest = "0.12"
 rust-embed = "8.3"
-serde = "1.0"
+serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 sqlx = { version = "0.7", features = ["sqlite", "runtime-tokio"] }
 thiserror = "1.0"
@@ -26,7 +26,6 @@ edition = { workspace = true }
 
 [dependencies]
 blend-config = { path = "./crates/blend-config" }
-blend-context = { path = "./crates/blend-context" }
 blend-db = { path = "./crates/blend-db" }
 blend-feed = { path = "./crates/blend-feed" }
 blend-web = { path = "./crates/blend-web" }

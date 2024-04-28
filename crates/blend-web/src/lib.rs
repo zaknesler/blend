@@ -4,13 +4,15 @@ use tokio::net::TcpListener;
 use tower_cookies::CookieManagerLayer;
 use tower_http::{cors, trace::TraceLayer};
 
+mod context;
+pub use context::Context;
 pub mod error;
 mod middleware;
 mod response;
 mod router;
 mod util;
 
-pub async fn serve(ctx: blend_context::Context) -> WebResult<()> {
+pub async fn serve(ctx: context::Context) -> WebResult<()> {
     tracing::info!(
         "Starting web server on {}:{}",
         ctx.blend.config.web.host,
