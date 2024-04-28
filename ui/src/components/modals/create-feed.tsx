@@ -31,7 +31,7 @@ export const CreateFeed: Component<CreateFeedProps> = ({ triggerClass }) => {
     event.preventDefault();
     event.stopPropagation();
 
-    if (!value()) return;
+    if (!value() || add.isPending) return;
 
     const feed = await add.mutateAsync({ url: value() });
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS] });

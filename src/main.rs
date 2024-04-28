@@ -34,7 +34,7 @@ async fn main() -> error::BlendResult<()> {
             let blend = blend_config::parse(args.config)?;
             let db = blend_db::client::init(blend.clone()).await?;
 
-            let (tx, rx) = broadcast::channel::<blend_worker::Job>(1);
+            let (tx, rx) = broadcast::channel::<blend_worker::Job>(16);
 
             // Start worker and web tasks concurrently
             let mut worker = blend_worker::Worker::new(blend.clone(), db.clone(), rx);
