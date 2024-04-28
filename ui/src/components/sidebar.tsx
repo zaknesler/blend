@@ -12,14 +12,14 @@ type SidebarProps = {
   class?: string;
 };
 
-export const Sidebar: Component<SidebarProps> = ({ class: className }) => {
+export const Sidebar: Component<SidebarProps> = props => {
   const feeds = createQuery(() => ({
     queryKey: [QUERY_KEYS.FEEDS],
     queryFn: getFeeds,
   }));
 
   return (
-    <div class={cx('relative flex h-full flex-col items-start gap-8 bg-white p-8 shadow-md', className)}>
+    <div class={cx('relative flex h-full flex-col items-start gap-8 bg-white p-8 shadow-md', props.class)}>
       <Logo />
 
       <nav class="flex flex-col items-start gap-2 text-sm">

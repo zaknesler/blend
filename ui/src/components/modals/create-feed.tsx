@@ -1,7 +1,7 @@
 import { As, Dialog, TextField } from '@kobalte/core';
 import { createMutation, useQueryClient } from '@tanstack/solid-query';
 import { HiSolidPlus, HiSolidXMark } from 'solid-icons/hi';
-import { Component, Match, Switch, createSignal } from 'solid-js';
+import { Component, createSignal } from 'solid-js';
 import { addFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
 import { inputClass } from '~/constants/ui/input';
@@ -14,7 +14,7 @@ type CreateFeedProps = {
   triggerClass?: string;
 };
 
-export const CreateFeed: Component<CreateFeedProps> = ({ triggerClass }) => {
+export const CreateFeed: Component<CreateFeedProps> = props => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -27,15 +27,18 @@ export const CreateFeed: Component<CreateFeedProps> = ({ triggerClass }) => {
     mutationFn: addFeed,
   }));
 
+  const isDisabled = () => add.isPending || !open;
+
   const handleSubmit = async (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    if (!value() || add.isPending) return;
+    if (!value() || isDisabled()) return;
 
     const feed = await add.mutateAsync({ url: value() });
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS] });
     navigate(`/feeds/${feed.uuid}`);
+    add.reset();
     setOpen(false);
   };
 
@@ -48,7 +51,12 @@ export const CreateFeed: Component<CreateFeedProps> = ({ triggerClass }) => {
     <>
       <Dialog.Root open={open()} onOpenChange={setOpen}>
         <Dialog.Trigger asChild>
-          <As component={Button} class={cx('inline-flex items-center gap-2 text-sm', triggerClass)} size="sm">
+          <As
+            component={Button}
+            class={cx('inline-flex items-center gap-2 text-sm', props.triggerClass)}
+            size="sm"
+            disabled={isDisabled()}
+          >
             Add feed
             <HiSolidPlus class="h-4 w-4 text-gray-300" />
           </As>
@@ -81,25 +89,21 @@ export const CreateFeed: Component<CreateFeedProps> = ({ triggerClass }) => {
                     <TextField.Label class="text-sm text-gray-600">URL</TextField.Label>
                     <TextField.Input
                       ref={setInputElement}
-                      class={inputClass()}
+                      class={inputClass({ disabled: isDisabled() })}
                       placeholder="https://example.com/feed.xml"
                     />
                   </TextField.Root>
 
-                  <Button size="sm" class="self-start" onClick={handleSubmit}>
-                    Add feed
-                  </Button>
+                  <div class="flex items-center justify-between gap-4">
+                    <Button size="sm" class="self-start" onClick={handleSubmit} disabled={isDisabled()}>
+                      Add feed
+                    </Button>
+
+                    {isDisabled() && <Spinner />}
+                  </div>
                 </form>
 
-                <Switch>
-                  <Match when={add.isPending}>
-                    <Spinner />
-                  </Match>
-
-                  <Match when={add.isError}>
-                    <p>Error: {add.error?.message}</p>
-                  </Match>
-                </Switch>
+                {add.isError && <p>Error: {add.error?.message}</p>}
               </div>
             </Dialog.Content>
           </div>
