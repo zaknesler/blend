@@ -16,10 +16,12 @@
     "class-variance-authority": "^0.7.0",
     "dayjs": "^1.11.10",
     "solid-icons": "^1.1.0",
-    "solid-js": "^1.8.17"
+    "solid-js": "^1.8.17",
+    "ws": "^8.17.0"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
+    "@types/ws": "^8.5.10",
     "@typescript-eslint/eslint-plugin": "^7.7.1",
     "@typescript-eslint/parser": "^7.7.1",
     "autoprefixer": "^10.4.19",

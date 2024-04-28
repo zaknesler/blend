@@ -54,7 +54,7 @@ async fn create(
 
     // Fetch + write feed metadata
     // Fetch + create feed entries
-    ctx.worker.send(blend_worker::Job::FetchMetadata(parsed)).await?;
+    ctx.worker.lock().await.send(blend_worker::Job::FetchMetadata(parsed))?;
 
     Ok(Json(json!({ "data": feed })))
 }

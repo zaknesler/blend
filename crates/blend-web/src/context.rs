@@ -1,10 +1,11 @@
 use blend_config::config::BlendConfig;
 use sqlx::SqlitePool;
-use tokio::sync::mpsc;
+use std::sync::Arc;
+use tokio::sync::{broadcast, Mutex};
 
 #[derive(Debug, Clone)]
 pub struct Context {
     pub blend: BlendConfig,
     pub db: SqlitePool,
-    pub worker: mpsc::Sender<blend_worker::Job>,
+    pub worker: Arc<Mutex<broadcast::Sender<blend_worker::Job>>>,
 }

@@ -9,7 +9,7 @@ blend-crypto = { path = "../blend-crypto" }
 blend-feed = { path = "../blend-feed" }
 blend-db = { path = "../blend-db" }
 blend-worker = { path = "../blend-worker" }
-axum = "0.7"
+axum = { version = "0.7", features = ["ws"] }
 axum-embed = "0.1"
 chrono = { workspace = true, features = ["serde"] }
 futures = "0.3"

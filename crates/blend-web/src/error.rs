@@ -39,5 +39,5 @@ pub enum WebError {
     FeedError(#[from] blend_feed::error::FeedError),
 
     #[error(transparent)]
-    WorkerJobSendError(#[from] tokio::sync::mpsc::error::SendError<blend_worker::Job>),
+    WorkerJobSendError(#[from] tokio::sync::broadcast::error::SendError<blend_worker::Job>),
 }

@@ -4,6 +4,7 @@ use axum::{response::IntoResponse, routing::get, Router};
 mod feed;
 mod ui;
 mod user;
+mod ws;
 
 pub const JWT_COOKIE: &str = "blend_jwt";
 // pub const CSRF_COOKIE: &str = "blend_csrf";
@@ -20,7 +21,8 @@ pub fn api_router(ctx: crate::Context) -> Router {
         .route("/", get(index))
         .with_state(ctx.clone())
         .nest("/users", user::router(ctx.clone()))
-        .nest("/feeds", feed::router(ctx))
+        .nest("/feeds", feed::router(ctx.clone()))
+        .nest("/ws", ws::router(ctx))
 }
 
 async fn index() -> WebResult<impl IntoResponse> {

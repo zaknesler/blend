@@ -1,18 +1,18 @@
 use crate::{error::WorkerResult, Job};
 use std::sync::{Arc, Mutex};
-use tokio::sync::mpsc;
+use tokio::sync::broadcast;
 
 pub struct Worker {
     blend: blend_config::Config,
     db: sqlx::SqlitePool,
-    recv: Arc<Mutex<mpsc::Receiver<Job>>>,
+    recv: Arc<Mutex<broadcast::Receiver<Job>>>,
 }
 
 impl Worker {
     pub fn new(
         blend: blend_config::Config,
         db: sqlx::SqlitePool,
-        recv: mpsc::Receiver<Job>,
+        recv: broadcast::Receiver<Job>,
     ) -> Self {
         Self {
             blend,
@@ -24,7 +24,7 @@ impl Worker {
     pub async fn start(&mut self) -> WorkerResult<()> {
         let mut rx = self.recv.lock().unwrap();
 
-        while let Some(job) = rx.recv().await {
+        while let Ok(job) = rx.recv().await {
             dbg!(&job);
         }
 

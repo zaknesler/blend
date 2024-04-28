@@ -1,7 +1,8 @@
+use std::sync::Arc;
+
 use clap::Parser;
 use futures::{future::FutureExt, pin_mut, select};
-use std::sync::Arc;
-use tokio::sync::mpsc;
+use tokio::sync::{broadcast, Mutex};
 
 mod args;
 mod error;
@@ -33,7 +34,7 @@ async fn main() -> error::BlendResult<()> {
             let blend = blend_config::parse(args.config)?;
             let db = blend_db::client::init(blend.clone()).await?;
 
-            let (tx, rx) = mpsc::channel::<blend_worker::Job>(1);
+            let (tx, rx) = broadcast::channel::<blend_worker::Job>(1);
 
             // Start worker and web tasks concurrently
             let mut worker = blend_worker::Worker::new(blend.clone(), db.clone(), rx);
@@ -42,7 +43,7 @@ async fn main() -> error::BlendResult<()> {
             let web = blend_web::serve(blend_web::Context {
                 blend,
                 db,
-                worker: tx,
+                worker: Arc::new(Mutex::new(tx)),
             })
             .fuse();
 

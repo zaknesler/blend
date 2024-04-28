@@ -1,6 +1,6 @@
 import { ApiResponse } from '.';
 import { Feed } from '../types/bindings/feed';
-import { apiUrl } from '../utils/api';
+import { apiUrl } from '../utils/url';
 import axios from 'axios';
 
 export const getFeeds = async () => {
