@@ -42,7 +42,7 @@ async fn main() -> error::BlendResult<()> {
             let web = blend_web::serve(blend_web::Context {
                 blend,
                 db,
-                worker: Arc::new(tx),
+                worker: tx,
             })
             .fuse();
 
