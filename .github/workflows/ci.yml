@@ -4,6 +4,8 @@ on:
     branches:
       - "*"
   pull_request:
+    branches:
+      - "*"
 
 env:
   PROJECT_NAME: blend
