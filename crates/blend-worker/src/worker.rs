@@ -26,6 +26,7 @@ impl Worker {
 
         while let Ok(job) = rx.recv().await {
             dbg!(&job);
+            // Add job to internal queue
         }
 
         Ok(())

@@ -1,7 +1,6 @@
 use chrono::{DateTime, Utc};
-use serde::Serialize;
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone)]
 pub struct ParsedFeed {
     pub title: Option<String>,
     pub url: Option<String>,

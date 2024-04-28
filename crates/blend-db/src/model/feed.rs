@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 #[derive(TS)]
 #[ts(export, export_to = "../../../ui/src/types/bindings/feed.ts")]
-#[derive(Debug, Serialize, Deserialize, FromRow)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct Feed {
     pub uuid: Uuid,
     pub url: Option<String>,

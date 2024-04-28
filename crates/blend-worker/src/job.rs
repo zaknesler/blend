@@ -1,12 +1,12 @@
-use blend_feed::model::ParsedFeed;
+use blend_db::model;
 use serde::Serialize;
 use std::fmt::Display;
 
 #[derive(Debug, Clone, Serialize)]
 #[serde(tag = "type")]
 pub enum Job {
-    FetchMetadata(ParsedFeed),
-    FetchEntries(ParsedFeed),
+    FetchMetadata(model::Feed),
+    FetchEntries(model::Feed),
 }
 
 impl Display for Job {

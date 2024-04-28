@@ -41,20 +41,19 @@ async fn create(
     data.validate()?;
 
     let parsed = blend_feed::parse_url(&data.url).await?;
-
-    let parsed2 = parsed.clone();
     let feed = repo::feed::FeedRepo::new(ctx.db)
         .create_feed(repo::feed::CreateFeedParams {
-            title: parsed2.title,
-            url: parsed2.url,
-            published_at: parsed2.published_at,
-            updated_at: parsed2.updated_at,
+            title: parsed.title,
+            url: parsed.url,
+            published_at: parsed.published_at,
+            updated_at: parsed.updated_at,
         })
         .await?;
 
-    // Fetch + write feed metadata
-    // Fetch + create feed entries
-    ctx.worker.lock().await.send(blend_worker::Job::FetchMetadata(parsed))?;
+    // Add job to the worker queue to fetch feed metadata and entries
+    let worker = ctx.worker.lock().await;
+    worker.send(blend_worker::Job::FetchMetadata(feed.clone()))?;
+    worker.send(blend_worker::Job::FetchEntries(feed.clone()))?;
 
     Ok(Json(json!({ "data": feed })))
 }
