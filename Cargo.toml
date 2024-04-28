@@ -9,12 +9,13 @@ members = ["crates/*"]
 [workspace.dependencies]
 chrono = "0.4"
 feed-rs = "1.4"
+reqwest = "0.12"
 rust-embed = "8.3"
 serde = "1.0"
 serde_json = "1.0"
-sqlx = "0.7"
+sqlx = { version = "0.7", features = ["sqlite", "runtime-tokio"] }
 thiserror = "1.0"
-tokio = "1.37"
+tokio = { version = "1.37", features = ["macros", "rt-multi-thread"] }
 tracing = "0.1"
 uuid = { version = "1.8", features = ["v4", "fast-rng", "serde"] }
 
@@ -27,10 +28,13 @@ edition = { workspace = true }
 blend-config = { path = "./crates/blend-config" }
 blend-context = { path = "./crates/blend-context" }
 blend-db = { path = "./crates/blend-db" }
+blend-feed = { path = "./crates/blend-feed" }
 blend-web = { path = "./crates/blend-web" }
+blend-worker = { path = "./crates/blend-worker" }
 clap = { version = "4.4", features = ["derive"] }
+futures = "0.3"
 thiserror = { workspace = true }
-tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+tokio = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { version = "0.3", features = ["serde"] }
 

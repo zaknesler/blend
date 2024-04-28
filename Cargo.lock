@@ -300,8 +300,11 @@ dependencies = [
  "blend-config",
  "blend-context",
  "blend-db",
+ "blend-feed",
  "blend-web",
+ "blend-worker",
  "clap",
+ "futures",
  "openssl",
  "thiserror",
  "tokio",
@@ -326,8 +329,10 @@ name = "blend-context"
 version = "0.0.0"
 dependencies = [
  "blend-config",
+ "blend-worker",
  "sqlx",
  "thiserror",
+ "tokio",
 ]
 
 [[package]]
@@ -361,7 +366,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "blend-parse"
+name = "blend-feed"
 version = "0.0.0"
 dependencies = [
  "chrono",
@@ -382,7 +387,8 @@ dependencies = [
  "blend-context",
  "blend-crypto",
  "blend-db",
- "blend-parse",
+ "blend-feed",
+ "blend-worker",
  "chrono",
  "futures",
  "futures-util",
@@ -397,6 +403,19 @@ dependencies = [
  "tracing",
  "uuid",
  "validator",
+]
+
+[[package]]
+name = "blend-worker"
+version = "0.0.0"
+dependencies = [
+ "blend-config",
+ "blend-feed",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
 ]
 
 [[package]]

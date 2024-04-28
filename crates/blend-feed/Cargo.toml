@@ -1,0 +1,12 @@
+[package]
+name = "blend-feed"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+chrono = { workspace = true, features = ["serde"] }
+feed-rs = { workspace = true }
+reqwest = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+thiserror = { workspace = true }

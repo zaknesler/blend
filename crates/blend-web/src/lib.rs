@@ -25,14 +25,12 @@ pub async fn serve(ctx: blend_context::Context) -> WebResult<()> {
     if origins.contains(&"*".to_string()) {
         cors = cors.allow_origin(cors::Any)
     } else {
-        cors = cors
-            .allow_origin(
-                origins
-                    .iter()
-                    .map(|origin| origin.parse::<HeaderValue>().map_err(|err| err.into()))
-                    .collect::<WebResult<Vec<_>>>()?,
-            )
-            .allow_credentials(true);
+        let origins = origins
+            .iter()
+            .map(|origin| origin.parse::<HeaderValue>().map_err(|err| err.into()))
+            .collect::<WebResult<Vec<_>>>()?;
+
+        cors = cors.allow_origin(origins).allow_credentials(true);
     }
 
     let app = crate::router::router(ctx.clone())
@@ -40,15 +38,12 @@ pub async fn serve(ctx: blend_context::Context) -> WebResult<()> {
         .layer(cors)
         .layer(CookieManagerLayer::new());
 
-    axum::serve(
-        TcpListener::bind(format!(
-            "{}:{}",
-            ctx.blend.config.web.host, ctx.blend.config.web.port
-        ))
-        .await?,
-        app.into_make_service(),
-    )
-    .await?;
+    let addr = format!(
+        "{}:{}",
+        ctx.blend.config.web.host, ctx.blend.config.web.port
+    );
+
+    axum::serve(TcpListener::bind(addr).await?, app.into_make_service()).await?;
 
     Ok(())
 }

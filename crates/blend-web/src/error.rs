@@ -36,5 +36,8 @@ pub enum WebError {
     DbError(#[from] blend_db::error::DbError),
 
     #[error(transparent)]
-    ParseError(#[from] blend_parse::error::ParseError),
+    FeedError(#[from] blend_feed::error::FeedError),
+
+    #[error(transparent)]
+    WorkerJobSendError(#[from] tokio::sync::mpsc::error::SendError<blend_worker::Job>),
 }

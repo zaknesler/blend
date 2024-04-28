@@ -24,8 +24,8 @@ pub enum Command {
         force: bool,
     },
 
-    /// Start web server
-    Web,
+    /// Start web and worker processes
+    Start,
 }
 
 #[derive(clap::ValueEnum, Debug, Clone)]

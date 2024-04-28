@@ -5,5 +5,7 @@ edition.workspace = true
 
 [dependencies]
 blend-config = { path = "../blend-config" }
-sqlx = { workspace = true, features = ["sqlite"] }
+blend-worker = { path = "../blend-worker" }
+sqlx = { workspace = true }
 thiserror = { workspace = true }
+tokio = { workspace = true }

@@ -10,4 +10,7 @@ pub enum BlendError {
 
     #[error(transparent)]
     WebError(#[from] blend_web::error::WebError),
+
+    #[error(transparent)]
+    WorkerError(#[from] blend_worker::error::WorkerError),
 }

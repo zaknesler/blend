@@ -7,8 +7,9 @@ edition.workspace = true
 blend-config = { path = "../blend-config" }
 blend-context = { path = "../blend-context" }
 blend-crypto = { path = "../blend-crypto" }
-blend-parse = { path = "../blend-parse" }
+blend-feed = { path = "../blend-feed" }
 blend-db = { path = "../blend-db" }
+blend-worker = { path = "../blend-worker" }
 axum = "0.7"
 axum-embed = "0.1"
 chrono = { workspace = true, features = ["serde"] }
@@ -17,9 +18,9 @@ futures-util = "0.3"
 rust-embed = { workspace = true, features = ["interpolate-folder-path"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
-sqlx = { workspace = true, features = ["runtime-tokio", "sqlite", "chrono"] }
+sqlx = { workspace = true, features = ["chrono"] }
 thiserror = { workspace = true }
-tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+tokio = { workspace = true }
 tower-cookies = "0.10"
 tower-http = { version = "0.5", features = ["trace", "cors", "fs"] }
 tracing = { workspace = true }

@@ -14,6 +14,7 @@ use std::{
 
 pub mod config;
 pub mod error;
+pub use config::BlendConfig as Config;
 
 const ENV_CONFIG_HOME_PATH: &str = "BLEND_HOME";
 const ENV_PREFIX: &str = "BLEND";

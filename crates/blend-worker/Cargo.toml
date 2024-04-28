@@ -1,12 +1,13 @@
 [package]
-name = "blend-parse"
+name = "blend-worker"
 version.workspace = true
 edition.workspace = true
 
 [dependencies]
-chrono = { workspace = true, features = ["serde"] }
-feed-rs = { workspace = true }
-reqwest = "0.12"
+blend-config = { path = "../blend-config" }
+blend-feed = { path = "../blend-feed" }
+reqwest = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 thiserror = { workspace = true }
+tokio = { workspace = true }

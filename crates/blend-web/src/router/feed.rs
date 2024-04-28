@@ -40,21 +40,21 @@ async fn create(
 ) -> WebResult<impl IntoResponse> {
     data.validate()?;
 
-    let parsed = blend_parse::parse_url(&data.url).await?;
+    let parsed = blend_feed::parse_url(&data.url).await?;
 
-    let link = parsed
-        .links
-        .iter()
-        .find(|link| link.rel.as_ref().is_some_and(|rel| rel == "self"));
-
-    let feed = repo::feed::FeedRepo::new(ctx)
+    let parsed2 = parsed.clone();
+    let feed = repo::feed::FeedRepo::new(ctx.clone())
         .create_feed(repo::feed::CreateFeedParams {
-            title: parsed.title.map(|title| title.content),
-            url: link.map(|link| link.href.clone()),
-            published_at: parsed.published,
-            updated_at: parsed.updated,
+            title: parsed2.title,
+            url: parsed2.url,
+            published_at: parsed2.published_at,
+            updated_at: parsed2.updated_at,
         })
         .await?;
+
+    // Fetch + write feed metadata
+    // Fetch + create feed entries
+    ctx.worker.send(blend_worker::Job::FetchMetadata(parsed)).await?;
 
     Ok(Json(json!({ "data": feed })))
 }
