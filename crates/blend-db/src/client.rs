@@ -1,9 +1,9 @@
 use crate::error::{DbError, DbResult};
-use blend_config::{config::BlendConfig, init_config_dir};
+use blend_config::{init_config_dir, Config};
 use sqlx::SqlitePool;
 use std::fs::File;
 
-pub async fn init(blend: BlendConfig) -> DbResult<SqlitePool> {
+pub async fn init(blend: Config) -> DbResult<SqlitePool> {
     let db_path = blend.dir.join(blend.config.database.file);
     let db_path_str = db_path.to_str().ok_or_else(|| DbError::InvalidDatabaseName)?;
 
