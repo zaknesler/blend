@@ -20,7 +20,7 @@ async fn jobs(
 
 async fn handle_socket(socket: WebSocket, ctx: crate::Context) {
     // Create a new broadcast receiver
-    let mut rx = ctx.worker.lock().await.subscribe();
+    let mut rx = ctx.jobs.lock().await.subscribe();
 
     let (mut ws_sender, _) = socket.split();
 

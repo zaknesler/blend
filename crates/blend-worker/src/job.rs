@@ -12,8 +12,16 @@ pub enum Job {
 impl Display for Job {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Job::FetchMetadata(feed) => write!(f, "fetch metadata job received: {:?}", feed),
-            Job::FetchEntries(feed) => write!(f, "fetch entries job received: {:?}", feed),
+            Job::FetchMetadata(feed) => write!(
+                f,
+                "[fetch metadata] feed {}",
+                feed.uuid.hyphenated().to_string()
+            ),
+            Job::FetchEntries(feed) => write!(
+                f,
+                "[fetch entries] feed {}",
+                feed.uuid.hyphenated().to_string()
+            ),
         }
     }
 }

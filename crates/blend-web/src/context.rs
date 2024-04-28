@@ -7,5 +7,5 @@ use tokio::sync::{broadcast, Mutex};
 pub struct Context {
     pub blend: Config,
     pub db: SqlitePool,
-    pub worker: Arc<Mutex<broadcast::Sender<blend_worker::Job>>>,
+    pub jobs: Arc<Mutex<broadcast::Sender<blend_worker::Job>>>,
 }

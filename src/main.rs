@@ -34,18 +34,14 @@ async fn main() -> error::BlendResult<()> {
             let blend = blend_config::parse(args.config)?;
             let db = blend_db::client::init(blend.clone()).await?;
 
-            let (tx, rx) = broadcast::channel::<blend_worker::Job>(16);
+            let (tx, _) = broadcast::channel::<blend_worker::Job>(8);
+            let jobs = Arc::new(Mutex::new(tx));
 
             // Start worker and web tasks concurrently
-            let mut worker = blend_worker::Worker::new(blend.clone(), db.clone(), rx);
+            let mut worker = blend_worker::Worker::new(db.clone(), jobs.clone());
             let worker = worker.start().fuse();
 
-            let web = blend_web::serve(blend_web::Context {
-                blend,
-                db,
-                worker: Arc::new(Mutex::new(tx)),
-            })
-            .fuse();
+            let web = blend_web::serve(blend_web::Context { blend, db, jobs }).fuse();
 
             pin_mut!(worker, web);
             select! {
