@@ -408,6 +408,7 @@ dependencies = [
  "thiserror",
  "tokio",
  "tracing",
+ "ts-rs",
  "uuid",
 ]
 

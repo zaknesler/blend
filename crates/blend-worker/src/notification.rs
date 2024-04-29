@@ -1,8 +1,10 @@
 use serde::Serialize;
 use std::fmt::Display;
+use ts_rs::TS;
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, TS)]
 #[serde(tag = "type")]
+#[ts(export, export_to = "../../../ui/src/types/bindings/notification.ts")]
 pub enum Notification {
     Test,
     StartedRefresh { feed_uuid: uuid::Uuid },

@@ -17,6 +17,7 @@ sqlx = { version = "0.7", features = ["sqlite", "runtime-tokio"] }
 thiserror = "1.0"
 tokio = { version = "1.37", features = ["macros", "rt-multi-thread"] }
 tracing = "0.1"
+ts-rs = { version = "8.1", features = ["chrono-impl", "uuid-impl"] }
 uuid = { version = "1.8", features = ["v4", "fast-rng", "serde"] }
 
 [package]
