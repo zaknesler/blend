@@ -7,4 +7,9 @@ pub enum WorkerError {
 
     #[error(transparent)]
     RequestError(#[from] reqwest::Error),
+
+    #[error(transparent)]
+    NotificationBroadcastSendError(
+        #[from] tokio::sync::broadcast::error::SendError<crate::Notification>,
+    ),
 }

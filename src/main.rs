@@ -1,11 +1,12 @@
-use std::sync::Arc;
-
 use clap::Parser;
 use futures::{future::FutureExt, pin_mut, select};
-use tokio::sync::{broadcast, Mutex};
+use std::sync::Arc;
+use tokio::sync::{broadcast, mpsc, Mutex};
 
 mod args;
 mod error;
+
+const CHANNEL_BUFFER_SIZE: usize = 1024;
 
 #[tokio::main]
 async fn main() -> error::BlendResult<()> {
@@ -34,14 +35,24 @@ async fn main() -> error::BlendResult<()> {
             let blend = blend_config::parse(args.config)?;
             let db = blend_db::client::init(blend.clone()).await?;
 
-            let (tx, _) = broadcast::channel::<blend_worker::Job>(8);
-            let jobs = Arc::new(Mutex::new(tx));
+            let (job_tx, job_rx) = mpsc::channel::<blend_worker::Job>(CHANNEL_BUFFER_SIZE);
+            let jobs = Arc::new(Mutex::new(job_tx));
+
+            let (notif_tx, _) =
+                broadcast::channel::<blend_worker::Notification>(CHANNEL_BUFFER_SIZE);
+            let notifs = Arc::new(Mutex::new(notif_tx));
 
             // Start worker and web tasks concurrently
-            let mut worker = blend_worker::Worker::new(db.clone(), jobs.clone());
+            let mut worker = blend_worker::Worker::new(db.clone(), job_rx, notifs.clone());
             let worker = worker.start().fuse();
 
-            let web = blend_web::serve(blend_web::Context { blend, db, jobs }).fuse();
+            let web = blend_web::serve(blend_web::Context {
+                blend,
+                db,
+                jobs,
+                notifs,
+            })
+            .fuse();
 
             pin_mut!(worker, web);
             select! {

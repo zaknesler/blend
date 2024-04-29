@@ -5,6 +5,7 @@ use std::fmt::Display;
 #[derive(Debug, Clone, Serialize)]
 #[serde(tag = "type")]
 pub enum Job {
+    RefreshFeed(model::Feed),
     FetchMetadata(model::Feed),
     FetchEntries(model::Feed),
 }
@@ -12,14 +13,22 @@ pub enum Job {
 impl Display for Job {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            Job::RefreshFeed(feed) => write!(
+                f,
+                "[job: refresh feed] (size = {}) feed = {}",
+                std::mem::size_of_val(self),
+                feed.uuid.hyphenated().to_string()
+            ),
             Job::FetchMetadata(feed) => write!(
                 f,
-                "[fetch metadata] feed {}",
+                "[job: fetch metadata] (size = {}) feed = {}",
+                std::mem::size_of_val(self),
                 feed.uuid.hyphenated().to_string()
             ),
             Job::FetchEntries(feed) => write!(
                 f,
-                "[fetch entries] feed {}",
+                "[job: fetch entries] (size = {}) feed = {}",
+                std::mem::size_of_val(self),
                 feed.uuid.hyphenated().to_string()
             ),
         }

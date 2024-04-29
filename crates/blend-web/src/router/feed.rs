@@ -52,8 +52,8 @@ async fn create(
 
     // Add job to the worker queue to fetch feed metadata and entries
     let worker = ctx.jobs.lock().await;
-    worker.send(blend_worker::Job::FetchMetadata(feed.clone()))?;
-    worker.send(blend_worker::Job::FetchEntries(feed.clone()))?;
+    worker.send(blend_worker::Job::RefreshFeed(feed.clone())).await?;
+    worker.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
 
     Ok(Json(json!({ "data": feed })))
 }

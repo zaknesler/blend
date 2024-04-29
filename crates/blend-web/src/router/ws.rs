@@ -8,10 +8,10 @@ use axum::{
 use futures_util::{sink::SinkExt, stream::StreamExt};
 
 pub fn router(ctx: crate::Context) -> Router {
-    Router::new().route("/jobs", get(jobs)).with_state(ctx)
+    Router::new().route("/notifs", get(notifs)).with_state(ctx)
 }
 
-async fn jobs(
+async fn notifs(
     ws: WebSocketUpgrade,
     State(ctx): State<crate::Context>,
 ) -> WebResult<impl IntoResponse> {
@@ -20,17 +20,17 @@ async fn jobs(
 
 async fn handle_socket(socket: WebSocket, ctx: crate::Context) {
     // Create a new broadcast receiver
-    let mut rx = ctx.jobs.lock().await.subscribe();
+    let mut rx = ctx.notifs.lock().await.subscribe();
 
+    // Split the websocket to get the sender part
     let (mut ws_sender, _) = socket.split();
 
     // Stream broadcast messages to the WebSocket sender
-    while let Ok(job) = rx.recv().await {
-        let json = serde_json::to_string(&job).unwrap();
+    while let Ok(notif) = rx.recv().await {
+        let json = serde_json::to_string(&notif).unwrap();
 
-        // Send the broadcast message to the WebSocket client
+        // Send the notification
         if ws_sender.send(axum::extract::ws::Message::Text(json)).await.is_err() {
-            // If sending the message fails, break the loop
             break;
         }
     }
