@@ -1,6 +1,7 @@
 use crate::error::{WebError, WebResult};
 use axum::{
     extract::{Path, State},
+    middleware,
     response::IntoResponse,
     routing::{get, post},
     Json, Router,
@@ -16,10 +17,10 @@ pub fn router(ctx: crate::Context) -> Router {
         .route("/", get(index))
         .route("/", post(create))
         .route("/:uuid", get(view))
-        // .route_layer(middleware::from_fn_with_state(
-        //     ctx.clone(),
-        //     crate::middleware::auth::middleware,
-        // ))
+        .route_layer(middleware::from_fn_with_state(
+            ctx.clone(),
+            crate::middleware::auth::middleware,
+        ))
         .with_state(ctx)
 }
 
