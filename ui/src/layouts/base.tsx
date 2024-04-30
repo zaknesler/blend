@@ -13,7 +13,7 @@ export default ({ children }: RouteSectionProps) => {
       <Header class="flex md:hidden" />
       <Nav class="flex md:hidden" />
 
-      <div class="h-full w-full flex-1 overflow-y-auto overflow-x-hidden bg-gray-50 dark:bg-gray-900">
+      <div class="h-full w-full flex-1 overflow-y-auto overflow-x-hidden">
         <div class="flex max-w-4xl flex-col gap-8 p-8 md:p-16">
           {children}
           <div class="h-10 md:hidden" />
