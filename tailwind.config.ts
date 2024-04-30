@@ -3,9 +3,10 @@ import colors from 'tailwindcss/colors';
 import defaultTheme from 'tailwindcss/defaultTheme';
 import formsPlugin from '@tailwindcss/forms';
 import kobaltePlugin from '@kobalte/tailwindcss';
+import plugin from 'tailwindcss/plugin';
 
 export default {
-  content: ['./ui/**/*.{js,ts,jsx,tsx}'],
+  content: ['./ui/**/*.{js,ts,jsx,tsx,html}'],
   theme: {
     extend: {
       fontFamily: {
@@ -18,21 +19,15 @@ export default {
         sidebar: '20rem',
       },
       keyframes: {
-        overlayShow: {
-          from: { opacity: '0' },
-          to: { opacity: '1' },
-        },
-        overlayHide: {
-          from: { opacity: '1' },
-          to: { opacity: '0' },
-        },
+        overlayShow: { from: { opacity: '0' }, to: { opacity: '1' } },
+        overlayHide: { from: { opacity: '1' }, to: { opacity: '0' } },
         contentShow: {
-          from: { opacity: '0', transform: 'scale(0.96)' },
-          to: { opacity: '1', transform: 'scale(1)' },
+          from: { opacity: '0', transform: 'scale(0.95) translateY(0.25rem)' },
+          to: { opacity: '1', transform: 'scale(1) translateY(0rem)' },
         },
         contentHide: {
-          from: { opacity: '1', transform: 'scale(1)' },
-          to: { opacity: '0', transform: 'scale(0.96)' },
+          from: { opacity: '1', transform: 'scale(1) translateY(0rem)' },
+          to: { opacity: '0', transform: 'scale(0.95) translateY(0.25rem)' },
         },
       },
       animation: {
@@ -43,5 +38,21 @@ export default {
       },
     },
   },
-  plugins: [formsPlugin(), kobaltePlugin({ prefix: 'ui' })],
+  plugins: [
+    formsPlugin(),
+    kobaltePlugin({ prefix: 'ui' }),
+    plugin(({ addComponents }) => {
+      addComponents({
+        '.scrollbar-hide': {
+          scrollbarWidth: 'none',
+          '-webkit-overflow-scrolling': 'touch',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+            width: '0',
+            background: 'transparent',
+          },
+        },
+      });
+    }),
+  ],
 } satisfies Config;

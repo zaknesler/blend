@@ -41,7 +41,7 @@ async fn create(
 ) -> WebResult<impl IntoResponse> {
     data.validate()?;
 
-    let parsed = blend_feed::parse_url(&data.url).await?;
+    let parsed = blend_feed::parse_feed(&data.url).await?;
     let feed = repo::feed::FeedRepo::new(ctx.db)
         .create_feed(repo::feed::CreateFeedParams {
             title: parsed.title,

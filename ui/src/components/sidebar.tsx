@@ -19,7 +19,9 @@ export const Sidebar: Component<SidebarProps> = props => {
   }));
 
   return (
-    <div class={cx('relative flex h-full flex-col items-start gap-8 bg-white p-8 shadow-md', props.class)}>
+    <div
+      class={cx('relative flex h-full flex-col items-start gap-8 bg-white p-8 shadow-md dark:bg-gray-950', props.class)}
+    >
       <Logo />
 
       <nav class="flex flex-col items-start gap-2 text-sm">
@@ -28,7 +30,7 @@ export const Sidebar: Component<SidebarProps> = props => {
       </nav>
 
       <div class="flex flex-col items-start gap-2">
-        <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500">Feeds</h3>
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Feeds</h3>
         <Switch>
           <Match when={feeds.isPending}>
             <p>Loading...</p>
@@ -41,7 +43,10 @@ export const Sidebar: Component<SidebarProps> = props => {
           <Match when={feeds.isSuccess}>
             <For each={feeds.data}>
               {feed => (
-                <A href={`/feeds/${feed.uuid}`} class="hover:underline">
+                <A
+                  href={`/feeds/${feed.uuid}`}
+                  class="text-gray-800 hover:underline dark:text-gray-100 dark:hover:text-white"
+                >
                   {feed.title}
                 </A>
               )}
