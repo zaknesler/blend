@@ -4,9 +4,6 @@ on:
   push:
     tags: ["v*.*.*"]
 
-env:
-  PROJECT_NAME: blend
-
 jobs:
   build:
     uses: ./.github/workflows/build.yml
@@ -22,8 +19,16 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           path: ${{ github.workspace }}/_artifacts
+      - name: Add version to binaries
+        run: |
+          mkdir -p ${{ github.workspace }}/_binaries
+
+          for file in ${{ github.workspace }}/_artifacts/blend-*; do
+            new_file=$(basename "$file" | sed "s/blend/blend-${{ github.ref_name }}/")
+            mv "$file" "${{ github.workspace }}/_binaries/$new_file"
+          done
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: _artifacts/${{ env.PROJECT_NAME }}-*/${{ env.PROJECT_NAME }}-*
+          artifacts: _binaries/blend*
           body: "[wip]"
-          draft: false
+          draft: true

@@ -2,7 +2,6 @@ name: Build
 on: [workflow_dispatch, workflow_call, pull_request]
 
 env:
-  PROJECT_NAME: blend
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: full
   NODE_VERSION: 21.x
@@ -100,18 +99,18 @@ jobs:
           fi
 
           # The built binary output location
-          BIN_OUTPUT="target/${{ matrix.target }}/release/${PROJECT_NAME}${BIN_SUFFIX}"
+          BIN_OUTPUT="target/${{ matrix.target }}/release/blend${BIN_SUFFIX}"
 
           # Define a better name for the final binary
-          BIN_RELEASE_VERSIONED="${PROJECT_NAME}-${{ github.ref_name }}-${{ matrix.name }}${BIN_SUFFIX}"
+          BIN_FILENAME="blend-${{ matrix.name }}${BIN_SUFFIX}"
 
           # Make output directory
           mkdir "${GITHUB_WORKSPACE}/_artifacts"
 
           # Move the built binary where you want it
-          mv "${BIN_OUTPUT}" "${GITHUB_WORKSPACE}/_artifacts/${BIN_RELEASE_VERSIONED}"
+          mv "${BIN_OUTPUT}" "${GITHUB_WORKSPACE}/_artifacts/${BIN_FILENAME}"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.PROJECT_NAME }}-${{ github.ref_name }}-${{ matrix.name }}
+          name: blend-${{ matrix.name }}
           path: ${{ github.workspace }}/_artifacts/*
