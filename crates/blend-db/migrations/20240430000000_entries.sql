@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS entries (
   uuid TEXT PRIMARY KEY NOT NULL,
   feed_uuid TEXT NOT NULL,
-  url TEXT NOT NULL,
+  url TEXT,
   title TEXT,
   summary TEXT,
   content_html TEXT,

@@ -24,7 +24,7 @@ impl EntryRepo {
         feed_uuid: &uuid::Uuid,
     ) -> DbResult<Vec<model::Entry>> {
         sqlx::query_as::<_, model::Entry>("SELECT * FROM entries WHERE feed_uuid = ?1")
-            .bind(feed_uuid.hyphenated().to_string())
+            .bind(feed_uuid)
             .fetch_all(&self.db)
             .await
             .map_err(|err| err.into())
@@ -43,8 +43,8 @@ impl EntryRepo {
             RETURNING *
             "#,
         )
-        .bind(feed_uuid.hyphenated().to_string())
-        .bind(uuid::Uuid::new_v4().hyphenated().to_string())
+        .bind(feed_uuid)
+        .bind(uuid::Uuid::new_v4())
         .bind(entry.url)
         .bind(entry.title)
         .bind(entry.summary)

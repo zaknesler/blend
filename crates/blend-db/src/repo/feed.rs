@@ -40,7 +40,7 @@ impl FeedRepo {
             RETURNING *
             "#,
         )
-        .bind(uuid::Uuid::new_v4().hyphenated().to_string())
+        .bind(uuid::Uuid::new_v4())
         .bind(data.title)
         .bind(data.url)
         .bind(data.published_at)

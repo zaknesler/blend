@@ -25,8 +25,8 @@ impl Worker {
         while let Some(job) = self.jobs.recv().await {
             tracing::info!("{}", &job);
 
-            if let Err(_err) = handle_job(job, self.db.clone(), self.notifs.clone()).await {
-                // oh no!
+            if let Err(err) = handle_job(job.clone(), self.db.clone(), self.notifs.clone()).await {
+                tracing::error!("failed: {} with error: {}", job, err)
             }
         }
 
@@ -41,7 +41,7 @@ async fn handle_job(
 ) -> WorkerResult<()> {
     match job {
         Job::FetchEntries(feed) => handler::fetch_entries(feed, db, notifs.clone()).await?,
-        _ => unimplemented!(),
+        _ => {}
     };
 
     // TODO: handle errors cleanly (send error notification or something)
