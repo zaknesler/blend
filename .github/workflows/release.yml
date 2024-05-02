@@ -23,7 +23,7 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace }}/_binaries
 
-          for file in ${{ github.workspace }}/_artifacts/blend-*; do
+          for file in ${{ github.workspace }}/_artifacts/blend-*/blend-*; do
             new_file=$(basename "$file" | sed "s/blend/blend-${{ github.ref_name }}/")
             mv "$file" "${{ github.workspace }}/_binaries/$new_file"
           done
