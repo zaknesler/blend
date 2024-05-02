@@ -1,6 +1,6 @@
 #![allow(unused_variables, unused_imports, dead_code)]
 
-use crate::{error::WorkerResult, Job, Notification};
+use crate::{error::WorkerResult, handler, Job, Notification};
 use std::sync::Arc;
 use tokio::sync::{broadcast, mpsc, Mutex};
 
@@ -39,8 +39,12 @@ async fn handle_job(
     db: sqlx::SqlitePool,
     notifs: Arc<Mutex<broadcast::Sender<Notification>>>,
 ) -> WorkerResult<()> {
-    // Send test notification
-    notifs.lock().await.send(Notification::Test)?;
+    match job {
+        Job::FetchEntries(feed) => handler::fetch_entries(feed, db, notifs.clone()).await?,
+        _ => unimplemented!(),
+    };
+
+    // TODO: handle errors cleanly (send error notification or something)
 
     Ok(())
 }

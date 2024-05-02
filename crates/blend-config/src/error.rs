@@ -1,4 +1,4 @@
-pub type ConfigResult<T> = Result<T, ConfigError>;
+pub(crate) type ConfigResult<T> = Result<T, ConfigError>;
 
 #[derive(thiserror::Error, Debug)]
 pub enum ConfigError {

@@ -13,8 +13,10 @@ use std::{
 };
 
 pub mod config;
-pub mod error;
+mod error;
+
 pub use config::BlendConfig as Config;
+pub use error::ConfigError as Error;
 
 const ENV_CONFIG_HOME_PATH: &str = "BLEND_HOME";
 const ENV_PREFIX: &str = "BLEND";

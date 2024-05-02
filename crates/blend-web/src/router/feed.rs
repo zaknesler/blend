@@ -51,9 +51,8 @@ async fn create(
         })
         .await?;
 
-    // Add job to the worker queue to fetch feed metadata and entries
     let worker = ctx.jobs.lock().await;
-    worker.send(blend_worker::Job::RefreshFeed(feed.clone())).await?;
+    worker.send(blend_worker::Job::FetchMetadata(feed.clone())).await?;
     worker.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
 
     Ok(Json(json!({ "data": feed })))
@@ -68,10 +67,20 @@ async fn view(
     State(ctx): State<crate::Context>,
     Path(params): Path<ViewFeedParams>,
 ) -> WebResult<impl IntoResponse> {
-    let feed = repo::feed::FeedRepo::new(ctx.db)
+    let feed = repo::feed::FeedRepo::new(ctx.db.clone())
         .get_feed(params.uuid)
         .await?
         .ok_or_else(|| WebError::NotFoundError)?;
 
-    Ok(Json(json!({ "data": feed })))
+    let entries = repo::entry::EntryRepo::new(ctx.db)
+        .get_entries_for_feed(&params.uuid)
+        .await
+        .unwrap_or_else(|_| vec![]);
+
+    Ok(Json(json!({
+        "data": {
+            "feed": feed,
+            "entries": entries
+        }
+    })))
 }

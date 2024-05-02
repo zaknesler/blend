@@ -1,6 +1,6 @@
 use blend_db::model;
 use serde::Serialize;
-use std::fmt::{format, Display};
+use std::fmt::Display;
 
 #[derive(Debug, Clone, Serialize)]
 #[serde(tag = "type")]

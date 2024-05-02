@@ -1,4 +1,4 @@
-pub type CryptoResult<T> = Result<T, CryptoError>;
+pub(crate) type CryptoResult<T> = Result<T, CryptoError>;
 
 #[derive(thiserror::Error, Debug)]
 pub enum CryptoError {

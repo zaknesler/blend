@@ -1,4 +1,4 @@
-pub type FeedResult<T> = Result<T, FeedError>;
+pub(crate) type FeedResult<T> = Result<T, FeedError>;
 
 #[derive(thiserror::Error, Debug)]
 pub enum FeedError {

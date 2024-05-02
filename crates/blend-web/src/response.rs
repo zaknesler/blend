@@ -4,7 +4,7 @@ use axum::{
     response::{IntoResponse, Response},
     Json,
 };
-use blend_crypto::error::CryptoError;
+use blend_crypto::Error as CryptoError;
 use serde_json::{json, Value};
 
 impl IntoResponse for WebError {

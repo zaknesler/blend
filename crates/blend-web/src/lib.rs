@@ -5,12 +5,14 @@ use tower_cookies::CookieManagerLayer;
 use tower_http::{cors, trace::TraceLayer};
 
 mod context;
-pub use context::Context;
-pub mod error;
+mod error;
 mod middleware;
 mod response;
 mod router;
 mod util;
+
+pub use context::Context;
+pub use error::WebError as Error;
 
 pub async fn serve(ctx: context::Context) -> WebResult<()> {
     tracing::info!(

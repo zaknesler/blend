@@ -1,4 +1,4 @@
-pub type WebResult<T> = Result<T, WebError>;
+pub(crate) type WebResult<T> = Result<T, WebError>;
 
 #[derive(thiserror::Error, Debug)]
 pub enum WebError {
@@ -30,13 +30,13 @@ pub enum WebError {
     ValidationErrorMap(#[from] validator::ValidationErrors),
 
     #[error(transparent)]
-    CryptoError(#[from] blend_crypto::error::CryptoError),
+    CryptoError(#[from] blend_crypto::Error),
 
     #[error(transparent)]
-    DbError(#[from] blend_db::error::DbError),
+    DbError(#[from] blend_db::Error),
 
     #[error(transparent)]
-    FeedError(#[from] blend_feed::error::FeedError),
+    FeedError(#[from] blend_feed::Error),
 
     #[error(transparent)]
     WorkerJobSendError(#[from] tokio::sync::mpsc::error::SendError<blend_worker::Job>),
