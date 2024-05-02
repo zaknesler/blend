@@ -1,0 +1,117 @@
+name: Build
+on: [workflow_dispatch, workflow_call, pull_request]
+
+env:
+  PROJECT_NAME: blend
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: full
+  NODE_VERSION: 21.x
+  DATABASE_URL: sqlite:blend.db
+
+jobs:
+  build:
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - name: linux-x86_64-gnu
+            runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            command: cargo
+          - name: linux-aarch64-gnu
+            runner: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            command: cross
+          - name: linux-armv7-gnueabihf
+            runner: ubuntu-latest
+            target: armv7-unknown-linux-gnueabihf
+            command: cross
+          - name: windows-x86_64
+            runner: windows-latest
+            target: x86_64-pc-windows-msvc
+            command: cargo
+          - name: macos-x86_64
+            runner: macos-latest
+            target: x86_64-apple-darwin
+            command: cargo
+          - name: macos-aarch64
+            runner: macos-latest
+            target: aarch64-apple-darwin
+            command: cargo
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        name: Install Node.js ${{ env.NODE_VERSION }}
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: pnpm/action-setup@v3
+        id: pnpm-install
+        with:
+          version: 9
+          run_install: false
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v4
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ matrix.target }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ matrix.target }}-pnpm-store-
+
+      - run: mkdir $GITHUB_WORKSPACE/ui/dist
+        shell: bash
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: "${{ matrix.target }}"
+      - uses: Swatinem/rust-cache@v2
+
+      - run: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+        shell: bash
+
+      - run: cargo binstall --no-confirm --force cross
+        if: matrix.command == 'cross'
+
+      - run: cargo binstall --no-confirm --force sqlx-cli
+      - run: sqlx db create
+      - run: sqlx migrate run --source crates/blend-db/migrations
+
+      - run: cargo test --verbose --workspace
+        if: matrix.command == 'cargo'
+      - run: cross test --verbose --workspace --target ${{ matrix.target }}
+        if: matrix.command == 'cross'
+
+      - run: pnpm install
+      - run: pnpm run build
+
+      - run: ${{ matrix.command }} build --verbose --locked --release --target ${{ matrix.target }}
+
+      - name: Prepare binary
+        shell: bash
+        run: |
+          BIN_SUFFIX=""
+          if [[ "${{ matrix.runner }}" == "windows-latest" ]]; then
+            BIN_SUFFIX=".exe"
+          fi
+
+          # The built binary output location
+          BIN_OUTPUT="target/${{ matrix.target }}/release/${PROJECT_NAME}${BIN_SUFFIX}"
+
+          # Define a better name for the final binary
+          BIN_RELEASE_VERSIONED="${PROJECT_NAME}-${{ github.ref_name }}-${{ matrix.name }}${BIN_SUFFIX}"
+
+          # Make output directory
+          mkdir "${GITHUB_WORKSPACE}/_artifacts"
+
+          # Move the built binary where you want it
+          mv "${BIN_OUTPUT}" "${GITHUB_WORKSPACE}/_artifacts/${BIN_RELEASE_VERSIONED}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PROJECT_NAME }}-${{ github.ref_name }}-${{ matrix.name }}
+          path: ${{ github.workspace }}/_artifacts/*
