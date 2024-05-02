@@ -3,10 +3,10 @@ import { Logo } from './logo';
 import { Link } from './link';
 import { CreateFeed } from './modals/create-feed';
 import { cx } from 'class-variance-authority';
-import { A } from '@solidjs/router';
 import { createQuery } from '@tanstack/solid-query';
 import { getFeeds } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
+import { FeedItem } from './feed-item';
 
 type SidebarProps = {
   class?: string;
@@ -20,7 +20,7 @@ export const Sidebar: Component<SidebarProps> = props => {
 
   return (
     <div
-      class={cx('relative flex h-full flex-col items-start gap-8 bg-white p-8 shadow-md dark:bg-gray-950', props.class)}
+      class={cx('relative flex h-full flex-col items-start gap-8 bg-white p-4 shadow-md dark:bg-gray-950', props.class)}
     >
       <Logo />
 
@@ -29,7 +29,7 @@ export const Sidebar: Component<SidebarProps> = props => {
         <Link href="/article">Article</Link>
       </nav>
 
-      <div class="flex flex-col items-start gap-2">
+      <div class="flex w-full flex-col items-start gap-1">
         <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Feeds</h3>
         <Switch>
           <Match when={feeds.isPending}>
@@ -41,16 +41,7 @@ export const Sidebar: Component<SidebarProps> = props => {
           </Match>
 
           <Match when={feeds.isSuccess}>
-            <For each={feeds.data}>
-              {feed => (
-                <A
-                  href={`/feeds/${feed.uuid}`}
-                  class="text-gray-800 hover:underline dark:text-gray-100 dark:hover:text-white"
-                >
-                  {feed.title}
-                </A>
-              )}
-            </For>
+            <For each={feeds.data}>{feed => <FeedItem feed={feed} />}</For>
           </Match>
         </Switch>
       </div>
