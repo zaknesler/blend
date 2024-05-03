@@ -1,5 +1,5 @@
 import { type Component } from 'solid-js';
-import { CreateFeed } from './modals/create-feed';
+import { CreateFeed } from '../modals/create-feed';
 import { cx } from 'class-variance-authority';
 import { Portal } from 'solid-js/web';
 

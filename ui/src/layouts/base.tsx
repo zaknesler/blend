@@ -1,8 +1,8 @@
 import { type RouteSectionProps } from '@solidjs/router';
-import { Sidebar } from '../components/sidebar';
-import { Nav } from '~/components/nav';
+import { Sidebar } from '../components/layout/sidebar';
+import { Nav } from '~/components/layout/nav';
 import { connectWs } from '~/hooks/connectWs';
-import { Header } from '~/components/header';
+import { Header } from '~/components/layout/header';
 
 export default ({ children }: RouteSectionProps) => {
   connectWs();

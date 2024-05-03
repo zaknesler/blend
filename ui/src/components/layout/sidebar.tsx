@@ -1,7 +1,7 @@
 import { type Component, For, Match, Switch } from 'solid-js';
 import { Logo } from './logo';
-import { Link } from './link';
-import { CreateFeed } from './modals/create-feed';
+import { Link } from '../ui/link';
+import { CreateFeed } from '../modals/create-feed';
 import { cx } from 'class-variance-authority';
 import { createQuery } from '@tanstack/solid-query';
 import { getFeeds } from '~/api/feeds';
