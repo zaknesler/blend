@@ -4,10 +4,10 @@ import { Link } from '~/components/ui/link';
 
 export default () => (
   <main class="flex max-w-4xl flex-col gap-4 font-serif">
-    <nav class="flex items-baseline gap-2 text-sm">
+    <nav class="flex items-baseline gap-1 text-sm">
       {article.breadcrumbs.map(text => (
         <>
-          <span class="select-none self-center text-gray-400 dark:text-gray-500" />
+          <span class="select-none self-center text-gray-400 dark:text-gray-500">/</span>
           <Link href="/">{text}</Link>
         </>
       ))}
