@@ -16,7 +16,7 @@ export default {
         gray: colors.stone,
       },
       width: {
-        sidebar: '20rem',
+        sidebar: '16rem',
       },
       keyframes: {
         overlayShow: { from: { opacity: '0' }, to: { opacity: '1' } },

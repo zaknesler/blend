@@ -19,9 +19,7 @@ export const Sidebar: Component<SidebarProps> = props => {
   }));
 
   return (
-    <div
-      class={cx('relative flex h-full flex-col items-start gap-8 bg-white p-4 shadow-md dark:bg-gray-950', props.class)}
-    >
+    <div class={cx('relative -mr-4 flex h-full flex-col items-start gap-8 p-4 dark:bg-gray-950', props.class)}>
       <Logo />
 
       <nav class="flex flex-col items-start gap-2 text-sm">

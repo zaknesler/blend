@@ -11,6 +11,7 @@ type FeedItemProps = {
 
 export const FeedItem: Component<FeedItemProps> = props => {
   const [open, setOpen] = createSignal(false);
+  const [navItemElement, setNavItemElement] = createSignal<HTMLAnchorElement>();
 
   const handleMenuClick = (event: Event) => {
     event.preventDefault();
@@ -28,16 +29,24 @@ export const FeedItem: Component<FeedItemProps> = props => {
     alert(JSON.stringify({ feed_uuid, action }));
   };
 
+  const handleReturnFocusToNavItem = (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    navItemElement()?.focus();
+  };
+
   return (
     <A
       href={`/feeds/${props.feed.uuid}`}
+      ref={setNavItemElement}
       class={cx(
-        'group -mx-1 flex items-center gap-2 rounded-md border border-transparent p-1 text-sm no-underline outline-none transition',
+        'group -mx-1 flex items-center gap-2 rounded-md border p-1 text-sm no-underline outline-none transition',
         'text-gray-600 ring-gray-300',
         'hover:border-gray-200 hover:bg-gray-50 hover:text-gray-900',
         'focus:border-gray-400 focus:ring-2',
         'focus-within:border-gray-300 focus-within:bg-gray-50',
-        open() && 'border-gray-300 bg-gray-50',
+        open() ? 'border-gray-200 bg-gray-50' : 'border-transparent',
       )}
     >
       <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400">
@@ -57,7 +66,10 @@ export const FeedItem: Component<FeedItemProps> = props => {
           />
         </Popover.Anchor>
         <Popover.Portal>
-          <Popover.Content class="z-50 w-24 animate-contentHide overflow-hidden rounded-lg border bg-white shadow-sm ui-expanded:animate-contentShow">
+          <Popover.Content
+            class="z-50 w-24 animate-contentHide overflow-hidden rounded-lg border bg-white shadow-sm ui-expanded:animate-contentShow"
+            onCloseAutoFocus={handleReturnFocusToNavItem}
+          >
             <div class="flex flex-col gap-1 py-1 text-sm">
               <button
                 onClick={event => handleActionClick(event, props.feed.uuid, 'refresh')}
@@ -93,10 +105,11 @@ const ActionButton: ParentComponent<ActionButtonProps> = props => (
   <button
     {...props}
     class={cx(
-      'flex h-5 w-5 shrink-0 appearance-none items-center justify-center rounded border border-gray-200 bg-white opacity-0 transition',
-      'hover:border-gray-300 hover:bg-gray-100 group-hover:opacity-100',
+      'flex h-5 w-5 shrink-0 appearance-none items-center justify-center rounded border border-gray-200 opacity-0 transition',
       'focus:border-gray-500 focus:opacity-100 focus:outline-none focus:ring-1 focus:ring-gray-300 group-focus:opacity-100',
-      props.forceFocus ? 'border-gray-500 opacity-100 outline-none ring-1 ring-gray-300' : '',
+      props.forceFocus
+        ? 'border-gray-500 bg-gray-100 opacity-100 outline-none ring-1 ring-gray-300'
+        : 'bg-white hover:border-gray-300 hover:bg-gray-100 group-hover:opacity-100',
     )}
   >
     {props.children}

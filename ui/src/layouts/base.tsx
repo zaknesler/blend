@@ -9,14 +9,14 @@ export default ({ children }: RouteSectionProps) => {
 
   return (
     <div class="flex h-full w-full flex-col md:flex-row">
-      <Sidebar class="hidden md:flex md:w-sidebar" />
+      <Sidebar class="hidden shrink-0 md:flex md:w-sidebar" />
       <Header class="flex md:hidden" />
       <Nav class="flex md:hidden" />
 
-      <div class="h-full w-full flex-1 overflow-y-auto overflow-x-hidden">
-        <div class="flex max-w-4xl flex-col gap-8 p-8 md:p-16">
+      <div class="flex h-full w-full flex-1 items-stretch justify-stretch gap-4 overflow-hidden md:p-4">
+        <div class="flex-1 flex-col gap-8 overflow-x-auto overflow-y-auto bg-white p-4 md:rounded-lg md:p-8 md:shadow-md">
           {children}
-          <div class="h-10 md:hidden" />
+          <div class="h-16 md:hidden" />
         </div>
       </div>
     </div>

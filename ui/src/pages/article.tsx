@@ -3,7 +3,7 @@ import article from '../article.json';
 import { A } from '@solidjs/router';
 
 export default () => (
-  <main class="flex flex-col gap-4 font-serif">
+  <main class="flex max-w-4xl flex-col gap-4 font-serif">
     <nav class="flex items-baseline gap-2 text-sm">
       {article.breadcrumbs.map((text, index) => (
         <>
