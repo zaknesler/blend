@@ -29,7 +29,7 @@ export const Sidebar: Component<SidebarProps> = props => {
         <Link href="/article">Article</Link>
       </nav>
 
-      <div class="flex w-full flex-col items-start gap-1">
+      <div class="flex w-full flex-col  gap-1">
         <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Feeds</h3>
         <Switch>
           <Match when={feeds.isPending}>

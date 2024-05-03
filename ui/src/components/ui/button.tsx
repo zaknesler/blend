@@ -1,9 +1,10 @@
 import { type VariantProps } from 'class-variance-authority';
 import { JSX, ParentComponent } from 'solid-js';
-import { Button as BaseButton } from '@kobalte/core';
+import { Button as BaseButton, ButtonRootProps } from '@kobalte/core/button';
 import { buttonClass } from '~/constants/ui/button';
 
 type ButtonProps = JSX.IntrinsicElements['button'] &
+  ButtonRootProps &
   VariantProps<typeof buttonClass> & {
     icon?: JSX.Element;
     iconSide?: 'left' | 'right';
@@ -11,7 +12,7 @@ type ButtonProps = JSX.IntrinsicElements['button'] &
   };
 
 export const Button: ParentComponent<ButtonProps> = props => (
-  <BaseButton.Root
+  <BaseButton
     {...props}
     disabled={props.disabled}
     class={buttonClass({
@@ -31,5 +32,5 @@ export const Button: ParentComponent<ButtonProps> = props => (
     ) : (
       props.children
     )}
-  </BaseButton.Root>
+  </BaseButton>
 );

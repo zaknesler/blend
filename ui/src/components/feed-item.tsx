@@ -20,10 +20,10 @@ export const FeedItem: Component<FeedItemProps> = props => {
     <A
       href={`/feeds/${props.feed.uuid}`}
       class={cx(
-        'group -mx-1 flex w-full items-center gap-2 rounded-md border border-transparent p-1 text-sm no-underline transition',
-        'text-gray-600 ring-gray-300',
+        'group -mx-1 flex items-center gap-2 rounded-md border border-transparent p-1 text-sm no-underline transition',
+        'text-gray-600',
         'hover:border-gray-200 hover:bg-gray-50 hover:text-gray-900',
-        'focus:border-gray-400 focus:outline-none focus:ring-2',
+        'focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300',
       )}
     >
       <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400">
@@ -33,7 +33,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
       <span class="flex-1 overflow-x-hidden truncate">{props.feed.title}</span>
 
       <ActionButton onClick={handleMenuClick}>
-        <HiSolidEllipsisHorizontal class="h-4 w-4 text-gray-600" />
+        <HiSolidEllipsisHorizontal class="h-4 w-4 text-gray-700" />
       </ActionButton>
     </A>
   );
@@ -46,7 +46,8 @@ const ActionButton: ParentComponent<ActionButtonProps> = props => (
     {...props}
     class={cx(
       'hidden h-5 w-5 shrink-0 appearance-none items-center justify-center rounded border border-gray-200 bg-white transition',
-      'hover:border-gray-300 hover:bg-gray-100 group-hover:flex',
+      'hover:border-gray-300 hover:bg-gray-100 group-focus-within:flex group-hover:flex group-focus:flex',
+      'focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-300',
     )}
   >
     {props.children}

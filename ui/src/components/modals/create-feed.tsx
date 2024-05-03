@@ -1,4 +1,4 @@
-import { As, Dialog, TextField } from '@kobalte/core';
+import { Dialog, TextField } from '@kobalte/core';
 import { createMutation, useQueryClient } from '@tanstack/solid-query';
 import { HiSolidPlus, HiSolidXMark } from 'solid-icons/hi';
 import { Component, createSignal } from 'solid-js';
@@ -50,17 +50,18 @@ export const CreateFeed: Component<CreateFeedProps> = props => {
   return (
     <>
       <Dialog.Root open={open()} onOpenChange={setOpen}>
-        <Dialog.Trigger asChild>
-          <As
-            component={Button}
-            class={cx('inline-flex items-center gap-2 text-sm', props.triggerClass)}
-            size="sm"
-            disabled={isDisabled()}
-          >
-            Add feed
-            <HiSolidPlus class="h-4 w-4 text-gray-300" />
-          </As>
-        </Dialog.Trigger>
+        <Dialog.Trigger
+          as={() => (
+            <Button
+              class={cx('inline-flex items-center gap-2 text-sm', props.triggerClass)}
+              size="sm"
+              disabled={isDisabled()}
+            >
+              Add feed
+              <HiSolidPlus class="h-4 w-4 text-gray-300" />
+            </Button>
+          )}
+        ></Dialog.Trigger>
 
         <Dialog.Portal>
           <Dialog.Overlay class="fixed inset-0 z-50 animate-overlayHide bg-black/25 backdrop-blur ui-expanded:animate-overlayShow" />
