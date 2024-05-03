@@ -86,7 +86,9 @@ jobs:
         if: matrix.command == 'cross'
 
       - run: pnpm install
-      - run: pnpm run build
+      - run: pnpm tsc
+      # - run: pnpm test
+      - run: pnpm build
 
       - run: ${{ matrix.command }} build --verbose --locked --release --target ${{ matrix.target }}
 
