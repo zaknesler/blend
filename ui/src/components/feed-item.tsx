@@ -67,25 +67,25 @@ export const FeedItem: Component<FeedItemProps> = props => {
         </Popover.Anchor>
         <Popover.Portal>
           <Popover.Content
-            class="z-50 w-24 animate-contentHide overflow-hidden rounded-lg border bg-white shadow-sm ui-expanded:animate-contentShow"
+            class="z-50 w-24 origin-[--kb-popover-content-transform-origin] animate-contentHide overflow-hidden rounded-md border border-gray-200 bg-gray-50 text-gray-600 shadow-sm ui-expanded:animate-contentShow"
             onCloseAutoFocus={handleReturnFocusToNavItem}
           >
-            <div class="flex flex-col gap-1 py-1 text-sm">
+            <div class="flex flex-col gap-0.5 p-0.5 text-sm">
               <button
                 onClick={event => handleActionClick(event, props.feed.uuid, 'refresh')}
-                class="appearance-none px-2 py-1 text-left hover:bg-gray-600 hover:text-white"
+                class="hover:bg-bg-white appearance-none rounded border border-transparent px-2 py-1 text-left hover:border-gray-100 hover:bg-white"
               >
                 Refresh
               </button>
               <button
                 onClick={event => handleActionClick(event, props.feed.uuid, 'rename')}
-                class="appearance-none px-2 py-1 text-left hover:bg-gray-600 hover:text-white"
+                class="hover:bg-bg-white appearance-none rounded border border-transparent px-2 py-1 text-left hover:border-gray-100 hover:bg-white"
               >
                 Rename
               </button>
               <button
                 onClick={event => handleActionClick(event, props.feed.uuid, 'delete')}
-                class="appearance-none px-2 py-1 text-left hover:bg-gray-600 hover:text-white"
+                class="hover:bg-bg-white appearance-none rounded border border-transparent px-2 py-1 text-left hover:border-gray-100 hover:bg-white"
               >
                 Delete
               </button>
