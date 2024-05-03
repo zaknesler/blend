@@ -31,4 +31,4 @@ jobs:
         with:
           artifacts: _binaries/blend*
           body: "[wip]"
-          draft: true
+          draft: false
