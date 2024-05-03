@@ -14,6 +14,7 @@ render(
         <Route path="/" component={lazy(() => import('./pages/index'))} />
         <Route path="/article" component={lazy(() => import('./pages/article'))} />
         <Route path="/feeds/:uuid" component={lazy(() => import('./pages/feed'))} />
+        <Route path="/feeds/:uuid/entries/:entry_uuid" component={lazy(() => import('./pages/feed'))} />
         <Route path="*" component={lazy(() => import('./pages/404'))} />
       </Router>
 

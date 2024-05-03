@@ -1,3 +1,4 @@
+import { Entry } from '~/types/bindings/entry';
 import { ApiResponse } from '.';
 import { Feed } from '../types/bindings/feed';
 import { apiUrl } from '../utils/url';
@@ -19,7 +20,10 @@ export const addFeed = async (params: { url: string }) => {
 };
 
 export const getFeed = async (uuid: string) => {
-  type Response = ApiResponse<Feed>;
+  type Response = ApiResponse<{
+    feed: Feed;
+    entries: Entry[];
+  }>;
 
   const res = await axios.get<Response>(apiUrl(`/feeds/${uuid}`));
   return res.data.data;

@@ -1,9 +1,10 @@
 import { A } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { HiSolidEllipsisHorizontal, HiSolidRss } from 'solid-icons/hi';
-import { Component, JSX, ParentComponent, createSignal } from 'solid-js';
+import { Component, createSignal } from 'solid-js';
 import { Feed } from '~/types/bindings/feed';
 import { Popover } from '@kobalte/core/popover';
+import { ActionButton, ContextItem } from './action-button';
 
 type FeedItemProps = {
   feed: Feed;
@@ -20,20 +21,15 @@ export const FeedItem: Component<FeedItemProps> = props => {
     setOpen(true);
   };
 
-  const handleActionClick = (event: Event, feed_uuid: string, action: string) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    setOpen(false);
-
-    alert(JSON.stringify({ feed_uuid, action }));
-  };
-
   const handleReturnFocusToNavItem = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
     navItemElement()?.focus();
+  };
+
+  const handleContextItemClick = (action: string) => {
+    alert(action);
   };
 
   return (
@@ -42,7 +38,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
       ref={setNavItemElement}
       class={cx(
         'group -mx-1 flex items-center gap-2 rounded-md border p-1 text-sm no-underline outline-none transition',
-        'text-gray-600 ring-gray-300',
+        'text-gray-600 ring-gray-200',
         'hover:border-gray-200 hover:bg-gray-50 hover:text-gray-900',
         'focus:border-gray-400 focus:ring-2',
         'focus-within:border-gray-300 focus-within:bg-gray-50',
@@ -71,24 +67,15 @@ export const FeedItem: Component<FeedItemProps> = props => {
             onCloseAutoFocus={handleReturnFocusToNavItem}
           >
             <div class="flex flex-col gap-0.5 p-0.5 text-sm">
-              <button
-                onClick={event => handleActionClick(event, props.feed.uuid, 'refresh')}
-                class="hover:bg-bg-white appearance-none rounded border border-transparent px-2 py-1 text-left hover:border-gray-100 hover:bg-white"
-              >
+              <ContextItem feed={props.feed} onClick={() => handleContextItemClick('refresh')}>
                 Refresh
-              </button>
-              <button
-                onClick={event => handleActionClick(event, props.feed.uuid, 'rename')}
-                class="hover:bg-bg-white appearance-none rounded border border-transparent px-2 py-1 text-left hover:border-gray-100 hover:bg-white"
-              >
+              </ContextItem>
+              <ContextItem feed={props.feed} onClick={() => handleContextItemClick('rename')}>
                 Rename
-              </button>
-              <button
-                onClick={event => handleActionClick(event, props.feed.uuid, 'delete')}
-                class="hover:bg-bg-white appearance-none rounded border border-transparent px-2 py-1 text-left hover:border-gray-100 hover:bg-white"
-              >
+              </ContextItem>
+              <ContextItem feed={props.feed} onClick={() => handleContextItemClick('delete')}>
                 Delete
-              </button>
+              </ContextItem>
             </div>
           </Popover.Content>
         </Popover.Portal>
@@ -96,22 +83,3 @@ export const FeedItem: Component<FeedItemProps> = props => {
     </A>
   );
 };
-
-type ActionButtonProps = JSX.IntrinsicElements['button'] & {
-  forceFocus: boolean;
-};
-
-const ActionButton: ParentComponent<ActionButtonProps> = props => (
-  <button
-    {...props}
-    class={cx(
-      'flex h-5 w-5 shrink-0 appearance-none items-center justify-center rounded border border-gray-200 opacity-0 transition',
-      'focus:border-gray-500 focus:opacity-100 focus:outline-none focus:ring-1 focus:ring-gray-300 group-focus:opacity-100',
-      props.forceFocus
-        ? 'border-gray-500 bg-gray-100 opacity-100 outline-none ring-1 ring-gray-300'
-        : 'bg-white hover:border-gray-300 hover:bg-gray-100 group-hover:opacity-100',
-    )}
-  >
-    {props.children}
-  </button>
-);

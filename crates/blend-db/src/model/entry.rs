@@ -12,6 +12,7 @@ pub struct Entry {
     pub url: String,
     pub title: Option<String>,
     pub summary: Option<String>,
+    #[sqlx(default)]
     pub content_html: Option<String>,
     pub published_at: Option<DateTime<Utc>>,
     pub updated_at: Option<DateTime<Utc>>,

@@ -23,7 +23,7 @@ impl EntryRepo {
         &self,
         feed_uuid: &uuid::Uuid,
     ) -> DbResult<Vec<model::Entry>> {
-        sqlx::query_as::<_, model::Entry>("SELECT * FROM entries WHERE feed_uuid = ?1")
+        sqlx::query_as::<_, model::Entry>("SELECT uuid, feed_uuid, url, title, summary, published_at, updated_at FROM entries WHERE feed_uuid = ?1")
             .bind(feed_uuid)
             .fetch_all(&self.db)
             .await
