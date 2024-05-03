@@ -4,7 +4,6 @@ import { HiSolidEllipsisHorizontal, HiSolidRss } from 'solid-icons/hi';
 import { Component, JSX, ParentComponent, createSignal } from 'solid-js';
 import { Feed } from '~/types/bindings/feed';
 import { Popover } from '@kobalte/core/popover';
-import './popover.css';
 
 type FeedItemProps = {
   feed: Feed;
@@ -18,6 +17,15 @@ export const FeedItem: Component<FeedItemProps> = props => {
     event.stopPropagation();
 
     setOpen(true);
+  };
+
+  const handleActionClick = (event: Event, feed_uuid: string, action: string) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    setOpen(false);
+
+    alert(JSON.stringify({ feed_uuid, action }));
   };
 
   return (
@@ -49,13 +57,27 @@ export const FeedItem: Component<FeedItemProps> = props => {
           />
         </Popover.Anchor>
         <Popover.Portal>
-          <Popover.Content class="popover__content">
-            <div class="popover__header">
-              <Popover.Title class="popover__title">About Kobalte</Popover.Title>
+          <Popover.Content class="z-50 w-24 animate-contentHide overflow-hidden rounded-lg border bg-white shadow-sm ui-expanded:animate-contentShow">
+            <div class="flex flex-col gap-1 py-1 text-sm">
+              <button
+                onClick={event => handleActionClick(event, props.feed.uuid, 'refresh')}
+                class="appearance-none px-2 py-1 text-left hover:bg-gray-600 hover:text-white"
+              >
+                Refresh
+              </button>
+              <button
+                onClick={event => handleActionClick(event, props.feed.uuid, 'rename')}
+                class="appearance-none px-2 py-1 text-left hover:bg-gray-600 hover:text-white"
+              >
+                Rename
+              </button>
+              <button
+                onClick={event => handleActionClick(event, props.feed.uuid, 'delete')}
+                class="appearance-none px-2 py-1 text-left hover:bg-gray-600 hover:text-white"
+              >
+                Delete
+              </button>
             </div>
-            <Popover.Description class="popover__description">
-              A UI toolkit for building accessible web apps and design systems with SolidJS.
-            </Popover.Description>
           </Popover.Content>
         </Popover.Portal>
       </Popover>

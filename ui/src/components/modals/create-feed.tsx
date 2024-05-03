@@ -1,14 +1,16 @@
-import { Dialog, TextField } from '@kobalte/core';
 import { createMutation, useQueryClient } from '@tanstack/solid-query';
 import { HiSolidPlus, HiSolidXMark } from 'solid-icons/hi';
 import { Component, createSignal } from 'solid-js';
 import { addFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
 import { inputClass } from '~/constants/ui/input';
-import { Button } from '../ui/button';
+import { Button, type ButtonProps } from '../ui/button';
 import { cx } from 'class-variance-authority';
 import { useNavigate } from '@solidjs/router';
 import { Spinner } from '../ui/spinner';
+import { Dialog, DialogTriggerOptions } from '@kobalte/core/dialog';
+import { TextField } from '@kobalte/core/text-field';
+import { type PolymorphicCallbackProps } from '@kobalte/core';
 
 type CreateFeedProps = {
   triggerClass?: string;
@@ -49,10 +51,11 @@ export const CreateFeed: Component<CreateFeedProps> = props => {
 
   return (
     <>
-      <Dialog.Root open={open()} onOpenChange={setOpen}>
+      <Dialog open={open()} onOpenChange={setOpen}>
         <Dialog.Trigger
-          as={() => (
+          as={(triggerProps: PolymorphicCallbackProps<ButtonProps, DialogTriggerOptions, DialogTriggerOptions>) => (
             <Button
+              {...triggerProps}
               class={cx('inline-flex items-center gap-2 text-sm', props.triggerClass)}
               size="sm"
               disabled={isDisabled()}
@@ -61,7 +64,7 @@ export const CreateFeed: Component<CreateFeedProps> = props => {
               <HiSolidPlus class="h-4 w-4 text-gray-300" />
             </Button>
           )}
-        ></Dialog.Trigger>
+        />
 
         <Dialog.Portal>
           <Dialog.Overlay class="fixed inset-0 z-50 animate-overlayHide bg-black/25 backdrop-blur ui-expanded:animate-overlayShow" />
@@ -86,14 +89,14 @@ export const CreateFeed: Component<CreateFeedProps> = props => {
 
               <div class="flex flex-col items-stretch gap-4 p-4">
                 <form onSubmit={handleSubmit} class="flex flex-col gap-4">
-                  <TextField.Root value={value()} onChange={setValue} class="flex flex-col items-stretch gap-1">
+                  <TextField value={value()} onChange={setValue} class="flex flex-col items-stretch gap-1">
                     <TextField.Label class="text-sm text-gray-600 dark:text-gray-400">URL</TextField.Label>
                     <TextField.Input
                       ref={setInputElement}
                       class={inputClass({ disabled: isDisabled() })}
                       placeholder="https://example.com/feed.xml"
                     />
-                  </TextField.Root>
+                  </TextField>
 
                   <div class="flex items-center justify-between gap-4">
                     <Button size="sm" class="self-start" onClick={handleSubmit} disabled={isDisabled()}>
@@ -109,7 +112,7 @@ export const CreateFeed: Component<CreateFeedProps> = props => {
             </Dialog.Content>
           </div>
         </Dialog.Portal>
-      </Dialog.Root>
+      </Dialog>
     </>
   );
 };

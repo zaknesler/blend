@@ -3,7 +3,7 @@ import { JSX, ParentComponent } from 'solid-js';
 import { Button as BaseButton, ButtonRootProps } from '@kobalte/core/button';
 import { buttonClass } from '~/constants/ui/button';
 
-type ButtonProps = JSX.IntrinsicElements['button'] &
+export type ButtonProps = JSX.IntrinsicElements['button'] &
   ButtonRootProps &
   VariantProps<typeof buttonClass> & {
     icon?: JSX.Element;
