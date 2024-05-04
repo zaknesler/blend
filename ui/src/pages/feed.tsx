@@ -1,15 +1,15 @@
 import { A, useParams } from '@solidjs/router';
-import { For, Match, Switch } from 'solid-js';
 import { createQuery } from '@tanstack/solid-query';
-import { QUERY_KEYS } from '~/constants/query';
-import { getFeed } from '~/api/feeds';
 import dayjs from 'dayjs';
+import { For, Match, Switch } from 'solid-js';
+import { getFeed } from '~/api/feeds';
+import { QUERY_KEYS } from '~/constants/query';
 
 export default () => {
   const params = useParams();
   const feed = createQuery(() => ({
-    queryKey: [QUERY_KEYS.FEED, params.uuid],
-    queryFn: () => getFeed(params.uuid),
+    queryKey: [QUERY_KEYS.FEED, params.feed_uuid],
+    queryFn: () => getFeed(params.feed_uuid),
   }));
 
   return (

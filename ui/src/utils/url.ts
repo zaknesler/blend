@@ -1,9 +1,9 @@
-import { DEV_HOSTNAME } from '../api';
+export const DEV_BASE_URL = 'localhost:4000';
 
 export const apiUrl = (uri: string) => {
   const withSlash = uri.startsWith('/') ? uri : `/${uri}`;
   const withApiPrefix = uri.startsWith('/api') ? withSlash : `/api${uri}`;
-  return import.meta.env.PROD ? withApiPrefix : `http://${DEV_HOSTNAME}${withApiPrefix}`;
+  return import.meta.env.PROD ? withApiPrefix : `http://${DEV_BASE_URL}${withApiPrefix}`;
 };
 
 export const wsUrl = (uri: string) => {
@@ -14,5 +14,5 @@ export const wsUrl = (uri: string) => {
 
   return import.meta.env.PROD
     ? `${prefix}://${location.hostname}${port}${withApiPrefix}`
-    : `${prefix}://${DEV_HOSTNAME}${withApiPrefix}`;
+    : `${prefix}://${DEV_BASE_URL}${withApiPrefix}`;
 };

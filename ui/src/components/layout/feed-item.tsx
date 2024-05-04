@@ -1,4 +1,4 @@
-import { A } from '@solidjs/router';
+import { A, useLocation } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { HiSolidRss } from 'solid-icons/hi';
 import { Component, createSignal } from 'solid-js';
@@ -10,18 +10,22 @@ type FeedItemProps = {
 };
 
 export const FeedItem: Component<FeedItemProps> = props => {
+  const location = useLocation();
   const [open, setOpen] = createSignal(false);
+
+  const path = () => `/feeds/${props.feed.uuid}`;
+  const isActive = () => location.pathname.startsWith(path());
 
   return (
     <A
-      href={`/feeds/${props.feed.uuid}`}
+      href={path()}
       class={cx(
         'group -mx-1 flex items-center gap-2 rounded-md border p-1 text-sm no-underline outline-none transition',
         'text-gray-600 ring-gray-200',
         'hover:border-gray-200 hover:bg-white hover:text-gray-900',
         'focus:border-gray-400 focus:ring-2',
         'focus-within:border-gray-300 focus-within:bg-white',
-        open() ? 'border-gray-200 bg-white' : 'border-transparent',
+        isActive() || open() ? 'border-gray-200 bg-white' : 'border-transparent',
       )}
     >
       <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400">

@@ -6,14 +6,18 @@ module.exports = {
     sourceType: 'module',
     ecmaVersion: 2023,
   },
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
-  plugins: ['prettier', '@typescript-eslint'],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier', 'plugin:solid/typescript'],
+  plugins: ['prettier', '@typescript-eslint', 'solid'],
   env: {
     browser: true,
     es2023: true,
     node: true,
   },
   rules: {
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    'no-nested-ternary': 0,
+    'no-underscore-dangle': 0,
+    'no-unused-vars': 'off',
     'prettier/prettier': [
       'error',
       {

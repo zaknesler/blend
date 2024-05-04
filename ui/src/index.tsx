@@ -1,23 +1,15 @@
-import { render } from 'solid-js/web';
-import { Router, Route } from '@solidjs/router';
-import { lazy } from 'solid-js';
-import 'tailwindcss/tailwind.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/solid-query';
 import { SolidQueryDevtools } from '@tanstack/solid-query-devtools';
+import { render } from 'solid-js/web';
+import Router from './router';
+import 'tailwindcss/tailwind.css';
 
 const queryClient = new QueryClient();
 
 render(
   () => (
     <QueryClientProvider client={queryClient}>
-      <Router root={lazy(() => import('./layouts/base'))}>
-        <Route path="/" component={lazy(() => import('./pages/index'))} />
-        <Route path="/article" component={lazy(() => import('./pages/article'))} />
-        <Route path="/feeds/:uuid" component={lazy(() => import('./pages/feed'))} />
-        <Route path="/feeds/:uuid/entries/:entry_uuid" component={lazy(() => import('./pages/feed'))} />
-        <Route path="*" component={lazy(() => import('./pages/404'))} />
-      </Router>
-
+      <Router />
       <SolidQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   ),

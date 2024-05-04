@@ -1,12 +1,14 @@
+import { Popover, PopoverRootProps } from '@kobalte/core/popover';
+import { cx } from 'class-variance-authority';
+import { type IconTypes } from 'solid-icons';
 import { HiSolidEllipsisHorizontal } from 'solid-icons/hi';
 import { type JSX, type ParentComponent, type Setter, createSignal, splitProps } from 'solid-js';
-import { Popover, PopoverRootProps } from '@kobalte/core/popover';
-import { type IconTypes } from 'solid-icons';
-import { cx } from 'class-variance-authority';
+import { Dynamic } from 'solid-js/web';
 
 type ContextButton = Omit<PopoverRootProps, 'open' | 'onOpenChange'> & {
   open: boolean;
   setOpen: Setter<boolean>;
+  forceFocus?: boolean;
   triggerIcon?: IconTypes;
   returnFocusToTrigger?: boolean;
   onlyDisplayForGroup?: boolean;
@@ -14,11 +16,12 @@ type ContextButton = Omit<PopoverRootProps, 'open' | 'onOpenChange'> & {
   triggerIconClass?: string;
 };
 
-const ContextButtonRoot: ParentComponent<ContextButton> = _props => {
-  const [props, rest] = splitProps(_props, [
+const ContextButtonRoot: ParentComponent<ContextButton> = props => {
+  const [local, rest] = splitProps(props, [
     'children',
     'open',
     'setOpen',
+    'forceFocus',
     'triggerIcon',
     'triggerClass',
     'triggerIconClass',
@@ -31,7 +34,7 @@ const ContextButtonRoot: ParentComponent<ContextButton> = _props => {
   const handleMenuClick = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
-    props.setOpen(true);
+    local.setOpen(true);
   };
 
   const handleReturnFocusToNavItem = (event: Event) => {
@@ -40,21 +43,19 @@ const ContextButtonRoot: ParentComponent<ContextButton> = _props => {
     navItemElement()?.focus();
   };
 
-  const TriggerIcon = props.triggerIcon || HiSolidEllipsisHorizontal;
-
   return (
-    <Popover placement="bottom-end" {...rest} open={props.open} onOpenChange={props.setOpen} modal>
+    <Popover placement="bottom-end" {...rest} open={local.open} onOpenChange={local.setOpen} modal>
       <Popover.Anchor>
         <Popover.Trigger
           as={() => (
             <ActionButton
               onClick={handleMenuClick}
-              onlyDisplayForGroup={!!props.onlyDisplayForGroup}
-              forceFocus={props.onlyDisplayForGroup && props.open}
+              onlyDisplayForGroup={!!local.onlyDisplayForGroup}
+              forceFocus={local.forceFocus || (local.onlyDisplayForGroup && local.open)}
               ref={setNavItemElement}
-              class={props.triggerClass}
+              class={local.triggerClass}
             >
-              <TriggerIcon class={props.triggerIconClass} />
+              <Dynamic component={local.triggerIcon || HiSolidEllipsisHorizontal} class={local.triggerIconClass} />
             </ActionButton>
           )}
         />
@@ -63,9 +64,9 @@ const ContextButtonRoot: ParentComponent<ContextButton> = _props => {
       <Popover.Portal>
         <Popover.Content
           class="z-50 w-28 origin-[--kb-popover-content-transform-origin] animate-contentHide overflow-hidden rounded-md border border-gray-200 bg-white text-gray-600 shadow-sm ui-expanded:animate-contentShow"
-          onCloseAutoFocus={props.returnFocusToTrigger ? handleReturnFocusToNavItem : undefined}
+          onCloseAutoFocus={local.returnFocusToTrigger ? handleReturnFocusToNavItem : undefined}
         >
-          <div class="flex flex-col gap-0.5 p-1 text-sm">{props.children}</div>
+          <div class="flex flex-col gap-0.5 p-1 text-sm">{local.children}</div>
         </Popover.Content>
       </Popover.Portal>
     </Popover>
