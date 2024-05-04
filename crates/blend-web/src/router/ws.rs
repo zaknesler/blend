@@ -26,17 +26,12 @@ async fn notifs(
 }
 
 async fn handle_socket(socket: WebSocket, ctx: crate::Context) {
-    // Create a new broadcast receiver
     let mut rx = ctx.notifs.lock().await.subscribe();
-
-    // Split the websocket to get the sender part
     let (mut ws_sender, _) = socket.split();
 
-    // Stream broadcast messages to the WebSocket sender
     while let Ok(notif) = rx.recv().await {
         let json = serde_json::to_string(&notif).unwrap();
 
-        // Send the notification
         if ws_sender.send(axum::extract::ws::Message::Text(json)).await.is_err() {
             break;
         }
