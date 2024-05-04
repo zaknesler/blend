@@ -7,7 +7,8 @@
     "serve": "vite preview ui",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "watch": "mprocs \"pnpm dev\" \"cargo watch -x \\\"run -- start\\\"\""
+    "watch": "mprocs \"pnpm dev\" \"cargo watch -x \\\"run -- start\\\"\"",
+    "watch:trace": "mprocs \"pnpm dev\" \"cargo watch -x \\\"run -- -ltrace start\\\"\""
   },
   "dependencies": {
     "@kobalte/core": "^0.13.1",

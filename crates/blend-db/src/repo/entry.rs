@@ -71,7 +71,6 @@ impl EntryRepo {
                 .push_bind(uuid::Uuid::new_v4())
                 .push_bind(entry.id.clone())
                 .push_bind(entry.url.clone())
-                .push_bind(entry.url.clone())
                 .push_bind(entry.title.clone())
                 .push_bind(entry.summary.clone())
                 .push_bind(entry.content_html.clone())
