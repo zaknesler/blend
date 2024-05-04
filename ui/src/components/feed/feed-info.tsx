@@ -25,7 +25,7 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
       </Match>
 
       <Match when={feed.isSuccess}>
-        <FeedHeader title={feed.data?.title} subtitle={feed.data?.url} />
+        <FeedHeader title={feed.data?.title} subtitle={feed.data?.url_feed} />
       </Match>
     </Switch>
   );

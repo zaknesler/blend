@@ -44,8 +44,9 @@ async fn create(
     let parsed = blend_feed::parse_feed(&data.url).await?;
     let feed = repo::feed::FeedRepo::new(ctx.db)
         .create_feed(repo::feed::CreateFeedParams {
+            id: parsed.id,
             title: parsed.title,
-            url: parsed.url,
+            url_feed: parsed.url,
             published_at: parsed.published_at,
             updated_at: parsed.updated_at,
         })

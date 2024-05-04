@@ -15,28 +15,25 @@ pub async fn fetch_entries(
 ) -> WorkerResult<()> {
     let repo = EntryRepo::new(db);
 
-    let mut entries = vec![];
-    for entry in parse_entries(&feed.url).await? {
-        let inserted = repo
-            .insert_entry(
-                &feed.uuid,
-                CreateEntryParams {
-                    url: entry.url,
-                    title: entry.title,
-                    summary: entry.summary,
-                    content_html: entry.content_html,
-                    published_at: entry.published_at,
-                    updated_at: entry.updated_at,
-                },
-            )
-            .await?;
+    let mapped = parse_entries(&feed.url_feed)
+        .await?
+        .into_iter()
+        .map(|entry| CreateEntryParams {
+            id: entry.id,
+            url: entry.url,
+            title: entry.title,
+            summary: entry.summary,
+            content_html: entry.content_html,
+            published_at: entry.published_at,
+            updated_at: entry.updated_at,
+        })
+        .collect::<Vec<_>>();
 
-        entries.push(inserted);
-    }
+    let entry_uuids = repo.insert_entries(&feed.uuid, mapped).await?;
 
     notifs.lock().await.send(Notification::EntriesFetched {
         feed_uuid: feed.uuid,
-        entry_uuids: entries.iter().map(|entry| entry.uuid).collect::<Vec<_>>(),
+        entry_uuids,
     })?;
 
     Ok(())

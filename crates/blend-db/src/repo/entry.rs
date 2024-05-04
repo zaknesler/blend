@@ -1,11 +1,13 @@
 use crate::{error::DbResult, model};
 use chrono::{DateTime, Utc};
+use sqlx::{QueryBuilder, Row, Sqlite};
 
 pub struct EntryRepo {
     db: sqlx::SqlitePool,
 }
 
 pub struct CreateEntryParams {
+    pub id: String,
     pub url: Option<String>,
     pub title: Option<String>,
     pub summary: Option<String>,
@@ -21,7 +23,11 @@ impl EntryRepo {
 
     pub async fn get_entries(&self) -> DbResult<Vec<model::Entry>> {
         sqlx::query_as::<_, model::Entry>(
-            "SELECT uuid, feed_uuid, url, title, summary, published_at, updated_at FROM entries ORDER BY published_at DESC",
+            r#"
+            SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at
+            FROM entries
+            ORDER BY published_at DESC
+            "#,
         )
         .fetch_all(&self.db)
         .await
@@ -32,11 +38,18 @@ impl EntryRepo {
         &self,
         feed_uuid: &uuid::Uuid,
     ) -> DbResult<Vec<model::Entry>> {
-        sqlx::query_as::<_, model::Entry>("SELECT uuid, feed_uuid, url, title, summary, published_at, updated_at FROM entries WHERE feed_uuid = ?1 ORDER BY published_at DESC")
-            .bind(feed_uuid)
-            .fetch_all(&self.db)
-            .await
-            .map_err(|err| err.into())
+        sqlx::query_as::<_, model::Entry>(
+            r#"
+            SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at
+            FROM entries
+            WHERE feed_uuid = ?1
+            ORDER BY published_at DESC
+            "#,
+        )
+        .bind(feed_uuid)
+        .fetch_all(&self.db)
+        .await
+        .map_err(|err| err.into())
     }
 
     pub async fn get_entry(&self, entry_uuid: &uuid::Uuid) -> DbResult<Option<model::Entry>> {
@@ -47,29 +60,43 @@ impl EntryRepo {
             .map_err(|err| err.into())
     }
 
-    pub async fn insert_entry(
+    pub async fn insert_entries(
         &self,
         feed_uuid: &uuid::Uuid,
-        entry: CreateEntryParams,
-    ) -> DbResult<model::Entry> {
-        sqlx::query_as::<_, model::Entry>(
+        entries: Vec<CreateEntryParams>,
+    ) -> DbResult<Vec<uuid::Uuid>> {
+        let mut query = QueryBuilder::<Sqlite>::new("INSERT INTO entries (feed_uuid, uuid, id, url, title, summary, content_html, published_at, updated_at) ");
+        query.push_values(entries.into_iter(), |mut b, entry| {
+            b.push_bind(feed_uuid)
+                .push_bind(uuid::Uuid::new_v4())
+                .push_bind(entry.id)
+                .push_bind(entry.url)
+                .push_bind(entry.title)
+                .push_bind(entry.summary)
+                .push_bind(entry.content_html)
+                .push_bind(entry.published_at)
+                .push_bind(entry.updated_at);
+        });
+        query.push(
             r#"
-            INSERT INTO entries
-            (feed_uuid, uuid, url, title, summary, content_html, published_at, updated_at)
-            VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)
-            RETURNING *
+            ON CONFLICT (feed_uuid, id)
+            DO UPDATE SET
+                url = excluded.url,
+                title = excluded.title,
+                summary = excluded.summary,
+                content_html = excluded.content_html,
+                updated_at = excluded.updated_at
+            RETURNING uuid
             "#,
-        )
-        .bind(feed_uuid)
-        .bind(uuid::Uuid::new_v4())
-        .bind(entry.url)
-        .bind(entry.title)
-        .bind(entry.summary)
-        .bind(entry.content_html)
-        .bind(entry.published_at)
-        .bind(entry.updated_at)
-        .fetch_one(&self.db)
-        .await
-        .map_err(|err| err.into())
+        );
+
+        query
+            .build()
+            .fetch_all(&self.db)
+            .await?
+            .into_iter()
+            .map(|row| row.try_get("uuid"))
+            .collect::<sqlx::Result<Vec<uuid::Uuid>>>()
+            .map_err(|err| err.into())
     }
 }

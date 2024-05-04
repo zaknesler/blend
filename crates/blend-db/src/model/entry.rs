@@ -9,6 +9,7 @@ use uuid::Uuid;
 pub struct Entry {
     pub uuid: Uuid,
     pub feed_uuid: Uuid,
+    pub id: String,
     pub url: String,
     pub title: Option<String>,
     pub summary: Option<String>,

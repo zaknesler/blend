@@ -8,7 +8,9 @@ use uuid::Uuid;
 #[ts(export, export_to = "../../../ui/src/types/bindings/feed.ts")]
 pub struct Feed {
     pub uuid: Uuid,
-    pub url: String,
+    pub id: String,
+    pub url_feed: String,
+    pub url_site: Option<String>,
     pub title: Option<String>,
     pub published_at: Option<DateTime<Utc>>,
     pub updated_at: Option<DateTime<Utc>>,
