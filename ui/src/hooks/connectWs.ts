@@ -22,6 +22,8 @@ export const connectWs = () => {
 
     switch (notif.type) {
       case 'EntriesFetched':
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS] });
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS_VIEW, notif.feed_uuid] });
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX, notif.feed_uuid] });
     }
   });
