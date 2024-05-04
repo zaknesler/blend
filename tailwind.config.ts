@@ -1,9 +1,10 @@
+import defaultTheme from 'tailwindcss/defaultTheme';
 import type { Config } from 'tailwindcss';
 import colors from 'tailwindcss/colors';
-import defaultTheme from 'tailwindcss/defaultTheme';
+import plugin from 'tailwindcss/plugin';
 import formsPlugin from '@tailwindcss/forms';
 import kobaltePlugin from '@kobalte/tailwindcss';
-import plugin from 'tailwindcss/plugin';
+import typographyPlugin from '@tailwindcss/typography';
 
 export default {
   content: ['./ui/**/*.{js,ts,jsx,tsx,html}'],
@@ -40,6 +41,7 @@ export default {
   },
   plugins: [
     formsPlugin(),
+    typographyPlugin(),
     kobaltePlugin({ prefix: 'ui' }),
     plugin(({ addComponents }) => {
       addComponents({

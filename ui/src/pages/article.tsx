@@ -5,7 +5,7 @@ import { Link } from '~/components/ui/link';
 import { Panel } from '~/components/layout/panel';
 
 export default () => (
-  <Panel class="flex max-w-4xl flex-col gap-4 font-serif">
+  <Panel class="flex max-w-4xl flex-col gap-4 p-4 font-serif md:p-8">
     <nav class="flex items-baseline gap-1 text-sm">
       <For each={article.breadcrumbs}>
         {text => (
