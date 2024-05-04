@@ -2,9 +2,10 @@ import dayjs from 'dayjs';
 import { For } from 'solid-js';
 import article from '../article.json';
 import { Link } from '~/components/ui/link';
+import { Panel } from '~/components/layout/panel';
 
 export default () => (
-  <main class="flex max-w-4xl flex-col gap-4 font-serif">
+  <Panel class="flex max-w-4xl flex-col gap-4 font-serif">
     <nav class="flex items-baseline gap-1 text-sm">
       <For each={article.breadcrumbs}>
         {text => (
@@ -27,5 +28,5 @@ export default () => (
       {/* eslint-disable-next-line solid/no-innerhtml */}
       <div class="flex flex-col gap-4 leading-6" innerHTML={article.html} />
     </article>
-  </main>
+  </Panel>
 );

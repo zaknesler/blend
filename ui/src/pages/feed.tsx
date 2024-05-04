@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { For, Match, Switch } from 'solid-js';
 import { getEntries } from '~/api/entries';
 import { getFeed } from '~/api/feeds';
+import { Panel } from '~/components/layout/panel';
 import { QUERY_KEYS } from '~/constants/query';
 
 export default () => {
@@ -20,7 +21,7 @@ export default () => {
   }));
 
   return (
-    <main class="flex flex-col gap-4">
+    <Panel class="flex flex-col gap-4">
       <Switch>
         <Match when={feed.isPending}>
           <p>Loading feed...</p>
@@ -52,9 +53,14 @@ export default () => {
             <div class="flex max-w-md flex-col gap-4">
               <For each={entries.data}>
                 {entry => (
-                  <A href={`/feeds/${entry.feed_uuid}/entries/${entry.uuid}`} class="rounded-lg border p-4">
+                  <A
+                    href={`/feeds/${entry.feed_uuid}/entries/${entry.uuid}`}
+                    class="flex flex-col rounded-lg border border-gray-200 bg-gray-50 p-4 hover:border-gray-300 hover:bg-gray-100"
+                  >
                     <h3>{entry.title}</h3>
-                    <small>{dayjs(entry.published_at).format('MMMM DD, YYYY [at] h:mm a')}</small>
+                    <small class="text-xs text-gray-500">
+                      {dayjs(entry.published_at).format('MMMM DD, YYYY [at] h:mm a')}
+                    </small>
                   </A>
                 )}
               </For>
@@ -64,6 +70,6 @@ export default () => {
           )}
         </Match>
       </Switch>
-    </main>
+    </Panel>
   );
 };

@@ -1,6 +1,5 @@
 import { type Component, For, Match, Switch, createSignal } from 'solid-js';
 import { Logo } from './logo';
-import { Link } from '../ui/link';
 import { CreateFeed } from '../modals/create-feed';
 import { cx } from 'class-variance-authority';
 import { createQuery } from '@tanstack/solid-query';
@@ -39,11 +38,6 @@ export const Sidebar: Component<SidebarProps> = props => {
           <ContextButton.Item onClick={() => console.log('clicky')}>Refresh feeds</ContextButton.Item>
         </ContextButton>
       </div>
-
-      <nav class="flex flex-col items-start gap-2 text-sm">
-        <Link href="/">Home</Link>
-        <Link href="/article">Article</Link>
-      </nav>
 
       <div class="flex w-full flex-col gap-1">
         <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Feeds</h3>
