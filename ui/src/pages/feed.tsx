@@ -18,7 +18,7 @@ export default () => {
         <EntriesList />
       </Panel>
 
-      {params.feed_uuid && params.entry_uuid && <EntryPanel />}
+      {params.entry_uuid && <EntryPanel />}
     </>
   );
 };
@@ -75,7 +75,7 @@ const EntriesList = () => {
             <For each={entries.data}>
               {entry => (
                 <A
-                  href={`/feeds/${entry.feed_uuid}/entries/${entry.uuid}`}
+                  href={params.feed_uuid ? `/feeds/${entry.feed_uuid}/entries/${entry.uuid}` : `/entries/${entry.uuid}`}
                   activeClass="border-gray-500 bg-gray-100"
                   inactiveClass="bg-gray-50 border-gray-200 hover:border-gray-300 hover:bg-gray-100"
                   class="flex flex-col gap-2 rounded-lg border p-4 focus:border-gray-500 focus:outline-none focus:ring-4 focus:ring-gray-200"

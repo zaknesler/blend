@@ -21,7 +21,7 @@ impl EntryRepo {
 
     pub async fn get_entries(&self) -> DbResult<Vec<model::Entry>> {
         sqlx::query_as::<_, model::Entry>(
-            "SELECT uuid, feed_uuid, url, title, summary, published_at, updated_at FROM entries",
+            "SELECT uuid, feed_uuid, url, title, summary, published_at, updated_at FROM entries ORDER BY published_at DESC",
         )
         .fetch_all(&self.db)
         .await
@@ -32,7 +32,7 @@ impl EntryRepo {
         &self,
         feed_uuid: &uuid::Uuid,
     ) -> DbResult<Vec<model::Entry>> {
-        sqlx::query_as::<_, model::Entry>("SELECT uuid, feed_uuid, url, title, summary, published_at, updated_at FROM entries WHERE feed_uuid = ?1")
+        sqlx::query_as::<_, model::Entry>("SELECT uuid, feed_uuid, url, title, summary, published_at, updated_at FROM entries WHERE feed_uuid = ?1 ORDER BY published_at DESC")
             .bind(feed_uuid)
             .fetch_all(&self.db)
             .await
