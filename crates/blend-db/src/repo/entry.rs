@@ -19,6 +19,15 @@ impl EntryRepo {
         Self { db }
     }
 
+    pub async fn get_entries(&self) -> DbResult<Vec<model::Entry>> {
+        sqlx::query_as::<_, model::Entry>(
+            "SELECT uuid, feed_uuid, url, title, summary, published_at, updated_at FROM entries",
+        )
+        .fetch_all(&self.db)
+        .await
+        .map_err(|err| err.into())
+    }
+
     pub async fn get_entries_for_feed(
         &self,
         feed_uuid: &uuid::Uuid,
@@ -30,19 +39,12 @@ impl EntryRepo {
             .map_err(|err| err.into())
     }
 
-    pub async fn get_entry(
-        &self,
-        feed_uuid: &uuid::Uuid,
-        entry_uuid: &uuid::Uuid,
-    ) -> DbResult<Option<model::Entry>> {
-        sqlx::query_as::<_, model::Entry>(
-            "SELECT * FROM entries WHERE feed_uuid = ?1 AND uuid = ?2 LIMIT 1",
-        )
-        .bind(feed_uuid)
-        .bind(entry_uuid)
-        .fetch_optional(&self.db)
-        .await
-        .map_err(|err| err.into())
+    pub async fn get_entry(&self, entry_uuid: &uuid::Uuid) -> DbResult<Option<model::Entry>> {
+        sqlx::query_as::<_, model::Entry>("SELECT * FROM entries WHERE uuid = ?1  LIMIT 1")
+            .bind(entry_uuid)
+            .fetch_optional(&self.db)
+            .await
+            .map_err(|err| err.into())
     }
 
     pub async fn insert_entry(

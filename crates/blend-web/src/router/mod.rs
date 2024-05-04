@@ -23,7 +23,7 @@ pub fn api_router(ctx: crate::Context) -> Router {
         .with_state(ctx.clone())
         .nest("/users", user::router(ctx.clone()))
         .nest("/feeds", feed::router(ctx.clone()))
-        .nest("/feeds/:feed_uuid/entries", entry::router(ctx.clone()))
+        .nest("/entries", entry::router(ctx.clone()))
         .nest("/ws", ws::router(ctx))
 }
 

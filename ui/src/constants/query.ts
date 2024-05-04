@@ -5,6 +5,6 @@ export const QUERY_KEYS = {
   FEEDS_VIEW: 'feed.view',
 
   // Entries
-  FEEDS_ENTRIES: 'feeds.entries.index',
-  FEEDS_ENTRIES_VIEW: 'feeds.entries.view',
+  ENTRIES_INDEX: 'entries.index',
+  ENTRIES_VIEW: 'entries.view',
 } as const;
