@@ -95,8 +95,7 @@ impl EntryRepo {
             .fetch_all(&self.db)
             .await?
             .into_iter()
-            .map(|row| row.try_get("uuid"))
-            .collect::<sqlx::Result<Vec<uuid::Uuid>>>()
-            .map_err(|err| err.into())
+            .map(|row| row.try_get("uuid").map_err(|err| err.into()))
+            .collect::<DbResult<Vec<uuid::Uuid>>>()
     }
 }
