@@ -6,11 +6,13 @@
     "build": "vite build ui",
     "serve": "vite preview ui",
     "lint": "eslint",
-    "lint:fix": "eslint --fix"
+    "lint:fix": "eslint --fix",
+    "watch": "mprocs \"pnpm dev\" \"cargo watch -x \\\"run -- start\\\"\""
   },
   "dependencies": {
     "@kobalte/core": "^0.13.1",
     "@kobalte/tailwindcss": "^0.9.0",
+    "@solid-primitives/keyboard": "^1.2.8",
     "@solidjs/router": "^0.13.3",
     "@tanstack/solid-query": "^5.34.0",
     "@tanstack/solid-query-devtools": "^5.34.0",
