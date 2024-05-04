@@ -52,7 +52,9 @@ export const EntryList: Component<EntryListProps> = props => {
             </For>
           </div>
         ) : (
-          <div>No entries.</div>
+          <div class="mt-2 w-full rounded-lg bg-gray-50 p-4 py-16 text-center text-sm text-gray-500">
+            This feed contains no entries.
+          </div>
         )}
       </Match>
     </Switch>
