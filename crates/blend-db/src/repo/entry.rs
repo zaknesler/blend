@@ -30,6 +30,21 @@ impl EntryRepo {
             .map_err(|err| err.into())
     }
 
+    pub async fn get_entry(
+        &self,
+        feed_uuid: &uuid::Uuid,
+        entry_uuid: &uuid::Uuid,
+    ) -> DbResult<Option<model::Entry>> {
+        sqlx::query_as::<_, model::Entry>(
+            "SELECT * FROM entries WHERE feed_uuid = ?1 AND uuid = ?2 LIMIT 1",
+        )
+        .bind(feed_uuid)
+        .bind(entry_uuid)
+        .fetch_optional(&self.db)
+        .await
+        .map_err(|err| err.into())
+    }
+
     pub async fn insert_entry(
         &self,
         feed_uuid: &uuid::Uuid,

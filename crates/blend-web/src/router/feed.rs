@@ -72,15 +72,5 @@ async fn view(
         .await?
         .ok_or_else(|| WebError::NotFoundError)?;
 
-    let entries = repo::entry::EntryRepo::new(ctx.db)
-        .get_entries_for_feed(&params.uuid)
-        .await
-        .unwrap_or_else(|_| vec![]);
-
-    Ok(Json(json!({
-        "data": {
-            "feed": feed,
-            "entries": entries
-        }
-    })))
+    Ok(Json(json!({ "data": feed })))
 }
