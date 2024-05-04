@@ -15,7 +15,7 @@ export default () => {
         <EntryList feed_uuid={params.feed_uuid} current_entry_uuid={params.entry_uuid} />
       </Panel>
 
-      {params.entry_uuid && <EntryPanel entry_uuid={params.entry_uuid} />}
+      {params.entry_uuid && <EntryPanel feed_uuid={params.feed_uuid} entry_uuid={params.entry_uuid} />}
     </>
   );
 };

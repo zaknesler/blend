@@ -1,9 +1,12 @@
 import { A, useLocation } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { HiSolidRss } from 'solid-icons/hi';
-import { Component, createSignal } from 'solid-js';
+import { Component, createMemo, createSignal } from 'solid-js';
 import { Feed } from '~/types/bindings/feed';
 import { ContextButton } from './context-button';
+import { createQuery } from '@tanstack/solid-query';
+import { QUERY_KEYS } from '~/constants/query';
+import { getFeedStats } from '~/api/feeds';
 
 type FeedItemProps = {
   feed: Feed;
@@ -13,12 +16,18 @@ export const FeedItem: Component<FeedItemProps> = props => {
   const location = useLocation();
   const [open, setOpen] = createSignal(false);
 
-  const path = () => `/feeds/${props.feed.uuid}`;
-  const isActive = () => location.pathname.startsWith(path());
+  const stats = createQuery(() => ({
+    queryKey: [QUERY_KEYS.FEEDS_STATS],
+    queryFn: getFeedStats,
+  }));
+
+  const getPath = createMemo(() => `/feeds/${props.feed.uuid}`);
+  const isActive = createMemo(() => location.pathname.startsWith(getPath()));
+  const getStats = createMemo(() => stats.data?.find(item => item.uuid === props.feed.uuid));
 
   return (
     <A
-      href={path()}
+      href={getPath()}
       class={cx(
         'group -mx-1 flex items-center gap-2 rounded-md border p-1 text-sm no-underline outline-none transition',
         'text-gray-600 ring-gray-200',
@@ -33,6 +42,8 @@ export const FeedItem: Component<FeedItemProps> = props => {
       </div>
 
       <span class="flex-1 overflow-x-hidden truncate">{props.feed.title}</span>
+
+      {getStats()?.count_unread && <span class="shrink-0 text-sm text-gray-400">{getStats()?.count_unread}</span>}
 
       <ContextButton
         onlyDisplayForGroup

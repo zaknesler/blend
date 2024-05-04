@@ -1,7 +1,7 @@
 use crate::error::{WebError, WebResult};
 use axum::{
     extract::{Path, State},
-    middleware,
+    middleware::from_fn_with_state,
     response::IntoResponse,
     routing::{get, post},
     Json, Router,
@@ -16,11 +16,9 @@ pub fn router(ctx: crate::Context) -> Router {
     Router::new()
         .route("/", get(index))
         .route("/", post(create))
+        .route("/stats", get(stats))
         .route("/:uuid", get(view))
-        .route_layer(middleware::from_fn_with_state(
-            ctx.clone(),
-            crate::middleware::auth::middleware,
-        ))
+        .route_layer(from_fn_with_state(ctx.clone(), crate::middleware::auth))
         .with_state(ctx)
 }
 
@@ -59,6 +57,12 @@ async fn create(
     Ok(Json(json!({ "data": feed })))
 }
 
+async fn stats(State(ctx): State<crate::Context>) -> WebResult<impl IntoResponse> {
+    let stats = repo::feed::FeedRepo::new(ctx.db).get_stats().await?;
+
+    Ok(Json(json!({ "data": stats })))
+}
+
 #[derive(Deserialize)]
 struct ViewFeedParams {
     uuid: Uuid,
@@ -68,7 +72,7 @@ async fn view(
     State(ctx): State<crate::Context>,
     Path(params): Path<ViewFeedParams>,
 ) -> WebResult<impl IntoResponse> {
-    let feed = repo::feed::FeedRepo::new(ctx.db.clone())
+    let feed = repo::feed::FeedRepo::new(ctx.db)
         .get_feed(params.uuid)
         .await?
         .ok_or_else(|| WebError::NotFoundError)?;

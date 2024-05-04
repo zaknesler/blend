@@ -4,6 +4,9 @@ import dayjs from 'dayjs';
 import { Switch, Match, For, Component } from 'solid-js';
 import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
+import { Skeleton } from '../ui/skeleton';
+import { cx } from 'class-variance-authority';
+import { getFeeds } from '~/api/feeds';
 
 type EntryListProps = {
   feed_uuid?: string;
@@ -11,12 +14,20 @@ type EntryListProps = {
 };
 
 export const EntryList: Component<EntryListProps> = props => {
+  const feeds = createQuery(() => ({
+    queryKey: [QUERY_KEYS.FEEDS],
+    queryFn: getFeeds,
+  }));
+
   const entries = createQuery(() => ({
     queryKey: [QUERY_KEYS.ENTRIES_INDEX, props.feed_uuid],
     queryFn: () => getEntries({ feed: props.feed_uuid }),
   }));
 
-  const getUrl = (uuid: string) => (props.feed_uuid ? `/feeds/${props.feed_uuid}/entries/${uuid}` : `/entries/${uuid}`);
+  const getUrl = (entry_uuid: string) =>
+    props.feed_uuid ? `/feeds/${props.feed_uuid}/entries/${entry_uuid}` : `/entries/${entry_uuid}`;
+
+  const getFeed = (feed_uuid: string) => feeds.data?.find(feed => feed.uuid === feed_uuid);
 
   // useKeyboardNav(() => ({
   //   entries: entries.data || [],
@@ -27,7 +38,11 @@ export const EntryList: Component<EntryListProps> = props => {
   return (
     <Switch>
       <Match when={entries.isPending}>
-        <p>Loading entries...</p>
+        <Skeleton class="h-8" color="muted" />
+        <Skeleton class="h-8" color="muted" />
+        <Skeleton class="h-8" color="muted" />
+        <Skeleton class="h-8" color="muted" />
+        <Skeleton class="h-8" color="muted" />
       </Match>
 
       <Match when={entries.isError}>
@@ -38,15 +53,20 @@ export const EntryList: Component<EntryListProps> = props => {
         {entries.data?.length ? (
           <div class="flex flex-col gap-1">
             <For each={entries.data}>
-              {entry => (
+              {(entry, index) => (
                 <A
+                  data-index={index()}
                   href={getUrl(entry.uuid)}
                   activeClass="bg-gray-100"
-                  inactiveClass="hover:bg-gray-100"
-                  class="-mx-2 flex flex-col gap-1 rounded-lg p-2 ring-gray-300 transition focus:bg-gray-100 focus:outline-none focus:ring"
+                  inactiveClass={cx('hover:bg-gray-100', entry.read_at && 'opacity-50')}
+                  class={cx(
+                    '-mx-2 flex flex-col gap-1 rounded-lg p-2 ring-gray-300 transition focus:bg-gray-100 focus:outline-none focus:ring',
+                  )}
                 >
                   <h3 class="text-base/5">{entry.title}</h3>
-                  <small class="text-xs text-gray-500">{dayjs(entry.published_at).format('MMMM DD, YYYY')}</small>
+                  <small class="text-xs text-gray-500">
+                    {getFeed(entry.feed_uuid)?.title} - {dayjs(entry.published_at).format('MMMM DD, YYYY')}
+                  </small>
                 </A>
               )}
             </For>

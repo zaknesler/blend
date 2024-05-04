@@ -1,3 +1,4 @@
+import { FeedStats } from '~/types/bindings/stats';
 import { ApiResponse } from '.';
 import { Feed } from '../types/bindings/feed';
 import { apiUrl } from '../utils/url';
@@ -7,6 +8,13 @@ export const getFeeds = async () => {
   type Response = ApiResponse<Feed[]>;
 
   const res = await axios.get<Response>(apiUrl('/feeds'));
+  return res.data.data;
+};
+
+export const getFeedStats = async () => {
+  type Response = ApiResponse<FeedStats[]>;
+
+  const res = await axios.get<Response>(apiUrl('/feeds/stats'));
   return res.data.data;
 };
 

@@ -21,11 +21,11 @@ importers:
         specifier: ^0.13.3
         version: 0.13.3(solid-js@1.8.17)
       '@tanstack/solid-query':
-        specifier: ^5.34.0
-        version: 5.34.0(solid-js@1.8.17)
+        specifier: ^5.34.1
+        version: 5.34.1(solid-js@1.8.17)
       '@tanstack/solid-query-devtools':
-        specifier: ^5.34.0
-        version: 5.34.0(@tanstack/solid-query@5.34.0(solid-js@1.8.17))(solid-js@1.8.17)
+        specifier: ^5.34.1
+        version: 5.34.1(@tanstack/solid-query@5.34.1(solid-js@1.8.17))(solid-js@1.8.17)
       axios:
         specifier: ^1.6.8
         version: 1.6.8
@@ -618,20 +618,20 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
 
-  '@tanstack/query-core@5.32.1':
-    resolution: {integrity: sha512-mCWa1wdGb1jiny4+qYegbSeadcFj+Nq65KFSs4A1DRveoIq7SrTwUhqu7hrB6d54cQH5x59DfJvxusn3w1Cj/g==}
+  '@tanstack/query-core@5.34.1':
+    resolution: {integrity: sha512-/a4yTnX525QUl8rFULrDLIogjqqcY/CiVvS/vWMgl477mO4WIIDxwQsLvEgb7vzlW8FqX/9CiCmaiAUnYVgB1w==}
 
   '@tanstack/query-devtools@5.32.1':
     resolution: {integrity: sha512-7Xq57Ctopiy/4atpb0uNY5VRuCqRS/1fi/WBCKKX6jHMa6cCgDuV/AQuiwRXcKARbq2OkVAOrW2v4xK9nTbcCA==}
 
-  '@tanstack/solid-query-devtools@5.34.0':
-    resolution: {integrity: sha512-2Fu+4b9s42AoX/QuxwT8aPcyvChPGpS+4fAUzkjNQ5vbiU9uDvL47W0FxnyNmUO2XJt7VFlnHfGC6js7vk5/MA==}
+  '@tanstack/solid-query-devtools@5.34.1':
+    resolution: {integrity: sha512-YFu7HGhi1QH1o7xZW6iRQCPaZ6nEDyjJ1LhnXX3PwhFNComXqamRN16s2E/9s2Qxx6cuoFp+ASCI1JoiLgOLCQ==}
     peerDependencies:
-      '@tanstack/solid-query': ^5.34.0
+      '@tanstack/solid-query': ^5.34.1
       solid-js: ^1.8.14
 
-  '@tanstack/solid-query@5.34.0':
-    resolution: {integrity: sha512-t0htOYzFNtOZzrr4uqojyQvLlQz/ED63dbFLC071ulj6FBoGiyNiJqnS+XjbVXGFE2dkULdTWxpHjnD4ogfI8g==}
+  '@tanstack/solid-query@5.34.1':
+    resolution: {integrity: sha512-QaFxwwSiz0WwZ/aOs0Fqnp3nJhBhZsaw3i8CXxpLFMNeYtxEOaWyJSGCL5vMoS/nkN4Hx463HoOMeELeY5oSVA==}
     peerDependencies:
       solid-js: ^1.6.0
 
@@ -2289,19 +2289,19 @@ snapshots:
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.3
 
-  '@tanstack/query-core@5.32.1': {}
+  '@tanstack/query-core@5.34.1': {}
 
   '@tanstack/query-devtools@5.32.1': {}
 
-  '@tanstack/solid-query-devtools@5.34.0(@tanstack/solid-query@5.34.0(solid-js@1.8.17))(solid-js@1.8.17)':
+  '@tanstack/solid-query-devtools@5.34.1(@tanstack/solid-query@5.34.1(solid-js@1.8.17))(solid-js@1.8.17)':
     dependencies:
       '@tanstack/query-devtools': 5.32.1
-      '@tanstack/solid-query': 5.34.0(solid-js@1.8.17)
+      '@tanstack/solid-query': 5.34.1(solid-js@1.8.17)
       solid-js: 1.8.17
 
-  '@tanstack/solid-query@5.34.0(solid-js@1.8.17)':
+  '@tanstack/solid-query@5.34.1(solid-js@1.8.17)':
     dependencies:
-      '@tanstack/query-core': 5.32.1
+      '@tanstack/query-core': 5.34.1
       solid-js: 1.8.17
 
   '@total-typescript/ts-reset@0.5.1': {}

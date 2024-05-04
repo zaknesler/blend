@@ -1,7 +1,7 @@
 use crate::error::WebResult;
 use axum::{
     extract::{ws::WebSocket, State, WebSocketUpgrade},
-    middleware,
+    middleware::from_fn_with_state,
     response::IntoResponse,
     routing::get,
     Router,
@@ -11,10 +11,7 @@ use futures_util::{sink::SinkExt, stream::StreamExt};
 pub fn router(ctx: crate::Context) -> Router {
     Router::new()
         .route("/notifs", get(notifs))
-        .route_layer(middleware::from_fn_with_state(
-            ctx.clone(),
-            crate::middleware::auth::middleware,
-        ))
+        .route_layer(from_fn_with_state(ctx.clone(), crate::middleware::auth))
         .with_state(ctx)
 }
 

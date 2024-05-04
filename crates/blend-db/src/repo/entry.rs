@@ -24,7 +24,7 @@ impl EntryRepo {
     pub async fn get_entries(&self) -> DbResult<Vec<model::Entry>> {
         sqlx::query_as::<_, model::Entry>(
             r#"
-            SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at
+            SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at, read_at
             FROM entries
             ORDER BY published_at DESC
             "#,
@@ -40,7 +40,7 @@ impl EntryRepo {
     ) -> DbResult<Vec<model::Entry>> {
         sqlx::query_as::<_, model::Entry>(
             r#"
-            SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at
+            SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at, read_at
             FROM entries
             WHERE feed_uuid = ?1
             ORDER BY published_at DESC
@@ -53,11 +53,32 @@ impl EntryRepo {
     }
 
     pub async fn get_entry(&self, entry_uuid: &uuid::Uuid) -> DbResult<Option<model::Entry>> {
-        sqlx::query_as::<_, model::Entry>("SELECT * FROM entries WHERE uuid = ?1  LIMIT 1")
+        sqlx::query_as::<_, model::Entry>("SELECT * FROM entries WHERE uuid = ?1 LIMIT 1")
             .bind(entry_uuid)
             .fetch_optional(&self.db)
             .await
             .map_err(|err| err.into())
+    }
+
+    pub async fn update_entry_as_read(&self, entry_uuid: &uuid::Uuid) -> DbResult<bool> {
+        let rows_affected = sqlx::query("UPDATE entries SET read_at = ?1 WHERE uuid = ?2")
+            .bind(Utc::now())
+            .bind(entry_uuid)
+            .execute(&self.db)
+            .await?
+            .rows_affected();
+
+        Ok(rows_affected > 0)
+    }
+
+    pub async fn update_entry_as_unread(&self, entry_uuid: &uuid::Uuid) -> DbResult<bool> {
+        let rows_affected = sqlx::query("UPDATE entries SET read_at = NULL WHERE uuid = ?1")
+            .bind(entry_uuid)
+            .execute(&self.db)
+            .await?
+            .rows_affected();
+
+        Ok(rows_affected > 0)
     }
 
     pub async fn insert_entries(

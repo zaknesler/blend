@@ -25,9 +25,16 @@ impl FeedRepo {
             .map_err(|err| err.into())
     }
 
-    pub async fn get_feed(&self, uuid: uuid::Uuid) -> DbResult<Option<model::Feed>> {
+    pub async fn get_stats(&self) -> DbResult<Vec<model::FeedStats>> {
+        sqlx::query_as::<_, model::FeedStats>("SELECT * from feeds_stats")
+            .fetch_all(&self.db)
+            .await
+            .map_err(|err| err.into())
+    }
+
+    pub async fn get_feed(&self, feed_uuid: uuid::Uuid) -> DbResult<Option<model::Feed>> {
         sqlx::query_as::<_, model::Feed>("SELECT * FROM feeds WHERE uuid = ?1")
-            .bind(uuid)
+            .bind(feed_uuid)
             .fetch_optional(&self.db)
             .await
             .map_err(|err| err.into())

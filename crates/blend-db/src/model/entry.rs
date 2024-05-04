@@ -15,6 +15,9 @@ pub struct Entry {
     pub summary: Option<String>,
     #[sqlx(default)]
     pub content_html: Option<String>,
+    #[sqlx(default)]
+    pub content_scraped_html: Option<String>,
     pub published_at: Option<DateTime<Utc>>,
     pub updated_at: Option<DateTime<Utc>>,
+    pub read_at: Option<DateTime<Utc>>,
 }

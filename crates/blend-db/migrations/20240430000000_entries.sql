@@ -6,8 +6,10 @@ CREATE TABLE IF NOT EXISTS entries (
   title TEXT,
   summary TEXT,
   content_html TEXT,
+  content_scraped_html TEXT,
   published_at DATETIME,
   updated_at DATETIME,
+  read_at DATETIME,
   UNIQUE(feed_uuid, id),
   CONSTRAINT fk_feed FOREIGN KEY (feed_uuid) REFERENCES feeds(uuid) ON DELETE CASCADE
 );

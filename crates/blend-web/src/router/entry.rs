@@ -1,9 +1,9 @@
 use crate::error::{WebError, WebResult};
 use axum::{
     extract::{Path, Query, State},
-    middleware,
+    middleware::from_fn_with_state,
     response::IntoResponse,
-    routing::get,
+    routing::{get, post},
     Json, Router,
 };
 use blend_db::repo;
@@ -15,10 +15,9 @@ pub fn router(ctx: crate::Context) -> Router {
     Router::new()
         .route("/", get(index))
         .route("/:entry_uuid", get(view))
-        .route_layer(middleware::from_fn_with_state(
-            ctx.clone(),
-            crate::middleware::auth::middleware,
-        ))
+        .route("/:entry_uuid/read", post(update_read))
+        .route("/:entry_uuid/unread", post(update_unread))
+        .route_layer(from_fn_with_state(ctx.clone(), crate::middleware::auth))
         .with_state(ctx)
 }
 
@@ -57,4 +56,26 @@ async fn view(
         .ok_or_else(|| WebError::NotFoundError)?;
 
     Ok(Json(json!({ "data": entry })))
+}
+
+async fn update_read(
+    State(ctx): State<crate::Context>,
+    Path(params): Path<ViewEntryParams>,
+) -> WebResult<impl IntoResponse> {
+    let success = repo::entry::EntryRepo::new(ctx.db)
+        .update_entry_as_read(&params.entry_uuid)
+        .await?;
+
+    Ok(Json(json!({ "success": success })))
+}
+
+async fn update_unread(
+    State(ctx): State<crate::Context>,
+    Path(params): Path<ViewEntryParams>,
+) -> WebResult<impl IntoResponse> {
+    let success = repo::entry::EntryRepo::new(ctx.db)
+        .update_entry_as_unread(&params.entry_uuid)
+        .await?;
+
+    Ok(Json(json!({ "success": success })))
 }

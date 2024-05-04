@@ -8,6 +8,7 @@ import { QUERY_KEYS } from '~/constants/query';
 import { FeedItem } from './feed-item';
 import { ContextButton } from './context-button';
 import { TiCog } from 'solid-icons/ti';
+import { Skeleton } from '../ui/skeleton';
 
 type SidebarProps = {
   class?: string;
@@ -43,7 +44,11 @@ export const Sidebar: Component<SidebarProps> = props => {
         <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Feeds</h3>
         <Switch>
           <Match when={feeds.isPending}>
-            <p>Loading...</p>
+            <Skeleton class="h-8" color="light" />
+            <Skeleton class="h-8" color="light" />
+            <Skeleton class="h-8" color="light" />
+            <Skeleton class="h-8" color="light" />
+            <Skeleton class="h-8" color="light" />
           </Match>
 
           <Match when={feeds.isError}>
@@ -51,7 +56,11 @@ export const Sidebar: Component<SidebarProps> = props => {
           </Match>
 
           <Match when={feeds.isSuccess}>
-            <For each={feeds.data}>{feed => <FeedItem feed={feed} />}</For>
+            {feeds.data?.length ? (
+              <For each={feeds.data}>{feed => <FeedItem feed={feed} />}</For>
+            ) : (
+              <div>No feeds.</div>
+            )}
           </Match>
         </Switch>
       </div>
