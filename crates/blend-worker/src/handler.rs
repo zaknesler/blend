@@ -29,7 +29,7 @@ pub async fn fetch_entries(
         })
         .collect::<Vec<_>>();
 
-    let entry_uuids = repo.insert_entries(&feed.uuid, mapped).await?;
+    let entry_uuids = repo.insert_entries(&feed.uuid, &mapped).await?;
 
     notifs.lock().await.send(Notification::EntriesFetched {
         feed_uuid: feed.uuid,

@@ -63,17 +63,18 @@ impl EntryRepo {
     pub async fn insert_entries(
         &self,
         feed_uuid: &uuid::Uuid,
-        entries: Vec<CreateEntryParams>,
+        entries: &[CreateEntryParams],
     ) -> DbResult<Vec<uuid::Uuid>> {
         let mut query = QueryBuilder::<Sqlite>::new("INSERT INTO entries (feed_uuid, uuid, id, url, title, summary, content_html, published_at, updated_at) ");
-        query.push_values(entries.into_iter(), |mut b, entry| {
+        query.push_values(entries.iter(), |mut b, entry| {
             b.push_bind(feed_uuid)
                 .push_bind(uuid::Uuid::new_v4())
-                .push_bind(entry.id)
-                .push_bind(entry.url)
-                .push_bind(entry.title)
-                .push_bind(entry.summary)
-                .push_bind(entry.content_html)
+                .push_bind(entry.id.clone())
+                .push_bind(entry.url.clone())
+                .push_bind(entry.url.clone())
+                .push_bind(entry.title.clone())
+                .push_bind(entry.summary.clone())
+                .push_bind(entry.content_html.clone())
                 .push_bind(entry.published_at)
                 .push_bind(entry.updated_at);
         });
