@@ -36,7 +36,7 @@ export const Sidebar: Component<SidebarProps> = props => {
           triggerIconClass="w-5 h-5 text-gray-500"
         >
           <ContextButton.Item onClick={() => console.log('clicky')}>Settings</ContextButton.Item>
-          <ContextButton.Item onClick={() => console.log('clicky')}>Sign out</ContextButton.Item>
+          <ContextButton.Item onClick={() => console.log('clicky')}>Refresh feeds</ContextButton.Item>
         </ContextButton>
       </div>
 
