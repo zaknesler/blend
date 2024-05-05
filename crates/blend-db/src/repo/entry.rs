@@ -1,4 +1,5 @@
-use crate::{error::DbResult, model};
+use super::Paginated;
+use crate::{error::DbResult, model, PAGINATION_LIMIT};
 use chrono::{DateTime, Utc};
 use sqlx::{QueryBuilder, Row, Sqlite};
 use uuid::Uuid;
@@ -19,8 +20,38 @@ pub struct CreateEntryParams {
 
 #[derive(serde::Deserialize)]
 pub struct FilterEntriesParams {
+    #[serde(default = "FilterDirection::latest")]
+    pub direction: FilterDirection,
+    pub cursor: Option<Uuid>,
     pub feed: Option<Uuid>,
     pub unread: Option<bool>,
+}
+
+#[derive(serde::Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum FilterDirection {
+    Asc,
+    Desc,
+}
+
+impl FilterDirection {
+    pub fn latest() -> Self {
+        Self::Desc
+    }
+
+    pub fn query_elements(&self) -> (&str, &str) {
+        match self {
+            Self::Asc => ("ASC", ">"),
+            Self::Desc => ("DESC", "<"),
+        }
+    }
+
+    pub fn query_elements_inverse(&self) -> (&str, &str) {
+        match self {
+            Self::Asc => Self::query_elements(&Self::Desc),
+            Self::Desc => Self::query_elements(&Self::Asc),
+        }
+    }
 }
 
 impl EntryRepo {
@@ -28,32 +59,69 @@ impl EntryRepo {
         Self { db }
     }
 
-    pub async fn get_entries(
+    pub async fn get_paginated_entries(
         &self,
-        filter: Option<FilterEntriesParams>,
-    ) -> DbResult<Vec<model::Entry>> {
-        let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at, read_at FROM entries WHERE 1=1 ");
+        filter: FilterEntriesParams,
+    ) -> DbResult<Paginated<Vec<model::Entry>>> {
+        let el = filter.direction.query_elements();
+        let el_inv = filter.direction.query_elements_inverse();
+
+        let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at, read_at FROM entries WHERE 1=1");
 
         // Optionally filter read_at status
-        match filter.as_ref().map(|filter| filter.unread).flatten() {
+        match filter.unread {
             Some(true) => query.push(" AND read_at IS NULL"),
             Some(false) => query.push(" AND read_at IS NOT NULL"),
-            None => query.push(""),
+            _ => query.push(""),
         };
 
         // Optionally filter by feed
-        match filter.as_ref().map(|filter| filter.feed).flatten() {
+        match filter.feed {
             Some(uuid) => query.push(" AND feed_uuid = ").push_bind(uuid),
-            None => query.push(""),
+            _ => query.push(""),
         };
 
-        query.push(" ORDER BY published_at DESC");
+        // Use the cursor to find the next batch of items, based on the published_at date and the rowid (opposite direction) as a fallback
+        match filter.cursor {
+            Some(uuid) => query
+                .push(format!(
+                    " AND published_at {} (SELECT published_at FROM entries WHERE uuid = ",
+                    el.1
+                ))
+                .push_bind(uuid)
+                .push(")")
+                .push(format!(
+                    " OR (published_at IS NULL AND rowid {} (SELECT rowid FROM entries WHERE published_at IS NULL AND uuid = ",
+                    el_inv.1
+                ))
+                .push_bind(uuid)
+                .push("))"),
+            _ => query.push(""),
+        };
 
-        query
-            .build_query_as::<model::Entry>()
-            .fetch_all(&self.db)
-            .await
-            .map_err(|err| err.into())
+        // Sort by publish date, using the rowid as a fallback if no publish date exists
+        // Fetch one more than required to check for more entries for the given query
+        query.push(format!(
+            " ORDER BY published_at {}, rowid {} LIMIT {}",
+            el.0,
+            el_inv.0,
+            PAGINATION_LIMIT + 1
+        ));
+
+        let query = query.build_query_as::<model::Entry>();
+        let mut entries = query.fetch_all(&self.db).await?;
+        let mut last_item_uuid = None;
+
+        // We want to return PAGINATION_LIMIT but need to know if there are more to show
+        if entries.len() == PAGINATION_LIMIT + 1 {
+            entries.pop();
+            last_item_uuid = entries.last().map(|entry| entry.uuid);
+        }
+
+        Ok(Paginated {
+            data: entries,
+            next_cursor: last_item_uuid,
+        })
     }
 
     pub async fn get_entry(&self, entry_uuid: &uuid::Uuid) -> DbResult<Option<model::Entry>> {

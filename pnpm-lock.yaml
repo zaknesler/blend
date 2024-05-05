@@ -14,18 +14,24 @@ importers:
       '@kobalte/tailwindcss':
         specifier: ^0.9.0
         version: 0.9.0(tailwindcss@3.4.3)
+      '@solid-primitives/bounds':
+        specifier: ^0.0.121
+        version: 0.0.121(solid-js@1.8.17)
       '@solid-primitives/keyboard':
         specifier: ^1.2.8
         version: 1.2.8(solid-js@1.8.17)
+      '@solid-primitives/scroll':
+        specifier: ^2.0.23
+        version: 2.0.23(solid-js@1.8.17)
       '@solidjs/router':
         specifier: ^0.13.3
         version: 0.13.3(solid-js@1.8.17)
       '@tanstack/solid-query':
-        specifier: ^5.34.1
-        version: 5.34.1(solid-js@1.8.17)
+        specifier: ^5.34.2
+        version: 5.34.2(solid-js@1.8.17)
       '@tanstack/solid-query-devtools':
-        specifier: ^5.34.1
-        version: 5.34.1(@tanstack/solid-query@5.34.1(solid-js@1.8.17))(solid-js@1.8.17)
+        specifier: ^5.34.2
+        version: 5.34.2(@tanstack/solid-query@5.34.2(solid-js@1.8.17))(solid-js@1.8.17)
       axios:
         specifier: ^1.6.8
         version: 1.6.8
@@ -545,6 +551,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@solid-primitives/bounds@0.0.121':
+    resolution: {integrity: sha512-SGgF0l6xBU2WMGL7R6AP00fXKIF9YQx5a/FkRkEjqnz5sn6O0kgSmihiR2U/nz5EC8YHVGEmkMe+IOCECAWZlQ==}
+    peerDependencies:
+      solid-js: ^1.6.12
+
   '@solid-primitives/event-listener@2.3.3':
     resolution: {integrity: sha512-DAJbl+F0wrFW2xmcV8dKMBhk9QLVLuBSW+TR4JmIfTaObxd13PuL7nqaXnaYKDWOYa6otB00qcCUIGbuIhSUgQ==}
     peerDependencies:
@@ -580,8 +591,18 @@ packages:
     peerDependencies:
       solid-js: ^1.6.12
 
+  '@solid-primitives/resize-observer@2.0.25':
+    resolution: {integrity: sha512-jVDXkt2MiriYRaz4DYs62185d+6jQ+1DCsR+v7f6XMsIJJuf963qdBRFjtZtKXBaxdPNMyuPeDgf5XQe3EoDJg==}
+    peerDependencies:
+      solid-js: ^1.6.12
+
   '@solid-primitives/rootless@1.4.5':
     resolution: {integrity: sha512-GFJE9GC3ojx0aUKqAUZmQPyU8fOVMtnVNrkdk2yS4kd17WqVSpXpoTmo9CnOwA+PG7FTzdIkogvfLQSLs4lrww==}
+    peerDependencies:
+      solid-js: ^1.6.12
+
+  '@solid-primitives/scroll@2.0.23':
+    resolution: {integrity: sha512-kO0YpXKEUHaAnHp3zIsHYmxxuKXO3/LxVhZQHHmhqsmUY6A5IBObkSkoQ/ChIPl/WMKE7ynxEq40OgRmhvyUSw==}
     peerDependencies:
       solid-js: ^1.6.12
 
@@ -618,20 +639,20 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
 
-  '@tanstack/query-core@5.34.1':
-    resolution: {integrity: sha512-/a4yTnX525QUl8rFULrDLIogjqqcY/CiVvS/vWMgl477mO4WIIDxwQsLvEgb7vzlW8FqX/9CiCmaiAUnYVgB1w==}
+  '@tanstack/query-core@5.34.2':
+    resolution: {integrity: sha512-FM1UXldYcoMiWmVbpewV14EVpnr/ETBbdF84tmCktx29e2bXBFhGtAfyDHUD4X1FehaV5tC9GkXZUMZRQV3lcA==}
 
   '@tanstack/query-devtools@5.32.1':
     resolution: {integrity: sha512-7Xq57Ctopiy/4atpb0uNY5VRuCqRS/1fi/WBCKKX6jHMa6cCgDuV/AQuiwRXcKARbq2OkVAOrW2v4xK9nTbcCA==}
 
-  '@tanstack/solid-query-devtools@5.34.1':
-    resolution: {integrity: sha512-YFu7HGhi1QH1o7xZW6iRQCPaZ6nEDyjJ1LhnXX3PwhFNComXqamRN16s2E/9s2Qxx6cuoFp+ASCI1JoiLgOLCQ==}
+  '@tanstack/solid-query-devtools@5.34.2':
+    resolution: {integrity: sha512-p0pW2LFYVmxXCI+alJLExy5fCOvn18flq1Ccy5ud1PB3WitlS1Cs3ZBejRVNTPcfS5aZw4So2f8iFgH0RfMlSA==}
     peerDependencies:
-      '@tanstack/solid-query': ^5.34.1
+      '@tanstack/solid-query': ^5.34.2
       solid-js: ^1.8.14
 
-  '@tanstack/solid-query@5.34.1':
-    resolution: {integrity: sha512-QaFxwwSiz0WwZ/aOs0Fqnp3nJhBhZsaw3i8CXxpLFMNeYtxEOaWyJSGCL5vMoS/nkN4Hx463HoOMeELeY5oSVA==}
+  '@tanstack/solid-query@5.34.2':
+    resolution: {integrity: sha512-63z90jmXCTHoBMx8gqb/QVcq3ZKI+vkQaYw/cEqD/sg3E3fe3wYgx9vD7sk9MkZyKb8YN2xuc5eVTWaV0UyQaQ==}
     peerDependencies:
       solid-js: ^1.6.0
 
@@ -2210,6 +2231,14 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.16.4':
     optional: true
 
+  '@solid-primitives/bounds@0.0.121(solid-js@1.8.17)':
+    dependencies:
+      '@solid-primitives/event-listener': 2.3.3(solid-js@1.8.17)
+      '@solid-primitives/resize-observer': 2.0.25(solid-js@1.8.17)
+      '@solid-primitives/static-store': 0.0.8(solid-js@1.8.17)
+      '@solid-primitives/utils': 6.2.3(solid-js@1.8.17)
+      solid-js: 1.8.17
+
   '@solid-primitives/event-listener@2.3.3(solid-js@1.8.17)':
     dependencies:
       '@solid-primitives/utils': 6.2.3(solid-js@1.8.17)
@@ -2249,9 +2278,24 @@ snapshots:
       '@solid-primitives/utils': 6.2.3(solid-js@1.8.17)
       solid-js: 1.8.17
 
+  '@solid-primitives/resize-observer@2.0.25(solid-js@1.8.17)':
+    dependencies:
+      '@solid-primitives/event-listener': 2.3.3(solid-js@1.8.17)
+      '@solid-primitives/rootless': 1.4.5(solid-js@1.8.17)
+      '@solid-primitives/static-store': 0.0.8(solid-js@1.8.17)
+      '@solid-primitives/utils': 6.2.3(solid-js@1.8.17)
+      solid-js: 1.8.17
+
   '@solid-primitives/rootless@1.4.5(solid-js@1.8.17)':
     dependencies:
       '@solid-primitives/utils': 6.2.3(solid-js@1.8.17)
+      solid-js: 1.8.17
+
+  '@solid-primitives/scroll@2.0.23(solid-js@1.8.17)':
+    dependencies:
+      '@solid-primitives/event-listener': 2.3.3(solid-js@1.8.17)
+      '@solid-primitives/rootless': 1.4.5(solid-js@1.8.17)
+      '@solid-primitives/static-store': 0.0.8(solid-js@1.8.17)
       solid-js: 1.8.17
 
   '@solid-primitives/static-store@0.0.8(solid-js@1.8.17)':
@@ -2289,19 +2333,19 @@ snapshots:
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.3
 
-  '@tanstack/query-core@5.34.1': {}
+  '@tanstack/query-core@5.34.2': {}
 
   '@tanstack/query-devtools@5.32.1': {}
 
-  '@tanstack/solid-query-devtools@5.34.1(@tanstack/solid-query@5.34.1(solid-js@1.8.17))(solid-js@1.8.17)':
+  '@tanstack/solid-query-devtools@5.34.2(@tanstack/solid-query@5.34.2(solid-js@1.8.17))(solid-js@1.8.17)':
     dependencies:
       '@tanstack/query-devtools': 5.32.1
-      '@tanstack/solid-query': 5.34.1(solid-js@1.8.17)
+      '@tanstack/solid-query': 5.34.2(solid-js@1.8.17)
       solid-js: 1.8.17
 
-  '@tanstack/solid-query@5.34.1(solid-js@1.8.17)':
+  '@tanstack/solid-query@5.34.2(solid-js@1.8.17)':
     dependencies:
-      '@tanstack/query-core': 5.34.1
+      '@tanstack/query-core': 5.34.2
       solid-js: 1.8.17
 
   '@total-typescript/ts-reset@0.5.1': {}

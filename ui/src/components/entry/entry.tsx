@@ -3,9 +3,9 @@
 import { cx } from 'class-variance-authority';
 import { JSX, ParentComponent, splitProps, For } from 'solid-js';
 import { Entry } from '~/types/bindings/entry';
-import { Link } from './ui/link';
+import { Link } from '../ui/link';
 import dayjs from 'dayjs';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 
 type EntryViewProps = JSX.IntrinsicElements['div'] & {
   entry: Entry;

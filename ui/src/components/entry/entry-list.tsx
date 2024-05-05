@@ -1,32 +1,51 @@
 import { A } from '@solidjs/router';
 import { createQuery } from '@tanstack/solid-query';
 import dayjs from 'dayjs';
-import { Switch, Match, For, Component } from 'solid-js';
-import { getEntries } from '~/api/entries';
+import { Switch, Match, For, Component, createEffect, createSignal } from 'solid-js';
 import { QUERY_KEYS } from '~/constants/query';
 import { Skeleton } from '../ui/skeleton';
 import { cx } from 'class-variance-authority';
 import { getFeeds } from '~/api/feeds';
+import { useInfiniteEntries } from '~/hooks/use-infinite-entries';
+import { Spinner } from '../ui/spinner';
+import { type NullableBounds, createElementBounds } from '@solid-primitives/bounds';
+import { useFilterParams } from '~/hooks/use-filter-params';
 
 type EntryListProps = {
-  unread?: boolean;
-  feed_uuid?: string;
-  current_entry_uuid?: string;
+  containerBounds?: Readonly<NullableBounds>;
+  class?: string;
 };
 
 export const EntryList: Component<EntryListProps> = props => {
+  const filter = useFilterParams();
+
+  const [bottomOfList, setBottomOfList] = createSignal<HTMLElement>();
+
   const feeds = createQuery(() => ({
     queryKey: [QUERY_KEYS.FEEDS],
     queryFn: getFeeds,
   }));
 
-  const entries = createQuery(() => ({
-    queryKey: [QUERY_KEYS.ENTRIES_INDEX, props.feed_uuid, props.unread],
-    queryFn: () => getEntries({ feed: props.feed_uuid, unread: props.unread }),
-  }));
+  const entries = useInfiniteEntries();
+  const allEntries = () => entries.data?.pages.flatMap(page => page.data) || [];
 
-  const getUrl = (entry_uuid: string) =>
-    props.feed_uuid ? `/feeds/${props.feed_uuid}/entries/${entry_uuid}` : `/entries/${entry_uuid}`;
+  const listBounds = createElementBounds(bottomOfList);
+
+  createEffect(() => {
+    const bottomOfListVisible =
+      props.containerBounds?.bottom && listBounds.bottom && listBounds.bottom <= props.containerBounds?.bottom;
+    if (!bottomOfListVisible || !entries.hasNextPage) return;
+
+    entries.fetchNextPage();
+  });
+
+  const getUrl = (entry_uuid: string) => {
+    const path = filter.params.feed_uuid
+      ? `/feeds/${filter.params.feed_uuid}/entries/${entry_uuid}`
+      : `/entries/${entry_uuid}`;
+
+    return path.concat(filter.getQueryString());
+  };
 
   const getFeed = (feed_uuid: string) => feeds.data?.find(feed => feed.uuid === feed_uuid);
 
@@ -51,9 +70,9 @@ export const EntryList: Component<EntryListProps> = props => {
       </Match>
 
       <Match when={entries.isSuccess}>
-        {entries.data?.length ? (
-          <div class="flex flex-col gap-1">
-            <For each={entries.data}>
+        {allEntries().length ? (
+          <div class={cx('flex flex-col gap-1', props.class)}>
+            <For each={allEntries()}>
               {(entry, index) => (
                 <A
                   data-index={index()}
@@ -61,7 +80,8 @@ export const EntryList: Component<EntryListProps> = props => {
                   activeClass="bg-gray-100"
                   inactiveClass={cx('hover:bg-gray-100', entry.read_at && 'opacity-50')}
                   class={cx(
-                    '-mx-2 flex flex-col gap-1 rounded-lg p-2 ring-gray-300 transition focus:bg-gray-100 focus:outline-none focus:ring',
+                    '-mx-2 flex flex-col gap-1 rounded-lg p-2 ring-gray-300 transition',
+                    'focus:bg-gray-100 focus:outline-none focus:ring',
                   )}
                 >
                   <h3 class="text-base/5">{entry.title}</h3>
@@ -72,10 +92,18 @@ export const EntryList: Component<EntryListProps> = props => {
                 </A>
               )}
             </For>
+
+            <div ref={setBottomOfList} />
+
+            {entries.isFetchingNextPage && (
+              <div class="flex w-full items-center justify-center p-4">
+                <Spinner />
+              </div>
+            )}
           </div>
         ) : (
-          <div class="mt-2 w-full rounded-lg bg-gray-50 p-4 py-16 text-center text-sm text-gray-500">
-            This feed contains no entries.
+          <div class="mt-2 w-full rounded-lg bg-gray-100 p-4 py-16 text-center text-sm text-gray-500">
+            No entries to display.
           </div>
         )}
       </Match>
