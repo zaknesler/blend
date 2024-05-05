@@ -3,7 +3,7 @@ import { cx } from 'class-variance-authority';
 import { HiSolidRss } from 'solid-icons/hi';
 import { Component, createMemo, createSignal } from 'solid-js';
 import { Feed } from '~/types/bindings/feed';
-import { ContextButton } from './context-button';
+import { ContextButton } from '../layout/context-button';
 import { createQuery } from '@tanstack/solid-query';
 import { QUERY_KEYS } from '~/constants/query';
 import { getFeedStats } from '~/api/feeds';

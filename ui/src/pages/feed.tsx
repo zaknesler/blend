@@ -1,9 +1,9 @@
 import { useParams } from '@solidjs/router';
 import { Panel } from '~/components/layout/panel';
-import { EntryList } from '~/components/feed/entry-list';
+import { EntryList } from '~/components/entry/entry-list';
 import { FeedInfo } from '~/components/feed/feed-info';
 import { FeedHeader } from '~/components/feed/feed-header';
-import { EntryPanel } from '~/components/feed/entry-panel';
+import { EntryPanel } from '~/components/entry/entry-panel';
 import { For, createSignal } from 'solid-js';
 import { createElementBounds } from '@solid-primitives/bounds';
 import { Tabs } from '@kobalte/core/tabs';
