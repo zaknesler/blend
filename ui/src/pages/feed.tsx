@@ -37,20 +37,19 @@ export default () => {
           onChange={value => setUnreadFromTab(value as Tab)}
           class="flex w-full self-stretch rounded-lg bg-gray-100 text-xs font-medium text-gray-600"
         >
-          <Tabs.List class="relative flex w-full gap-1">
+          <Tabs.List class="relative flex w-full -space-x-1">
             <For each={TABS}>
               {tab => (
                 <Tabs.Trigger
-                  class="z-20 flex flex-1 items-center justify-center rounded-lg px-2 py-2"
+                  class="group z-20 flex flex-1 items-center justify-center rounded-lg p-1 focus:outline-none"
                   value={tab.value}
                 >
-                  {tab.label}
+                  <div class="w-full rounded-md p-2 group-hover:bg-gray-50 group-focus:outline ui-group-selected:bg-white ui-group-selected:shadow">
+                    {tab.label}
+                  </div>
                 </Tabs.Trigger>
               )}
             </For>
-            <Tabs.Indicator class="absolute z-10 h-full p-1 transition">
-              <div class="h-full w-full rounded-md bg-white shadow" />
-            </Tabs.Indicator>
           </Tabs.List>
         </Tabs>
 
