@@ -5,17 +5,17 @@ use tower_cookies::Cookies;
 
 pub async fn middleware(
     cookies: Cookies,
-    State(ctx): State<blend_context::Context>,
+    State(ctx): State<crate::Context>,
     req: Request<Body>,
     next: Next,
 ) -> WebResult<impl IntoResponse> {
-    let user_id = cookies.get(JWT_COOKIE).and_then(|cookie| {
-        jwt::verify_jwt(
-            ctx.blend.config.crypto.jwt_signing_key.as_ref(),
-            cookie.value(),
-        )
-        .ok()
-    });
+    // let user_id = cookies.get(JWT_COOKIE).and_then(|cookie| {
+    //     jwt::verify_jwt(
+    //         ctx.blend.config.crypto.jwt_signing_key.as_ref(),
+    //         cookie.value(),
+    //     )
+    //     .ok()
+    // });
 
     // let user = match user_id {
     //     Some(value) => value, // todo: fetch user here

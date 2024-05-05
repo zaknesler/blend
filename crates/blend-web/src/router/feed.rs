@@ -1,6 +1,7 @@
 use crate::error::{WebError, WebResult};
 use axum::{
     extract::{Path, State},
+    middleware::from_fn_with_state,
     response::IntoResponse,
     routing::{get, post},
     Json, Router,
@@ -11,20 +12,18 @@ use serde_json::json;
 use uuid::Uuid;
 use validator::Validate;
 
-pub fn router(ctx: blend_context::Context) -> Router {
+pub fn router(ctx: crate::Context) -> Router {
     Router::new()
         .route("/", get(index))
         .route("/", post(create))
+        .route("/stats", get(stats))
         .route("/:uuid", get(view))
-        // .route_layer(middleware::from_fn_with_state(
-        //     ctx.clone(),
-        //     crate::middleware::auth::middleware,
-        // ))
+        .route_layer(from_fn_with_state(ctx.clone(), crate::middleware::auth))
         .with_state(ctx)
 }
 
-async fn index(State(ctx): State<blend_context::Context>) -> WebResult<impl IntoResponse> {
-    let feeds = repo::feed::FeedRepo::new(ctx).get_feeds().await?;
+async fn index(State(ctx): State<crate::Context>) -> WebResult<impl IntoResponse> {
+    let feeds = repo::feed::FeedRepo::new(ctx.db).get_feeds().await?;
     Ok(Json(json!({ "data": feeds })))
 }
 
@@ -35,28 +34,33 @@ struct AddFeedParams {
 }
 
 async fn create(
-    State(ctx): State<blend_context::Context>,
+    State(ctx): State<crate::Context>,
     Json(data): Json<AddFeedParams>,
 ) -> WebResult<impl IntoResponse> {
     data.validate()?;
 
-    let parsed = blend_parse::parse_url(&data.url).await?;
-
-    let link = parsed
-        .links
-        .iter()
-        .find(|link| link.rel.as_ref().is_some_and(|rel| rel == "self"));
-
-    let feed = repo::feed::FeedRepo::new(ctx)
+    let parsed = blend_feed::parse_feed(&data.url).await?;
+    let feed = repo::feed::FeedRepo::new(ctx.db)
         .create_feed(repo::feed::CreateFeedParams {
-            title: parsed.title.map(|title| title.content),
-            url: link.map(|link| link.href.clone()),
-            published_at: parsed.published,
-            updated_at: parsed.updated,
+            id: parsed.id,
+            title: parsed.title,
+            url_feed: parsed.url,
+            published_at: parsed.published_at,
+            updated_at: parsed.updated_at,
         })
         .await?;
 
+    let worker = ctx.jobs.lock().await;
+    worker.send(blend_worker::Job::FetchMetadata(feed.clone())).await?;
+    worker.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
+
     Ok(Json(json!({ "data": feed })))
+}
+
+async fn stats(State(ctx): State<crate::Context>) -> WebResult<impl IntoResponse> {
+    let stats = repo::feed::FeedRepo::new(ctx.db).get_stats().await?;
+
+    Ok(Json(json!({ "data": stats })))
 }
 
 #[derive(Deserialize)]
@@ -65,10 +69,10 @@ struct ViewFeedParams {
 }
 
 async fn view(
-    State(ctx): State<blend_context::Context>,
+    State(ctx): State<crate::Context>,
     Path(params): Path<ViewFeedParams>,
 ) -> WebResult<impl IntoResponse> {
-    let feed = repo::feed::FeedRepo::new(ctx)
+    let feed = repo::feed::FeedRepo::new(ctx.db)
         .get_feed(params.uuid)
         .await?
         .ok_or_else(|| WebError::NotFoundError)?;

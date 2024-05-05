@@ -13,9 +13,9 @@ pub async fn middleware(
     next: Next,
 ) -> WebResult<impl IntoResponse> {
     // If the user has a JWT (valid or not), redirect to the dashboard to let the auth middleware verify it
-    if cookies.get(JWT_COOKIE).is_some() {
-        return Ok(Redirect::to("/me").into_response());
-    }
+    // if cookies.get(JWT_COOKIE).is_some() {
+    //     return Ok(Redirect::to("/").into_response());
+    // }
 
     Ok(next.run(req).await)
 }

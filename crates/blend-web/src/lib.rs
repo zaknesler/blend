@@ -4,13 +4,17 @@ use tokio::net::TcpListener;
 use tower_cookies::CookieManagerLayer;
 use tower_http::{cors, trace::TraceLayer};
 
-pub mod error;
+mod context;
+mod error;
 mod middleware;
 mod response;
 mod router;
 mod util;
 
-pub async fn serve(ctx: blend_context::Context) -> WebResult<()> {
+pub use context::Context;
+pub use error::WebError as Error;
+
+pub async fn serve(ctx: context::Context) -> WebResult<()> {
     tracing::info!(
         "Starting web server on {}:{}",
         ctx.blend.config.web.host,
@@ -25,14 +29,12 @@ pub async fn serve(ctx: blend_context::Context) -> WebResult<()> {
     if origins.contains(&"*".to_string()) {
         cors = cors.allow_origin(cors::Any)
     } else {
-        cors = cors
-            .allow_origin(
-                origins
-                    .iter()
-                    .map(|origin| origin.parse::<HeaderValue>().map_err(|err| err.into()))
-                    .collect::<WebResult<Vec<_>>>()?,
-            )
-            .allow_credentials(true);
+        let origins = origins
+            .iter()
+            .map(|origin| origin.parse::<HeaderValue>().map_err(|err| err.into()))
+            .collect::<WebResult<Vec<_>>>()?;
+
+        cors = cors.allow_origin(origins).allow_credentials(true);
     }
 
     let app = crate::router::router(ctx.clone())
@@ -40,15 +42,12 @@ pub async fn serve(ctx: blend_context::Context) -> WebResult<()> {
         .layer(cors)
         .layer(CookieManagerLayer::new());
 
-    axum::serve(
-        TcpListener::bind(format!(
-            "{}:{}",
-            ctx.blend.config.web.host, ctx.blend.config.web.port
-        ))
-        .await?,
-        app.into_make_service(),
-    )
-    .await?;
+    let addr = format!(
+        "{}:{}",
+        ctx.blend.config.web.host, ctx.blend.config.web.port
+    );
+
+    axum::serve(TcpListener::bind(addr).await?, app.into_make_service()).await?;
 
     Ok(())
 }

@@ -1,4 +1,4 @@
-pub type DbResult<T> = Result<T, DbError>;
+pub(crate) type DbResult<T> = Result<T, DbError>;
 
 #[derive(thiserror::Error, Debug)]
 pub enum DbError {
@@ -18,5 +18,5 @@ pub enum DbError {
     IoError(#[from] std::io::Error),
 
     #[error(transparent)]
-    ConfigError(#[from] blend_config::error::ConfigError),
+    ConfigError(#[from] blend_config::Error),
 }

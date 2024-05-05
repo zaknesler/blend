@@ -5,18 +5,12 @@ edition.workspace = true
 
 [dependencies]
 blend-config = { path = "../blend-config" }
-blend-context = { path = "../blend-context" }
 chrono = { workspace = true, features = ["serde"] }
 futures = "0.3"
-serde = { workspace = true, features = ["derive"] }
+serde = { workspace = true }
 serde_json = { workspace = true }
-sqlx = { workspace = true, features = [
-  "runtime-tokio",
-  "sqlite",
-  "migrate",
-  "uuid",
-] }
+sqlx = { workspace = true, features = ["migrate", "uuid"] }
 thiserror = { workspace = true }
 tracing = { workspace = true }
-ts-rs = { version = "8.1", features = ["chrono-impl", "uuid-impl"] }
+ts-rs = { workspace = true }
 uuid = { workspace = true }

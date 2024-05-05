@@ -1,9 +1,0 @@
-[package]
-name = "blend-context"
-version.workspace = true
-edition.workspace = true
-
-[dependencies]
-blend-config = { path = "../blend-config" }
-sqlx = { workspace = true, features = ["sqlite"] }
-thiserror = { workspace = true }

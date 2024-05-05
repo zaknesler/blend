@@ -1,0 +1,18 @@
+[package]
+name = "blend-worker"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+blend-config = { path = "../blend-config" }
+blend-db = { path = "../blend-db" }
+blend-feed = { path = "../blend-feed" }
+reqwest = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+sqlx = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+ts-rs = { workspace = true }
+uuid = { workspace = true }

@@ -1,7 +1,7 @@
-pub type ParseResult<T> = Result<T, ParseError>;
+pub(crate) type FeedResult<T> = Result<T, FeedError>;
 
 #[derive(thiserror::Error, Debug)]
-pub enum ParseError {
+pub enum FeedError {
     #[error(transparent)]
     Io(#[from] std::io::Error),
 
