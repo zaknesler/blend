@@ -3,22 +3,20 @@ import { ApiPaginatedResponse } from '~/api';
 import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import { Entry } from '~/types/bindings/entry';
+import { useFilter } from './use-filter';
 
-type UseInfiniteEntriesParams = {
-  unread?: boolean;
-  feed_uuid?: string;
-  current_entry_uuid?: string;
-};
+export const useInfiniteEntries = () => {
+  const filter = useFilter();
 
-export const useInfiniteEntries = (params: UseInfiniteEntriesParams) =>
-  createInfiniteQuery<ApiPaginatedResponse<Entry[]>>(() => ({
-    queryKey: [QUERY_KEYS.ENTRIES_INDEX, params.feed_uuid, params.unread],
+  return createInfiniteQuery<ApiPaginatedResponse<Entry[]>>(() => ({
+    queryKey: [QUERY_KEYS.ENTRIES_INDEX, filter.params.feed_uuid, filter.getUnread()],
     queryFn: fetchParams =>
       getEntries({
-        feed: params.feed_uuid,
-        unread: params.unread,
+        feed: filter.params.feed_uuid,
+        unread: filter.getUnread(),
         cursor: fetchParams.pageParam as undefined | string,
       }),
     getNextPageParam: last => last.next_cursor,
     initialPageParam: undefined,
   }));
+};

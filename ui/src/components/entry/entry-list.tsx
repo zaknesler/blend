@@ -9,15 +9,16 @@ import { getFeeds } from '~/api/feeds';
 import { useInfiniteEntries } from '~/hooks/use-infinite-entries';
 import { Spinner } from '../ui/spinner';
 import { type NullableBounds, createElementBounds } from '@solid-primitives/bounds';
+import { useFilter } from '~/hooks/use-filter';
 
 type EntryListProps = {
   containerBounds?: Readonly<NullableBounds>;
-  unread?: boolean;
-  feed_uuid?: string;
-  current_entry_uuid?: string;
+  class?: string;
 };
 
 export const EntryList: Component<EntryListProps> = props => {
+  const filter = useFilter();
+
   const [bottomOfList, setBottomOfList] = createSignal<HTMLElement>();
 
   const feeds = createQuery(() => ({
@@ -25,7 +26,7 @@ export const EntryList: Component<EntryListProps> = props => {
     queryFn: getFeeds,
   }));
 
-  const entries = useInfiniteEntries(props);
+  const entries = useInfiniteEntries();
   const allEntries = () => entries.data?.pages.flatMap(page => page.data) || [];
 
   const listBounds = createElementBounds(bottomOfList);
@@ -38,8 +39,13 @@ export const EntryList: Component<EntryListProps> = props => {
     entries.fetchNextPage();
   });
 
-  const getUrl = (entry_uuid: string) =>
-    props.feed_uuid ? `/feeds/${props.feed_uuid}/entries/${entry_uuid}` : `/entries/${entry_uuid}`;
+  const getUrl = (entry_uuid: string) => {
+    const path = filter.params.feed_uuid
+      ? `/feeds/${filter.params.feed_uuid}/entries/${entry_uuid}`
+      : `/entries/${entry_uuid}`;
+
+    return path.concat(filter.getQueryString());
+  };
 
   const getFeed = (feed_uuid: string) => feeds.data?.find(feed => feed.uuid === feed_uuid);
 
@@ -65,7 +71,7 @@ export const EntryList: Component<EntryListProps> = props => {
 
       <Match when={entries.isSuccess}>
         {allEntries().length ? (
-          <div class="flex flex-col gap-1">
+          <div class={cx('flex flex-col gap-1', props.class)}>
             <For each={allEntries()}>
               {(entry, index) => (
                 <A
