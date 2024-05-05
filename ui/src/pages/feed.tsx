@@ -8,6 +8,7 @@ import { createElementBounds } from '@solid-primitives/bounds';
 import { Tabs } from '@kobalte/core/tabs';
 import { TABS, Tab } from '~/constants/tabs';
 import { useFilterParams } from '~/hooks/use-filter-params';
+import { cx } from 'class-variance-authority';
 
 export default () => {
   const filter = useFilterParams();
@@ -41,10 +42,16 @@ export default () => {
             <For each={TABS}>
               {tab => (
                 <Tabs.Trigger
-                  class="group z-20 flex flex-1 items-center justify-center rounded-lg p-1 focus:outline-none"
+                  class="group z-20 flex flex-1 items-center justify-center rounded-lg p-1 transition focus:outline-none"
                   value={tab.value}
                 >
-                  <div class="w-full rounded-md p-2 group-hover:bg-gray-50 group-focus:outline ui-group-selected:bg-white ui-group-selected:shadow">
+                  <div
+                    class={cx(
+                      'w-full rounded-md border border-transparent px-2 py-1.5 transition',
+                      'group-hover:bg-gray-50 group-focus:!border-gray-400 group-focus:ring-[2px] group-focus:ring-gray-200',
+                      'ui-group-selected:bg-white ui-group-selected:shadow',
+                    )}
+                  >
                     {tab.label}
                   </div>
                 </Tabs.Trigger>
