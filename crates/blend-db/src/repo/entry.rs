@@ -89,7 +89,13 @@ impl EntryRepo {
                     el.1
                 ))
                 .push_bind(uuid)
-                .push(")"),
+                .push(")")
+                .push(format!(
+                    " OR (published_at IS NULL AND rowid {} (SELECT rowid FROM entries WHERE published_at IS NULL AND uuid = ",
+                    el_inv.1
+                ))
+                .push_bind(uuid)
+                .push("))"),
             _ => query.push(""),
         };
 
