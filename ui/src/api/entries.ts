@@ -5,6 +5,7 @@ import axios from 'axios';
 
 type IndexEntriesParams = {
   feed?: string;
+  unread?: boolean;
 };
 
 export const getEntries = async (params: IndexEntriesParams) => {

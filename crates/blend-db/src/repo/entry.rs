@@ -1,6 +1,7 @@
 use crate::{error::DbResult, model};
 use chrono::{DateTime, Utc};
 use sqlx::{QueryBuilder, Row, Sqlite};
+use uuid::Uuid;
 
 pub struct EntryRepo {
     db: sqlx::SqlitePool,
@@ -16,40 +17,43 @@ pub struct CreateEntryParams {
     pub updated_at: Option<DateTime<Utc>>,
 }
 
+#[derive(serde::Deserialize)]
+pub struct FilterEntriesParams {
+    pub feed: Option<Uuid>,
+    pub unread: Option<bool>,
+}
+
 impl EntryRepo {
     pub fn new(db: sqlx::SqlitePool) -> Self {
         Self { db }
     }
 
-    pub async fn get_entries(&self) -> DbResult<Vec<model::Entry>> {
-        sqlx::query_as::<_, model::Entry>(
-            r#"
-            SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at, read_at
-            FROM entries
-            ORDER BY published_at DESC
-            "#,
-        )
-        .fetch_all(&self.db)
-        .await
-        .map_err(|err| err.into())
-    }
-
-    pub async fn get_entries_for_feed(
+    pub async fn get_entries(
         &self,
-        feed_uuid: &uuid::Uuid,
+        filter: Option<FilterEntriesParams>,
     ) -> DbResult<Vec<model::Entry>> {
-        sqlx::query_as::<_, model::Entry>(
-            r#"
-            SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at, read_at
-            FROM entries
-            WHERE feed_uuid = ?1
-            ORDER BY published_at DESC
-            "#,
-        )
-        .bind(feed_uuid)
-        .fetch_all(&self.db)
-        .await
-        .map_err(|err| err.into())
+        let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at, read_at FROM entries WHERE 1=1 ");
+
+        // Optionally filter read_at status
+        match filter.as_ref().map(|filter| filter.unread).flatten() {
+            Some(true) => query.push(" AND read_at IS NULL"),
+            Some(false) => query.push(" AND read_at IS NOT NULL"),
+            None => query.push(""),
+        };
+
+        // Optionally filter by feed
+        match filter.as_ref().map(|filter| filter.feed).flatten() {
+            Some(uuid) => query.push(" AND feed_uuid = ").push_bind(uuid),
+            None => query.push(""),
+        };
+
+        query.push(" ORDER BY published_at DESC");
+
+        query
+            .build_query_as::<model::Entry>()
+            .fetch_all(&self.db)
+            .await
+            .map_err(|err| err.into())
     }
 
     pub async fn get_entry(&self, entry_uuid: &uuid::Uuid) -> DbResult<Option<model::Entry>> {

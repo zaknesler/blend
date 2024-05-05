@@ -6,7 +6,7 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
-use blend_db::repo;
+use blend_db::repo::{self, entry::FilterEntriesParams};
 use serde::Deserialize;
 use serde_json::json;
 use uuid::Uuid;
@@ -21,22 +21,14 @@ pub fn router(ctx: crate::Context) -> Router {
         .with_state(ctx)
 }
 
-#[derive(Deserialize)]
-struct IndexEntriesQuery {
-    feed: Option<Uuid>,
-}
-
 async fn index(
     State(ctx): State<crate::Context>,
-    Query(params): Query<IndexEntriesQuery>,
+    Query(params): Query<FilterEntriesParams>,
 ) -> WebResult<impl IntoResponse> {
-    let repo = repo::entry::EntryRepo::new(ctx.db);
-
-    let entries = match params.feed {
-        Some(uuid) => repo.get_entries_for_feed(&uuid).await,
-        None => repo.get_entries().await,
-    }
-    .unwrap_or_else(|_| vec![]);
+    let entries = repo::entry::EntryRepo::new(ctx.db)
+        .get_entries(Some(params))
+        .await
+        .unwrap_or_else(|_| vec![]);
 
     Ok(Json(json!({ "data": entries })))
 }

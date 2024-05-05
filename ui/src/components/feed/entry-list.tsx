@@ -9,6 +9,7 @@ import { cx } from 'class-variance-authority';
 import { getFeeds } from '~/api/feeds';
 
 type EntryListProps = {
+  unread?: boolean;
   feed_uuid?: string;
   current_entry_uuid?: string;
 };
@@ -20,8 +21,8 @@ export const EntryList: Component<EntryListProps> = props => {
   }));
 
   const entries = createQuery(() => ({
-    queryKey: [QUERY_KEYS.ENTRIES_INDEX, props.feed_uuid],
-    queryFn: () => getEntries({ feed: props.feed_uuid }),
+    queryKey: [QUERY_KEYS.ENTRIES_INDEX, props.feed_uuid, props.unread],
+    queryFn: () => getEntries({ feed: props.feed_uuid, unread: props.unread }),
   }));
 
   const getUrl = (entry_uuid: string) =>
@@ -65,7 +66,8 @@ export const EntryList: Component<EntryListProps> = props => {
                 >
                   <h3 class="text-base/5">{entry.title}</h3>
                   <small class="text-xs text-gray-500">
-                    {getFeed(entry.feed_uuid)?.title} - {dayjs(entry.published_at).format('MMMM DD, YYYY')}
+                    <span class="font-medium">{getFeed(entry.feed_uuid)?.title}</span> -{' '}
+                    {dayjs(entry.published_at).format('MMMM DD, YYYY')}
                   </small>
                 </A>
               )}
