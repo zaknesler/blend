@@ -9,7 +9,7 @@ import { getFeeds } from '~/api/feeds';
 import { useInfiniteEntries } from '~/hooks/use-infinite-entries';
 import { Spinner } from '../ui/spinner';
 import { type NullableBounds, createElementBounds } from '@solid-primitives/bounds';
-import { useFilter } from '~/hooks/use-filter';
+import { useFilterParams } from '~/hooks/use-filter-params';
 
 type EntryListProps = {
   containerBounds?: Readonly<NullableBounds>;
@@ -17,7 +17,7 @@ type EntryListProps = {
 };
 
 export const EntryList: Component<EntryListProps> = props => {
-  const filter = useFilter();
+  const filter = useFilterParams();
 
   const [bottomOfList, setBottomOfList] = createSignal<HTMLElement>();
 

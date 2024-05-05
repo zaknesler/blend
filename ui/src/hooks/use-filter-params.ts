@@ -10,7 +10,7 @@ type QueryParams = {
   unread?: string;
 };
 
-export const useFilter = () => {
+export const useFilterParams = () => {
   const params = useParams<RouterParams>();
   const [query, setQuery] = useSearchParams<QueryParams>();
 

@@ -1,23 +1,21 @@
 import { createQuery, useQueryClient } from '@tanstack/solid-query';
 import { EntryView } from '~/components/entry/entry';
-import { Component, Match, Switch, createEffect } from 'solid-js';
+import { Match, Switch, createEffect } from 'solid-js';
 import { getEntry } from '~/api/entries';
 import { Panel } from '~/components/layout/panel';
 import { QUERY_KEYS } from '~/constants/query';
 import { updateEntryAsRead } from '~/api/entries';
 import { createMutation } from '@tanstack/solid-query';
+import { useFilterParams } from '~/hooks/use-filter-params';
 
-type EntryPanelProps = {
-  entry_uuid: string;
-  feed_uuid?: string;
-};
-
-export const EntryPanel: Component<EntryPanelProps> = props => {
+export const EntryPanel = () => {
+  const filter = useFilterParams();
   const queryClient = useQueryClient();
 
   const entry = createQuery(() => ({
-    queryKey: [QUERY_KEYS.ENTRIES_VIEW, props.entry_uuid],
-    queryFn: () => getEntry(props.entry_uuid),
+    enabled: !!filter.params.entry_uuid,
+    queryKey: [QUERY_KEYS.ENTRIES_VIEW, filter.params.entry_uuid],
+    queryFn: () => getEntry(filter.params.entry_uuid!),
   }));
 
   const markAsRead = createMutation(() => ({
@@ -30,7 +28,7 @@ export const EntryPanel: Component<EntryPanelProps> = props => {
 
     markAsRead.mutateAsync(entry.data.uuid).then(() => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS_STATS] });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX, props.feed_uuid] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX, filter.params.feed_uuid] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_VIEW, entry.data.uuid] });
     });
   });

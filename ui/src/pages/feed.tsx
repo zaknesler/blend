@@ -7,10 +7,10 @@ import { For, createSignal } from 'solid-js';
 import { createElementBounds } from '@solid-primitives/bounds';
 import { Tabs } from '@kobalte/core/tabs';
 import { TABS, Tab } from '~/constants/tabs';
-import { useFilter } from '~/hooks/use-filter';
+import { useFilterParams } from '~/hooks/use-filter-params';
 
 export default () => {
-  const filter = useFilter();
+  const filter = useFilterParams();
   const [container, setContainer] = createSignal<HTMLElement>();
 
   const containerBounds = createElementBounds(container);
@@ -53,9 +53,7 @@ export default () => {
         <EntryList containerBounds={containerBounds} />
       </Panel>
 
-      {filter.params.entry_uuid && (
-        <EntryPanel feed_uuid={filter.params.feed_uuid} entry_uuid={filter.params.entry_uuid!} />
-      )}
+      {filter.params.entry_uuid && <EntryPanel />}
     </>
   );
 };
