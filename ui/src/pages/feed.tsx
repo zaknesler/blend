@@ -4,34 +4,71 @@ import { EntryList } from '~/components/feed/entry-list';
 import { FeedInfo } from '~/components/feed/feed-info';
 import { FeedHeader } from '~/components/feed/feed-header';
 import { EntryPanel } from '~/components/feed/entry-panel';
-import { createSignal } from 'solid-js';
+import { For, createSignal } from 'solid-js';
 import { createElementBounds } from '@solid-primitives/bounds';
+import { Tabs } from '@kobalte/core/tabs';
+
+const TABS = [
+  { label: 'All', value: 'all' },
+  { label: 'Unread', value: 'unread' },
+  { label: 'Read', value: 'read' },
+] as const;
+
+type Tab = (typeof TABS)[number]['value'];
 
 export default () => {
-  const [unreadOnly, setUnreadOnly] = createSignal(false);
+  const [selectedTab, setSelectedTab] = createSignal<Tab>('all');
   const [container, setContainer] = createSignal<HTMLElement>();
 
   const params = useParams<{ feed_uuid?: string; entry_uuid?: string }>();
 
-  const bounds = createElementBounds(container);
+  const containerBounds = createElementBounds(container);
+
+  const getUnreadParam = () => {
+    switch (selectedTab()) {
+      case 'all':
+        return undefined;
+      case 'unread':
+        return true;
+      case 'read':
+        return false;
+    }
+  };
 
   return (
     <>
       <Panel class="flex max-w-md shrink-0 flex-col gap-2 p-4 pb-2" ref={setContainer}>
         <div class="flex justify-between">
           {params.feed_uuid ? <FeedInfo uuid={params.feed_uuid} /> : <FeedHeader title="All feeds" />}
-
-          <label class="inline-flex items-center gap-2 text-sm">
-            <span>Unread only</span>
-            <input type="checkbox" checked={unreadOnly()} onChange={() => setUnreadOnly(val => !val)} />
-          </label>
         </div>
 
+        <Tabs
+          value={selectedTab()}
+          onChange={setSelectedTab}
+          class="flex w-full self-stretch rounded-lg bg-gray-100 text-xs font-medium text-gray-600"
+        >
+          <Tabs.List class="relative flex w-full gap-1">
+            <For each={TABS}>
+              {tab => (
+                <Tabs.Trigger
+                  class="z-20 flex flex-1 items-center justify-center rounded-lg px-2 py-2"
+                  value={tab.value}
+                >
+                  {tab.label}
+                </Tabs.Trigger>
+              )}
+            </For>
+            <Tabs.Indicator class="absolute z-10 h-full p-1 transition">
+              <div class="h-full w-full rounded-md bg-white shadow" />
+            </Tabs.Indicator>
+          </Tabs.List>
+        </Tabs>
+
         <EntryList
-          bottomOfContainer={bounds.bottom || undefined}
+          containerBounds={containerBounds}
           feed_uuid={params.feed_uuid}
           current_entry_uuid={params.entry_uuid}
-          unread={unreadOnly() || undefined}
+          unread={getUnreadParam()}
         />
       </Panel>
 

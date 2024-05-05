@@ -8,10 +8,10 @@ import { cx } from 'class-variance-authority';
 import { getFeeds } from '~/api/feeds';
 import { useInfiniteEntries } from '~/hooks/use-infinite-entries';
 import { Spinner } from '../ui/spinner';
-import { createElementBounds } from '@solid-primitives/bounds';
+import { type NullableBounds, createElementBounds } from '@solid-primitives/bounds';
 
 type EntryListProps = {
-  bottomOfContainer?: number;
+  containerBounds?: Readonly<NullableBounds>;
   unread?: boolean;
   feed_uuid?: string;
   current_entry_uuid?: string;
@@ -28,10 +28,11 @@ export const EntryList: Component<EntryListProps> = props => {
   const entries = useInfiniteEntries(props);
   const allEntries = () => entries.data?.pages.flatMap(page => page.data) || [];
 
-  const bounds = createElementBounds(bottomOfList);
+  const listBounds = createElementBounds(bottomOfList);
 
   createEffect(() => {
-    const bottomOfListVisible = props.bottomOfContainer && bounds.bottom && bounds.bottom <= props.bottomOfContainer;
+    const bottomOfListVisible =
+      props.containerBounds?.bottom && listBounds.bottom && listBounds.bottom <= props.containerBounds?.bottom;
     if (!bottomOfListVisible || !entries.hasNextPage) return;
 
     entries.fetchNextPage();
@@ -95,8 +96,8 @@ export const EntryList: Component<EntryListProps> = props => {
             )}
           </div>
         ) : (
-          <div class="mt-2 w-full rounded-lg bg-gray-50 p-4 py-16 text-center text-sm text-gray-500">
-            This feed contains no entries.
+          <div class="mt-2 w-full rounded-lg bg-gray-100 p-4 py-16 text-center text-sm text-gray-500">
+            No entries to display.
           </div>
         )}
       </Match>
