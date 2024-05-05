@@ -11,14 +11,18 @@ import { useFilterParams } from '~/hooks/use-filter-params';
 
 export default () => {
   const filter = useFilterParams();
-  const [container, setContainer] = createSignal<HTMLElement>();
 
+  const [container, setContainer] = createSignal<HTMLElement>();
   const containerBounds = createElementBounds(container);
 
-  const getUnreadAsTab: () => Tab = () => {
+  const getUnreadAsTab = (): Tab => {
     const value = filter.getUnread();
     if (value === true) return 'unread';
     return 'all';
+  };
+
+  const setUnreadFromTab = (value: Tab) => {
+    filter.setUnread(value === 'unread' ? true : undefined);
   };
 
   return (
@@ -30,7 +34,7 @@ export default () => {
 
         <Tabs
           value={getUnreadAsTab()}
-          onChange={value => filter.setUnread(value as Tab)}
+          onChange={value => setUnreadFromTab(value as Tab)}
           class="flex w-full self-stretch rounded-lg bg-gray-100 text-xs font-medium text-gray-600"
         >
           <Tabs.List class="relative flex w-full gap-1">
