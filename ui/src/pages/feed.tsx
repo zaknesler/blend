@@ -5,15 +5,19 @@ import { FeedInfo } from '~/components/feed/feed-info';
 import { FeedHeader } from '~/components/feed/feed-header';
 import { EntryPanel } from '~/components/feed/entry-panel';
 import { createSignal } from 'solid-js';
+import { createElementBounds } from '@solid-primitives/bounds';
 
 export default () => {
-  const [unreadOnly, setUnreadOnly] = createSignal(true);
+  const [unreadOnly, setUnreadOnly] = createSignal(false);
+  const [container, setContainer] = createSignal<HTMLElement>();
 
   const params = useParams<{ feed_uuid?: string; entry_uuid?: string }>();
 
+  const bounds = createElementBounds(container);
+
   return (
     <>
-      <Panel class="flex max-w-md flex-col gap-2 p-4 pb-2">
+      <Panel class="flex max-w-md shrink-0 flex-col gap-2 p-4 pb-2" ref={setContainer}>
         <div class="flex justify-between">
           {params.feed_uuid ? <FeedInfo uuid={params.feed_uuid} /> : <FeedHeader title="All feeds" />}
 
@@ -22,7 +26,9 @@ export default () => {
             <input type="checkbox" checked={unreadOnly()} onChange={() => setUnreadOnly(val => !val)} />
           </label>
         </div>
+
         <EntryList
+          bottomOfContainer={bounds.bottom || undefined}
           feed_uuid={params.feed_uuid}
           current_entry_uuid={params.entry_uuid}
           unread={unreadOnly() || undefined}

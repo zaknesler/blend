@@ -1,5 +1,5 @@
 import { createQuery, useQueryClient } from '@tanstack/solid-query';
-import { EntryView } from '~/components/entry';
+import { EntryView } from '~/components/feed/entry';
 import { Component, Match, Switch, createEffect } from 'solid-js';
 import { getEntry } from '~/api/entries';
 import { Panel } from '~/components/layout/panel';

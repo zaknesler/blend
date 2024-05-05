@@ -1,9 +1,8 @@
-use crate::{error::DbResult, model};
+use super::Paginated;
+use crate::{error::DbResult, model, PAGINATION_LIMIT};
 use chrono::{DateTime, Utc};
 use sqlx::{QueryBuilder, Row, Sqlite};
 use uuid::Uuid;
-
-use super::Paginated;
 
 pub struct EntryRepo {
     db: sqlx::SqlitePool,
@@ -82,7 +81,7 @@ impl EntryRepo {
             _ => query.push(""),
         };
 
-        // Using the cursor to find the next batch of items, based on the published_at date and the rowid (opposite direction) as a fallback
+        // Use the cursor to find the next batch of items, based on the published_at date and the rowid (opposite direction) as a fallback
         match filter.cursor {
             Some(uuid) => query
                 .push(format!(
@@ -90,23 +89,28 @@ impl EntryRepo {
                     el.1
                 ))
                 .push_bind(uuid)
-                .push(")")
-                .push(format!(
-                    " OR rowid {} (SELECT rowid FROM entries WHERE uuid = ",
-                    el_inv.1
-                ))
-                .push_bind(uuid)
                 .push(")"),
             _ => query.push(""),
         };
 
+        // Sort by publish date, using the rowid as a fallback if no publish date exists
+        // Fetch one more than required to check for more entries for the given query
         query.push(format!(
-            " ORDER BY published_at {}, rowid {} LIMIT 25",
-            el.0, el_inv.0
+            " ORDER BY published_at {}, rowid {} LIMIT {}",
+            el.0,
+            el_inv.0,
+            PAGINATION_LIMIT + 1
         ));
 
-        let entries = query.build_query_as::<model::Entry>().fetch_all(&self.db).await?;
-        let last_item_uuid = entries.last().map(|entry| entry.uuid);
+        let query = query.build_query_as::<model::Entry>();
+        let mut entries = query.fetch_all(&self.db).await?;
+        let mut last_item_uuid = None;
+
+        // We want to return PAGINATION_LIMIT but need to know if there are more to show
+        if entries.len() == PAGINATION_LIMIT + 1 {
+            entries.pop();
+            last_item_uuid = entries.last().map(|entry| entry.uuid);
+        }
 
         Ok(Paginated {
             data: entries,
