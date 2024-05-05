@@ -3,6 +3,8 @@ use chrono::{DateTime, Utc};
 use sqlx::{QueryBuilder, Row, Sqlite};
 use uuid::Uuid;
 
+use super::Paginated;
+
 pub struct EntryRepo {
     db: sqlx::SqlitePool,
 }
@@ -19,8 +21,38 @@ pub struct CreateEntryParams {
 
 #[derive(serde::Deserialize)]
 pub struct FilterEntriesParams {
+    #[serde(default = "FilterDirection::latest")]
+    pub direction: FilterDirection,
+    pub cursor: Option<Uuid>,
     pub feed: Option<Uuid>,
     pub unread: Option<bool>,
+}
+
+#[derive(serde::Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum FilterDirection {
+    Asc,
+    Desc,
+}
+
+impl FilterDirection {
+    pub fn latest() -> Self {
+        Self::Desc
+    }
+
+    pub fn query_elements(&self) -> (&str, &str) {
+        match self {
+            Self::Asc => ("ASC", ">"),
+            Self::Desc => ("DESC", "<"),
+        }
+    }
+
+    pub fn query_elements_inverse(&self) -> (&str, &str) {
+        match self {
+            Self::Asc => Self::query_elements(&Self::Desc),
+            Self::Desc => Self::query_elements(&Self::Asc),
+        }
+    }
 }
 
 impl EntryRepo {
@@ -28,32 +60,58 @@ impl EntryRepo {
         Self { db }
     }
 
-    pub async fn get_entries(
+    pub async fn get_paginated_entries(
         &self,
-        filter: Option<FilterEntriesParams>,
-    ) -> DbResult<Vec<model::Entry>> {
-        let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at, read_at FROM entries WHERE 1=1 ");
+        filter: FilterEntriesParams,
+    ) -> DbResult<Paginated<Vec<model::Entry>>> {
+        let el = filter.direction.query_elements();
+        let el_inv = filter.direction.query_elements_inverse();
+
+        let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at, read_at FROM entries WHERE 1=1");
 
         // Optionally filter read_at status
-        match filter.as_ref().map(|filter| filter.unread).flatten() {
+        match filter.unread {
             Some(true) => query.push(" AND read_at IS NULL"),
             Some(false) => query.push(" AND read_at IS NOT NULL"),
-            None => query.push(""),
+            _ => query.push(""),
         };
 
         // Optionally filter by feed
-        match filter.as_ref().map(|filter| filter.feed).flatten() {
+        match filter.feed {
             Some(uuid) => query.push(" AND feed_uuid = ").push_bind(uuid),
-            None => query.push(""),
+            _ => query.push(""),
         };
 
-        query.push(" ORDER BY published_at DESC");
+        // Using the cursor to find the next batch of items, based on the published_at date and the rowid (opposite direction) as a fallback
+        match filter.cursor {
+            Some(uuid) => query
+                .push(format!(
+                    " AND published_at {} (SELECT published_at FROM entries WHERE uuid = ",
+                    el.1
+                ))
+                .push_bind(uuid)
+                .push(")")
+                .push(format!(
+                    " OR rowid {} (SELECT rowid FROM entries WHERE uuid = ",
+                    el_inv.1
+                ))
+                .push_bind(uuid)
+                .push(")"),
+            _ => query.push(""),
+        };
 
-        query
-            .build_query_as::<model::Entry>()
-            .fetch_all(&self.db)
-            .await
-            .map_err(|err| err.into())
+        query.push(format!(
+            " ORDER BY published_at {}, rowid {} LIMIT 25",
+            el.0, el_inv.0
+        ));
+
+        let entries = query.build_query_as::<model::Entry>().fetch_all(&self.db).await?;
+        let last_item_uuid = entries.last().map(|entry| entry.uuid);
+
+        Ok(Paginated {
+            data: entries,
+            next_cursor: last_item_uuid,
+        })
     }
 
     pub async fn get_entry(&self, entry_uuid: &uuid::Uuid) -> DbResult<Option<model::Entry>> {

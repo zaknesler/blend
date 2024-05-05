@@ -2,11 +2,12 @@ import { A } from '@solidjs/router';
 import { createQuery } from '@tanstack/solid-query';
 import dayjs from 'dayjs';
 import { Switch, Match, For, Component } from 'solid-js';
-import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import { Skeleton } from '../ui/skeleton';
 import { cx } from 'class-variance-authority';
 import { getFeeds } from '~/api/feeds';
+import { Button } from '../ui/button';
+import { useInfiniteEntries } from '~/hooks/use-infinite-entries';
 
 type EntryListProps = {
   unread?: boolean;
@@ -20,10 +21,7 @@ export const EntryList: Component<EntryListProps> = props => {
     queryFn: getFeeds,
   }));
 
-  const entries = createQuery(() => ({
-    queryKey: [QUERY_KEYS.ENTRIES_INDEX, props.feed_uuid, props.unread],
-    queryFn: () => getEntries({ feed: props.feed_uuid, unread: props.unread }),
-  }));
+  const entries = useInfiniteEntries(props);
 
   const getUrl = (entry_uuid: string) =>
     props.feed_uuid ? `/feeds/${props.feed_uuid}/entries/${entry_uuid}` : `/entries/${entry_uuid}`;
@@ -51,27 +49,34 @@ export const EntryList: Component<EntryListProps> = props => {
       </Match>
 
       <Match when={entries.isSuccess}>
-        {entries.data?.length ? (
-          <div class="flex flex-col gap-1">
-            <For each={entries.data}>
-              {(entry, index) => (
-                <A
-                  data-index={index()}
-                  href={getUrl(entry.uuid)}
-                  activeClass="bg-gray-100"
-                  inactiveClass={cx('hover:bg-gray-100', entry.read_at && 'opacity-50')}
-                  class={cx(
-                    '-mx-2 flex flex-col gap-1 rounded-lg p-2 ring-gray-300 transition focus:bg-gray-100 focus:outline-none focus:ring',
-                  )}
-                >
-                  <h3 class="text-base/5">{entry.title}</h3>
-                  <small class="text-xs text-gray-500">
-                    <span class="font-medium">{getFeed(entry.feed_uuid)?.title}</span> -{' '}
-                    {dayjs(entry.published_at).format('MMMM DD, YYYY')}
-                  </small>
-                </A>
-              )}
-            </For>
+        {entries.data?.pages.flatMap(page => page.data) ? (
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-1">
+              <For each={entries.data?.pages.flatMap(page => page.data)}>
+                {(entry, index) => (
+                  <A
+                    data-index={index()}
+                    href={getUrl(entry.uuid)}
+                    activeClass="bg-gray-100"
+                    inactiveClass={cx('hover:bg-gray-100', entry.read_at && 'opacity-50')}
+                    class={cx(
+                      '-mx-2 flex flex-col gap-1 rounded-lg p-2 ring-gray-300 transition focus:bg-gray-100 focus:outline-none focus:ring',
+                    )}
+                  >
+                    <h3 class="text-base/5">{entry.title}</h3>
+                    <small class="text-xs text-gray-500">
+                      <span class="font-medium">{getFeed(entry.feed_uuid)?.title}</span> -{' '}
+                      {dayjs(entry.published_at).format('MMMM DD, YYYY')}
+                    </small>
+                  </A>
+                )}
+              </For>
+            </div>
+            {entries.hasNextPage && (
+              <Button class="self-center" size="xs" onClick={() => entries.fetchNextPage()}>
+                Load more entries...
+              </Button>
+            )}
           </div>
         ) : (
           <div class="mt-2 w-full rounded-lg bg-gray-50 p-4 py-16 text-center text-sm text-gray-500">

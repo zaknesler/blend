@@ -25,12 +25,9 @@ async fn index(
     State(ctx): State<crate::Context>,
     Query(params): Query<FilterEntriesParams>,
 ) -> WebResult<impl IntoResponse> {
-    let entries = repo::entry::EntryRepo::new(ctx.db)
-        .get_entries(Some(params))
-        .await
-        .unwrap_or_else(|_| vec![]);
+    let paginated = repo::entry::EntryRepo::new(ctx.db).get_paginated_entries(params).await?;
 
-    Ok(Json(json!({ "data": entries })))
+    Ok(Json(json!(paginated)))
 }
 
 #[derive(Deserialize)]
