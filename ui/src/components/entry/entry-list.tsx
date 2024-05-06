@@ -104,8 +104,8 @@ export const EntryList: Component<EntryListProps> = props => {
             )}
           </div>
         ) : (
-          <div class="w-full rounded-lg bg-gray-100 p-4 py-16 text-center text-sm text-gray-500">
-            No entries to display.
+          <div class="flex h-full w-full flex-1 items-center justify-center rounded-lg border-4 border-dashed border-gray-200 p-4 py-16 text-center text-sm text-gray-500 dark:border-gray-800 dark:text-gray-300">
+            No entries to display
           </div>
         )}
       </Match>
