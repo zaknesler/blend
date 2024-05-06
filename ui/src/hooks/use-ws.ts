@@ -12,13 +12,13 @@ export const useWs = () => {
     maxRetries: 10,
   });
 
-  socket.addEventListener('open', () => console.log('[ws] connection established'));
-  socket.addEventListener('close', () => console.log('[ws] connection terminated'));
-  socket.addEventListener('error', event => console.log('[ws] error:', event.error));
+  socket.addEventListener('open', () => console.info('[ws] connection established'));
+  socket.addEventListener('close', () => console.info('[ws] connection terminated'));
+  socket.addEventListener('error', event => console.info('[ws] error:', event.error));
 
   socket.addEventListener('message', event => {
     const notif = JSON.parse(event.data) as Notification;
-    console.log('[ws] received message:', notif);
+    console.info('[ws] received message:', notif);
 
     switch (notif.type) {
       case 'EntriesFetched':

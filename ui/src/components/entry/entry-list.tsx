@@ -102,7 +102,7 @@ export const EntryList: Component<EntryListProps> = props => {
             )}
           </div>
         ) : (
-          <div class="mt-2 w-full rounded-lg bg-gray-100 p-4 py-16 text-center text-sm text-gray-500">
+          <div class="w-full rounded-lg bg-gray-100 p-4 py-16 text-center text-sm text-gray-500">
             No entries to display.
           </div>
         )}
