@@ -39,8 +39,8 @@ export const FeedPanel = () => {
     >
       <div
         class={cx(
-          'sticky top-0 z-10 flex flex-col gap-2 bg-white/25 p-4 backdrop-blur-md',
-          containerScroll.y > 0 && 'shadow',
+          'sticky top-0 flex flex-col gap-2 bg-white/25 p-4 backdrop-blur-md',
+          containerScroll.y > 0 && 'z-10 shadow',
         )}
       >
         <div class="flex justify-between">
@@ -75,7 +75,7 @@ export const FeedPanel = () => {
         </Tabs>
       </div>
 
-      <div class="p-4 pt-0">
+      <div class={cx('p-4 pt-0', containerScroll.y > 0 ? 'z-auto' : 'z-10')}>
         <EntryList containerBounds={containerBounds} />
       </div>
     </Panel>
