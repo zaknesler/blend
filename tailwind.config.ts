@@ -45,6 +45,9 @@ export default {
     kobaltePlugin({ prefix: 'ui' }),
     plugin(({ addComponents }) => {
       addComponents({
+        '.overflow-touch-scrolling': {
+          '-webkit-overflow-scrolling': 'touch',
+        },
         '.scrollbar-hide': {
           scrollbarWidth: 'none',
           '-webkit-overflow-scrolling': 'touch',
