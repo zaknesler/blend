@@ -4,7 +4,7 @@ import { Notification } from '~/types/bindings/notification';
 import { useQueryClient } from '@tanstack/solid-query';
 import { QUERY_KEYS } from '~/constants/query';
 
-export const connectWs = () => {
+export const useWs = () => {
   const queryClient = useQueryClient();
 
   const socket = new WebSocket(wsUrl('/notifs'), undefined, {

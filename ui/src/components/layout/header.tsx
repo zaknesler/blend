@@ -9,7 +9,7 @@ type HeaderProps = {
 export const Header: Component<HeaderProps> = props => (
   <div
     class={cx(
-      'flex items-center justify-between gap-4 bg-gray-100 p-4 shadow backdrop-blur dark:bg-gray-900',
+      'flex items-center justify-between gap-4 bg-gray-100 p-4 shadow backdrop-blur md:bg-white dark:bg-gray-900',
       props.class,
     )}
   >

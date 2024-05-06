@@ -47,7 +47,7 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
         {local.entry.content_html ? (
           <div
             class={cx(
-              'prose prose-sm max-w-none md:prose-base',
+              'prose prose-sm max-w-none xl:prose-base',
               'prose-stone dark:prose-invert prose-pre:text-sm prose-pre:md:text-base',
               'prose-headings:font-bold prose-h1:text-2xl/5 prose-h2:text-xl/5 prose-h3:text-lg/5 prose-h4:text-base/5',
             )}

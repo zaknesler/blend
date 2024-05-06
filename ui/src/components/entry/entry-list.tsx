@@ -84,7 +84,7 @@ export const EntryList: Component<EntryListProps> = props => {
                     'focus:bg-gray-100 focus:outline-none focus:ring',
                   )}
                 >
-                  <h3 class="text-base/5">{entry.title}</h3>
+                  <h4 class="text-base/5 md:text-sm xl:text-base/5">{entry.title}</h4>
                   <small class="text-xs text-gray-500">
                     <span class="font-medium">{getFeed(entry.feed_uuid)?.title}</span> -{' '}
                     {dayjs(entry.published_at).format('MMMM DD, YYYY')}

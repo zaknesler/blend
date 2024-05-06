@@ -36,15 +36,15 @@ export const EntryPanel = () => {
   return (
     <Switch>
       <Match when={entry.isPending}>
-        <Panel class="p-4 md:p-8">Loading entry...</Panel>
+        <Panel class="p-4 lg:p-8">Loading entry...</Panel>
       </Match>
 
       <Match when={entry.isError}>
-        <Panel class="p-4 md:p-8">Error: {entry.error?.message}</Panel>
+        <Panel class="p-4 lg:p-8">Error: {entry.error?.message}</Panel>
       </Match>
 
       <Match when={entry.isSuccess}>
-        <Panel class="p-4 md:p-8">
+        <Panel class="p-4 lg:p-8">
           {entry.data ? <EntryView entry={entry.data} class="max-w-4xl" /> : <div>No entry!</div>}
         </Panel>
       </Match>
