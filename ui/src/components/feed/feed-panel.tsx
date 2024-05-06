@@ -5,7 +5,7 @@ import { FeedHeader } from '~/components/feed/feed-header';
 import { For, createSignal } from 'solid-js';
 import { createElementBounds } from '@solid-primitives/bounds';
 import { Tabs } from '@kobalte/core/tabs';
-import { TABS, Tab } from '~/constants/tabs';
+import { VIEWS, View } from '~/constants/views';
 import { useFilterParams } from '~/hooks/use-filter-params';
 import { cx } from 'class-variance-authority';
 import { createScrollPosition } from '@solid-primitives/scroll';
@@ -18,16 +18,6 @@ export const FeedPanel = () => {
   const containerScroll = createScrollPosition(container);
 
   const viewingEntry = () => !!filter.params.entry_uuid;
-
-  const getUnreadAsTab = (): Tab => {
-    const value = filter.getUnread();
-    if (value === true) return 'unread';
-    return 'all';
-  };
-
-  const setUnreadFromTab = (value: Tab) => {
-    filter.setUnread(value === 'unread' ? true : undefined);
-  };
 
   return (
     <Panel
@@ -48,12 +38,12 @@ export const FeedPanel = () => {
         </div>
 
         <Tabs
-          value={getUnreadAsTab()}
-          onChange={value => setUnreadFromTab(value as Tab)}
+          value={filter.getView()}
+          onChange={value => filter.setView(value as View)}
           class="flex w-full self-stretch rounded-lg bg-gray-200/40 text-xs font-medium text-gray-600 backdrop-blur-sm dark:bg-gray-400/25 dark:text-white"
         >
           <Tabs.List class="relative flex w-full -space-x-1">
-            <For each={TABS}>
+            <For each={VIEWS}>
               {tab => (
                 <Tabs.Trigger
                   class="group z-20 flex flex-1 items-center justify-center rounded-lg p-1 transition focus:outline-none"

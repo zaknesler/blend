@@ -1,4 +1,5 @@
 import { useParams, useSearchParams } from '@solidjs/router';
+import { DEFAULT_VIEW, View } from '~/constants/views';
 
 type RouterParams = {
   feed_uuid?: string;
@@ -6,24 +7,22 @@ type RouterParams = {
 };
 
 type QueryParams = {
-  unread?: string;
+  view?: View;
 };
 
 export const useFilterParams = () => {
   const params = useParams<RouterParams>();
   const [query, setQuery] = useSearchParams<QueryParams>();
 
-  const getUnread = () => {
-    if (query.unread === 'true') return true;
-    if (query.unread === 'false') return false;
-    return undefined;
+  const getView = () => query.view || DEFAULT_VIEW;
+  const setView = (value?: View) => {
+    const view = value === DEFAULT_VIEW ? undefined : value;
+    setQuery({ view });
   };
-
-  const setUnread = (unread?: boolean) => setQuery({ unread });
 
   const getQueryString = () => {
     const builder = new URLSearchParams({
-      unread: query.unread || '',
+      view: query.view || '',
     });
 
     const hasValues = !![...builder.values()].filter(Boolean).length;
@@ -34,8 +33,8 @@ export const useFilterParams = () => {
     params,
     query,
     setQuery,
-    getUnread,
-    setUnread,
+    getView,
+    setView,
     getQueryString,
   };
 };
