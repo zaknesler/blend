@@ -14,11 +14,13 @@ export const FeedList = () => {
   return (
     <Switch>
       <Match when={feeds.isPending}>
-        <Skeleton class="h-8" color="light" />
-        <Skeleton class="h-8" color="light" />
-        <Skeleton class="h-8" color="light" />
-        <Skeleton class="h-8" color="light" />
-        <Skeleton class="h-8" color="light" />
+        <div class="flex flex-col gap-2">
+          <Skeleton class="h-8" color="light" />
+          <Skeleton class="h-8" color="light" />
+          <Skeleton class="h-8" color="light" />
+          <Skeleton class="h-8" color="light" />
+          <Skeleton class="h-8" color="light" />
+        </div>
       </Match>
 
       <Match when={feeds.isError}>

@@ -58,11 +58,13 @@ export const EntryList: Component<EntryListProps> = props => {
   return (
     <Switch>
       <Match when={entries.isPending}>
-        <Skeleton class="h-8" color="muted" />
-        <Skeleton class="h-8" color="muted" />
-        <Skeleton class="h-8" color="muted" />
-        <Skeleton class="h-8" color="muted" />
-        <Skeleton class="h-8" color="muted" />
+        <div class="flex flex-col gap-2">
+          <Skeleton class="h-8" color="muted" />
+          <Skeleton class="h-8" color="muted" />
+          <Skeleton class="h-8" color="muted" />
+          <Skeleton class="h-8" color="muted" />
+          <Skeleton class="h-8" color="muted" />
+        </div>
       </Match>
 
       <Match when={entries.isError}>
