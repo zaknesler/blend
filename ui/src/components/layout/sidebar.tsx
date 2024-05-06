@@ -2,7 +2,7 @@ import { type Component, createSignal } from 'solid-js';
 import { Logo } from './logo';
 import { CreateFeed } from '../modals/create-feed';
 import { cx } from 'class-variance-authority';
-import { ContextButton } from './context-button';
+import { ContextButton } from '../ui/context-button';
 import { TiCog } from 'solid-icons/ti';
 import { FeedList } from '../feed/feed-list';
 

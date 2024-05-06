@@ -79,11 +79,11 @@ export const EntryList: Component<EntryListProps> = props => {
                 <A
                   data-index={index()}
                   href={getUrl(entry.uuid)}
-                  activeClass="bg-gray-100"
-                  inactiveClass={cx('hover:bg-gray-100', entry.read_at && 'opacity-50')}
+                  activeClass="bg-gray-100 dark:bg-gray-950"
+                  inactiveClass={cx('hover:bg-gray-100 dark:hover:bg-gray-950', entry.read_at && 'opacity-50')}
                   class={cx(
-                    '-mx-2 flex flex-col gap-1 rounded-lg p-2 ring-gray-300 transition',
-                    'focus:bg-gray-100 focus:outline-none focus:ring',
+                    '-mx-2 flex flex-col gap-1 rounded-lg p-2 ring-gray-300 transition dark:ring-gray-700',
+                    'focus:bg-gray-100 focus:outline-none focus:ring focus:dark:bg-gray-950',
                   )}
                 >
                   <h4 class="text-base/5 md:text-sm xl:text-base/5">{entry.title}</h4>

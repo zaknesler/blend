@@ -39,7 +39,7 @@ export const FeedPanel = () => {
     >
       <div
         class={cx(
-          'sticky top-0 flex flex-col gap-2 bg-white/25 p-4 backdrop-blur-md',
+          'sticky top-0 flex flex-col gap-2 bg-white/25 p-4 backdrop-blur-md dark:bg-gray-900/25',
           containerScroll.y > 0 && 'z-10 shadow',
         )}
       >
@@ -50,7 +50,7 @@ export const FeedPanel = () => {
         <Tabs
           value={getUnreadAsTab()}
           onChange={value => setUnreadFromTab(value as Tab)}
-          class="flex w-full self-stretch rounded-lg bg-gray-200/40 text-xs font-medium text-gray-600 backdrop-blur-sm"
+          class="flex w-full self-stretch rounded-lg bg-gray-200/40 text-xs font-medium text-gray-600 backdrop-blur-sm dark:bg-gray-400/25 dark:text-white"
         >
           <Tabs.List class="relative flex w-full -space-x-1">
             <For each={TABS}>
@@ -62,8 +62,10 @@ export const FeedPanel = () => {
                   <div
                     class={cx(
                       'w-full rounded-md border border-transparent px-2 py-1.5 transition',
-                      'group-hover:bg-gray-50 group-focus:!border-gray-400 group-focus:ring-[2px] group-focus:ring-gray-200',
+                      'group-hover:bg-gray-50 group-focus:!border-gray-300 group-focus:ring-[2px] group-focus:ring-gray-200',
+                      'dark:group-hover:bg-gray-800 dark:group-focus:!border-gray-600 dark:group-focus:ring-gray-800',
                       'ui-group-selected:bg-white ui-group-selected:shadow',
+                      'ui-group-selected:shadow ui-group-selected:dark:bg-gray-900',
                     )}
                   >
                     {tab.label}

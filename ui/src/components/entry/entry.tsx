@@ -54,9 +54,9 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
             innerHTML={local.entry.content_html}
           />
         ) : (
-          <div class="flex max-w-xs flex-col items-start gap-2 rounded-lg border border-gray-100 bg-gray-50 p-4">
+          <div class="flex max-w-xs flex-col items-start gap-2 rounded-lg border border-gray-100 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-950">
             <p>There is no content for this entry.</p>
-            <Button size="xs">Try to scrape content</Button>
+            <Button size="xs">Re-scrape content</Button>
           </div>
         )}
       </article>
