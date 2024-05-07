@@ -21,10 +21,11 @@ pub struct CreateEntryParams {
 #[derive(serde::Deserialize)]
 pub struct FilterEntriesParams {
     #[serde(default = "FilterDirection::latest")]
-    pub direction: FilterDirection,
+    pub dir: FilterDirection,
     pub cursor: Option<Uuid>,
     pub feed: Option<Uuid>,
-    pub unread: Option<bool>,
+    #[serde(default)]
+    pub view: View,
 }
 
 #[derive(serde::Deserialize)]
@@ -32,6 +33,20 @@ pub struct FilterEntriesParams {
 pub enum FilterDirection {
     Asc,
     Desc,
+}
+
+#[derive(serde::Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum View {
+    All,
+    Read,
+    Unread,
+}
+
+impl Default for View {
+    fn default() -> Self {
+        Self::Unread
+    }
 }
 
 impl FilterDirection {
@@ -63,19 +78,17 @@ impl EntryRepo {
         &self,
         filter: FilterEntriesParams,
     ) -> DbResult<Paginated<Vec<model::Entry>>> {
-        let el = filter.direction.query_elements();
-        let el_inv = filter.direction.query_elements_inverse();
+        let el = filter.dir.query_elements();
+        let el_inv = filter.dir.query_elements_inverse();
 
         let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at, read_at FROM entries WHERE 1=1");
 
-        // Optionally filter read_at status
-        match filter.unread {
-            Some(true) => query.push(" AND read_at IS NULL"),
-            Some(false) => query.push(" AND read_at IS NOT NULL"),
-            _ => query.push(""),
+        match filter.view {
+            View::All => query.push(""),
+            View::Read => query.push(" AND read_at IS NOT NULL"),
+            View::Unread => query.push(" AND read_at IS NULL"),
         };
 
-        // Optionally filter by feed
         match filter.feed {
             Some(uuid) => query.push(" AND feed_uuid = ").push_bind(uuid),
             _ => query.push(""),
@@ -153,7 +166,7 @@ impl EntryRepo {
         Ok(rows_affected > 0)
     }
 
-    pub async fn insert_entries(
+    pub async fn upsert_entries(
         &self,
         feed_uuid: &uuid::Uuid,
         entries: &[CreateEntryParams],

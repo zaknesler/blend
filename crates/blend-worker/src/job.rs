@@ -5,9 +5,8 @@ use std::fmt::Display;
 #[derive(Debug, Clone, Serialize)]
 #[serde(tag = "type")]
 pub enum Job {
-    RefreshFeed(model::Feed),
-    FetchMetadata(model::Feed),
     FetchEntries(model::Feed),
+    FetchMetadata(model::Feed),
 }
 
 impl Display for Job {
@@ -23,7 +22,6 @@ impl Display for Job {
         };
 
         match self {
-            Job::RefreshFeed(feed) => write_job_str("refresh feed", feed.uuid),
             Job::FetchEntries(feed) => write_job_str("fetch entries", feed.uuid),
             Job::FetchMetadata(feed) => write_job_str("fetch metadata", feed.uuid),
         }

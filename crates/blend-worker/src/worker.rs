@@ -21,13 +21,18 @@ impl Worker {
     }
 
     pub async fn start(&mut self) -> WorkerResult<()> {
-        // Wait for jobs to process
+        // Use jobs as queue to spawn tasks for job processing
         while let Some(job) = self.jobs.recv().await {
             tracing::info!("{}", &job);
 
-            if let Err(err) = handle_job(job.clone(), self.db.clone(), self.notifs.clone()).await {
-                tracing::error!("failed: {} with error: {}", job, err)
-            }
+            // Spawn a new task to handle the job
+            let db = self.db.clone();
+            let notifs = self.notifs.clone();
+            tokio::spawn(async move {
+                if let Err(err) = handle_job(job.clone(), db, notifs).await {
+                    tracing::error!("failed: {} with error: {}", job, err);
+                }
+            });
         }
 
         Ok(())

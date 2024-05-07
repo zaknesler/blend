@@ -16,8 +16,10 @@ pub fn router(ctx: crate::Context) -> Router {
     Router::new()
         .route("/", get(index))
         .route("/", post(create))
+        .route("/refresh", post(refresh_feeds))
         .route("/stats", get(stats))
         .route("/:uuid", get(view))
+        .route("/:uuid/refresh", post(refresh_feed))
         .route_layer(from_fn_with_state(ctx.clone(), crate::middleware::auth))
         .with_state(ctx)
 }
@@ -78,4 +80,33 @@ async fn view(
         .ok_or_else(|| WebError::NotFoundError)?;
 
     Ok(Json(json!({ "data": feed })))
+}
+
+async fn refresh_feed(
+    State(ctx): State<crate::Context>,
+    Path(params): Path<ViewFeedParams>,
+) -> WebResult<impl IntoResponse> {
+    let feed = repo::feed::FeedRepo::new(ctx.db)
+        .get_feed(params.uuid)
+        .await?
+        .ok_or_else(|| WebError::NotFoundError)?;
+
+    let worker = ctx.jobs.lock().await;
+    worker.send(blend_worker::Job::FetchMetadata(feed.clone())).await?;
+    worker.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
+
+    Ok(Json(json!({ "success": true })))
+}
+
+async fn refresh_feeds(State(ctx): State<crate::Context>) -> WebResult<impl IntoResponse> {
+    let feeds = repo::feed::FeedRepo::new(ctx.db).get_feeds().await?;
+
+    let worker = ctx.jobs.lock().await;
+
+    for feed in feeds {
+        worker.send(blend_worker::Job::FetchMetadata(feed.clone())).await?;
+        worker.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
+    }
+
+    Ok(Json(json!({ "success": true })))
 }

@@ -6,10 +6,7 @@ use ts_rs::TS;
 #[serde(tag = "type")]
 #[ts(export, export_to = "../../../ui/src/types/bindings/notification.ts")]
 pub enum Notification {
-    StartedRefresh {
-        feed_uuid: uuid::Uuid,
-    },
-    FeedRefreshed {
+    FetchingEntries {
         feed_uuid: uuid::Uuid,
     },
     EntriesFetched {
@@ -21,15 +18,9 @@ pub enum Notification {
 impl Display for Notification {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Notification::StartedRefresh { feed_uuid } => write!(
+            Notification::FetchingEntries { feed_uuid } => write!(
                 f,
-                "[notification: started refresh] (size = {}) feed: {}",
-                std::mem::size_of_val(self),
-                feed_uuid.hyphenated().to_string()
-            ),
-            Notification::FeedRefreshed { feed_uuid } => write!(
-                f,
-                "[notification: feed refreshed] (size = {}) feed: {}",
+                "[notification: fetching entries] (size = {}) feed: {}",
                 std::mem::size_of_val(self),
                 feed_uuid.hyphenated().to_string()
             ),

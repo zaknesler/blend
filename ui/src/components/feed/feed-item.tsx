@@ -51,7 +51,14 @@ export const FeedItem: Component<FeedItemProps> = props => {
         </span>
       )}
 
-      <FeedContextButton onlyDisplayForGroup open={open()} setOpen={setOpen} shift={-6} gutter={8} />
+      <FeedContextButton
+        uuid={props.feed.uuid}
+        onlyDisplayForGroup
+        open={open()}
+        setOpen={setOpen}
+        shift={-6}
+        gutter={8}
+      />
     </A>
   );
 };

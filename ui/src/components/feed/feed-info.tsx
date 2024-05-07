@@ -31,6 +31,7 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
         <div class="flex w-full items-start justify-between">
           <FeedHeader title={feed.data?.title} subtitle={feed.data?.url_feed} />
           <FeedContextButton
+            uuid={props.uuid}
             open={contextMenuOpen()}
             setOpen={setContextMenuOpen}
             triggerClass="h-6 w-6"

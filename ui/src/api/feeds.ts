@@ -1,5 +1,5 @@
 import { FeedStats } from '~/types/bindings/stats';
-import { ApiResponse } from '.';
+import { ApiResponse, ApiSuccessResponse } from '.';
 import { Feed } from '../types/bindings/feed';
 import { apiUrl } from '../utils/url';
 import axios from 'axios';
@@ -18,6 +18,13 @@ export const getFeedStats = async () => {
   return res.data.data;
 };
 
+export const refreshFeeds = async () => {
+  type Response = ApiSuccessResponse;
+
+  const res = await axios.post<Response>(apiUrl('/feeds/refresh'));
+  return res.data;
+};
+
 export const addFeed = async (params: { url: string }) => {
   type Response = ApiResponse<Feed>;
 
@@ -30,4 +37,11 @@ export const getFeed = async (uuid: string) => {
 
   const res = await axios.get<Response>(apiUrl(`/feeds/${uuid}`));
   return res.data.data;
+};
+
+export const refreshFeed = async (uuid: string) => {
+  type Response = ApiSuccessResponse;
+
+  const res = await axios.post<Response>(apiUrl(`/feeds/${uuid}/refresh`));
+  return res.data;
 };

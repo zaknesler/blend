@@ -8,15 +8,14 @@ import { useFilterParams } from './use-filter-params';
 export const useInfiniteEntries = () => {
   const filter = useFilterParams();
 
-  const unread = () => filter.getView() === 'unread' || undefined;
-
   return createInfiniteQuery<ApiPaginatedResponse<Entry[]>>(() => ({
-    queryKey: [QUERY_KEYS.ENTRIES_INDEX, filter.params.feed_uuid, unread()],
+    queryKey: [QUERY_KEYS.ENTRIES_INDEX, filter.params.feed_uuid, filter.getView()],
     queryFn: fetchParams =>
       getEntries({
         feed: filter.params.feed_uuid,
-        unread: unread(),
+        view: filter.getView(),
         cursor: fetchParams.pageParam as undefined | string,
+        dir: 'desc',
       }),
     getNextPageParam: last => last.next_cursor,
     initialPageParam: undefined,

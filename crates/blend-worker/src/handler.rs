@@ -13,7 +13,12 @@ pub async fn fetch_entries(
     db: SqlitePool,
     notifs: Arc<Mutex<broadcast::Sender<Notification>>>,
 ) -> WorkerResult<()> {
-    let repo = EntryRepo::new(db);
+    // Acquire lock to send initial notification, then release it while the entries are parsed & inserted
+    {
+        notifs.lock().await.send(Notification::FetchingEntries {
+            feed_uuid: feed.uuid,
+        })?;
+    }
 
     let mapped = parse_entries(&feed.url_feed)
         .await?
@@ -29,7 +34,7 @@ pub async fn fetch_entries(
         })
         .collect::<Vec<_>>();
 
-    let entry_uuids = repo.insert_entries(&feed.uuid, &mapped).await?;
+    let entry_uuids = EntryRepo::new(db).upsert_entries(&feed.uuid, &mapped).await?;
 
     notifs.lock().await.send(Notification::EntriesFetched {
         feed_uuid: feed.uuid,

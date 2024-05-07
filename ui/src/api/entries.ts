@@ -2,11 +2,13 @@ import { Entry } from '~/types/bindings/entry';
 import { ApiPaginatedResponse, ApiResponse, ApiSuccessResponse } from '.';
 import { apiUrl } from '../utils/url';
 import axios from 'axios';
+import { View } from '~/constants/views';
 
 type IndexEntriesParams = {
   feed?: string;
-  unread?: boolean;
   cursor?: string;
+  dir?: 'asc' | 'desc';
+  view?: View;
 };
 
 export const getEntries = async (params: IndexEntriesParams) => {
