@@ -7,6 +7,7 @@ edition.workspace = true
 blend-config = { path = "../blend-config" }
 blend-db = { path = "../blend-db" }
 blend-feed = { path = "../blend-feed" }
+futures = { workspace = true }
 reqwest = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }

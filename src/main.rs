@@ -35,17 +35,22 @@ async fn main() -> error::BlendResult<()> {
             let blend = blend_config::parse(args.config)?;
             let db = blend_db::client::init(blend.clone()).await?;
 
-            let (job_tx, job_rx) = mpsc::channel::<blend_worker::Job>(CHANNEL_BUFFER_SIZE);
+            // Create job queue channel
+            let (job_tx, mut job_rx) = mpsc::channel::<blend_worker::Job>(CHANNEL_BUFFER_SIZE);
             let jobs = Arc::new(Mutex::new(job_tx));
 
-            let (notif_tx, _) =
+            // Create notification channel
+            let (notif_tx, mut notif_rx) =
                 broadcast::channel::<blend_worker::Notification>(CHANNEL_BUFFER_SIZE);
             let notifs = Arc::new(Mutex::new(notif_tx));
 
-            // Start worker and web tasks concurrently
-            let mut worker = blend_worker::Worker::new(db.clone(), job_rx, notifs.clone());
-            let worker = worker.start().fuse();
+            // Start queue and refresh workers
+            let queue_worker =
+                blend_worker::start_queue_worker(&mut job_rx, db.clone(), notifs.clone()).fuse();
+            let refresh_worker =
+                blend_worker::start_refresh_worker(jobs.clone(), db.clone()).fuse();
 
+            // Start web server
             let web = blend_web::serve(blend_web::Context {
                 blend,
                 db,
@@ -54,10 +59,20 @@ async fn main() -> error::BlendResult<()> {
             })
             .fuse();
 
-            pin_mut!(worker, web);
+            // Simple async closure to print notifications
+            let notif_printer = async move {
+                while let Ok(notif) = notif_rx.recv().await {
+                    tracing::info!("{}", notif);
+                }
+            }
+            .fuse();
+
+            pin_mut!(queue_worker, refresh_worker, web, notif_printer);
             select! {
+                result = queue_worker => result?,
+                result = refresh_worker => result?,
                 result = web => result?,
-                result = worker => result?,
+                result = notif_printer => result,
             };
         }
     }

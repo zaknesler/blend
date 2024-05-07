@@ -1,40 +1,51 @@
 use crate::{error::WorkerResult, handler, Job, Notification};
-use std::sync::Arc;
+use blend_db::repo;
+use std::{sync::Arc, time::Duration};
 use tokio::sync::{broadcast, mpsc, Mutex};
 
-#[derive(Debug)]
-pub struct Worker {
+const REFRESH_INTERVAL_MINS: u64 = 30;
+
+/// Refresh all feeds on an interval
+pub async fn start_refresh_worker(
+    jobs_tx: Arc<Mutex<mpsc::Sender<Job>>>,
     db: sqlx::SqlitePool,
-    jobs: mpsc::Receiver<Job>,
-    notifs: Arc<Mutex<broadcast::Sender<Notification>>>,
-}
+) -> WorkerResult<()> {
+    let mut interval = tokio::time::interval(Duration::from_secs(60 * REFRESH_INTERVAL_MINS));
+    let repo = repo::feed::FeedRepo::new(db);
 
-impl Worker {
-    pub fn new(
-        db: sqlx::SqlitePool,
-        jobs: mpsc::Receiver<Job>,
-        notifs: Arc<Mutex<broadcast::Sender<Notification>>>,
-    ) -> Self {
-        Self { db, jobs, notifs }
-    }
+    // Allow the first tick to fire immediately
+    tokio::time::Interval::tick(&mut interval).await;
 
-    pub async fn start(&mut self) -> WorkerResult<()> {
-        // Use jobs as queue to spawn tasks for job processing
-        while let Some(job) = self.jobs.recv().await {
-            tracing::info!("{}", &job);
-
-            // Spawn a new task to handle the job
-            let db = self.db.clone();
-            let notifs = self.notifs.clone();
-            tokio::spawn(async move {
-                if let Err(err) = handle_job(job.clone(), db, notifs).await {
-                    tracing::error!("failed: {} with error: {}", job, err);
-                }
-            });
+    loop {
+        for feed in repo.get_feeds().await? {
+            let dispatcher = jobs_tx.lock().await;
+            dispatcher.send(Job::FetchEntries(feed)).await?;
         }
 
-        Ok(())
+        tokio::time::Interval::tick(&mut interval).await;
     }
+}
+
+/// Process jobs added to the job queue
+pub async fn start_queue_worker(
+    job_rx: &mut mpsc::Receiver<Job>,
+    db: sqlx::SqlitePool,
+    notifs: Arc<Mutex<broadcast::Sender<Notification>>>,
+) -> WorkerResult<()> {
+    while let Some(job) = job_rx.recv().await {
+        tracing::info!("{}", &job);
+
+        let db = db.clone();
+        let notifs = notifs.clone();
+
+        tokio::spawn(async move {
+            if let Err(err) = handle_job(job.clone(), db, notifs).await {
+                tracing::error!("!!failed: {} with error: {}", job, err);
+            }
+        });
+    }
+
+    Ok(())
 }
 
 async fn handle_job(

@@ -14,6 +14,9 @@ pub enum WorkerError {
     ),
 
     #[error(transparent)]
+    JobSendError(#[from] tokio::sync::mpsc::error::SendError<crate::Job>),
+
+    #[error(transparent)]
     FeedError(#[from] blend_feed::Error),
 
     #[error(transparent)]
