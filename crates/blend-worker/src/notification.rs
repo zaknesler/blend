@@ -22,7 +22,7 @@ impl Display for Notification {
                 f,
                 "[notification: fetching entries] (size = {}) feed: {}",
                 std::mem::size_of_val(self),
-                feed_uuid.hyphenated().to_string()
+                feed_uuid.hyphenated()
             ),
             Notification::EntriesFetched {
                 feed_uuid,
@@ -31,7 +31,7 @@ impl Display for Notification {
                 f,
                 "[notification: feed refreshed] (size = {}) feed: {}, entries: {}",
                 std::mem::size_of_val(self),
-                feed_uuid.hyphenated().to_string(),
+                feed_uuid.hyphenated(),
                 entry_uuids.len()
             ),
         }

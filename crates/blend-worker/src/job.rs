@@ -17,7 +17,7 @@ impl Display for Job {
                 "[job: {}] (size = {}) feed = {}",
                 name,
                 std::mem::size_of_val(self),
-                uuid.hyphenated().to_string()
+                uuid.hyphenated()
             )
         };
 

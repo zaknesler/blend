@@ -46,7 +46,7 @@ impl From<feed_rs::model::Entry> for ParsedEntry {
             url: link.map(|link| link.href.clone()), // TODO: normalize this url
             title: value.title.map(|title| title.content),
             summary: value.summary.map(|summary| summary.content),
-            content_html: value.content.map(|content| content.body).flatten(), // TODO: normalize and sanitize this
+            content_html: value.content.and_then(|content| content.body), // TODO: normalize and sanitize this
             published_at: value.published,
             updated_at: value.updated,
         }

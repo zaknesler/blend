@@ -15,11 +15,11 @@ pub async fn parse_feed(url: &str) -> FeedResult<model::ParsedFeed> {
         .into();
 
     // TODO: need a nicer way of doing this
-    if let None = feed.url {
+    if feed.url.is_none() {
         feed.url = Some(url.to_owned());
     }
 
-    Ok(feed.into())
+    Ok(feed)
 }
 
 pub async fn parse_entries(url: &str) -> FeedResult<Vec<model::ParsedEntry>> {

@@ -1,5 +1,3 @@
-#![allow(unused_variables, unused_imports, dead_code)]
-
 use crate::{error::WorkerResult, handler, Job, Notification};
 use std::sync::Arc;
 use tokio::sync::{broadcast, mpsc, Mutex};

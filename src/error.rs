@@ -1,5 +1,6 @@
 pub type BlendResult<T> = Result<T, BlendError>;
 
+#[allow(clippy::enum_variant_names)]
 #[derive(thiserror::Error, Debug)]
 pub enum BlendError {
     #[error(transparent)]
