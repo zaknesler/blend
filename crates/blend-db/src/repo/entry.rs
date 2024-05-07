@@ -171,6 +171,10 @@ impl EntryRepo {
         feed_uuid: &uuid::Uuid,
         entries: &[CreateEntryParams],
     ) -> DbResult<Vec<uuid::Uuid>> {
+        if entries.is_empty() {
+            return Ok(vec![]);
+        }
+
         let mut query = QueryBuilder::<Sqlite>::new("INSERT INTO entries (feed_uuid, uuid, id, url, title, summary, content_html, published_at, updated_at) ");
         query.push_values(entries.iter(), |mut b, entry| {
             b.push_bind(feed_uuid)
