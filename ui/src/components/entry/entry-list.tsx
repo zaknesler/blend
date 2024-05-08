@@ -42,7 +42,7 @@ export const EntryList: Component<EntryListProps> = props => {
   return (
     <Switch>
       <Match when={entries.isPending}>
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2 px-4">
           <Skeleton class="h-8" color="muted" />
           <Skeleton class="h-8" color="muted" />
           <Skeleton class="h-8" color="muted" />
@@ -52,7 +52,7 @@ export const EntryList: Component<EntryListProps> = props => {
       </Match>
 
       <Match when={entries.isError}>
-        <p>Error: {entries.error?.message}</p>
+        <p class="px-4">Error: {entries.error?.message}</p>
       </Match>
 
       <Match when={entries.isSuccess && feeds.data}>

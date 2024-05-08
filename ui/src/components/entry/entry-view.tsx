@@ -31,7 +31,7 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
       )}
 
       <article class="flex flex-col gap-4">
-        <h1 class="text-balance text-2xl font-bold leading-8 text-gray-800 dark:text-gray-100">{local.entry.title}</h1>
+        <h1 class="text-balance text-xl font-bold text-gray-800 lg:text-2xl dark:text-gray-100">{local.entry.title}</h1>
 
         {local.entry.published_at && (
           <div class="text-sm text-gray-500 dark:text-gray-400">
@@ -40,14 +40,14 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
         )}
 
         {local.entry.summary && (
-          <h4 class="text-lg leading-7 text-gray-500 dark:text-gray-300">{local.entry.summary}</h4>
+          <h4 class="text-base text-gray-500 lg:text-lg dark:text-gray-300">{local.entry.summary}</h4>
         )}
 
         <div class="h-1 w-32 bg-gray-300 dark:bg-gray-700" />
         {local.entry.content_html ? (
           <div
             class={cx(
-              'prose prose-sm max-w-none 2xl:prose-base',
+              'prose prose-sm max-w-none lg:prose-base',
               'prose-stone dark:prose-invert prose-pre:text-sm prose-pre:md:text-base',
               'prose-headings:font-bold prose-h1:text-2xl/5 prose-h2:text-xl/5 prose-h3:text-lg/5 prose-h4:text-base/5',
             )}

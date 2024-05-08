@@ -47,27 +47,18 @@ const MenuRoot: ParentComponent<MenuProps> = props => {
       </MenuTrigger>
 
       <DropdownMenu.Portal>
-        <DropdownMenu.Content
-          class={cx(
-            'z-50 min-w-32 overflow-hidden rounded-md border shadow-sm',
-            'border-gray-200 bg-white text-gray-600',
-            'dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200',
-            'origin-[--kb-menu-content-transform-origin] animate-contentHide ui-expanded:animate-contentShow',
-          )}
-        >
-          <div class="flex flex-col gap-0.5 p-1 text-sm">{local.children}</div>
-        </DropdownMenu.Content>
+        <MenuContent>{local.children}</MenuContent>
       </DropdownMenu.Portal>
     </DropdownMenu>
   );
 };
 
-type ActionButtonProps = DropdownMenuTriggerProps &
+type MenuTrigger = DropdownMenuTriggerProps &
   SharedMenuProps & {
     class?: string;
   };
 
-const MenuTrigger: ParentComponent<ActionButtonProps> = props => {
+const MenuTrigger: ParentComponent<MenuTrigger> = props => {
   const [local, rest] = splitProps(props, ['onlyDisplayForGroup', 'forceFocus', 'class']);
 
   return (
@@ -102,6 +93,20 @@ const MenuItem: ParentComponent<DropdownMenuItemProps> = props => (
   </DropdownMenu.Item>
 );
 
+const MenuContent: ParentComponent = props => (
+  <DropdownMenu.Content
+    class={cx(
+      'z-50 min-w-32 overflow-hidden rounded-md border shadow-sm',
+      'border-gray-200 bg-white text-gray-600',
+      'dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200',
+      'origin-[--kb-menu-content-transform-origin] animate-contentHide ui-expanded:animate-contentShow',
+    )}
+  >
+    <div class="flex flex-col gap-0.5 p-1 text-sm">{props.children}</div>
+  </DropdownMenu.Content>
+);
+
 export const Menu = Object.assign(MenuRoot, {
   Item: MenuItem,
+  Content: MenuContent,
 });
