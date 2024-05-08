@@ -1,8 +1,6 @@
 import { Component, mergeProps } from 'solid-js';
 import { Menu, type MenuProps } from '../ui/menu';
-import { createMutation } from '@tanstack/solid-query';
-import { QUERY_KEYS } from '~/constants/query';
-import { refreshFeed } from '~/api/feeds';
+import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
 
 type FeedMenuProps = MenuProps & {
   uuid: string;
@@ -17,13 +15,10 @@ export const FeedMenu: Component<FeedMenuProps> = props => {
     props,
   );
 
-  const refresh = createMutation(() => ({
-    mutationKey: [QUERY_KEYS.FEEDS_VIEW_REFRESH],
-    mutationFn: refreshFeed,
-  }));
+  const refresh = useRefreshFeed();
 
   const handleRefresh = () => {
-    refresh.mutateAsync(props.uuid);
+    refresh.refreshFeed(props.uuid);
     props.setOpen(false);
   };
 

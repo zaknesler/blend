@@ -1,12 +1,10 @@
-import { createQuery } from '@tanstack/solid-query';
 import { Switch, Match, For, Component, createEffect, createSignal } from 'solid-js';
-import { QUERY_KEYS } from '~/constants/query';
 import { Skeleton } from '../ui/skeleton';
-import { getFeeds } from '~/api/feeds';
-import { useInfiniteEntries } from '~/hooks/use-infinite-entries';
+import { useInfiniteEntries } from '~/hooks/queries/use-infinite-entries';
 import { Spinner } from '../ui/spinner';
 import { type NullableBounds, createElementBounds } from '@solid-primitives/bounds';
 import { EntryItem } from './entry-item';
+import { useFeeds } from '~/hooks/queries/use-feeds';
 
 type EntryListProps = {
   containerBounds?: Readonly<NullableBounds>;
@@ -16,21 +14,15 @@ export const EntryList: Component<EntryListProps> = props => {
   const [bottomOfList, setBottomOfList] = createSignal<HTMLElement>();
   const listBounds = createElementBounds(bottomOfList);
 
-  const feeds = createQuery(() => ({
-    queryKey: [QUERY_KEYS.FEEDS],
-    queryFn: getFeeds,
-  }));
-
+  const feeds = useFeeds();
   const entries = useInfiniteEntries();
-  const allEntries = () => entries.data?.pages.flatMap(page => page.data) || [];
-  const getFeed = (feed_uuid: string) => feeds.data?.find(feed => feed.uuid === feed_uuid);
 
   createEffect(() => {
     const bottomOfListVisible =
       props.containerBounds?.bottom && listBounds.bottom && listBounds.bottom <= props.containerBounds?.bottom;
-    if (!bottomOfListVisible || !entries.hasNextPage || entries.isFetchingNextPage) return;
+    if (!bottomOfListVisible || !entries.query.hasNextPage || entries.query.isFetchingNextPage) return;
 
-    entries.fetchNextPage();
+    entries.query.fetchNextPage();
   });
 
   // useListNav(() => ({
@@ -41,7 +33,7 @@ export const EntryList: Component<EntryListProps> = props => {
 
   return (
     <Switch>
-      <Match when={entries.isPending}>
+      <Match when={entries.query.isPending}>
         <div class="flex flex-col gap-2 px-4">
           <Skeleton class="h-8" color="muted" />
           <Skeleton class="h-8" color="muted" />
@@ -51,18 +43,20 @@ export const EntryList: Component<EntryListProps> = props => {
         </div>
       </Match>
 
-      <Match when={entries.isError}>
-        <p class="px-4">Error: {entries.error?.message}</p>
+      <Match when={entries.query.isError}>
+        <p class="px-4">Error: {entries.query.error?.message}</p>
       </Match>
 
-      <Match when={entries.isSuccess && feeds.data}>
-        {allEntries().length ? (
+      <Match when={entries.query.isSuccess && feeds.query.data}>
+        {entries.getAllEntries().length ? (
           <div class="-mt-2 flex flex-col gap-1 px-4 pb-2">
-            <For each={allEntries()}>{entry => <EntryItem entry={entry} feed={getFeed(entry.feed_uuid)!} />}</For>
+            <For each={entries.getAllEntries()}>
+              {entry => <EntryItem entry={entry} feed={feeds.findFeed(entry.feed_uuid)!} />}
+            </For>
 
             <div ref={setBottomOfList} class="-mt-1" />
 
-            {entries.isFetchingNextPage && (
+            {entries.query.isFetchingNextPage && (
               <div class="flex w-full items-center justify-center p-4">
                 <Spinner />
               </div>

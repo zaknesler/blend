@@ -5,9 +5,7 @@ import { cx } from 'class-variance-authority';
 import { Menu } from '../ui/menu';
 import { TiCog } from 'solid-icons/ti';
 import { FeedList } from '../feed/feed-list';
-import { createMutation } from '@tanstack/solid-query';
-import { QUERY_KEYS } from '~/constants/query';
-import { refreshFeeds } from '~/api/feeds';
+import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
 
 type SidebarProps = {
   class?: string;
@@ -16,13 +14,10 @@ type SidebarProps = {
 export const Sidebar: Component<SidebarProps> = props => {
   const [settingsOpen, setSettingsOpen] = createSignal(false);
 
-  const refresh = createMutation(() => ({
-    mutationKey: [QUERY_KEYS.FEEDS_REFRESH],
-    mutationFn: refreshFeeds,
-  }));
+  const refresh = useRefreshFeeds();
 
   const handleRefreshFeeds = () => {
-    refresh.mutateAsync();
+    refresh.refreshFeeds();
     setSettingsOpen(false);
   };
 
