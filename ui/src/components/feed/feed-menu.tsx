@@ -1,14 +1,14 @@
 import { Component, mergeProps } from 'solid-js';
-import { ContextButton, type ContextButtonProps } from '../ui/context-button';
+import { Menu, type MenuProps } from '../ui/menu';
 import { createMutation } from '@tanstack/solid-query';
 import { QUERY_KEYS } from '~/constants/query';
 import { refreshFeed } from '~/api/feeds';
 
-type FeedContextButtonProps = ContextButtonProps & {
+type FeedMenuProps = MenuProps & {
   uuid: string;
 };
 
-export const FeedContextButton: Component<FeedContextButtonProps> = props => {
+export const FeedMenu: Component<FeedMenuProps> = props => {
   const local = mergeProps(
     {
       triggerClass: 'h-5 w-5',
@@ -28,14 +28,14 @@ export const FeedContextButton: Component<FeedContextButtonProps> = props => {
   };
 
   return (
-    <ContextButton {...local}>
-      <ContextButton.Item onClick={handleRefresh}>Refresh</ContextButton.Item>
-      <ContextButton.Item onClick={() => alert('rename')} disabled>
+    <Menu {...local}>
+      <Menu.Item onSelect={handleRefresh}>Refresh</Menu.Item>
+      <Menu.Item onSelect={() => alert('rename')} disabled>
         Rename
-      </ContextButton.Item>
-      <ContextButton.Item onClick={() => alert('delete')} disabled>
+      </Menu.Item>
+      <Menu.Item onSelect={() => alert('delete')} disabled>
         Delete
-      </ContextButton.Item>
-    </ContextButton>
+      </Menu.Item>
+    </Menu>
   );
 };

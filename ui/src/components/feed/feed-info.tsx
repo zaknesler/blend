@@ -3,7 +3,7 @@ import { Switch, Match, Component, createSignal } from 'solid-js';
 import { getFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
 import { FeedHeader } from './feed-header';
-import { FeedContextButton } from './feed-context-button';
+import { FeedMenu } from './feed-menu';
 
 type FeedInfoProps = {
   uuid: string;
@@ -30,7 +30,7 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
       <Match when={feed.isSuccess}>
         <div class="flex w-full items-start justify-between">
           <FeedHeader title={feed.data?.title} subtitle={feed.data?.url_feed} />
-          <FeedContextButton
+          <FeedMenu
             uuid={props.uuid}
             open={contextMenuOpen()}
             setOpen={setContextMenuOpen}

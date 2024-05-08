@@ -6,7 +6,7 @@ import { Feed } from '~/types/bindings/feed';
 import { createQuery } from '@tanstack/solid-query';
 import { QUERY_KEYS } from '~/constants/query';
 import { getFeedStats } from '~/api/feeds';
-import { FeedContextButton } from './feed-context-button';
+import { FeedMenu } from './feed-menu';
 
 type FeedItemProps = {
   feed: Feed;
@@ -51,14 +51,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
         </span>
       )}
 
-      <FeedContextButton
-        uuid={props.feed.uuid}
-        onlyDisplayForGroup
-        open={open()}
-        setOpen={setOpen}
-        shift={-6}
-        gutter={8}
-      />
+      <FeedMenu uuid={props.feed.uuid} onlyDisplayForGroup open={open()} setOpen={setOpen} shift={-6} gutter={8} />
     </A>
   );
 };
