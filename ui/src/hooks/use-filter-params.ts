@@ -29,6 +29,11 @@ export const useFilterParams = () => {
     return hasValues ? `?${builder.toString()}` : '';
   };
 
+  const getEntryUrl = (entry_uuid: string) => {
+    const path = params.feed_uuid ? `/feeds/${params.feed_uuid}/entries/${entry_uuid}` : `/entries/${entry_uuid}`;
+    return path.concat(getQueryString());
+  };
+
   return {
     params,
     query,
@@ -36,5 +41,6 @@ export const useFilterParams = () => {
     getView,
     setView,
     getQueryString,
+    getEntryUrl,
   };
 };

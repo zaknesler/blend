@@ -1,6 +1,4 @@
-import { A } from '@solidjs/router';
 import { createQuery } from '@tanstack/solid-query';
-import dayjs from 'dayjs';
 import { Switch, Match, For, Component, createEffect, createSignal } from 'solid-js';
 import { QUERY_KEYS } from '~/constants/query';
 import { Skeleton } from '../ui/skeleton';
@@ -9,17 +7,16 @@ import { getFeeds } from '~/api/feeds';
 import { useInfiniteEntries } from '~/hooks/use-infinite-entries';
 import { Spinner } from '../ui/spinner';
 import { type NullableBounds, createElementBounds } from '@solid-primitives/bounds';
-import { useFilterParams } from '~/hooks/use-filter-params';
+import { EntryItem } from './entry-item';
 
 type EntryListProps = {
-  containerBounds?: Readonly<NullableBounds>;
   class?: string;
+  containerBounds?: Readonly<NullableBounds>;
 };
 
 export const EntryList: Component<EntryListProps> = props => {
-  const filter = useFilterParams();
-
   const [bottomOfList, setBottomOfList] = createSignal<HTMLElement>();
+  const listBounds = createElementBounds(bottomOfList);
 
   const feeds = createQuery(() => ({
     queryKey: [QUERY_KEYS.FEEDS],
@@ -28,28 +25,17 @@ export const EntryList: Component<EntryListProps> = props => {
 
   const entries = useInfiniteEntries();
   const allEntries = () => entries.data?.pages.flatMap(page => page.data) || [];
-
-  const listBounds = createElementBounds(bottomOfList);
+  const getFeed = (feed_uuid: string) => feeds.data?.find(feed => feed.uuid === feed_uuid);
 
   createEffect(() => {
     const bottomOfListVisible =
       props.containerBounds?.bottom && listBounds.bottom && listBounds.bottom <= props.containerBounds?.bottom;
-    if (!bottomOfListVisible || !entries.hasNextPage) return;
+    if (!bottomOfListVisible || !entries.hasNextPage || entries.isFetchingNextPage) return;
 
     entries.fetchNextPage();
   });
 
-  const getUrl = (entry_uuid: string) => {
-    const path = filter.params.feed_uuid
-      ? `/feeds/${filter.params.feed_uuid}/entries/${entry_uuid}`
-      : `/entries/${entry_uuid}`;
-
-    return path.concat(filter.getQueryString());
-  };
-
-  const getFeed = (feed_uuid: string) => feeds.data?.find(feed => feed.uuid === feed_uuid);
-
-  // useKeyboardNav(() => ({
+  // useListNav(() => ({
   //   entries: entries.data || [],
   //   current_entry_uuid: props.current_entry_uuid,
   //   getUrl,
@@ -71,31 +57,12 @@ export const EntryList: Component<EntryListProps> = props => {
         <p>Error: {entries.error?.message}</p>
       </Match>
 
-      <Match when={entries.isSuccess}>
+      <Match when={entries.isSuccess && feeds.data}>
         {allEntries().length ? (
           <div class={cx('flex flex-col gap-1', props.class)}>
-            <For each={allEntries()}>
-              {(entry, index) => (
-                <A
-                  data-index={index()}
-                  href={getUrl(entry.uuid)}
-                  activeClass="bg-gray-100 dark:bg-gray-950"
-                  inactiveClass={cx('hover:bg-gray-100 dark:hover:bg-gray-950', entry.read_at && 'opacity-50')}
-                  class={cx(
-                    '-mx-2 flex flex-col gap-1 rounded-lg p-2 ring-gray-300 transition dark:ring-gray-700',
-                    'focus:bg-gray-100 focus:outline-none focus:ring focus:dark:bg-gray-950',
-                  )}
-                >
-                  <h4 class="text-base/5 md:text-sm xl:text-base/5">{entry.title}</h4>
-                  <small class="text-xs text-gray-500">
-                    <span class="font-medium">{getFeed(entry.feed_uuid)?.title}</span> -{' '}
-                    {dayjs(entry.published_at).format('MMMM DD, YYYY')}
-                  </small>
-                </A>
-              )}
-            </For>
+            <For each={allEntries()}>{entry => <EntryItem entry={entry} feed={getFeed(entry.feed_uuid)!} />}</For>
 
-            <div ref={setBottomOfList} />
+            <div ref={setBottomOfList} class="-mt-1" />
 
             {entries.isFetchingNextPage && (
               <div class="flex w-full items-center justify-center p-4">
@@ -112,46 +79,3 @@ export const EntryList: Component<EntryListProps> = props => {
     </Switch>
   );
 };
-
-// type KeyboardNavParams = {
-//   entries: Entry[];
-//   current_entry_uuid?: string;
-//   getUrl: (uuid: string) => string;
-// };
-
-// const useKeyboardNav = (params: () => KeyboardNavParams) => {
-//   const keyDownEvent = useKeyDownEvent();
-//   const navigate = useNavigate();
-
-//   createEffect(() => {
-//     if (!params().entries.length) return;
-
-//     const e = keyDownEvent();
-//     if (!e) return;
-
-//     const maybeNavigate = (direction: 'up' | 'down') => {
-//       e.preventDefault();
-
-//       const currentIndex = params().entries.findIndex(entry => entry.uuid === params().current_entry_uuid);
-//       if (currentIndex === -1) return;
-
-//       const offset = direction === 'up' ? -1 : 1;
-//       const entry = params().entries[currentIndex + offset];
-//       if (!entry) return;
-
-//       console.log('navigate to', entry.uuid);
-
-//       navigate(params().getUrl(entry.uuid));
-//     };
-
-//     switch (e.key) {
-//       case 'ArrowDown':
-//         maybeNavigate('down');
-//         break;
-
-//       case 'ArrowUp':
-//         maybeNavigate('up');
-//         break;
-//     }
-//   });
-// };
