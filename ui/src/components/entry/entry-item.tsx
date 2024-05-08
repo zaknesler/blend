@@ -28,7 +28,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
       <small class="flex w-full gap-1 text-xs text-gray-500 dark:text-gray-400">
         <span class="font-medium">{props.feed.title}</span>
         <span class="text-gray-300 dark:text-gray-600">&ndash;</span>
-        <span>{dayjs(props.entry.published_at).format('MMMM d, YYYY')}</span>
+        <span>{dayjs(props.entry.published_at).format('MMM D, YYYY')}</span>
       </small>
     </A>
   );

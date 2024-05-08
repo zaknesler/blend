@@ -35,7 +35,7 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
 
         {local.entry.published_at && (
           <div class="text-sm text-gray-500 dark:text-gray-400">
-            {dayjs(local.entry.published_at).format('MMMM DD, YYYY [at] h:mm a')}
+            {dayjs(local.entry.published_at).format('MMM D, YYYY [at] h:mm a')}
           </div>
         )}
 

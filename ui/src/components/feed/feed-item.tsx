@@ -46,7 +46,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
       <span class="flex-1 overflow-x-hidden truncate">{props.feed.title}</span>
 
       {getStats()?.count_unread && (
-        <span class="-mx-1 -my-0.5 shrink-0 rounded-md bg-white px-1 py-0.5 text-xs/4 text-gray-500 dark:bg-gray-800 dark:text-gray-300">
+        <span class="-mx-1 -my-0.5 w-6 shrink-0 rounded-md bg-white py-0.5 text-center text-xs/4 text-gray-500 dark:bg-gray-800 dark:text-gray-300">
           {getStats()?.count_unread}
         </span>
       )}
