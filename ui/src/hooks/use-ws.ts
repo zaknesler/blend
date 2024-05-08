@@ -25,7 +25,9 @@ export const useWs = () => {
     switch (notif.type) {
       case 'EntriesFetched':
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS] });
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS_STATS] });
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS_VIEW, notif.feed_uuid] });
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX] }); // TODO: move this to only run after all feeds have been refreshed
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX, notif.feed_uuid, filter.getView()] });
     }
   });
