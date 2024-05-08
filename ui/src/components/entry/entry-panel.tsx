@@ -28,7 +28,6 @@ export const EntryPanel = () => {
 
     markAsRead.mutateAsync(entry.data.uuid).then(() => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS_STATS] });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX, filter.params.feed_uuid] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_VIEW, entry.data.uuid] });
     });
   });
