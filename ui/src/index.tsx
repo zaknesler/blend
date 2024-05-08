@@ -3,7 +3,7 @@ import { SolidQueryDevtools } from '@tanstack/solid-query-devtools';
 import { render } from 'solid-js/web';
 import 'solid-devtools';
 import Router from './router';
-import './css/app.css';
+import 'tailwindcss/tailwind.css';
 
 const queryClient = new QueryClient();
 

@@ -50,9 +50,7 @@ export const EntryList: Component<EntryListProps> = props => {
       <Match when={entries.query.isSuccess && feeds.query.data}>
         {entries.getAllEntries().length ? (
           <div class="-mt-2 flex flex-col gap-1 px-4 pb-2">
-            <For each={entries.getAllEntries()}>
-              {entry => <EntryItem entry={entry} feed={feeds.findFeed(entry.feed_uuid)!} />}
-            </For>
+            <For each={entries.getAllEntries()}>{entry => <EntryItem entry={entry} />}</For>
 
             <div ref={setBottomOfList} class="-mt-1" />
 
