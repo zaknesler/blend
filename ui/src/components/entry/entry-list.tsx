@@ -2,7 +2,6 @@ import { createQuery } from '@tanstack/solid-query';
 import { Switch, Match, For, Component, createEffect, createSignal } from 'solid-js';
 import { QUERY_KEYS } from '~/constants/query';
 import { Skeleton } from '../ui/skeleton';
-import { cx } from 'class-variance-authority';
 import { getFeeds } from '~/api/feeds';
 import { useInfiniteEntries } from '~/hooks/use-infinite-entries';
 import { Spinner } from '../ui/spinner';
@@ -10,7 +9,6 @@ import { type NullableBounds, createElementBounds } from '@solid-primitives/boun
 import { EntryItem } from './entry-item';
 
 type EntryListProps = {
-  class?: string;
   containerBounds?: Readonly<NullableBounds>;
 };
 
@@ -59,7 +57,7 @@ export const EntryList: Component<EntryListProps> = props => {
 
       <Match when={entries.isSuccess && feeds.data}>
         {allEntries().length ? (
-          <div class={cx('flex flex-col gap-1', props.class)}>
+          <div class="-mt-2 flex flex-col gap-1 px-4 pb-2">
             <For each={allEntries()}>{entry => <EntryItem entry={entry} feed={getFeed(entry.feed_uuid)!} />}</For>
 
             <div ref={setBottomOfList} class="-mt-1" />
@@ -71,8 +69,10 @@ export const EntryList: Component<EntryListProps> = props => {
             )}
           </div>
         ) : (
-          <div class="flex h-full w-full flex-1 items-center justify-center rounded-lg border-4 border-dashed border-gray-200 p-4 py-16 text-center text-sm text-gray-500 dark:border-gray-800 dark:text-gray-300">
-            No entries to display
+          <div class="h-full w-full flex-1 px-4 pb-4">
+            <div class="flex h-full w-full items-center justify-center rounded-lg border-4 border-dashed border-gray-200 p-4 py-16 text-center text-sm text-gray-500 dark:border-gray-800 dark:text-gray-300">
+              No entries to display
+            </div>
           </div>
         )}
       </Match>

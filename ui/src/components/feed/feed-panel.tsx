@@ -67,7 +67,7 @@ export const FeedPanel = () => {
         </Tabs>
       </div>
 
-      <div class={cx('-mt-2 flex-1 px-4 pb-2', containerScroll.y > 0 ? 'z-auto' : 'z-10')}>
+      <div class={cx('flex-1', containerScroll.y > 0 ? 'z-auto' : 'z-10')}>
         <EntryList containerBounds={containerBounds} />
       </div>
     </Panel>
