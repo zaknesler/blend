@@ -5,17 +5,17 @@ import dayjs from 'dayjs';
 import { type Component } from 'solid-js';
 import { getEntry } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
+import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useFilterParams } from '~/hooks/use-filter-params';
 import { Entry } from '~/types/bindings/entry';
-import { Feed } from '~/types/bindings/feed';
 
 type EntryItemProps = {
   entry: Entry;
-  feed: Feed;
 };
 
 export const EntryItem: Component<EntryItemProps> = props => {
   const filter = useFilterParams();
+  const feeds = useFeeds();
 
   // Get the data for an entry to check if user marked it as read
   const entryData = createQuery(() => ({
@@ -24,6 +24,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
     queryFn: () => getEntry(props.entry.uuid),
   }));
 
+  const feed = () => feeds.findFeed(props.entry.feed_uuid);
   const isRead = () => !!props.entry.read_at || !!entryData.data?.read_at;
 
   return (
@@ -43,8 +44,14 @@ export const EntryItem: Component<EntryItemProps> = props => {
 
       <small class="flex w-full gap-1 text-xs text-gray-500 dark:text-gray-400">
         {!isRead() && <span class="h-2 w-2 self-center rounded-full bg-gray-500 dark:bg-gray-300" />}
-        <span class="font-medium">{props.feed.title}</span>
-        <span class="text-gray-400 dark:text-gray-600">&ndash;</span>
+
+        {!filter.params.feed_uuid && (
+          <>
+            <span class="font-medium">{feed()?.title}</span>
+            <span class="text-gray-400 dark:text-gray-600">&ndash;</span>
+          </>
+        )}
+
         <span>{dayjs(props.entry.published_at).format('MMM D, YYYY')}</span>
       </small>
     </A>
