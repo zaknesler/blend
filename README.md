@@ -11,12 +11,12 @@ Demo is available at [blend.zak.fm](https://blend.zak.fm). Development builds ar
 
 #### Roadmap
 
-- [ ] Source from any RSS feed format
-- [ ] Fetch metadata and feed entries in background
-- [ ] Trigger refresh manually
+- [x] Source from any RSS feed format
+- [x] Fetch metadata and feed entries in background
+- [x] Trigger refresh manually
 - [ ] Organize feeds into folders
 - [ ] Scrape HTML if entries do not contain article content
-- [ ] Automatic syncing
+- [x] Automatic syncing
 - [ ] User options for theme, font, etc.
 - [ ] Authentication
 - [ ] Importing/exporting OPML
