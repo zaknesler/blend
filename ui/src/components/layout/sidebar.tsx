@@ -31,7 +31,7 @@ export const Sidebar: Component<SidebarProps> = props => {
           setOpen={setSettingsOpen}
           triggerIcon={TiCog}
           gutter={4}
-          triggerClass="w-6 h-6"
+          triggerClass="w-6 h-6 rounded-md"
           triggerIconClass="w-5 h-5 text-gray-500"
         >
           <Menu.Item onSelect={() => console.log('clicky')} disabled>

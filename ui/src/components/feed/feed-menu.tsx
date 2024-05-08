@@ -1,4 +1,4 @@
-import { Component, mergeProps } from 'solid-js';
+import { Component } from 'solid-js';
 import { Menu, type MenuProps } from '../ui/menu';
 import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
 
@@ -7,14 +7,6 @@ type FeedMenuProps = MenuProps & {
 };
 
 export const FeedMenu: Component<FeedMenuProps> = props => {
-  const local = mergeProps(
-    {
-      triggerClass: 'h-5 w-5',
-      triggerIconClass: 'w-4 h-4 text-gray-500',
-    },
-    props,
-  );
-
   const refresh = useRefreshFeed();
 
   const handleRefresh = () => {
@@ -23,7 +15,7 @@ export const FeedMenu: Component<FeedMenuProps> = props => {
   };
 
   return (
-    <Menu {...local}>
+    <Menu {...props}>
       <Menu.Item onSelect={handleRefresh}>Refresh</Menu.Item>
       <Menu.Item onSelect={() => alert('rename')} disabled>
         Rename

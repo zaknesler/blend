@@ -51,7 +51,16 @@ export const FeedItem: Component<FeedItemProps> = props => {
         </span>
       )}
 
-      <FeedMenu uuid={props.feed.uuid} onlyDisplayForGroup open={open()} setOpen={setOpen} shift={-6} gutter={8} />
+      <FeedMenu
+        uuid={props.feed.uuid}
+        onlyDisplayForGroup
+        open={open()}
+        setOpen={setOpen}
+        shift={-5}
+        gutter={8}
+        triggerClass="h-5 w-5 rounded"
+        triggerIconClass="w-4 h-4 text-gray-500"
+      />
     </A>
   );
 };

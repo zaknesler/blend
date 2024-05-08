@@ -65,7 +65,7 @@ const MenuTrigger: ParentComponent<MenuTrigger> = props => {
     <DropdownMenu.Trigger
       {...rest}
       class={cx(
-        'flex shrink-0 appearance-none items-center justify-center rounded border border-gray-200 transition dark:border-gray-700',
+        'flex shrink-0 appearance-none items-center justify-center border border-gray-200 transition dark:border-gray-700',
         'focus:border-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-200 dark:focus:ring-gray-600',
         local.onlyDisplayForGroup && 'opacity-0 focus:opacity-100 group-focus:opacity-100',
         local.onlyDisplayForGroup && local.forceFocus
