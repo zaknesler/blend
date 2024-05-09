@@ -40,7 +40,7 @@ pub async fn start_queue_worker(
 
         tokio::spawn(async move {
             if let Err(err) = handle_job(job.clone(), db, notifs).await {
-                tracing::error!("!!failed: {} with error: {}", job, err);
+                tracing::error!("job failed: {} with error: {}", job, err);
             }
         });
     }

@@ -40,4 +40,9 @@ pub enum WebError {
 
     #[error(transparent)]
     WorkerJobSendError(#[from] tokio::sync::mpsc::error::SendError<blend_worker::Job>),
+
+    #[error(transparent)]
+    NotificationSendError(
+        #[from] tokio::sync::broadcast::error::SendError<blend_worker::Notification>,
+    ),
 }
