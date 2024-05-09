@@ -29,10 +29,13 @@ export const useFilterParams = () => {
     return hasValues ? `?${builder.toString()}` : '';
   };
 
-  const getEntryUrl = (entry_uuid: string) => {
-    const path = params.feed_uuid ? `/feeds/${params.feed_uuid}/entries/${entry_uuid}` : `/entries/${entry_uuid}`;
-    return path.concat(getQueryString());
+  const getFeedUrl = (append?: string) => {
+    const path = params.feed_uuid ? `/feeds/${params.feed_uuid}` : `/`;
+    const withAppended = append ? path.concat(append) : path;
+    return withAppended.replace(/\/\//g, '/').concat(getQueryString());
   };
+
+  const getEntryUrl = (entry_uuid: string) => getFeedUrl(`/entries/${entry_uuid}`);
 
   return {
     params,
@@ -41,6 +44,7 @@ export const useFilterParams = () => {
     getView,
     setView,
     getQueryString,
+    getFeedUrl,
     getEntryUrl,
   };
 };
