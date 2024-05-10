@@ -1,11 +1,11 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use sqlx::prelude::FromRow;
-use ts_rs::TS;
+use typeshare::typeshare;
 use uuid::Uuid;
 
-#[derive(Debug, Clone, Serialize, Deserialize, FromRow, TS)]
-#[ts(export, export_to = "../../../ui/src/types/bindings/feed.ts")]
+#[typeshare]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct Feed {
     pub uuid: Uuid,
     pub id: String,
@@ -18,8 +18,8 @@ pub struct Feed {
     pub updated_at: Option<DateTime<Utc>>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, FromRow, TS)]
-#[ts(export, export_to = "../../../ui/src/types/bindings/stats.ts")]
+#[typeshare]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct FeedStats {
     pub uuid: Uuid,
     pub count_total: u32,

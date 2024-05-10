@@ -7,7 +7,7 @@ import { getEntry } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useFilterParams } from '~/hooks/use-filter-params';
-import { Entry } from '~/types/bindings/entry';
+import type { Entry } from '~/types/bindings';
 
 type EntryItemProps = {
   entry: Entry;

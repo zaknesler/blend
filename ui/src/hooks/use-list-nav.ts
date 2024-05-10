@@ -1,6 +1,6 @@
 import { useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
-import { Entry } from '~/types/bindings/entry';
+import type { Entry } from '~/types/bindings';
 import { useKeyDownEvent } from '@solid-primitives/keyboard';
 
 type UseListNavParams = {

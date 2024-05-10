@@ -12,5 +12,5 @@ serde_json = { workspace = true }
 sqlx = { workspace = true, features = ["migrate", "uuid"] }
 thiserror = { workspace = true }
 tracing = { workspace = true }
-ts-rs = { workspace = true }
+typeshare = { workspace = true }
 uuid = { workspace = true }

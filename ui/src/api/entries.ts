@@ -1,4 +1,4 @@
-import { Entry } from '~/types/bindings/entry';
+import type { Entry } from '~/types/bindings';
 import { ApiPaginatedResponse, ApiResponse, ApiSuccessResponse } from '.';
 import { apiUrl } from '../utils/url';
 import axios from 'axios';

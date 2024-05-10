@@ -1,6 +1,5 @@
-import { FeedStats } from '~/types/bindings/stats';
+import type { FeedStats, Feed } from '~/types/bindings';
 import { ApiResponse, ApiSuccessResponse } from '.';
-import { Feed } from '../types/bindings/feed';
 import { apiUrl } from '../utils/url';
 import axios from 'axios';
 

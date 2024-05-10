@@ -57,12 +57,14 @@ jobs:
         shell: bash
 
       - run: cargo binstall --no-confirm --force sqlx-cli
+      - run: cargo binstall --no-confirm --force typeshare-cli
       - run: sqlx db create
       - run: sqlx migrate run --source crates/blend-db/migrations
 
       - run: cargo test --verbose --workspace
 
       - run: pnpm install
+      - run: pnpm typeshare:generate
       - run: pnpm tsc
       # - run: pnpm test
       - run: pnpm build

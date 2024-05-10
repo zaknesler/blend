@@ -2,7 +2,7 @@
 
 import { cx } from 'class-variance-authority';
 import { JSX, ParentComponent, splitProps, For } from 'solid-js';
-import { Entry } from '~/types/bindings/entry';
+import type { Entry } from '~/types/bindings';
 import { Link } from '../ui/link';
 import dayjs from 'dayjs';
 import { Button } from '../ui/button';

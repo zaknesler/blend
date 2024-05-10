@@ -2,7 +2,7 @@ import { A, useLocation } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { HiSolidRss } from 'solid-icons/hi';
 import { Component, createMemo, createSignal } from 'solid-js';
-import { Feed } from '~/types/bindings/feed';
+import type { Feed } from '~/types/bindings';
 import { createQuery } from '@tanstack/solid-query';
 import { QUERY_KEYS } from '~/constants/query';
 import { getFeedStats } from '~/api/feeds';

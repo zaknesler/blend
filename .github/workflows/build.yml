@@ -76,6 +76,8 @@ jobs:
       - run: cargo binstall --no-confirm --force cross
         if: matrix.command == 'cross'
 
+      - run: cargo binstall --no-confirm --force typeshare-cli
+
       - run: cargo binstall --no-confirm --force sqlx-cli
       - run: sqlx db create
       - run: sqlx migrate run --source crates/blend-db/migrations
@@ -86,6 +88,7 @@ jobs:
         if: matrix.command == 'cross'
 
       - run: pnpm install
+      - run: pnpm typeshare:generate
       - run: pnpm tsc
       # - run: pnpm test
       - run: pnpm build

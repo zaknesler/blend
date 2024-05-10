@@ -8,7 +8,8 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "watch": "mprocs \"pnpm dev\" \"cargo watch -x \\\"run -- start\\\"\"",
-    "watch:trace": "mprocs \"pnpm dev\" \"cargo watch -x \\\"run -- -ltrace start\\\"\""
+    "watch:trace": "mprocs \"pnpm dev\" \"cargo watch -x \\\"run -- -ltrace start\\\"\"",
+    "typeshare:generate": "typeshare ./ --lang=typescript --output-file=./ui/src/types/bindings.ts"
   },
   "dependencies": {
     "@kobalte/core": "^0.13.1",

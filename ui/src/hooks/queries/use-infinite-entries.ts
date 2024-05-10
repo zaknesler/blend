@@ -2,7 +2,7 @@ import { createInfiniteQuery } from '@tanstack/solid-query';
 import { ApiPaginatedResponse } from '~/api';
 import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
-import { Entry } from '~/types/bindings/entry';
+import type { Entry } from '~/types/bindings';
 import { useFilterParams } from '../use-filter-params';
 
 export const useInfiniteEntries = () => {
