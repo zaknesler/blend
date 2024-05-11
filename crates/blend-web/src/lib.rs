@@ -2,7 +2,12 @@ use self::error::WebResult;
 use axum::http::{header, HeaderValue, Method};
 use tokio::net::TcpListener;
 use tower_cookies::CookieManagerLayer;
-use tower_http::{cors, trace::TraceLayer};
+use tower_http::{
+    compression::{predicate::SizeAbove, CompressionLayer},
+    cors,
+    trace::TraceLayer,
+    CompressionLevel,
+};
 
 mod context;
 mod error;
@@ -38,9 +43,14 @@ pub async fn serve(ctx: context::Context) -> WebResult<()> {
     }
 
     let app = crate::router::router(ctx.clone())
-        .layer(TraceLayer::new_for_http())
         .layer(cors)
-        .layer(CookieManagerLayer::new());
+        .layer(
+            CompressionLayer::new()
+                .quality(CompressionLevel::Precise(4))
+                .compress_when(SizeAbove::new(512)),
+        )
+        .layer(CookieManagerLayer::new())
+        .layer(TraceLayer::new_for_http());
 
     let addr = format!(
         "{}:{}",

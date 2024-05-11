@@ -21,7 +21,12 @@ sqlx = { workspace = true, features = ["chrono"] }
 thiserror = { workspace = true }
 tokio = { workspace = true }
 tower-cookies = "0.10"
-tower-http = { version = "0.5", features = ["trace", "cors", "fs"] }
+tower-http = { version = "0.5", features = [
+  "trace",
+  "cors",
+  "fs",
+  "compression-br",
+] }
 tracing = { workspace = true }
 uuid = { workspace = true }
 validator = { version = "0.18", features = ["derive"] }
