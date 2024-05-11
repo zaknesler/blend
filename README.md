@@ -13,12 +13,13 @@ Demo is available at [blend.zak.fm](https://blend.zak.fm). Development builds ar
 
 - [x] Source from any RSS feed format
 - [x] Fetch metadata and feed entries in background
+- [x] Notifications via websocket
+- [x] Automatic refreshing
 - [x] Trigger refresh manually
-- [ ] Organize feeds into folders
 - [ ] Scrape HTML if entries do not contain article content
-- [x] Automatic syncing
-- [ ] User options for theme, font, etc.
+- [ ] Organize feeds into folders
+- [ ] UI options for theme, font, etc.
 - [ ] Authentication
+- [ ] Multiple user accounts (maybe; I haven't decided yet)
 - [ ] Importing/exporting OPML
 - [ ] Import database from other RSS readers (just yarr for now)
-- [ ] Multiple user accounts (maybe; I haven't decided yet)
