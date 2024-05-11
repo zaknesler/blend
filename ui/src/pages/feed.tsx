@@ -1,13 +1,13 @@
 import { EntryPanel } from '~/components/entry/entry-panel';
+import { NavPanel } from '~/components/nav/nav-panel';
 import { useFilterParams } from '~/hooks/use-filter-params';
-import { FeedPanel } from '~/components/feed/feed-panel';
 
 export default () => {
   const filter = useFilterParams();
 
   return (
     <>
-      <FeedPanel />
+      <NavPanel />
       {filter.params.entry_uuid && <EntryPanel />}
     </>
   );
