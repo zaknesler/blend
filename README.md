@@ -18,6 +18,8 @@ Demo is available at [blend.zak.fm](https://blend.zak.fm). Development builds ar
 - [ ] Scrape HTML if entries do not contain article content
 - [ ] Organize feeds into folders
 - [ ] UI options for theme, font, etc.
+- [ ] Keyboard shortcuts
+- [ ] Linear-style command palette
 - [ ] Authentication
 - [ ] Multiple user accounts (maybe; I haven't decided yet)
 - [ ] Importing/exporting OPML
