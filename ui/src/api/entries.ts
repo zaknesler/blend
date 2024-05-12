@@ -1,17 +1,9 @@
-import type { Entry } from '~/types/bindings';
+import type { Entry, FilterEntriesParams } from '~/types/bindings';
 import { ApiPaginatedResponse, ApiResponse, ApiSuccessResponse } from '.';
 import { apiUrl } from '../utils/url';
 import axios from 'axios';
-import { View } from '~/constants/views';
 
-type IndexEntriesParams = {
-  feed?: string;
-  cursor?: string;
-  dir?: 'asc' | 'desc';
-  view?: View;
-};
-
-export const getEntries = async (params: IndexEntriesParams) => {
+export const getEntries = async (params: FilterEntriesParams) => {
   type Response = ApiPaginatedResponse<Entry[]>;
 
   const res = await axios.get<Response>(apiUrl(`/entries`), { params });

@@ -34,6 +34,24 @@ export interface FeedStats {
   count_unread: number;
 }
 
+export enum FilterDirection {
+  Asc = 'asc',
+  Desc = 'desc',
+}
+
+export enum View {
+  All = 'all',
+  Read = 'read',
+  Unread = 'unread',
+}
+
+export interface FilterEntriesParams {
+  dir: FilterDirection;
+  cursor?: string;
+  feed?: string;
+  view?: View;
+}
+
 export type Notification =
   | {
       type: 'StartedFeedRefresh';

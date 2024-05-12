@@ -1,8 +1,9 @@
 import { For } from 'solid-js';
 import { Tabs } from '@kobalte/core/tabs';
-import { VIEWS, View } from '~/constants/views';
+import { VIEWS, VIEW_LABELS } from '~/constants/views';
 import { cx } from 'class-variance-authority';
 import { useFilterParams } from '~/hooks/use-filter-params';
+import { View } from '~/types/bindings';
 
 export const NavViewSwitcher = () => {
   const filter = useFilterParams();
@@ -15,10 +16,10 @@ export const NavViewSwitcher = () => {
     >
       <Tabs.List class="relative flex w-full -space-x-1">
         <For each={VIEWS}>
-          {tab => (
+          {view => (
             <Tabs.Trigger
               class="group z-20 flex flex-1 items-center justify-center rounded-lg p-1 transition focus:outline-none"
-              value={tab.value}
+              value={view}
             >
               <div
                 class={cx(
@@ -29,7 +30,7 @@ export const NavViewSwitcher = () => {
                   'ui-group-selected:shadow ui-group-selected:dark:bg-gray-900',
                 )}
               >
-                {tab.label}
+                {VIEW_LABELS[view]}
               </div>
             </Tabs.Trigger>
           )}

@@ -40,7 +40,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
         'focus:bg-gray-100 focus:outline-none focus:ring focus:dark:bg-gray-950',
       )}
     >
-      <h4 class="text-base/5 md:text-sm xl:text-base/5">{props.entry.title}</h4>
+      <h4 class="text-pretty text-base/5 md:text-sm xl:text-base/5">{props.entry.title}</h4>
 
       <small class="flex w-full gap-1 text-xs text-gray-500 dark:text-gray-400">
         {!isRead() && <span class="h-2 w-2 self-center rounded-full bg-gray-500 dark:bg-gray-300" />}

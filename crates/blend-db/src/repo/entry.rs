@@ -1,7 +1,9 @@
 use super::Paginated;
 use crate::{error::DbResult, model, PAGINATION_LIMIT};
 use chrono::{DateTime, Utc};
+use serde::Deserialize;
 use sqlx::{QueryBuilder, Row, Sqlite};
+use typeshare::typeshare;
 use uuid::Uuid;
 
 pub struct EntryRepo {
@@ -18,7 +20,8 @@ pub struct CreateEntryParams {
     pub updated_at: Option<DateTime<Utc>>,
 }
 
-#[derive(serde::Deserialize)]
+#[typeshare]
+#[derive(Deserialize)]
 pub struct FilterEntriesParams {
     #[serde(default = "FilterDirection::latest")]
     pub dir: FilterDirection,
@@ -28,14 +31,16 @@ pub struct FilterEntriesParams {
     pub view: View,
 }
 
-#[derive(serde::Deserialize)]
+#[typeshare]
+#[derive(Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum FilterDirection {
     Asc,
     Desc,
 }
 
-#[derive(serde::Deserialize)]
+#[typeshare]
+#[derive(Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum View {
     All,

@@ -1,9 +1,11 @@
-export type View = (typeof VIEWS)[number]['value'];
+import { View } from '~/types/bindings';
 
-export const DEFAULT_VIEW: View = 'unread';
+export const DEFAULT_VIEW = View.Unread;
 
-export const VIEWS = [
-  { label: 'Unread', value: 'unread' },
-  // { label: 'Saved', value: 'saved' },
-  { label: 'All', value: 'all' },
-] as const;
+export const VIEWS = [View.Unread, View.All];
+
+export const VIEW_LABELS: Record<View, string> = {
+  [View.All]: 'All',
+  [View.Read]: 'Read',
+  [View.Unread]: 'Unread',
+};

@@ -1,5 +1,6 @@
 import { useParams, useSearchParams } from '@solidjs/router';
-import { DEFAULT_VIEW, View } from '~/constants/views';
+import { DEFAULT_VIEW } from '~/constants/views';
+import { View } from '~/types/bindings';
 
 type RouterParams = {
   feed_uuid?: string;
