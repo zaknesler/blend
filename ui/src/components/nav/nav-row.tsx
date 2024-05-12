@@ -35,7 +35,7 @@ export const NavRow: Component<NavRowProps> = props => {
               </Button>
             )}
           />
-          <Tooltip.Content>Show feeds</Tooltip.Content>
+          <Tooltip.Content>{props.open ? 'Hide feeds' : 'Show feeds'}</Tooltip.Content>
         </Tooltip>
       )}
 
