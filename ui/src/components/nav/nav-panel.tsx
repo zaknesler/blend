@@ -41,7 +41,7 @@ export const NavPanel = () => {
     <Panel
       class={cx(
         'flex shrink-0 flex-col md:max-w-[16rem] lg:max-w-xs xl:max-w-md',
-        showPanel() ? 'flex-1' : 'flex-none',
+        showPanel() ? 'flex-1' : 'z-10 flex-none shadow dark:shadow-xl',
       )}
       ref={setContainer}
     >
@@ -49,11 +49,16 @@ export const NavPanel = () => {
         class={cx(
           'sticky top-0 flex flex-col gap-4 bg-white/25 p-4 backdrop-blur-md dark:bg-gray-900/25',
           !showPanel() && 'pb-0',
-          containerScroll.y > 0 && 'z-10 shadow dark:shadow-xl',
+          showPanel() && containerScroll.y > 0 && 'z-10 shadow dark:shadow-xl',
         )}
       >
         <div class="-m-4 mb-0 xl:hidden">
-          <NavRow open={showFeeds()} setOpen={setShowFeeds} showBackArrow={viewingEntry() && isMobile()} />
+          <NavRow
+            open={showFeeds()}
+            setOpen={setShowFeeds}
+            showFeedSwitch={(!viewingEntry() && isMobile()) || !isMobile()}
+            showBackArrow={viewingEntry() && isMobile()}
+          />
         </div>
 
         {showPanel() && !showFeeds() && (
