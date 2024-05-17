@@ -4,8 +4,8 @@ import { cx } from 'class-variance-authority';
 import { JSX, ParentComponent, splitProps, For } from 'solid-js';
 import type { Entry } from '~/types/bindings';
 import { Link } from '../ui/link';
-import dayjs from 'dayjs';
 import { Button } from '../ui/button';
+import { formatDateTime } from '~/utils/date';
 
 type EntryViewProps = JSX.IntrinsicElements['div'] & {
   entry: Entry;
@@ -34,9 +34,7 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
         <h1 class="text-balance text-xl font-bold text-gray-800 lg:text-2xl dark:text-gray-100">{local.entry.title}</h1>
 
         {local.entry.published_at && (
-          <div class="text-sm text-gray-500 dark:text-gray-400">
-            {dayjs(local.entry.published_at).format('MMM D, YYYY [at] h:mm a')}
-          </div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">{formatDateTime(local.entry.published_at)}</div>
         )}
 
         {local.entry.summary && (

@@ -22,7 +22,6 @@
     "@tanstack/solid-query": "^5.36.1",
     "@tanstack/solid-query-devtools": "^5.36.1",
     "class-variance-authority": "^0.7.0",
-    "dayjs": "^1.11.11",
     "partysocket": "^1.0.1",
     "solid-icons": "^1.1.0",
     "solid-js": "^1.8.17",
