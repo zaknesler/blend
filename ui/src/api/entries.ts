@@ -1,28 +1,29 @@
 import type { Entry, FilterEntriesParams } from '~/types/bindings';
 import { ApiPaginatedResponse, ApiResponse, ApiSuccessResponse } from '.';
 import { apiUrl } from '../utils/url';
-import axios from 'axios';
+import wretch from 'wretch';
 
 export const getEntries = async (params: FilterEntriesParams) => {
-  type Response = ApiPaginatedResponse<Entry[]>;
+  const filtered = Object.entries(params).filter(([, value]) => Boolean(value));
+  const query = new URLSearchParams(filtered);
 
-  const res = await axios.get<Response>(apiUrl(`/entries`), { params });
-  return res.data;
+  return wretch(`${apiUrl(`/entries`)}?${query}`)
+    .get()
+    .json<ApiPaginatedResponse<Entry[]>>();
 };
 
-export const getEntry = async (entry_uuid: string) => {
-  type Response = ApiResponse<Entry>;
+export const getEntry = async (entry_uuid: string) =>
+  wretch(apiUrl(`/entries/${entry_uuid}`))
+    .get()
+    .json<ApiResponse<Entry>>()
+    .then(res => res.data);
 
-  const res = await axios.get<Response>(apiUrl(`/entries/${entry_uuid}`));
-  return res.data.data;
-};
+export const updateEntryAsRead = async (entry_uuid: string) =>
+  wretch(apiUrl(`/entries/${entry_uuid}/read`))
+    .post()
+    .json<ApiSuccessResponse>();
 
-export const updateEntryAsRead = async (entry_uuid: string) => {
-  const res = await axios.post<ApiSuccessResponse>(apiUrl(`/entries/${entry_uuid}/read`));
-  return res.data;
-};
-
-export const updateEntryAsUnread = async (entry_uuid: string) => {
-  const res = await axios.post<ApiSuccessResponse>(apiUrl(`/entries/${entry_uuid}/unread`));
-  return res.data;
-};
+export const updateEntryAsUnread = async (entry_uuid: string) =>
+  wretch(apiUrl(`/entries/${entry_uuid}/unread`))
+    .post()
+    .json<ApiSuccessResponse>();

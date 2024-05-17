@@ -1,46 +1,35 @@
 import type { FeedStats, Feed } from '~/types/bindings';
 import { ApiResponse, ApiSuccessResponse } from '.';
 import { apiUrl } from '../utils/url';
-import axios from 'axios';
+import wretch from 'wretch';
 
-export const getFeeds = async () => {
-  type Response = ApiResponse<Feed[]>;
+export const getFeeds = async () =>
+  wretch(apiUrl('/feeds'))
+    .get()
+    .json<ApiResponse<Feed[]>>()
+    .then(res => res.data);
 
-  const res = await axios.get<Response>(apiUrl('/feeds'));
-  return res.data.data;
-};
+export const getFeedStats = async () =>
+  wretch(apiUrl('/feeds/stats'))
+    .get()
+    .json<ApiResponse<FeedStats[]>>()
+    .then(res => res.data);
 
-export const getFeedStats = async () => {
-  type Response = ApiResponse<FeedStats[]>;
+export const refreshFeeds = async () => wretch(apiUrl('/feeds/refresh')).post({}).json<ApiSuccessResponse>();
 
-  const res = await axios.get<Response>(apiUrl('/feeds/stats'));
-  return res.data.data;
-};
+export const addFeed = async (params: { url: string }) =>
+  wretch(apiUrl('/feeds'))
+    .post(params)
+    .json<ApiResponse<Feed>>()
+    .then(res => res.data);
 
-export const refreshFeeds = async () => {
-  type Response = ApiSuccessResponse;
+export const getFeed = async (uuid: string) =>
+  wretch(apiUrl(`/feeds/${uuid}`))
+    .get()
+    .json<ApiResponse<Feed>>()
+    .then(res => res.data);
 
-  const res = await axios.post<Response>(apiUrl('/feeds/refresh'));
-  return res.data;
-};
-
-export const addFeed = async (params: { url: string }) => {
-  type Response = ApiResponse<Feed>;
-
-  const res = await axios.post<Response>(apiUrl('/feeds'), params);
-  return res.data.data;
-};
-
-export const getFeed = async (uuid: string) => {
-  type Response = ApiResponse<Feed>;
-
-  const res = await axios.get<Response>(apiUrl(`/feeds/${uuid}`));
-  return res.data.data;
-};
-
-export const refreshFeed = async (uuid: string) => {
-  type Response = ApiSuccessResponse;
-
-  const res = await axios.post<Response>(apiUrl(`/feeds/${uuid}/refresh`));
-  return res.data;
-};
+export const refreshFeed = async (uuid: string) =>
+  wretch(apiUrl(`/feeds/${uuid}/refresh`))
+    .post()
+    .json<ApiSuccessResponse>();
