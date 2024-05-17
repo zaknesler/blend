@@ -20,13 +20,13 @@ export const FeedItem: Component<FeedItemProps> = props => {
 
   const { stats } = useFeedsStats();
 
-  const getPath = createMemo(() => `/feeds/${props.feed.uuid}`.concat(filter.getQueryString()));
+  const getPath = createMemo(() => `/feeds/${props.feed.uuid}`);
   const isActive = createMemo(() => location.pathname.startsWith(getPath()));
   const getStats = createMemo(() => stats.data?.find(item => item.uuid === props.feed.uuid));
 
   return (
     <BaseFeedItem
-      href={getPath()}
+      href={getPath().concat(filter.getQueryString())}
       title={props.feed.title}
       open={open()}
       active={isActive()}
