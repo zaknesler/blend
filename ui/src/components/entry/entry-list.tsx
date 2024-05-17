@@ -33,6 +33,12 @@ export const EntryList: Component<EntryListProps> = props => {
 
   return (
     <Switch>
+      <Match when={entries.query.isPending}>
+        <div class="h-full w-full flex-1 px-4 pb-4">
+          <Empty />
+        </div>
+      </Match>
+
       <Match when={entries.query.isError}>
         <p class="px-4">Error: {entries.query.error?.message}</p>
       </Match>
@@ -52,7 +58,7 @@ export const EntryList: Component<EntryListProps> = props => {
           </div>
         ) : (
           <div class="h-full w-full flex-1 px-4 pb-4">
-            <Empty>No entries to display</Empty>
+            <Empty />
           </div>
         )}
       </Match>
