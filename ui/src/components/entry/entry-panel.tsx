@@ -9,6 +9,7 @@ import { createMutation } from '@tanstack/solid-query';
 import { useFilterParams } from '~/hooks/use-filter-params';
 import { Empty } from '../ui/empty';
 import { useViewport } from '~/hooks/use-viewport';
+import { Spinner } from '../ui/spinner';
 
 export const EntryPanel = () => {
   const filter = useFilterParams();
@@ -48,7 +49,11 @@ export const EntryPanel = () => {
     >
       <Switch>
         <Match when={entry.isPending}>
-          <Panel class="p-4 lg:p-8">Loading entry...</Panel>
+          <Panel class="h-full w-full p-4 lg:p-8">
+            <Empty>
+              <Spinner />
+            </Empty>
+          </Panel>
         </Match>
 
         <Match when={entry.isError}>

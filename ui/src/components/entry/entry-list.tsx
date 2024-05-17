@@ -35,7 +35,9 @@ export const EntryList: Component<EntryListProps> = props => {
     <Switch>
       <Match when={entries.query.isPending}>
         <div class="h-full w-full flex-1 px-4 pb-4">
-          <Empty />
+          <Empty>
+            <Spinner />
+          </Empty>
         </div>
       </Match>
 
