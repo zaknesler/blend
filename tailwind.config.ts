@@ -5,11 +5,13 @@ import plugin from 'tailwindcss/plugin';
 import formsPlugin from '@tailwindcss/forms';
 import kobaltePlugin from '@kobalte/tailwindcss';
 import typographyPlugin from '@tailwindcss/typography';
+import { screens } from './ui/src/constants/screens';
 
 export default {
   content: ['./ui/**/*.{js,ts,jsx,tsx,html}'],
   theme: {
     extend: {
+      screens,
       fontFamily: {
         serif: ['Lora', ...defaultTheme.fontFamily.serif],
       },

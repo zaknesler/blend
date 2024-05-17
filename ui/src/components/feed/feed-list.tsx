@@ -1,5 +1,4 @@
 import { For, Match, Switch, createSignal } from 'solid-js';
-import { Skeleton } from '../ui/skeleton';
 import { BaseFeedItem, FeedItem } from './feed-item';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
@@ -23,7 +22,8 @@ export const FeedList = () => {
         href={'/'.concat(filter.getQueryString())}
         title="All feeds"
         icon={() => <HiOutlineSquare3Stack3d class="h-5 w-5 text-gray-600" />}
-        open={allFeedsMenuOpen() || location.pathname === '/'}
+        open={allFeedsMenuOpen()}
+        active={location.pathname === '/'}
         setOpen={setAllFeedsMenuOpen}
         unread_count={totalStats()?.count_unread}
         menu={() => (
@@ -41,16 +41,6 @@ export const FeedList = () => {
       <div class="flex w-full flex-col gap-1">
         <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Feeds</h3>
         <Switch>
-          <Match when={feeds.isPending}>
-            <div class="flex flex-col gap-2">
-              <Skeleton class="h-8" color="light" />
-              <Skeleton class="h-8" color="light" />
-              <Skeleton class="h-8" color="light" />
-              <Skeleton class="h-8" color="light" />
-              <Skeleton class="h-8" color="light" />
-            </div>
-          </Match>
-
           <Match when={feeds.isError}>
             <p>Error: {feeds.error?.message}</p>
           </Match>

@@ -1,5 +1,5 @@
 import { type Component, createSignal } from 'solid-js';
-import { Logo } from './logo';
+import { LogoSquare } from './logo';
 import { CreateFeed } from '../modals/create-feed';
 import { cx } from 'class-variance-authority';
 import { TiCog } from 'solid-icons/ti';
@@ -16,7 +16,7 @@ export const Sidebar: Component<SidebarProps> = props => {
   return (
     <div class={cx('relative -mr-4 flex h-full flex-col items-stretch gap-4 p-4 dark:bg-gray-950', props.class)}>
       <div class="flex justify-between">
-        <Logo />
+        <LogoSquare class="h-6 w-6" />
 
         <Menu
           open={settingsOpen()}

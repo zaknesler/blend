@@ -39,7 +39,7 @@ const MenuRoot: ParentComponent<MenuProps> = props => {
   return (
     <DropdownMenu placement="bottom-end" {...rest} open={local.open} onOpenChange={local.setOpen} modal>
       <MenuTrigger
-        onlyDisplayForGroup={!!local.onlyDisplayForGroup}
+        onlyDisplayForGroup={local.onlyDisplayForGroup}
         forceFocus={local.forceFocus || (local.onlyDisplayForGroup && local.open)}
         class={cx('relative', local.triggerClass)}
       >

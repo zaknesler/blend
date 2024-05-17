@@ -10,21 +10,18 @@ import { createElementBounds } from '@solid-primitives/bounds';
 import { cx } from 'class-variance-authority';
 import { createScrollPosition } from '@solid-primitives/scroll';
 import { useIsRouting } from '@solidjs/router';
-import { createWindowSize } from '@solid-primitives/resize-observer';
-import { fullConfig } from '~/utils/tw';
 import { NavViewSwitcher } from '~/components/nav/nav-view-switcher';
 import { NavRow } from '~/components/nav/nav-row';
 import { FeedList } from '~/components/feed/feed-list';
 import { AllFeedsMenu } from '~/components/feed/feed-menu';
-
-const mobileBreakpoint = +fullConfig.theme.maxWidth['screen-md'].replace('px', '');
+import { useViewport } from '~/hooks/use-viewport';
 
 export default () => {
   const filter = useFilterParams();
   const isRouting = useIsRouting();
-  const size = createWindowSize();
+  const { belowBreakpoint } = useViewport();
 
-  const [showFeeds, setShowFeeds] = createSignal(false);
+  const [_showFeeds, setShowFeeds] = createSignal(false);
   const [allFeedsMenuOpen, setAllFeedsMenuOpen] = createSignal(false);
 
   createEffect(() => {
@@ -38,8 +35,9 @@ export default () => {
 
   const viewingEntry = () => !!filter.params.entry_uuid;
 
-  const isMobile = () => size.width <= mobileBreakpoint;
+  const isMobile = () => belowBreakpoint('md');
   const showPanel = () => !isMobile() || (isMobile() && !viewingEntry());
+  const showFeeds = () => belowBreakpoint('xl') && _showFeeds();
 
   return (
     <>
@@ -58,6 +56,7 @@ export default () => {
               class={cx(
                 'sticky top-0 flex flex-col gap-4 bg-white/25 p-4 backdrop-blur-md dark:bg-gray-900/25',
                 !showPanel() && 'pb-0',
+                showFeeds() && 'mb-4 pb-0',
                 showPanel() && containerScroll.y > 0 && 'z-10 shadow dark:shadow-xl',
               )}
             >
@@ -107,7 +106,7 @@ export default () => {
             )}
           </Panel>
 
-          {filter.params.entry_uuid && <EntryPanel />}
+          <EntryPanel />
         </div>
       </div>
     </>
