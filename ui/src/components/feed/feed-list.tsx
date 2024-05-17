@@ -1,15 +1,20 @@
-import { For, Match, Switch } from 'solid-js';
-import { createQuery } from '@tanstack/solid-query';
-import { getFeeds } from '~/api/feeds';
-import { QUERY_KEYS } from '~/constants/query';
+import { For, Match, Switch, createSignal } from 'solid-js';
 import { Skeleton } from '../ui/skeleton';
-import { FeedItem } from './feed-item';
+import { BaseFeedItem, FeedItem } from './feed-item';
+import { useFilterParams } from '~/hooks/use-filter-params';
+import { useLocation } from '@solidjs/router';
+import { useFeeds } from '~/hooks/queries/use-feeds';
+import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
+import { AllFeedsMenu } from './feed-menu';
 
 export const FeedList = () => {
-  const feeds = createQuery(() => ({
-    queryKey: [QUERY_KEYS.FEEDS],
-    queryFn: getFeeds,
-  }));
+  const location = useLocation();
+  const filter = useFilterParams();
+
+  const [allFeedsMenuOpen, setAllFeedsMenuOpen] = createSignal(false);
+
+  const { feeds } = useFeeds();
+  const { totalStats } = useFeedsStats();
 
   return (
     <Switch>
@@ -28,7 +33,29 @@ export const FeedList = () => {
       </Match>
 
       <Match when={feeds.isSuccess}>
-        {feeds.data?.length ? <For each={feeds.data}>{feed => <FeedItem feed={feed} />}</For> : <div>No feeds.</div>}
+        {feeds.data?.length ? (
+          <>
+            <BaseFeedItem
+              href={'/'.concat(filter.getQueryString())}
+              title="All feeds"
+              open={allFeedsMenuOpen() || location.pathname === '/'}
+              setOpen={setAllFeedsMenuOpen}
+              unread_count={totalStats()?.count_unread}
+              menu={() => (
+                <AllFeedsMenu
+                  open={allFeedsMenuOpen()}
+                  setOpen={setAllFeedsMenuOpen}
+                  gutter={4}
+                  triggerClass="h-5 w-5 rounded"
+                  triggerIconClass="w-4 h-4 text-gray-500"
+                />
+              )}
+            />
+            <For each={feeds.data}>{feed => <FeedItem feed={feed} />}</For>
+          </>
+        ) : (
+          <div>No feeds.</div>
+        )}
       </Match>
     </Switch>
   );

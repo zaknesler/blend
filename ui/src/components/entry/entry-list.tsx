@@ -14,7 +14,7 @@ export const EntryList: Component<EntryListProps> = props => {
   const [bottomOfList, setBottomOfList] = createSignal<HTMLElement>();
   const listBounds = createElementBounds(bottomOfList);
 
-  const feeds = useFeeds();
+  const { feeds } = useFeeds();
   const entries = useInfiniteEntries();
 
   createEffect(() => {
@@ -47,7 +47,7 @@ export const EntryList: Component<EntryListProps> = props => {
         <p class="px-4">Error: {entries.query.error?.message}</p>
       </Match>
 
-      <Match when={entries.query.isSuccess && feeds.query.data}>
+      <Match when={entries.query.isSuccess && feeds.data}>
         {entries.getAllEntries().length ? (
           <div class="-mt-2 flex flex-col gap-1 px-4 pb-2">
             <For each={entries.getAllEntries()}>{entry => <EntryItem entry={entry} />}</For>

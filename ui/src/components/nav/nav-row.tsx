@@ -21,7 +21,7 @@ export const NavRow: Component<NavRowProps> = props => {
   const navigate = useNavigate();
 
   return (
-    <div class={cx('flex w-full items-center justify-between border border-gray-100 bg-gray-200/20 p-4', props.class)}>
+    <div class={cx('flex w-full items-center justify-between bg-gray-200/20 p-4', props.class)}>
       {props.showFeedSwitch && (
         <Tooltip openDelay={100}>
           <Tooltip.Trigger
