@@ -69,11 +69,11 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
     )}
   >
     {/* TODO: render favicon */}
-    <div class="flex h-5 w-5 shrink-0 items-center justify-center">
+    <div class="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded">
       {props.icon ? (
         <Dynamic component={props.icon} />
       ) : (
-        <div class="flex h-full w-full items-center justify-center rounded bg-gray-400 text-white dark:bg-gray-700 dark:text-gray-400">
+        <div class="flex h-full w-full items-center justify-center bg-gray-400 text-white dark:bg-gray-700 dark:text-gray-400">
           <HiSolidRss class="h-4 w-4" />
         </div>
       )}
