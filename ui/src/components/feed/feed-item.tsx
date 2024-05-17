@@ -50,6 +50,7 @@ type BaseFeedItemProps = {
   title?: string;
   open: boolean;
   setOpen: Setter<boolean>;
+  icon?: () => JSX.Element;
   menu: () => JSX.Element;
 };
 
@@ -67,9 +68,15 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
         : 'border-transparent',
     )}
   >
-    <div class="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-400 text-white dark:bg-gray-700 dark:text-gray-400">
-      {/* TODO: render favicon */}
-      <HiSolidRss class="h-4 w-4" />
+    {/* TODO: render favicon */}
+    <div class="flex h-5 w-5 shrink-0 items-center justify-center">
+      {props.icon ? (
+        <Dynamic component={props.icon} />
+      ) : (
+        <div class="flex h-full w-full items-center justify-center rounded bg-gray-400 text-white dark:bg-gray-700 dark:text-gray-400">
+          <HiSolidRss class="h-4 w-4" />
+        </div>
+      )}
     </div>
 
     <span class="flex-1 overflow-x-hidden truncate">{props.title}</span>

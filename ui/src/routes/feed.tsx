@@ -15,6 +15,7 @@ import { fullConfig } from '~/utils/tw';
 import { NavViewSwitcher } from '~/components/nav/nav-view-switcher';
 import { NavRow } from '~/components/nav/nav-row';
 import { FeedList } from '~/components/feed/feed-list';
+import { AllFeedsMenu } from '~/components/feed/feed-menu';
 
 const mobileBreakpoint = +fullConfig.theme.maxWidth['screen-md'].replace('px', '');
 
@@ -24,6 +25,7 @@ export default () => {
   const size = createWindowSize();
 
   const [showFeeds, setShowFeeds] = createSignal(false);
+  const [allFeedsMenuOpen, setAllFeedsMenuOpen] = createSignal(false);
 
   createEffect(() => {
     if (!isRouting()) return;
@@ -74,7 +76,16 @@ export default () => {
                     {filter.params.feed_uuid ? (
                       <FeedInfo uuid={filter.params.feed_uuid!} />
                     ) : (
-                      <FeedHeader title="All feeds" />
+                      <div class="flex w-full items-start justify-between">
+                        <FeedHeader title="All feeds" />
+                        <AllFeedsMenu
+                          open={allFeedsMenuOpen()}
+                          setOpen={setAllFeedsMenuOpen}
+                          triggerClass="h-6 w-6 rounded-md"
+                          triggerIconClass="w-4 h-4 text-gray-500"
+                          gutter={4}
+                        />
+                      </div>
                     )}
                   </div>
 

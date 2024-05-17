@@ -31,8 +31,6 @@ export const FeedMenu: Component<FeedMenuProps> = props => {
 export const AllFeedsMenu: Component<MenuProps> = props => {
   const refresh = useRefreshFeeds();
 
-  const handleSettings = () => console.log('clicky');
-
   const handleRefreshFeeds = () => {
     refresh.refreshFeeds();
     props.setOpen(false);
@@ -40,10 +38,7 @@ export const AllFeedsMenu: Component<MenuProps> = props => {
 
   return (
     <Menu {...props}>
-      <Menu.Item onSelect={handleSettings} disabled>
-        Settings
-      </Menu.Item>
-      <Menu.Item onSelect={handleRefreshFeeds}>Refresh feeds</Menu.Item>
+      <Menu.Item onSelect={handleRefreshFeeds}>Refresh all feeds</Menu.Item>
     </Menu>
   );
 };
