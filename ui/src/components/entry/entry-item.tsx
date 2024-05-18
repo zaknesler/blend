@@ -1,13 +1,13 @@
 import { A } from '@solidjs/router';
 import { createQuery } from '@tanstack/solid-query';
 import { cx } from 'class-variance-authority';
-import dayjs from 'dayjs';
 import { type Component } from 'solid-js';
 import { getEntry } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useFilterParams } from '~/hooks/use-filter-params';
 import type { Entry } from '~/types/bindings';
+import { formatDate } from '~/utils/date';
 
 type EntryItemProps = {
   entry: Entry;
@@ -36,7 +36,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
         filter.getView() === 'unread' && isRead() && 'opacity-50',
       )}
       class={cx(
-        '-mx-2 flex flex-col gap-1 rounded-lg p-2 ring-gray-300 transition dark:ring-gray-700',
+        '-mx-2 flex flex-col gap-1 rounded-lg px-2 py-1.5 ring-gray-300 transition dark:ring-gray-700',
         'focus:bg-gray-100 focus:outline-none focus:ring focus:dark:bg-gray-950',
       )}
     >
@@ -52,7 +52,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
           </>
         )}
 
-        <span>{dayjs(props.entry.published_at).format('MMM D, YYYY')}</span>
+        {props.entry.published_at && <span>{formatDate(props.entry.published_at)}</span>}
       </small>
     </A>
   );

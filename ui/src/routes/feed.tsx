@@ -10,20 +10,19 @@ import { createElementBounds } from '@solid-primitives/bounds';
 import { cx } from 'class-variance-authority';
 import { createScrollPosition } from '@solid-primitives/scroll';
 import { useIsRouting } from '@solidjs/router';
-import { createWindowSize } from '@solid-primitives/resize-observer';
-import { fullConfig } from '~/utils/tw';
 import { NavViewSwitcher } from '~/components/nav/nav-view-switcher';
 import { NavRow } from '~/components/nav/nav-row';
 import { FeedList } from '~/components/feed/feed-list';
-
-const mobileBreakpoint = +fullConfig.theme.maxWidth['screen-md'].replace('px', '');
+import { useViewport } from '~/hooks/use-viewport';
+import { MenuFeeds } from '~/components/menus/menu-feeds';
 
 export default () => {
   const filter = useFilterParams();
   const isRouting = useIsRouting();
-  const size = createWindowSize();
+  const { belowBreakpoint } = useViewport();
 
-  const [showFeeds, setShowFeeds] = createSignal(false);
+  const [_showFeeds, setShowFeeds] = createSignal(false);
+  const [allFeedsMenuOpen, setAllFeedsMenuOpen] = createSignal(false);
 
   createEffect(() => {
     if (!isRouting()) return;
@@ -36,8 +35,9 @@ export default () => {
 
   const viewingEntry = () => !!filter.params.entry_uuid;
 
-  const isMobile = () => size.width <= mobileBreakpoint;
+  const isMobile = () => belowBreakpoint('md');
   const showPanel = () => !isMobile() || (isMobile() && !viewingEntry());
+  const showFeeds = () => belowBreakpoint('xl') && _showFeeds();
 
   return (
     <>
@@ -56,6 +56,7 @@ export default () => {
               class={cx(
                 'sticky top-0 flex flex-col gap-4 bg-white/25 p-4 backdrop-blur-md dark:bg-gray-900/25',
                 !showPanel() && 'pb-0',
+                showFeeds() && 'mb-4 pb-0',
                 showPanel() && containerScroll.y > 0 && 'z-10 shadow dark:shadow-xl',
               )}
             >
@@ -74,7 +75,16 @@ export default () => {
                     {filter.params.feed_uuid ? (
                       <FeedInfo uuid={filter.params.feed_uuid!} />
                     ) : (
-                      <FeedHeader title="All feeds" />
+                      <div class="flex w-full items-start justify-between">
+                        <FeedHeader title="All feeds" />
+                        <MenuFeeds
+                          open={allFeedsMenuOpen()}
+                          setOpen={setAllFeedsMenuOpen}
+                          triggerClass="h-6 w-6 rounded-md"
+                          triggerIconClass="w-4 h-4 text-gray-500"
+                          gutter={4}
+                        />
+                      </div>
                     )}
                   </div>
 
@@ -96,7 +106,7 @@ export default () => {
             )}
           </Panel>
 
-          {filter.params.entry_uuid && <EntryPanel />}
+          <EntryPanel />
         </div>
       </div>
     </>

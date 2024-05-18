@@ -39,7 +39,7 @@ const MenuRoot: ParentComponent<MenuProps> = props => {
   return (
     <DropdownMenu placement="bottom-end" {...rest} open={local.open} onOpenChange={local.setOpen} modal>
       <MenuTrigger
-        onlyDisplayForGroup={!!local.onlyDisplayForGroup}
+        onlyDisplayForGroup={local.onlyDisplayForGroup}
         forceFocus={local.forceFocus || (local.onlyDisplayForGroup && local.open)}
         class={cx('relative', local.triggerClass)}
       >
@@ -96,7 +96,7 @@ const MenuItem: ParentComponent<DropdownMenuItemProps> = props => (
 const MenuContent: ParentComponent = props => (
   <DropdownMenu.Content
     class={cx(
-      'z-50 min-w-32 overflow-hidden rounded-md border shadow-sm',
+      'z-50 min-w-36 overflow-hidden rounded-md border shadow-sm',
       'border-gray-200 bg-white text-gray-600',
       'dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200',
       'origin-[--kb-menu-content-transform-origin] animate-contentHide ui-expanded:animate-contentShow',
