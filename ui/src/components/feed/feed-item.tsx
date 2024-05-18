@@ -54,7 +54,8 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
   <A
     href={props.href}
     class={cx(
-      'group -mx-1 flex items-center gap-2 rounded-md border p-1 text-sm no-underline outline-none transition',
+      'group -mx-1 flex items-center gap-2 rounded-lg border p-1 text-base no-underline outline-none transition',
+      'md:-mx-1 md:rounded-md md:p-1 md:text-sm',
       'text-gray-600 ring-gray-200 dark:text-gray-300 dark:ring-gray-700',
       'focus:border-gray-400 focus:ring-2 dark:focus:border-gray-600',
       props.active
@@ -63,12 +64,12 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
     )}
   >
     {/* TODO: render favicon */}
-    <div class="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded">
+    <div class="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-md md:h-5 md:w-5 md:rounded">
       {props.icon ? (
         <Dynamic component={props.icon} />
       ) : (
         <div class="flex h-full w-full items-center justify-center bg-gray-400 text-white dark:bg-gray-700 dark:text-gray-400">
-          <HiSolidRss class="h-4 w-4" />
+          <HiSolidRss class="h-5 w-5 md:h-4 md:w-4" />
         </div>
       )}
     </div>

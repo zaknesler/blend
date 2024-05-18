@@ -21,7 +21,7 @@ export const FeedList = () => {
       <BaseFeedItem
         href={'/'.concat(filter.getQueryString())}
         title="All feeds"
-        icon={() => <HiOutlineSquare3Stack3d class="h-5 w-5 text-gray-600" />}
+        icon={() => <HiOutlineSquare3Stack3d class="h-6 w-6 text-gray-600 md:h-5 md:w-5" />}
         open={allFeedsMenuOpen()}
         active={location.pathname === '/'}
         setOpen={setAllFeedsMenuOpen}
