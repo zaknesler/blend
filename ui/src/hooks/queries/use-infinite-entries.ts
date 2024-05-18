@@ -4,6 +4,7 @@ import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import { type Entry } from '~/types/bindings';
 import { useFilterParams } from '../use-filter-params';
+import { debounce } from '@solid-primitives/scheduled';
 
 export const useInfiniteEntries = () => {
   const filter = useFilterParams();
@@ -23,8 +24,14 @@ export const useInfiniteEntries = () => {
 
   const getAllEntries = () => query.data?.pages.flatMap(page => page.data) || [];
 
+  const fetchMore = debounce(() => {
+    if (query.isFetchingNextPage) return;
+    query.fetchNextPage();
+  }, 100);
+
   return {
     query,
     getAllEntries,
+    fetchMore,
   };
 };

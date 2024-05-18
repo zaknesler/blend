@@ -7,13 +7,16 @@ import { Entry, FilterDirection } from '~/types/bindings';
 export const getEntryComparator =
   (dir = DEFAULT_DIRECTION) =>
   (a: Entry, b: Entry) => {
-    // If any entry does not have a date, push it to the end
-    if (!a.published_at || !b.published_at) return -1;
+    const dateA = a.published_at || a.updated_at;
+    const dateB = b.published_at || b.updated_at;
+
+    // If we have no dates for comparison, push the item to the end of the list
+    if (!dateA || !dateB) return -1;
 
     switch (dir) {
       case FilterDirection.Desc:
-        return new Date(b.published_at).valueOf() - new Date(a.published_at).valueOf();
+        return new Date(dateB).valueOf() - new Date(dateA).valueOf();
       case FilterDirection.Asc:
-        return new Date(a.published_at).valueOf() - new Date(b.published_at).valueOf();
+        return new Date(dateA).valueOf() - new Date(dateB).valueOf();
     }
   };

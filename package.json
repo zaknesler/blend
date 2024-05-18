@@ -19,6 +19,7 @@
     "@solid-primitives/bounds": "^0.0.121",
     "@solid-primitives/keyboard": "^1.2.8",
     "@solid-primitives/resize-observer": "^2.0.25",
+    "@solid-primitives/scheduled": "^1.4.3",
     "@solid-primitives/scroll": "^2.0.23",
     "@solidjs/router": "^0.13.3",
     "@tanstack/solid-query": "^5.37.1",

@@ -23,6 +23,9 @@ importers:
       '@solid-primitives/resize-observer':
         specifier: ^2.0.25
         version: 2.0.25(solid-js@1.8.17)
+      '@solid-primitives/scheduled':
+        specifier: ^1.4.3
+        version: 1.4.3(solid-js@1.8.17)
       '@solid-primitives/scroll':
         specifier: ^2.0.23
         version: 2.0.23(solid-js@1.8.17)
@@ -807,7 +810,7 @@ packages:
       solid-js: ^1.6.12
 
   '@solid-primitives/scheduled@1.4.3':
-    resolution: {integrity: sha1-N5RD51nJAnX3UwwRyd9j/2PIyf0=}
+    resolution: {integrity: sha512-HfWN5w7b7FEc6VPLBKnnE302h90jsLMuR28Fcf7neRGGf8jBj6wm6/UFQ00VlKexHFMR6KQ2u4VBh5a1ZcqM8g==}
     peerDependencies:
       solid-js: ^1.6.12
 
