@@ -15,6 +15,8 @@ type EntryViewProps = JSX.IntrinsicElements['div'] & {
 export const EntryView: ParentComponent<EntryViewProps> = props => {
   const [local, rest] = splitProps(props, ['class', 'entry', 'breadcrumbs']);
 
+  const getDate = () => local.entry.published_at || local.entry.updated_at;
+
   return (
     <div {...rest} class={cx('flex flex-col gap-4', local.class)}>
       {local.breadcrumbs && (
@@ -33,9 +35,7 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
       <article class="flex flex-col gap-4">
         <h1 class="text-balance text-xl font-bold text-gray-800 lg:text-2xl dark:text-gray-100">{local.entry.title}</h1>
 
-        {local.entry.published_at && (
-          <div class="text-sm text-gray-500 dark:text-gray-400">{formatDateTime(local.entry.published_at)}</div>
-        )}
+        {!!getDate() && <div class="text-sm text-gray-500 dark:text-gray-400">{formatDateTime(getDate()!)}</div>}
 
         {local.entry.summary && (
           <h4 class="text-base text-gray-500 lg:text-lg dark:text-gray-300">{local.entry.summary}</h4>

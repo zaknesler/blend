@@ -99,30 +99,26 @@ impl EntryRepo {
             _ => query.push(""),
         };
 
-        // Use the cursor to find the next batch of items, based on the published_at date and the rowid (opposite direction) as a fallback
+        // Use the cursor to find the next batch of items, based on the published/updated date and the rowid (opposite direction) as a fallback
         match filter.cursor {
             Some(uuid) => query
-                .push(format!(
-                    " AND published_at {} (SELECT published_at FROM entries WHERE uuid = ",
-                    el.1
-                ))
-                .push_bind(uuid)
-                .push(")")
-                .push(format!(
-                    " OR (published_at IS NULL AND rowid {} (SELECT rowid FROM entries WHERE published_at IS NULL AND uuid = ",
-                    el_inv.1
-                ))
-                .push_bind(uuid)
-                .push("))"),
+                .push(" AND (")
+                .push(format!(" COALESCE(COALESCE(published_at, updated_at) {} (SELECT COALESCE(published_at, updated_at) FROM entries WHERE uuid = ", el.1))
+                    .push_bind(uuid)
+                    .push("), 0)")
+                .push(format!(" OR COALESCE(published_at IS NULL and updated_at IS NULL AND rowid {} (SELECT rowid FROM entries WHERE published_at IS NULL and updated_at IS NULL AND uuid = ", el_inv.1))
+                    .push_bind(uuid)
+                    .push("), 0)")
+                .push(")"),
             _ => query.push(""),
         };
 
-        // Sort by publish date, using the rowid as a fallback if no publish date exists
-        // Fetch one more than required to check for more entries for the given query
         query.push(format!(
-            " ORDER BY published_at {}, rowid {} LIMIT {}",
+            // Sort by published/updated date, using the rowid as a fallback if neither date exists
+            " ORDER BY COALESCE(published_at, updated_at) {}, rowid {} LIMIT {}",
             el.0,
             el_inv.0,
+            // Fetch one more than required to check for more entries for the given query
             PAGINATION_LIMIT + 1
         ));
 

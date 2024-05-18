@@ -27,6 +27,8 @@ export const EntryItem: Component<EntryItemProps> = props => {
   const feed = () => feeds.findFeed(props.entry.feed_uuid);
   const isRead = () => !!props.entry.read_at || !!entryData.data?.read_at;
 
+  const getDate = () => props.entry.published_at || props.entry.updated_at;
+
   return (
     <A
       href={filter.getEntryUrl(props.entry.uuid)}
@@ -42,17 +44,17 @@ export const EntryItem: Component<EntryItemProps> = props => {
     >
       <h4 class="text-pretty text-base/5 md:text-sm xl:text-base/5">{props.entry.title}</h4>
 
-      <small class="flex w-full gap-1 text-xs text-gray-500 dark:text-gray-400">
-        {!isRead() && <span class="h-2 w-2 self-center rounded-full bg-gray-500 dark:bg-gray-300" />}
+      <small class="flex w-full gap-1 overflow-hidden text-xs text-gray-500 dark:text-gray-400">
+        {!isRead() && <span class="h-2 w-2 shrink-0 self-center rounded-full bg-gray-500 dark:bg-gray-300" />}
 
         {!filter.params.feed_uuid && (
           <>
-            <span class="font-medium">{feed()?.title}</span>
-            <span class="text-gray-400 dark:text-gray-600">&ndash;</span>
+            <span class="truncate break-all font-medium">{feed()?.title}</span>
+            {!!getDate() && <span class="text-gray-400 dark:text-gray-600">&ndash;</span>}
           </>
         )}
 
-        {props.entry.published_at && <span>{formatDate(props.entry.published_at)}</span>}
+        {!!getDate() && <span class="shrink-0">{formatDate(getDate()!)}</span>}
       </small>
     </A>
   );
