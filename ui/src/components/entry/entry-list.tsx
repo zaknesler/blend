@@ -50,8 +50,6 @@ export const EntryList: Component<EntryListProps> = props => {
     // Only reset the local cache if we look at a new feed
     if (localFeedKey() === feedKey) return;
 
-    console.log(feedKey);
-
     // Reset the local cache
     setLocalFeedKey(feedKey);
     setLocalEntries(entries.getAllEntries());
