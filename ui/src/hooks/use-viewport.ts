@@ -1,5 +1,8 @@
+import { screens } from '~/constants/screens';
 import { createWindowSize } from '@solid-primitives/resize-observer';
-import { ScreenSize, getBreakpoint } from '~/utils/tw';
+
+export type ScreenSize = keyof typeof screens;
+export const getBreakpoint = (screen: ScreenSize) => +screens[screen].replace('px', '');
 
 export const useViewport = () => {
   const size = createWindowSize();

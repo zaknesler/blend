@@ -1,15 +1,15 @@
 import { useParams, useSearchParams } from '@solidjs/router';
-import { DEFAULT_VIEW } from '~/constants/views';
-import { View } from '~/types/bindings';
+import { FilterDirection, FilterEntriesParams, View } from '~/types/bindings';
 
 type RouterParams = {
   feed_uuid?: string;
   entry_uuid?: string;
 };
 
-type QueryParams = {
-  view?: View;
-};
+type QueryParams = Partial<Pick<FilterEntriesParams, 'view' | 'dir'>>;
+
+export const DEFAULT_VIEW = View.Unread;
+export const DEFAULT_DIRECTION = FilterDirection.Desc;
 
 export const useFilterParams = () => {
   const params = useParams<RouterParams>();
@@ -21,13 +21,24 @@ export const useFilterParams = () => {
     setQuery({ view });
   };
 
-  const getQueryString = () => {
-    const builder = new URLSearchParams({
-      view: query.view || '',
-    });
+  const getDir = () => query.dir || DEFAULT_DIRECTION;
+  const setDir = (value?: FilterDirection) => {
+    const dir = value === DEFAULT_DIRECTION ? undefined : value;
+    setQuery({ dir });
+  };
 
-    const hasValues = !![...builder.values()].filter(Boolean).length;
-    return hasValues ? `?${builder.toString()}` : '';
+  const getQueryString = () => {
+    const entries = [
+      ['view', query.view || ''],
+      ['dir', query.dir || ''],
+    ] as [keyof QueryParams, string][];
+
+    // Since we fallback to default values, remove any empty query params to get the cleanest URL we can
+    const filtered = entries.filter(([, value]) => Boolean(value));
+    if (!filtered.length) return '';
+
+    const builder = new URLSearchParams(Object.fromEntries(filtered));
+    return `?${builder.toString()}`;
   };
 
   const getFeedUrl = (append?: string) => {
@@ -44,6 +55,8 @@ export const useFilterParams = () => {
     setQuery,
     getView,
     setView,
+    getDir,
+    setDir,
     getQueryString,
     getFeedUrl,
     getEntryUrl,

@@ -90,7 +90,7 @@ jobs:
       - run: pnpm install
       - run: pnpm typeshare:generate
       - run: pnpm tsc
-      # - run: pnpm test
+      - run: pnpm test:cov
       - run: pnpm build
 
       - run: ${{ matrix.command }} build --verbose --locked --release --target ${{ matrix.target }}

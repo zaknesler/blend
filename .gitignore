@@ -5,6 +5,7 @@ target
 
 # js
 node_modules
+coverage
 dist
 .solid
 .output
