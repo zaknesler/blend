@@ -5,17 +5,26 @@ import { type NullableBounds, createElementBounds } from '@solid-primitives/boun
 import { EntryItem } from './entry-item';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { Empty } from '../ui/empty';
+import { useFilterParams } from '~/hooks/use-filter-params';
 
 type EntryListProps = {
   containerBounds?: Readonly<NullableBounds>;
 };
 
 export const EntryList: Component<EntryListProps> = props => {
+  const filter = useFilterParams();
+
   const [bottomOfList, setBottomOfList] = createSignal<HTMLElement>();
   const listBounds = createElementBounds(bottomOfList);
 
   const { feeds } = useFeeds();
   const entries = useInfiniteEntries();
+
+  // Maintain local state of entries to prevent entries just marked as read from being removed
+  const [localEntries, setLocalEntries] = createSignal(entries.getAllEntries());
+
+  // Associate the local entries with the feed we're viewing, so we know when to reset the data
+  const [localFeedKey, setLocalFeedKey] = createSignal(filter.getFeedUrl());
 
   createEffect(() => {
     const bottomOfListVisible =
@@ -23,6 +32,29 @@ export const EntryList: Component<EntryListProps> = props => {
     if (!bottomOfListVisible || !entries.query.hasNextPage || entries.query.isFetchingNextPage) return;
 
     entries.query.fetchNextPage();
+  });
+
+  createEffect(() => {
+    const currentUuids = localEntries().map(entry => entry.uuid);
+    const newEntries = entries.getAllEntries().filter(entry => !currentUuids.includes(entry.uuid));
+
+    // Don't bother updating local state if we've got nothing to add
+    if (!newEntries.length) return;
+
+    setLocalEntries([...localEntries(), ...newEntries]);
+  });
+
+  createEffect(() => {
+    const feedKey = filter.getFeedUrl();
+
+    // Only reset the local cache if we look at a new feed
+    if (localFeedKey() === feedKey) return;
+
+    console.log(feedKey);
+
+    // Reset the local cache
+    setLocalFeedKey(feedKey);
+    setLocalEntries(entries.getAllEntries());
   });
 
   // useListNav(() => ({
@@ -46,9 +78,9 @@ export const EntryList: Component<EntryListProps> = props => {
       </Match>
 
       <Match when={entries.query.isSuccess && feeds.data}>
-        {entries.getAllEntries().length ? (
+        {localEntries().length ? (
           <div class="-mt-2 flex flex-col gap-1 px-4 pb-2">
-            <For each={entries.getAllEntries()}>{entry => <EntryItem entry={entry} />}</For>
+            <For each={localEntries()}>{entry => <EntryItem entry={entry} />}</For>
 
             <div ref={setBottomOfList} class="-mt-1" />
 
