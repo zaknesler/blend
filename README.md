@@ -11,6 +11,8 @@ Demo is available at [blend.zak.fm](https://blend.zak.fm). Development builds ar
 
 #### Roadmap
 
+There will only be development builds until most of these are finished:
+
 - [x] Source from any RSS feed format
 - [x] Fetch metadata and feed entries in background
 - [x] Notifications via websocket
