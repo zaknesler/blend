@@ -5,7 +5,7 @@ import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
 import { useLocation } from '@solidjs/router';
 import { useFilterParams } from '~/hooks/use-filter-params';
 import { HiOutlineSquare3Stack3d } from 'solid-icons/hi';
-import { AllFeedsMenu } from './feed-menu';
+import { MenuFeeds } from '../menus/menu-feeds';
 
 export const FeedList = () => {
   const location = useLocation();
@@ -27,14 +27,7 @@ export const FeedList = () => {
         setOpen={setAllFeedsMenuOpen}
         unread_count={totalStats()?.count_unread}
         menu={() => (
-          <AllFeedsMenu
-            onlyDisplayForGroup
-            open={allFeedsMenuOpen()}
-            setOpen={setAllFeedsMenuOpen}
-            gutter={4}
-            triggerClass="h-5 w-5 rounded"
-            triggerIconClass="w-4 h-4 text-gray-500"
-          />
+          <MenuFeeds onlyDisplayForGroup open={allFeedsMenuOpen()} setOpen={setAllFeedsMenuOpen} gutter={4} />
         )}
       />
 

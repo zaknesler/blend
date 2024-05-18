@@ -3,7 +3,7 @@ import { cx } from 'class-variance-authority';
 import { HiSolidRss } from 'solid-icons/hi';
 import { Component, JSX, Setter, createMemo, createSignal } from 'solid-js';
 import type { Feed } from '~/types/bindings';
-import { FeedMenu } from './feed-menu';
+import { MenuFeed } from '../menus/menu-feed';
 import { Dynamic } from 'solid-js/web';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
 import { useFilterParams } from '~/hooks/use-filter-params';
@@ -33,16 +33,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
       setOpen={setOpen}
       unread_count={getStats()?.count_unread}
       menu={() => (
-        <FeedMenu
-          uuid={props.feed.uuid}
-          onlyDisplayForGroup
-          open={open()}
-          setOpen={setOpen}
-          shift={-5}
-          gutter={8}
-          triggerClass="h-5 w-5 rounded"
-          triggerIconClass="w-4 h-4 text-gray-500"
-        />
+        <MenuFeed onlyDisplayForGroup uuid={props.feed.uuid} open={open()} setOpen={setOpen} shift={-5} gutter={8} />
       )}
     />
   );

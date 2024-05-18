@@ -60,7 +60,7 @@ export const EntryList: Component<EntryListProps> = props => {
           </div>
         ) : (
           <div class="h-full w-full flex-1 px-4 pb-4">
-            <Empty />
+            <Empty>No entries to display.</Empty>
           </div>
         )}
       </Match>

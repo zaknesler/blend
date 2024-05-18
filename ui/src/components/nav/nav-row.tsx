@@ -23,7 +23,7 @@ export const NavRow: Component<NavRowProps> = props => {
 
   return (
     <div class={cx('flex w-full items-center gap-4 bg-gray-200/20 p-4', props.class)}>
-      <LogoSquare />
+      <LogoSquare class="h-6 w-6" />
 
       <div class="flex flex-1 items-center justify-end">
         {props.showFeedSwitch && (

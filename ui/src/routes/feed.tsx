@@ -13,8 +13,8 @@ import { useIsRouting } from '@solidjs/router';
 import { NavViewSwitcher } from '~/components/nav/nav-view-switcher';
 import { NavRow } from '~/components/nav/nav-row';
 import { FeedList } from '~/components/feed/feed-list';
-import { AllFeedsMenu } from '~/components/feed/feed-menu';
 import { useViewport } from '~/hooks/use-viewport';
+import { MenuFeeds } from '~/components/menus/menu-feeds';
 
 export default () => {
   const filter = useFilterParams();
@@ -77,7 +77,7 @@ export default () => {
                     ) : (
                       <div class="flex w-full items-start justify-between">
                         <FeedHeader title="All feeds" />
-                        <AllFeedsMenu
+                        <MenuFeeds
                           open={allFeedsMenuOpen()}
                           setOpen={setAllFeedsMenuOpen}
                           triggerClass="h-6 w-6 rounded-md"
