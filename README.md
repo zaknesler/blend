@@ -7,11 +7,13 @@
 
 **blend** _[wip]_ is a lightweight, self-hosted RSS reader application made with Rust and Solid.js, inspired by [yarr](https://github.com/nkanaev/yarr) and [Linear](https://linear.app). It is a single binary with an embedded SQLite database that you can run wherever, and is currently under development.
 
-Demo is available at [blend.zak.fm](https://blend.zak.fm). Development builds are released manually and may be downloaded [here](https://github.com/zaknesler/blend/releases).
+Development builds are released manually and may be downloaded [here](https://github.com/zaknesler/blend/releases).
+
+Demo is available at [blend.zak.fm](https://blend.zak.fm).
 
 #### Roadmap
 
-There will only be development builds until most of these are finished:
+> There will only be development builds until most of these are finished.
 
 - [x] Source from any RSS feed format
 - [x] Fetch metadata and feed entries in background
