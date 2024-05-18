@@ -2,7 +2,7 @@ import { createInfiniteQuery } from '@tanstack/solid-query';
 import { ApiPaginatedResponse } from '~/api';
 import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
-import { FilterDirection, type Entry } from '~/types/bindings';
+import { type Entry } from '~/types/bindings';
 import { useFilterParams } from '../use-filter-params';
 
 export const useInfiniteEntries = () => {
@@ -14,8 +14,8 @@ export const useInfiniteEntries = () => {
       getEntries({
         feed: filter.params.feed_uuid,
         view: filter.getView(),
+        dir: filter.getDir(),
         cursor: fetchParams.pageParam as undefined | string,
-        dir: FilterDirection.Desc,
       }),
     getNextPageParam: last => last.next_cursor,
     initialPageParam: undefined,

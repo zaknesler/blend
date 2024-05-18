@@ -6,6 +6,7 @@ import { EntryItem } from './entry-item';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { Empty } from '../ui/empty';
 import { useFilterParams } from '~/hooks/use-filter-params';
+import { getEntryComparator } from '~/utils/entries';
 
 type EntryListProps = {
   containerBounds?: Readonly<NullableBounds>;
@@ -35,13 +36,14 @@ export const EntryList: Component<EntryListProps> = props => {
   });
 
   createEffect(() => {
-    const currentUuids = localEntries().map(entry => entry.uuid);
-    const newEntries = entries.getAllEntries().filter(entry => !currentUuids.includes(entry.uuid));
+    const currentIds = localEntries().map(entry => entry.id);
+    const newEntries = entries.getAllEntries().filter(entry => !currentIds.includes(entry.id));
 
     // Don't bother updating local state if we've got nothing to add
     if (!newEntries.length) return;
 
-    setLocalEntries([...localEntries(), ...newEntries]);
+    // Add new entries and sort to maintain order
+    setLocalEntries([...localEntries(), ...newEntries].sort(getEntryComparator(filter.getDir())));
   });
 
   createEffect(() => {

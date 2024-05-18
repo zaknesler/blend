@@ -66,5 +66,5 @@ jobs:
       - run: pnpm install
       - run: pnpm typeshare:generate
       - run: pnpm tsc
-      # - run: pnpm test
+      - run: pnpm test:cov
       - run: pnpm build
