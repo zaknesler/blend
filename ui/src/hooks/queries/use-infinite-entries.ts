@@ -25,7 +25,9 @@ export const useInfiniteEntries = () => {
   const getAllEntries = () => query.data?.pages.flatMap(page => page.data) || [];
 
   const fetchMore = debounce(() => {
-    if (query.isFetchingNextPage) return;
+    // Only fetch more if we have more to fetch and we're not already fetching
+    if (!query.hasNextPage || query.isFetchingNextPage) return;
+
     query.fetchNextPage();
   }, 100);
 

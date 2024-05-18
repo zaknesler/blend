@@ -30,7 +30,7 @@ export const EntryList: Component<EntryListProps> = props => {
   createEffect(() => {
     const bottomOfListVisible =
       props.containerBounds?.bottom && listBounds.bottom && listBounds.bottom <= props.containerBounds?.bottom;
-    if (!bottomOfListVisible || !entries.query.hasNextPage) return;
+    if (!bottomOfListVisible) return;
 
     entries.fetchMore();
   });
