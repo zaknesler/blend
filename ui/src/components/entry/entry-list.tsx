@@ -43,7 +43,7 @@ export const EntryList: Component<EntryListProps> = props => {
     if (!newEntries.length) return;
 
     // Add new entries and sort to maintain order
-    setLocalEntries([...localEntries(), ...newEntries].sort(getEntryComparator(filter.getDir())));
+    setLocalEntries([...localEntries(), ...newEntries].sort(getEntryComparator(filter.getSort())));
   });
 
   createEffect(() => {

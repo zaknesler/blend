@@ -23,8 +23,8 @@ pub struct CreateEntryParams {
 #[typeshare]
 #[derive(Deserialize)]
 pub struct FilterEntriesParams {
-    #[serde(default = "FilterDirection::latest")]
-    pub dir: FilterDirection,
+    #[serde(default = "SortDirection::latest")]
+    pub sort: SortDirection,
     pub cursor: Option<Uuid>,
     pub feed: Option<Uuid>,
     #[serde(default)]
@@ -34,9 +34,9 @@ pub struct FilterEntriesParams {
 #[typeshare]
 #[derive(Deserialize)]
 #[serde(rename_all = "lowercase")]
-pub enum FilterDirection {
-    Asc,
-    Desc,
+pub enum SortDirection {
+    Oldest,
+    Newest,
 }
 
 #[typeshare]
@@ -54,22 +54,22 @@ impl Default for View {
     }
 }
 
-impl FilterDirection {
+impl SortDirection {
     pub fn latest() -> Self {
-        Self::Desc
+        Self::Newest
     }
 
     pub fn query_elements(&self) -> (&str, &str) {
         match self {
-            Self::Asc => ("ASC", ">"),
-            Self::Desc => ("DESC", "<"),
+            Self::Oldest => ("ASC", ">"),
+            Self::Newest => ("DESC", "<"),
         }
     }
 
     pub fn query_elements_inverse(&self) -> (&str, &str) {
         match self {
-            Self::Asc => Self::query_elements(&Self::Desc),
-            Self::Desc => Self::query_elements(&Self::Asc),
+            Self::Oldest => Self::query_elements(&Self::Newest),
+            Self::Newest => Self::query_elements(&Self::Oldest),
         }
     }
 }
@@ -83,8 +83,8 @@ impl EntryRepo {
         &self,
         filter: FilterEntriesParams,
     ) -> DbResult<Paginated<Vec<model::Entry>>> {
-        let el = filter.dir.query_elements();
-        let el_inv = filter.dir.query_elements_inverse();
+        let el = filter.sort.query_elements();
+        let el_inv = filter.sort.query_elements_inverse();
 
         let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at, read_at FROM entries WHERE 1=1");
 

@@ -34,9 +34,9 @@ export interface FeedStats {
   count_unread: number;
 }
 
-export enum FilterDirection {
-  Asc = 'asc',
-  Desc = 'desc',
+export enum SortDirection {
+  Oldest = 'oldest',
+  Newest = 'newest',
 }
 
 export enum View {
@@ -46,7 +46,7 @@ export enum View {
 }
 
 export interface FilterEntriesParams {
-  dir: FilterDirection;
+  sort: SortDirection;
   cursor?: string;
   feed?: string;
   view?: View;
