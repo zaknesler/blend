@@ -19,10 +19,6 @@ export const useListNav = (params: () => UseListNavParams) => {
   const viewport = useViewport();
 
   createEffect(() => {
-    console.log(params().enabled);
-  });
-
-  createEffect(() => {
     if (!params().entries.length || viewport.lteBreakpoint('md') || !params().enabled) return;
 
     const e = keyDownEvent();
