@@ -24,14 +24,20 @@ export default () => {
   const [_showFeeds, setShowFeeds] = createSignal(false);
   const [allFeedsMenuOpen, setAllFeedsMenuOpen] = createSignal(false);
 
+  const [container, setContainer] = createSignal<HTMLElement>();
+  const containerBounds = createElementBounds(container);
+  const containerScroll = createScrollPosition(container);
+
   createEffect(() => {
     if (!isRouting()) return;
     setShowFeeds(false);
   });
 
-  const [container, setContainer] = createSignal<HTMLElement>();
-  const containerBounds = createElementBounds(container);
-  const containerScroll = createScrollPosition(container);
+  createEffect(() => {
+    // Scroll to top of list whenever the feed URL changes
+    filter.getFeedUrl();
+    container()?.scrollTo({ top: 0, behavior: 'instant' });
+  });
 
   const viewingEntry = () => !!filter.params.entry_uuid;
 

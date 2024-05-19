@@ -20,6 +20,8 @@ export const EntryPanel = () => {
     enabled: !!filter.params.entry_uuid,
     queryKey: [QUERY_KEYS.ENTRIES_VIEW, filter.params.entry_uuid],
     queryFn: () => getEntry(filter.params.entry_uuid!),
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   }));
 
   const markAsRead = createMutation(() => ({

@@ -1,8 +1,8 @@
 import { type RouteSectionProps } from '@solidjs/router';
-import { useWs } from '~/hooks/use-ws';
+import { useNotifications } from '~/hooks/use-notifications';
 
 export default (props: RouteSectionProps) => {
-  useWs();
+  useNotifications();
 
   return <div class="flex h-full w-full">{props.children}</div>;
 };

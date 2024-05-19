@@ -22,6 +22,8 @@ export const EntryItem: Component<EntryItemProps> = props => {
     enabled: filter.params.entry_uuid === props.entry.uuid,
     queryKey: [QUERY_KEYS.ENTRIES_VIEW, props.entry.uuid],
     queryFn: () => getEntry(props.entry.uuid),
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   }));
 
   const feed = () => feeds.findFeed(props.entry.feed_uuid);

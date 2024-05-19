@@ -6,6 +6,8 @@ export const useFeedsStats = () => {
   const stats = createQuery(() => ({
     queryKey: [QUERY_KEYS.FEEDS_STATS],
     queryFn: getFeedStats,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   }));
 
   const totalStats = () =>

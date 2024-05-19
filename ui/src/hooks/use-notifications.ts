@@ -6,7 +6,7 @@ import { QUERY_KEYS } from '~/constants/query';
 import { useFilterParams } from './use-filter-params';
 import { createEffect, createSignal } from 'solid-js';
 
-export const useWs = () => {
+export const useNotifications = () => {
   const filter = useFilterParams();
   const queryClient = useQueryClient();
 

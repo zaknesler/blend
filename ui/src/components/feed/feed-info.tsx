@@ -15,6 +15,8 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
   const feed = createQuery(() => ({
     queryKey: [QUERY_KEYS.FEEDS_VIEW, props.uuid],
     queryFn: () => getFeed(props.uuid),
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   }));
 
   return (
