@@ -19,7 +19,7 @@ import { MenuFeeds } from '~/components/menus/menu-feeds';
 export default () => {
   const filter = useFilterParams();
   const isRouting = useIsRouting();
-  const { belowBreakpoint } = useViewport();
+  const { lteBreakpoint } = useViewport();
 
   const [_showFeeds, setShowFeeds] = createSignal(false);
   const [allFeedsMenuOpen, setAllFeedsMenuOpen] = createSignal(false);
@@ -41,9 +41,9 @@ export default () => {
 
   const viewingEntry = () => !!filter.params.entry_uuid;
 
-  const isMobile = () => belowBreakpoint('md');
+  const isMobile = () => lteBreakpoint('md');
   const showPanel = () => !isMobile() || (isMobile() && !viewingEntry());
-  const showFeeds = () => belowBreakpoint('xl') && _showFeeds();
+  const showFeeds = () => lteBreakpoint('xl') && _showFeeds();
 
   return (
     <>

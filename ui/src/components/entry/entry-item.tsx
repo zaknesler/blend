@@ -33,6 +33,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
 
   return (
     <A
+      data-entry-item-uuid={props.entry.uuid}
       href={filter.getEntryUrl(props.entry.uuid)}
       activeClass="bg-gray-100 dark:bg-gray-950"
       inactiveClass={cx(
