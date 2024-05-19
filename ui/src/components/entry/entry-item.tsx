@@ -3,6 +3,7 @@ import { createQuery } from '@tanstack/solid-query';
 import { cx } from 'class-variance-authority';
 import { type Component } from 'solid-js';
 import { getEntry } from '~/api/entries';
+import { DATA_ATTRIBUTES } from '~/constants/attributes';
 import { QUERY_KEYS } from '~/constants/query';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useFilterParams } from '~/hooks/use-filter-params';
@@ -33,7 +34,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
 
   return (
     <A
-      data-entry-item-uuid={props.entry.uuid}
+      {...{ [DATA_ATTRIBUTES.ENTRY_ITEM_UUID]: props.entry.uuid }}
       href={filter.getEntryUrl(props.entry.uuid)}
       activeClass="bg-gray-100 dark:bg-gray-950"
       inactiveClass={cx(

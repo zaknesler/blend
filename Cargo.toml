@@ -2,6 +2,9 @@
 version = "0.0.0"
 edition = "2021"
 authors = ["Zak Nesler"]
+repository = "https://github.com/zaknesler/blend"
+license = "MIT"
+description = "Self-hosted RSS reader made with Rust + Solid.js, packaged nicely in a single binary."
 
 [workspace]
 members = ["crates/*"]

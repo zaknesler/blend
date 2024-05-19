@@ -15,6 +15,7 @@ import { NavRow } from '~/components/nav/nav-row';
 import { FeedList } from '~/components/feed/feed-list';
 import { useViewport } from '~/hooks/use-viewport';
 import { MenuFeeds } from '~/components/menus/menu-feeds';
+import { createActiveElement } from '@solid-primitives/active-element';
 
 export default () => {
   const filter = useFilterParams();
@@ -28,6 +29,15 @@ export default () => {
   const containerBounds = createElementBounds(container);
   const containerScroll = createScrollPosition(container);
 
+  const viewingEntry = () => !!filter.params.entry_uuid;
+
+  const isMobile = () => lteBreakpoint('md');
+  const showPanel = () => !isMobile() || (isMobile() && !viewingEntry());
+  const showFeeds = () => lteBreakpoint('xl') && _showFeeds();
+
+  const activeElement = createActiveElement();
+  const containsActiveElement = () => container()?.contains(activeElement());
+
   createEffect(() => {
     if (!isRouting()) return;
     setShowFeeds(false);
@@ -38,12 +48,6 @@ export default () => {
     filter.getFeedUrl();
     container()?.scrollTo({ top: 0, behavior: 'instant' });
   });
-
-  const viewingEntry = () => !!filter.params.entry_uuid;
-
-  const isMobile = () => lteBreakpoint('md');
-  const showPanel = () => !isMobile() || (isMobile() && !viewingEntry());
-  const showFeeds = () => lteBreakpoint('xl') && _showFeeds();
 
   return (
     <>
@@ -106,7 +110,7 @@ export default () => {
                     <FeedList />
                   </div>
                 ) : (
-                  <EntryList containerBounds={containerBounds} />
+                  <EntryList containerBounds={containerBounds} containsActiveElement={containsActiveElement()} />
                 )}
               </div>
             )}
