@@ -2,6 +2,9 @@
 name = "blend-feed"
 version.workspace = true
 edition.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
 
 [dependencies]
 chrono = { workspace = true, features = ["serde"] }

@@ -5,28 +5,22 @@ import { type NullableBounds, createElementBounds } from '@solid-primitives/boun
 import { EntryItem } from './entry-item';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { Empty } from '../ui/empty';
-import { useFilterParams } from '~/hooks/use-filter-params';
-import { getEntryComparator } from '~/utils/entries';
 import { useListNav } from '~/hooks/use-list-nav';
 
 type EntryListProps = {
   containerBounds?: Readonly<NullableBounds>;
+  containsActiveElement?: boolean;
 };
 
 export const EntryList: Component<EntryListProps> = props => {
-  const filter = useFilterParams();
-
   const [bottomOfList, setBottomOfList] = createSignal<HTMLElement>();
   const listBounds = createElementBounds(bottomOfList);
 
   const { feeds } = useFeeds();
   const entries = useInfiniteEntries();
 
-  // Maintain local state of entries to prevent entries just marked as read from being removed
-  const [localEntries, setLocalEntries] = createSignal(entries.getAllEntries());
-
-  // Associate the local entries with the feed we're viewing, so we know when to reset the data
-  const [localFeedKey, setLocalFeedKey] = createSignal(filter.getFeedUrl());
+  // Handle arrow navigation
+  useListNav(() => ({ enabled: !!props.containsActiveElement, entries: entries.localEntries() }));
 
   createEffect(() => {
     if (!listBounds.bottom || !props.containerBounds?.bottom) return;
@@ -36,45 +30,6 @@ export const EntryList: Component<EntryListProps> = props => {
 
     entries.fetchMore();
   });
-
-  createEffect(() => {
-    const currentIds = localEntries().map(entry => entry.id);
-    const newEntries = entries.getAllEntries().filter(entry => !currentIds.includes(entry.id));
-
-    // Don't bother updating local state if we've got nothing to add
-    if (!newEntries.length) return;
-
-    // Add new entries and sort to maintain order
-    setLocalEntries([...localEntries(), ...newEntries].sort(getEntryComparator(filter.getSort())));
-  });
-
-  createEffect(() => {
-    if (!filter.params.entry_uuid || !props.containerBounds?.bottom) return;
-
-    const activeItem = document.querySelector(`[data-entry-item-uuid="${filter.params.entry_uuid}"]`);
-    if (!(activeItem instanceof HTMLElement)) return;
-
-    const bounds = activeItem.getBoundingClientRect();
-    const containerBottom = props.containerBounds.bottom;
-
-    const nearBounds = bounds.top <= containerBottom * 0.25 || bounds.bottom >= containerBottom * 0.9;
-    if (!nearBounds) return;
-
-    activeItem.scrollIntoView({ block: 'center' });
-  });
-
-  createEffect(() => {
-    const feedKey = filter.getFeedUrl();
-
-    // Only reset the local cache if we look at a new feed
-    if (localFeedKey() === feedKey) return;
-
-    // Reset the local cache
-    setLocalFeedKey(feedKey);
-    setLocalEntries(entries.getAllEntries());
-  });
-
-  useListNav(() => ({ entries: localEntries() }));
 
   return (
     <Switch>
@@ -91,9 +46,9 @@ export const EntryList: Component<EntryListProps> = props => {
       </Match>
 
       <Match when={entries.query.isSuccess && feeds.data}>
-        {localEntries().length ? (
+        {entries.localEntries().length ? (
           <div class="-mt-2 flex flex-col gap-1 px-4 pb-2">
-            <For each={localEntries()}>{entry => <EntryItem entry={entry} />}</For>
+            <For each={entries.localEntries()}>{entry => <EntryItem entry={entry} />}</For>
 
             <div ref={setBottomOfList} class="-mt-1" />
 

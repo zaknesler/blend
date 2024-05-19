@@ -5,8 +5,10 @@ import { useKeyDownEvent } from '@solid-primitives/keyboard';
 import { useFilterParams } from './use-filter-params';
 import { debounce } from '@solid-primitives/scheduled';
 import { useViewport } from './use-viewport';
+import { findEntryItem } from '~/utils/entries';
 
 type UseListNavParams = {
+  enabled: boolean;
   entries: Entry[];
 };
 
@@ -16,18 +18,8 @@ export const useListNav = (params: () => UseListNavParams) => {
   const navigate = useNavigate();
   const viewport = useViewport();
 
-  const maybeNavigate = debounce((direction: 'up' | 'down') => {
-    const currentIndex = params().entries.findIndex(entry => entry.uuid === filter.params.entry_uuid);
-
-    const offset = direction === 'up' ? -1 : 1;
-    const entry = params().entries[currentIndex + offset];
-    if (!entry) return;
-
-    navigate(filter.getEntryUrl(entry.uuid));
-  }, 30);
-
   createEffect(() => {
-    if (!params().entries.length || viewport.lteBreakpoint('md')) return;
+    if (!params().entries.length || viewport.lteBreakpoint('md') || !params().enabled) return;
 
     const e = keyDownEvent();
     if (!e) return;
@@ -44,4 +36,17 @@ export const useListNav = (params: () => UseListNavParams) => {
         break;
     }
   });
+
+  const maybeNavigate = debounce((direction: 'up' | 'down') => {
+    const currentIndex = params().entries.findIndex(entry => entry.uuid === filter.params.entry_uuid);
+
+    const offset = direction === 'up' ? -1 : 1;
+    const entry = params().entries[currentIndex + offset];
+    if (!entry) return;
+
+    const activeItem = findEntryItem(entry.uuid);
+    if (activeItem) activeItem.focus();
+
+    navigate(filter.getEntryUrl(entry.uuid));
+  }, 30);
 };

@@ -25,12 +25,8 @@ export const MenuFeed: Component<FeedMenuProps> = props => {
   return (
     <Menu {...local}>
       <Menu.Item onSelect={handleRefresh}>Refresh</Menu.Item>
-      <Menu.Item onSelect={() => alert('rename')} disabled>
-        Rename
-      </Menu.Item>
-      <Menu.Item onSelect={() => alert('delete')} disabled>
-        Delete
-      </Menu.Item>
+      <Menu.Item disabled>Rename</Menu.Item>
+      <Menu.Item disabled>Delete</Menu.Item>
     </Menu>
   );
 };

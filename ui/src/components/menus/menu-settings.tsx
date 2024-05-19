@@ -14,15 +14,9 @@ export const MenuSettings: Component<MenuProps> = props => {
 
   return (
     <Menu {...local}>
-      <Menu.Item onSelect={() => {}} disabled>
-        Import/export
-      </Menu.Item>
-      <Menu.Item onSelect={() => {}} disabled>
-        Settings
-      </Menu.Item>
-      <Menu.Item onSelect={() => {}} disabled>
-        Sign out
-      </Menu.Item>
+      <Menu.Item disabled>Import/export</Menu.Item>
+      <Menu.Item disabled>Settings</Menu.Item>
+      <Menu.Item disabled>Sign out</Menu.Item>
     </Menu>
   );
 };

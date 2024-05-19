@@ -1,3 +1,4 @@
+import { DATA_ATTRIBUTES } from '~/constants/attributes';
 import { DEFAULT_DIRECTION } from '~/hooks/use-filter-params';
 import { Entry, SortDirection } from '~/types/bindings';
 
@@ -20,3 +21,12 @@ export const getEntryComparator =
         return new Date(dateA).valueOf() - new Date(dateB).valueOf();
     }
   };
+
+export const findEntryItem = (uuid?: string) => {
+  if (!uuid) return null;
+
+  const activeItem = document.querySelector(`[${DATA_ATTRIBUTES.ENTRY_ITEM_UUID}="${uuid}"]`);
+  if (!(activeItem instanceof HTMLElement)) return null;
+
+  return activeItem;
+};
