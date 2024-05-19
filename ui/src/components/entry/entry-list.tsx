@@ -8,7 +8,6 @@ import { Empty } from '../ui/empty';
 import { useFilterParams } from '~/hooks/use-filter-params';
 import { getEntryComparator } from '~/utils/entries';
 import { useListNav } from '~/hooks/use-list-nav';
-import { useViewport } from '~/hooks/use-viewport';
 
 type EntryListProps = {
   containerBounds?: Readonly<NullableBounds>;
@@ -16,7 +15,6 @@ type EntryListProps = {
 
 export const EntryList: Component<EntryListProps> = props => {
   const filter = useFilterParams();
-  const viewport = useViewport();
 
   const [bottomOfList, setBottomOfList] = createSignal<HTMLElement>();
   const listBounds = createElementBounds(bottomOfList);
@@ -31,8 +29,9 @@ export const EntryList: Component<EntryListProps> = props => {
   const [localFeedKey, setLocalFeedKey] = createSignal(filter.getFeedUrl());
 
   createEffect(() => {
-    const bottomOfListVisible =
-      props.containerBounds?.bottom && listBounds.bottom && listBounds.bottom <= props.containerBounds?.bottom;
+    if (!listBounds.bottom || !props.containerBounds?.bottom) return;
+
+    const bottomOfListVisible = listBounds.bottom <= props.containerBounds.bottom;
     if (!bottomOfListVisible) return;
 
     entries.fetchMore();
@@ -56,7 +55,10 @@ export const EntryList: Component<EntryListProps> = props => {
     if (!(activeItem instanceof HTMLElement)) return;
 
     const bounds = activeItem.getBoundingClientRect();
-    if (bounds.top > viewport.size.height * 0.2 && bounds.bottom < viewport.size.height * 0.9) return;
+    const containerBottom = props.containerBounds.bottom;
+
+    const nearBounds = bounds.top <= containerBottom * 0.25 || bounds.bottom >= containerBottom * 0.9;
+    if (!nearBounds) return;
 
     activeItem.scrollIntoView({ block: 'center' });
   });

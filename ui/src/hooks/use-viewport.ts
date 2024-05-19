@@ -7,12 +7,12 @@ export const getBreakpoint = (screen: ScreenSize) => +screens[screen].replace('p
 export const useViewport = () => {
   const size = useWindowSize();
 
-  const belowBreakpoint = (screen: ScreenSize) => size.width <= getBreakpoint(screen);
-  const aboveBreakpoint = (screen: ScreenSize) => size.width > getBreakpoint(screen);
+  const lteBreakpoint = (screen: ScreenSize) => size.width <= getBreakpoint(screen);
+  const gtBreakpoint = (screen: ScreenSize) => size.width > getBreakpoint(screen);
 
   return {
     size,
-    belowBreakpoint,
-    aboveBreakpoint,
+    lteBreakpoint,
+    gtBreakpoint,
   };
 };
