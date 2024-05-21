@@ -38,6 +38,14 @@ export default () => {
   const activeElement = createActiveElement();
   const containsActiveElement = () => container()?.contains(activeElement());
 
+  const handleSkipToContent = () => {
+    const el = container();
+    if (!el) return;
+
+    const focusable = el.querySelector('[tabindex="0"]') as HTMLElement | undefined;
+    focusable?.focus() || el.focus();
+  };
+
   createEffect(() => {
     if (!isRouting()) return;
     setShowFeeds(false);
@@ -51,11 +59,20 @@ export default () => {
 
   return (
     <>
+      <button
+        class="absolute left-2 top-2 z-[9999] -translate-y-[9999px] select-none appearance-none rounded-lg border bg-white px-3 py-2 text-sm text-black shadow-lg focus:translate-y-0 focus:border-gray-200 focus:outline-none focus:ring-2 active:bg-gray-100"
+        tabindex={1}
+        onClick={handleSkipToContent}
+      >
+        Skip to content
+      </button>
+
       <Sidebar class="hidden xl:flex xl:w-sidebar xl:shrink-0" />
 
       <div class="flex h-full w-full flex-1 flex-col overflow-hidden">
         <div class="flex flex-1 flex-col overflow-auto md:flex-row md:gap-4 md:p-4">
           <Panel
+            id="main"
             class={cx(
               'flex shrink-0 flex-col md:max-w-[16rem] lg:max-w-xs xl:max-w-md',
               showPanel() ? 'flex-1' : 'z-10 flex-none shadow dark:shadow-xl',

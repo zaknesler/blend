@@ -48,7 +48,14 @@ export const EntryList: Component<EntryListProps> = props => {
       <Match when={entries.query.isSuccess && feeds.data}>
         {entries.localEntries().length ? (
           <div class="-mt-2 flex flex-col gap-1 px-4 pb-2">
-            <For each={entries.localEntries()}>{entry => <EntryItem entry={entry} />}</For>
+            <For each={entries.localEntries()}>
+              {(entry, index) => (
+                <EntryItem
+                  tabIndex={index() === 0 ? 0 : -1} // Disable tabindex so we can override it with arrow keys
+                  entry={entry}
+                />
+              )}
+            </For>
 
             <div ref={setBottomOfList} class="-mt-1" />
 
