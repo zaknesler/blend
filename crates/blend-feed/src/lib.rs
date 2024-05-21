@@ -3,15 +3,13 @@ use model::{ParsedEntry, ParsedFeed};
 
 mod error;
 pub use error::FeedError as Error;
+
 pub mod model;
 
 /// Fetch feed and handle edge cases
 async fn get_feed(url: &str) -> FeedResult<feed_rs::model::Feed> {
     let data = reqwest::get(url).await?.text().await?;
-    let feed = feed_rs::parser::parse(data.as_bytes()).or_else(|err| match err {
-        feed_rs::parser::ParseFeedError::ParseError(_) => todo!(), // fallback to URL and look for feed URL in <head>
-        _ => Err(err),
-    })?;
+    let feed = feed_rs::parser::parse(data.as_bytes())?;
 
     Ok(feed)
 }
@@ -20,11 +18,17 @@ async fn get_feed(url: &str) -> FeedResult<feed_rs::model::Feed> {
 pub async fn parse_feed(url: &str) -> FeedResult<ParsedFeed> {
     let feed = get_feed(url).await?;
 
+    let favicon_url = feed
+        .icon
+        .or_else(|| feed.logo)
+        .map(|image| image.link.map(|link| link.href))
+        .flatten();
+
     let parsed = ParsedFeed {
         id: feed.id,
         url: Some(url.to_owned()),
         title: feed.title.map(|title| title.content),
-        favicon: None,
+        favicon_url,
         published_at: feed.published,
         updated_at: feed.updated,
     };

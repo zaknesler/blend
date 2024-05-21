@@ -6,7 +6,7 @@ pub struct ParsedFeed {
     pub id: String,
     pub title: Option<String>,
     pub url: Option<String>,
-    pub favicon: Option<String>,
+    pub favicon_url: Option<String>,
     pub published_at: Option<DateTime<Utc>>,
     pub updated_at: Option<DateTime<Utc>>,
 }
