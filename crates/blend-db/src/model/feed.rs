@@ -13,7 +13,8 @@ pub struct Feed {
     pub url_site: Option<String>,
     pub title: Option<String>,
     pub title_display: Option<String>,
-    pub favicon_b64: Option<Vec<u8>>,
+    pub favicon_b64: Option<String>,
+    pub favicon_url: Option<String>,
     pub published_at: Option<DateTime<Utc>>,
     pub updated_at: Option<DateTime<Utc>>,
 }

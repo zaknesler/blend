@@ -1,6 +1,6 @@
 use ammonia::Builder;
 
-/// Sanitize HTML input, allowing only text.
+/// Sanitize HTML input, allowing only plain text
 pub fn sanitize_text(src: &str) -> String {
     Builder::empty().clean(src).to_string()
 }

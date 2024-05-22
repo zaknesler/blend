@@ -404,7 +404,6 @@ dependencies = [
  "ammonia",
  "chrono",
  "feed-rs",
- "html5ever",
  "reqwest",
  "serde",
  "serde_json",

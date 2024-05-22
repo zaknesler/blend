@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS feeds (
   url_site TEXT,
   title TEXT,
   title_display TEXT,
+  favicon_url TEXT,
   favicon_b64 BLOB,
   published_at DATETIME,
   updated_at DATETIME,

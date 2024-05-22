@@ -8,12 +8,13 @@ export interface Entry {
   id: string;
   url: string;
   title?: string;
-  summary?: string;
+  summary_html?: string;
   content_html?: string;
   content_scraped_html?: string;
   published_at?: string;
   updated_at?: string;
   read_at?: string;
+  saved_at?: string;
 }
 
 export interface Feed {
@@ -23,7 +24,8 @@ export interface Feed {
   url_site?: string;
   title?: string;
   title_display?: string;
-  favicon_b64?: number[];
+  favicon_b64?: string;
+  favicon_url?: string;
   published_at?: string;
   updated_at?: string;
 }

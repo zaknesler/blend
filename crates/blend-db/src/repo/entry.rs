@@ -14,7 +14,7 @@ pub struct CreateEntryParams {
     pub id: String,
     pub url: Option<String>,
     pub title: Option<String>,
-    pub summary: Option<String>,
+    pub summary_html: Option<String>,
     pub content_html: Option<String>,
     pub published_at: Option<DateTime<Utc>>,
     pub updated_at: Option<DateTime<Utc>>,
@@ -86,7 +86,7 @@ impl EntryRepo {
         let el = filter.sort.query_elements();
         let el_inv = filter.sort.query_elements_inverse();
 
-        let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at, read_at FROM entries WHERE 1=1");
+        let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary_html, published_at, updated_at, read_at FROM entries WHERE 1=1");
 
         match filter.view {
             View::All => query.push(""),
@@ -176,14 +176,14 @@ impl EntryRepo {
             return Ok(vec![]);
         }
 
-        let mut query = QueryBuilder::<Sqlite>::new("INSERT INTO entries (feed_uuid, uuid, id, url, title, summary, content_html, published_at, updated_at) ");
+        let mut query = QueryBuilder::<Sqlite>::new("INSERT INTO entries (feed_uuid, uuid, id, url, title, summary_html, content_html, published_at, updated_at) ");
         query.push_values(entries.iter(), |mut b, entry| {
             b.push_bind(feed_uuid)
                 .push_bind(uuid::Uuid::new_v4())
                 .push_bind(entry.id.clone())
                 .push_bind(entry.url.clone())
                 .push_bind(entry.title.clone())
-                .push_bind(entry.summary.clone())
+                .push_bind(entry.summary_html.clone())
                 .push_bind(entry.content_html.clone())
                 .push_bind(entry.published_at)
                 .push_bind(entry.updated_at);
@@ -194,7 +194,7 @@ impl EntryRepo {
             DO UPDATE SET
                 url = excluded.url,
                 title = excluded.title,
-                summary = excluded.summary,
+                summary_html = excluded.summary_html,
                 content_html = excluded.content_html,
                 updated_at = excluded.updated_at
             RETURNING uuid
