@@ -45,6 +45,7 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
         )}
 
         <div class="h-1 w-32 bg-gray-300 dark:bg-gray-700" />
+
         {local.entry.content_html || local.entry.content_scraped_html ? (
           <div
             class={cx(
