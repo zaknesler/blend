@@ -72,7 +72,6 @@ export default () => {
       <div class="flex h-full w-full flex-1 flex-col overflow-hidden">
         <div class="flex flex-1 flex-col overflow-auto md:flex-row md:gap-4 md:p-4">
           <Panel
-            id="main"
             class={cx(
               'flex shrink-0 flex-col md:max-w-[16rem] lg:max-w-xs xl:max-w-md',
               showPanel() ? 'flex-1' : 'z-10 flex-none shadow dark:shadow-xl',
