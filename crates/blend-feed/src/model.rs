@@ -17,7 +17,7 @@ pub struct ParsedEntry {
     pub id: String,
     pub url: Option<String>,
     pub title: Option<String>,
-    pub summary: Option<String>,
+    pub summary_html: Option<String>,
     pub content_html: Option<String>,
     pub published_at: Option<DateTime<Utc>>,
     pub updated_at: Option<DateTime<Utc>>,

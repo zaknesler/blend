@@ -20,7 +20,7 @@ pub async fn fetch_entries(
             id: entry.id,
             url: entry.url,
             title: entry.title,
-            summary: entry.summary,
+            summary: entry.summary_html,
             content_html: entry.content_html,
             published_at: entry.published_at,
             updated_at: entry.updated_at,

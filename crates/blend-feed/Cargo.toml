@@ -7,10 +7,11 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
+ammonia = "4.0"
 chrono = { workspace = true, features = ["serde"] }
 feed-rs = { workspace = true }
+html5ever = "0.27"
 reqwest = { workspace = true }
-scraper = "0.19"
 serde = { workspace = true }
 serde_json = { workspace = true }
 thiserror = { workspace = true }

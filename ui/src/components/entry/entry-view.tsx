@@ -38,7 +38,10 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
         {!!getDate() && <div class="text-sm text-gray-500 dark:text-gray-400">{formatDateTime(getDate()!)}</div>}
 
         {local.entry.summary && (
-          <h4 class="text-base text-gray-500 lg:text-lg dark:text-gray-300">{local.entry.summary}</h4>
+          <h4
+            class="prose prose-stone max-w-none text-base text-gray-500 dark:prose-invert lg:text-lg dark:text-gray-300"
+            innerHTML={local.entry.summary}
+          />
         )}
 
         <div class="h-1 w-32 bg-gray-300 dark:bg-gray-700" />
