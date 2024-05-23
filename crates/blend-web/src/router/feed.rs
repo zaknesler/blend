@@ -47,6 +47,7 @@ async fn create(
             id: parsed.id,
             title: parsed.title,
             url_feed: parsed.url,
+            favicon_url: parsed.favicon_url,
             published_at: parsed.published_at,
             updated_at: parsed.updated_at,
         })
