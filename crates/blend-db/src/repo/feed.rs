@@ -7,8 +7,8 @@ pub struct FeedRepo {
 
 pub struct CreateFeedParams {
     pub id: String,
-    pub title: Option<String>,
-    pub url_feed: Option<String>,
+    pub title: String,
+    pub url_feed: String,
     pub favicon_url: Option<String>,
     pub published_at: Option<DateTime<Utc>>,
     pub updated_at: Option<DateTime<Utc>>,

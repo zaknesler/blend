@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS feeds (
   id TEXT NOT NULL,
   url_feed TEXT NOT NULL,
   url_site TEXT,
-  title TEXT,
+  title TEXT NOT NULL,
   title_display TEXT,
   favicon_url TEXT,
   favicon_b64 BLOB,

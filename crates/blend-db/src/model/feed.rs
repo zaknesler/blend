@@ -11,7 +11,7 @@ pub struct Feed {
     pub id: String,
     pub url_feed: String,
     pub url_site: Option<String>,
-    pub title: Option<String>,
+    pub title: String,
     pub title_display: Option<String>,
     pub favicon_b64: Option<String>,
     pub favicon_url: Option<String>,
