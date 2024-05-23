@@ -22,7 +22,7 @@ export interface Feed {
   id: string;
   url_feed: string;
   url_site?: string;
-  title?: string;
+  title: string;
   title_display?: string;
   favicon_b64?: string;
   favicon_url?: string;
@@ -34,6 +34,7 @@ export interface FeedStats {
   uuid: string;
   count_total: number;
   count_unread: number;
+  count_saved: number;
 }
 
 export enum SortDirection {

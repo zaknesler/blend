@@ -20,8 +20,6 @@ async fn get_feed(url: &str) -> FeedResult<feed_rs::model::Feed> {
 pub async fn parse_feed(url: &str) -> FeedResult<ParsedFeed> {
     let feed = get_feed(url).await?;
 
-    dbg!(&feed);
-
     // Parse favicon URL to use until we can convert the remote image into binary data stored in the db
     let favicon_url = feed.icon.or_else(|| feed.logo).map(|image| image.uri);
 

@@ -25,4 +25,5 @@ pub struct FeedStats {
     pub uuid: Uuid,
     pub count_total: u32,
     pub count_unread: u32,
+    pub count_saved: u32,
 }
