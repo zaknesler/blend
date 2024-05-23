@@ -20,7 +20,7 @@ export const EntryList: Component<EntryListProps> = props => {
   const entries = useInfiniteEntries();
 
   // Handle arrow navigation
-  useListNav(() => ({ enabled: !!props.containsActiveElement, entries: entries.localEntries() }));
+  useListNav(() => ({ enabled: !!props.containsActiveElement, entries: entries.getAllEntries() }));
 
   createEffect(() => {
     if (!listBounds.bottom || !props.containerBounds?.bottom) return;
@@ -46,9 +46,9 @@ export const EntryList: Component<EntryListProps> = props => {
       </Match>
 
       <Match when={entries.query.isSuccess && feeds.data}>
-        {entries.localEntries().length ? (
-          <div class="-mt-2 flex flex-col gap-1 px-4 pb-2">
-            <For each={entries.localEntries()}>
+        {entries.getAllEntries().length ? (
+          <div class="-mt-2 flex flex-col gap-2 px-4 pb-2">
+            <For each={entries.getAllEntries()}>
               {(entry, index) => (
                 <EntryItem
                   tabIndex={index() === 0 ? 0 : -1} // Disable tabindex so we can override it with arrow keys

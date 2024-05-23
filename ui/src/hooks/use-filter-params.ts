@@ -41,13 +41,14 @@ export const useFilterParams = () => {
     return `?${builder.toString()}`;
   };
 
-  const getFeedUrl = (append?: string) => {
+  const getFeedUrl = (append?: string, withQuery = true) => {
     const path = params.feed_uuid ? `/feeds/${params.feed_uuid}` : `/`;
     const withAppended = append ? path.concat(append) : path;
-    return withAppended.replace(/\/\//g, '/').concat(getQueryString());
+    const trimmed = withAppended.replace(/\/\//g, '/');
+    return withQuery ? trimmed.concat(getQueryString()) : trimmed;
   };
 
-  const getEntryUrl = (entry_uuid: string) => getFeedUrl(`/entries/${entry_uuid}`);
+  const getEntryUrl = (entry_uuid: string, withQuery = true) => getFeedUrl(`/entries/${entry_uuid}`, withQuery);
 
   return {
     params,

@@ -88,7 +88,7 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
     <span class="flex-1 overflow-x-hidden truncate">{props.title}</span>
 
     <Show when={props.unread_count}>
-      <span class="-mx-1 -my-0.5 w-6 shrink-0 rounded bg-white py-0.5 text-center text-xs/4 text-gray-500 dark:bg-gray-800 dark:text-gray-300">
+      <span class="mr-1 w-6 shrink-0 rounded bg-white py-0.5 text-center text-xs/4 text-gray-500 md:-mx-1 md:-my-0.5 dark:bg-gray-800 dark:text-gray-300">
         {props.unread_count}
       </span>
     </Show>
