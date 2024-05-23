@@ -68,11 +68,11 @@ export const CreateFeed: Component<CreateFeedProps> = props => {
         />
 
         <Dialog.Portal>
-          <Dialog.Overlay class="fixed inset-0 z-50 animate-overlayHide bg-black/25 backdrop-blur ui-expanded:animate-overlayShow" />
+          <Dialog.Overlay class="animate-overlay-hide ui-expanded:animate-overlay-show fixed inset-0 z-50 bg-black/25 backdrop-blur" />
 
           <div class="fixed inset-0 z-50 flex items-end justify-center p-8 sm:items-center">
             <Dialog.Content
-              class="z-50 w-full animate-contentHide overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-all ui-expanded:animate-contentShow md:max-w-sm dark:border-gray-700 dark:bg-gray-950"
+              class="animate-content-hide ui-expanded:animate-content-show z-50 w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-all md:max-w-sm dark:border-gray-700 dark:bg-gray-950"
               onOpenAutoFocus={handleOpenAutoFocus}
             >
               <div class="flex flex-col gap-2 border-b bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900">
