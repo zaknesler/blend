@@ -30,7 +30,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
   return (
     <BaseFeedItem
       href={getPath().concat(filter.getQueryString())}
-      title={props.feed.title}
+      title={props.feed.title_display || props.feed.title}
       open={open()}
       active={isActive()}
       setOpen={setOpen}

@@ -1,3 +1,5 @@
+/* eslint-disable solid/no-innerhtml */
+
 import { A, AnchorProps, useMatch } from '@solidjs/router';
 import { createQuery } from '@tanstack/solid-query';
 import { cx } from 'class-variance-authority';
@@ -54,7 +56,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
       )}
       {...rest}
     >
-      <h4 class="text-pretty text-base/5 md:text-sm xl:text-base/5">{local.entry.title}</h4>
+      <h4 class="text-pretty text-base/5 md:text-sm xl:text-base/5" innerHTML={local.entry.title} />
 
       <small
         class={cx(
@@ -73,7 +75,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
 
         {!filter.params.feed_uuid && (
           <>
-            <span class="truncate break-all font-medium">{feed()?.title}</span>
+            <span class="truncate break-all font-medium">{feed()?.title_display || feed()?.title}</span>
             {!!getDate() && <span class="opacity-50">&ndash;</span>}
           </>
         )}

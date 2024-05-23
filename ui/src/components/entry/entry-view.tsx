@@ -33,7 +33,10 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
       )}
 
       <article class="flex flex-col gap-4">
-        <h1 class="text-balance text-xl font-bold text-gray-800 lg:text-2xl dark:text-gray-100">{local.entry.title}</h1>
+        <h1
+          class="text-balance text-xl font-bold text-gray-800 lg:text-2xl dark:text-gray-100"
+          innerHTML={local.entry.title}
+        />
 
         {!!getDate() && <div class="text-sm text-gray-500 dark:text-gray-400">{formatDateTime(getDate()!)}</div>}
 
