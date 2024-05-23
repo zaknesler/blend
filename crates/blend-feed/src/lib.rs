@@ -1,12 +1,12 @@
 use error::FeedResult;
+use extract::{extract_html, extract_stylistic_html, extract_text};
 use model::{ParsedEntry, ParsedFeed};
-use sanitize::{sanitize_html, sanitize_stylistic_html, sanitize_text};
 
 mod error;
 pub use error::FeedError as Error;
 
+mod extract;
 pub mod model;
-mod sanitize;
 
 /// Fetch feed and handle edge cases
 async fn get_feed(url: &str) -> FeedResult<feed_rs::model::Feed> {
@@ -28,7 +28,7 @@ pub async fn parse_feed(url: &str) -> FeedResult<ParsedFeed> {
     let parsed = ParsedFeed {
         id: feed.id,
         url: Some(url.to_owned()),
-        title: feed.title.map(|text| sanitize_text(&text.content)),
+        title: feed.title.map(|text| extract_text(&text.content)),
         favicon_url,
         published_at: feed.published,
         updated_at: feed.updated,
@@ -54,11 +54,11 @@ pub async fn parse_entries(url: &str) -> FeedResult<Vec<ParsedEntry>> {
             ParsedEntry {
                 id: entry.id,
                 url: link.map(|link| link.href.clone()), // TODO: normalize this url
-                title: entry.title.map(|text| sanitize_text(&text.content)),
-                summary_html: entry.summary.map(|text| sanitize_stylistic_html(&text.content)),
+                title: entry.title.map(|text| extract_text(&text.content)),
+                summary_html: entry.summary.map(|text| extract_stylistic_html(&text.content)),
                 content_html: entry
                     .content
-                    .and_then(|content| content.body.map(|content| sanitize_html(&content))),
+                    .and_then(|content| content.body.map(|content| extract_html(&content))),
                 published_at: entry.published,
                 updated_at: entry.updated,
             }
