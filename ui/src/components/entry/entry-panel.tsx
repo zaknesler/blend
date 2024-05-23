@@ -10,11 +10,13 @@ import { useFilterParams } from '~/hooks/use-filter-params';
 import { Empty } from '../ui/empty';
 import { useViewport } from '~/hooks/use-viewport';
 import { Spinner } from '../ui/spinner';
+import { useInvalidateStats } from '~/hooks/queries/use-invalidate-stats';
 
 export const EntryPanel = () => {
   const filter = useFilterParams();
   const queryClient = useQueryClient();
   const { gtBreakpoint } = useViewport();
+  const invalidateStats = useInvalidateStats();
 
   const entry = createQuery(() => ({
     enabled: !!filter.params.entry_uuid,
@@ -33,7 +35,7 @@ export const EntryPanel = () => {
     if (!entry.isSuccess || !entry.data || entry.data.read_at) return;
 
     markAsRead.mutateAsync(entry.data.uuid).then(() => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS_STATS] });
+      invalidateStats();
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_VIEW, entry.data.uuid] });
     });
   });

@@ -21,7 +21,7 @@ export const CreateFeed: Component<CreateFeedProps> = props => {
   const navigate = useNavigate();
 
   const [open, setOpen] = createSignal(false);
-  const [value, setValue] = createSignal('https://blog.rust-lang.org/feed.xml');
+  const [value, setValue] = createSignal('');
   const [inputElement, setInputElement] = createSignal<HTMLDivElement>();
 
   const add = createMutation(() => ({
@@ -40,8 +40,9 @@ export const CreateFeed: Component<CreateFeedProps> = props => {
     const feed = await add.mutateAsync({ url: value() });
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS] });
     navigate(`/feeds/${feed.uuid}`);
-    add.reset();
     setOpen(false);
+    add.reset();
+    setValue('');
   };
 
   const handleOpenAutoFocus = (event: Event) => {
