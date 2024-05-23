@@ -6,22 +6,22 @@ import { Panel } from '~/components/layout/panel';
 import { QUERY_KEYS } from '~/constants/query';
 import { updateEntryAsRead } from '~/api/entries';
 import { createMutation } from '@tanstack/solid-query';
-import { useFilterParams } from '~/hooks/use-filter-params';
+import { useQueryState } from '~/hooks/use-query-state';
 import { Empty } from '../ui/empty';
 import { useViewport } from '~/hooks/use-viewport';
 import { Spinner } from '../ui/spinner';
 import { useInvalidateStats } from '~/hooks/queries/use-invalidate-stats';
 
 export const EntryPanel = () => {
-  const filter = useFilterParams();
+  const state = useQueryState();
   const queryClient = useQueryClient();
   const { gtBreakpoint } = useViewport();
   const invalidateStats = useInvalidateStats();
 
   const entry = createQuery(() => ({
-    enabled: !!filter.params.entry_uuid,
-    queryKey: [QUERY_KEYS.ENTRIES_VIEW, filter.params.entry_uuid],
-    queryFn: () => getEntry(filter.params.entry_uuid!),
+    enabled: !!state.params.entry_uuid,
+    queryKey: [QUERY_KEYS.ENTRIES_VIEW, state.params.entry_uuid],
+    queryFn: () => getEntry(state.params.entry_uuid!),
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   }));
@@ -42,7 +42,7 @@ export const EntryPanel = () => {
 
   return (
     <Show
-      when={filter.params.entry_uuid}
+      when={state.params.entry_uuid}
       fallback={
         gtBreakpoint('md') && (
           <Panel class="h-full w-full p-4 lg:p-8">

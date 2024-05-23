@@ -11,7 +11,10 @@ type QueryParams = Partial<Pick<FilterEntriesParams, 'view' | 'sort'>>;
 export const DEFAULT_VIEW = View.Unread;
 export const DEFAULT_DIRECTION = SortDirection.Newest;
 
-export const useFilterParams = () => {
+/**
+ * App state derived from query parameters.
+ */
+export const useQueryState = () => {
   const params = useParams<RouterParams>();
   const [query, setQuery] = useSearchParams<QueryParams>();
 

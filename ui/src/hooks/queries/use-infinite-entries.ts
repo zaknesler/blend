@@ -3,19 +3,19 @@ import { ApiPaginatedResponse } from '~/api';
 import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import { type Entry } from '~/types/bindings';
-import { useFilterParams } from '../use-filter-params';
+import { useQueryState } from '../use-query-state';
 import { debounce, leading } from '@solid-primitives/scheduled';
 
 export const useInfiniteEntries = () => {
-  const filter = useFilterParams();
+  const state = useQueryState();
 
   const query = createInfiniteQuery<ApiPaginatedResponse<Entry[]>>(() => ({
-    queryKey: [QUERY_KEYS.ENTRIES_INDEX, filter.params.feed_uuid, filter.getView()],
+    queryKey: [QUERY_KEYS.ENTRIES_INDEX, state.params.feed_uuid, state.getView()],
     queryFn: fetchParams =>
       getEntries({
-        feed: filter.params.feed_uuid,
-        view: filter.getView(),
-        sort: filter.getSort(),
+        feed: state.params.feed_uuid,
+        view: state.getView(),
+        sort: state.getSort(),
         cursor: fetchParams.pageParam as undefined | string,
       }),
     getNextPageParam: last => last.next_cursor,

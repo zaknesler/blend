@@ -2,7 +2,7 @@ import { useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
 import type { Entry } from '~/types/bindings';
 import { useKeyDownEvent } from '@solid-primitives/keyboard';
-import { useFilterParams } from './use-filter-params';
+import { useQueryState } from './use-query-state';
 import { debounce } from '@solid-primitives/scheduled';
 import { useViewport } from './use-viewport';
 import { findEntryItem } from '~/utils/entries';
@@ -13,7 +13,7 @@ type UseListNavParams = {
 };
 
 export const useListNav = (params: () => UseListNavParams) => {
-  const filter = useFilterParams();
+  const state = useQueryState();
   const keyDownEvent = useKeyDownEvent();
   const navigate = useNavigate();
   const viewport = useViewport();
@@ -38,7 +38,7 @@ export const useListNav = (params: () => UseListNavParams) => {
   });
 
   const maybeNavigate = debounce((direction: 'up' | 'down') => {
-    const currentIndex = params().entries.findIndex(entry => entry.uuid === filter.params.entry_uuid);
+    const currentIndex = params().entries.findIndex(entry => entry.uuid === state.params.entry_uuid);
 
     const offset = direction === 'up' ? -1 : 1;
     const entry = params().entries[currentIndex + offset];
@@ -47,6 +47,6 @@ export const useListNav = (params: () => UseListNavParams) => {
     const activeItem = findEntryItem(entry.uuid);
     if (activeItem) activeItem.focus();
 
-    navigate(filter.getEntryUrl(entry.uuid));
+    navigate(state.getEntryUrl(entry.uuid));
   }, 30);
 };

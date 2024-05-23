@@ -8,7 +8,7 @@ import { getEntry } from '~/api/entries';
 import { DATA_ATTRIBUTES } from '~/constants/attributes';
 import { QUERY_KEYS } from '~/constants/query';
 import { useFeeds } from '~/hooks/queries/use-feeds';
-import { useFilterParams } from '~/hooks/use-filter-params';
+import { useQueryState } from '~/hooks/use-query-state';
 import type { Entry } from '~/types/bindings';
 import { formatDate } from '~/utils/date';
 
@@ -17,14 +17,14 @@ type EntryItemProps = Omit<AnchorProps, 'href' | 'activeClass' | 'inactiveClass'
 };
 
 export const EntryItem: Component<EntryItemProps> = props => {
-  const filter = useFilterParams();
+  const state = useQueryState();
   const feeds = useFeeds();
 
   const [local, rest] = splitProps(props, ['entry', 'class']);
 
   // Get the data for an entry to check if user marked it as read
   const entryData = createQuery(() => ({
-    enabled: filter.params.entry_uuid === local.entry.uuid,
+    enabled: state.params.entry_uuid === local.entry.uuid,
     queryKey: [QUERY_KEYS.ENTRIES_VIEW, local.entry.uuid],
     queryFn: () => getEntry(local.entry.uuid),
     refetchOnWindowFocus: false,
@@ -36,18 +36,18 @@ export const EntryItem: Component<EntryItemProps> = props => {
 
   const getDate = () => local.entry.published_at || local.entry.updated_at;
 
-  const entryRouteMatch = useMatch(() => filter.getEntryUrl(local.entry.uuid, false));
+  const entryRouteMatch = useMatch(() => state.getEntryUrl(local.entry.uuid, false));
   const isActive = () => Boolean(entryRouteMatch());
 
   return (
     <A
       {...{ [DATA_ATTRIBUTES.ENTRY_ITEM_UUID]: local.entry.uuid }}
-      href={filter.getEntryUrl(local.entry.uuid)}
+      href={state.getEntryUrl(local.entry.uuid)}
       activeClass="bg-gray-600 dark:bg-gray-950 text-white"
       inactiveClass={cx(
         'hover:bg-gray-100 dark:hover:bg-gray-950',
         'focus:bg-gray-100 focus:dark:bg-gray-950',
-        filter.getView() === 'unread' && isRead() && 'opacity-50',
+        state.getView() === 'unread' && isRead() && 'opacity-50',
       )}
       class={cx(
         '-mx-2 flex flex-col gap-1 rounded-lg px-2 py-1.5 ring-gray-300 transition dark:ring-gray-700',
@@ -73,7 +73,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
           />
         )}
 
-        {!filter.params.feed_uuid && (
+        {!state.params.feed_uuid && (
           <>
             <span class="truncate break-all font-medium">{feed()?.title_display || feed()?.title}</span>
             {!!getDate() && <span class="opacity-50">&ndash;</span>}

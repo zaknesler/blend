@@ -2,16 +2,16 @@ import { For } from 'solid-js';
 import { Tabs } from '@kobalte/core/tabs';
 import { VIEWS, VIEW_LABELS } from '~/constants/views';
 import { cx } from 'class-variance-authority';
-import { useFilterParams } from '~/hooks/use-filter-params';
+import { useQueryState } from '~/hooks/use-query-state';
 import { View } from '~/types/bindings';
 
 export const NavViewSwitcher = () => {
-  const filter = useFilterParams();
+  const state = useQueryState();
 
   return (
     <Tabs
-      value={filter.getView()}
-      onChange={value => filter.setView(value as View)}
+      value={state.getView()}
+      onChange={value => state.setView(value as View)}
       class="flex w-full self-stretch rounded-lg bg-gray-200/40 text-xs font-medium text-gray-600 backdrop-blur-sm dark:bg-gray-400/25 dark:text-white"
     >
       <Tabs.List class="relative flex w-full -space-x-1">

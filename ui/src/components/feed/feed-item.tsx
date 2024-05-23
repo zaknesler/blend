@@ -6,7 +6,7 @@ import type { Feed } from '~/types/bindings';
 import { MenuFeed } from '../menus/menu-feed';
 import { Dynamic } from 'solid-js/web';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
-import { useFilterParams } from '~/hooks/use-filter-params';
+import { useQueryState } from '~/hooks/use-query-state';
 
 type FeedItemProps = {
   feed: Feed;
@@ -14,7 +14,7 @@ type FeedItemProps = {
 
 export const FeedItem: Component<FeedItemProps> = props => {
   const location = useLocation();
-  const filter = useFilterParams();
+  const state = useQueryState();
 
   const [open, setOpen] = createSignal(false);
 
@@ -29,7 +29,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
 
   return (
     <BaseFeedItem
-      href={getPath().concat(filter.getQueryString())}
+      href={getPath().concat(state.getQueryString())}
       title={props.feed.title_display || props.feed.title}
       open={open()}
       active={isActive()}
