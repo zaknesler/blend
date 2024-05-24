@@ -25,10 +25,10 @@ jobs:
             runner: ubuntu-latest
             target: armv7-unknown-linux-gnueabihf
             command: cross
-          - name: x86_64-windows
-            runner: windows-latest
-            target: x86_64-pc-windows-msvc
-            command: cargo
+          # - name: x86_64-windows
+          #   runner: windows-latest
+          #   target: x86_64-pc-windows-msvc
+          #   command: cargo
           - name: x86_64-macos
             runner: macos-latest
             target: x86_64-apple-darwin
@@ -69,6 +69,14 @@ jobs:
         with:
           targets: "${{ matrix.target }}"
       - uses: Swatinem/rust-cache@v2
+
+      - if: matrix.runner == 'macos-latest'
+        run: |
+          brew install libxml2
+      - if: matrix.runner == 'ubuntu-latest'
+        run: |
+          apt-get update
+          apt-get install -y libxml2-dev libxslt-dev
 
       - run: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
         shell: bash
