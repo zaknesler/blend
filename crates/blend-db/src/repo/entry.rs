@@ -16,6 +16,7 @@ pub struct CreateEntryParams {
     pub title: Option<String>,
     pub summary_html: Option<String>,
     pub content_html: Option<String>,
+    pub content_scraped_html: Option<String>,
     pub published_at: Option<DateTime<Utc>>,
     pub updated_at: Option<DateTime<Utc>>,
 }
@@ -176,7 +177,7 @@ impl EntryRepo {
             return Ok(vec![]);
         }
 
-        let mut query = QueryBuilder::<Sqlite>::new("INSERT INTO entries (feed_uuid, uuid, id, url, title, summary_html, content_html, published_at, updated_at) ");
+        let mut query = QueryBuilder::<Sqlite>::new("INSERT INTO entries (feed_uuid, uuid, id, url, title, summary_html, content_html, content_scraped_html, published_at, updated_at) ");
         query.push_values(entries.iter(), |mut b, entry| {
             b.push_bind(feed_uuid)
                 .push_bind(uuid::Uuid::new_v4())
@@ -185,6 +186,7 @@ impl EntryRepo {
                 .push_bind(entry.title.clone())
                 .push_bind(entry.summary_html.clone())
                 .push_bind(entry.content_html.clone())
+                .push_bind(entry.content_scraped_html.clone())
                 .push_bind(entry.published_at)
                 .push_bind(entry.updated_at);
         });
@@ -196,6 +198,7 @@ impl EntryRepo {
                 title = excluded.title,
                 summary_html = excluded.summary_html,
                 content_html = excluded.content_html,
+                content_scraped_html = excluded.content_scraped_html,
                 updated_at = excluded.updated_at
             RETURNING uuid
             "#,

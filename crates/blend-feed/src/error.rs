@@ -9,5 +9,11 @@ pub enum FeedError {
     RequestError(#[from] reqwest::Error),
 
     #[error(transparent)]
+    UrlParseError(#[from] url::ParseError),
+
+    #[error("{0}")]
+    ScrapeError(String),
+
+    #[error(transparent)]
     ParseFeedError(#[from] feed_rs::parser::ParseFeedError),
 }

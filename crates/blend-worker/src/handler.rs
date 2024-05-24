@@ -8,6 +8,7 @@ use sqlx::SqlitePool;
 use std::sync::Arc;
 use tokio::sync::{broadcast, Mutex};
 
+/// Parse entries from a feed, and scrape content if necessary
 pub async fn fetch_entries(
     feed: Feed,
     db: SqlitePool,
@@ -22,6 +23,7 @@ pub async fn fetch_entries(
             title: entry.title,
             summary_html: entry.summary_html,
             content_html: entry.content_html,
+            content_scraped_html: entry.content_scraped_html,
             published_at: entry.published_at,
             updated_at: entry.updated_at,
         })
