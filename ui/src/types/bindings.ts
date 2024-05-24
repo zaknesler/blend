@@ -15,6 +15,7 @@ export interface Entry {
   updated_at?: string;
   read_at?: string;
   saved_at?: string;
+  scraped_at?: string;
 }
 
 export interface Feed {

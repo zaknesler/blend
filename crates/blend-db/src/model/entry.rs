@@ -21,4 +21,5 @@ pub struct Entry {
     pub updated_at: Option<DateTime<Utc>>,
     pub read_at: Option<DateTime<Utc>>,
     pub saved_at: Option<DateTime<Utc>>,
+    pub scraped_at: Option<DateTime<Utc>>,
 }

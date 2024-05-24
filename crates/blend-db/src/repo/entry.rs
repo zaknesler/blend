@@ -87,7 +87,7 @@ impl EntryRepo {
         let el = filter.sort.query_elements();
         let el_inv = filter.sort.query_elements_inverse();
 
-        let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary_html, published_at, updated_at, read_at, saved_at FROM entries WHERE 1=1");
+        let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary_html, published_at, updated_at, read_at, saved_at, scraped_at FROM entries WHERE 1=1");
 
         match filter.view {
             View::All => query.push(""),
