@@ -66,7 +66,6 @@ pub async fn parse_entries(url: &str) -> FeedResult<Vec<ParsedEntry>> {
         })
         .collect::<Vec<model::ParsedEntry>>();
 
-    // TODO: join em
     for entry in entries.iter_mut() {
         if entry.content_html.is_some() || entry.media_url.is_some() {
             continue;

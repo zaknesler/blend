@@ -1,7 +1,11 @@
+#[macro_use]
+extern crate lazy_static;
+
 mod error;
 pub use error::FeedError as Error;
 
 pub mod model;
+mod readability;
 mod scrape;
 
 mod parse;
