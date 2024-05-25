@@ -151,7 +151,7 @@ impl EntryRepo {
         &self,
         feed_uuid: &uuid::Uuid,
     ) -> DbResult<Vec<model::Entry>> {
-        sqlx::query_as::<_, model::Entry>("SELECT * FROM entries WHERE feed_uuid = ?1 AND content_scraped_html IS NULL AND scraped_at IS NULL")
+        sqlx::query_as::<_, model::Entry>("SELECT * FROM entries WHERE feed_uuid = ?1 AND content_html IS NOT NULL AND content_scraped_html IS NULL AND scraped_at IS NULL")
             .bind(feed_uuid)
             .fetch_all(&self.db)
             .await
