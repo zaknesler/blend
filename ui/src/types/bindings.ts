@@ -11,6 +11,7 @@ export interface Entry {
   summary_html?: string;
   content_html?: string;
   content_scraped_html?: string;
+  media_url?: string;
   published_at?: string;
   updated_at?: string;
   read_at?: string;
@@ -70,9 +71,8 @@ export type Notification =
       };
     }
   | {
-      type: 'EntriesFetched';
+      type: 'FinishedScrapingEntries';
       data: {
         feed_uuid: string;
-        entry_uuids: string[];
       };
     };

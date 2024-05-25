@@ -6,7 +6,9 @@ pub use error::FeedError as Error;
 
 pub mod model;
 mod readability;
+
 mod scrape;
+pub use scrape::scrape_entry;
 
 mod parse;
 pub use parse::{parse_entries, parse_feed};

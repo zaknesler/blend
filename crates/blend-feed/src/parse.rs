@@ -2,7 +2,6 @@ use crate::{
     error::FeedResult,
     extract::*,
     model::{self, ParsedEntry, ParsedFeed},
-    scrape,
 };
 
 /// Fetch feed and handle edge cases
@@ -36,7 +35,7 @@ pub async fn parse_feed(url: &str) -> FeedResult<ParsedFeed> {
 pub async fn parse_entries(url: &str) -> FeedResult<Vec<ParsedEntry>> {
     let feed = get_feed(url).await?;
 
-    let mut entries = feed
+    let entries = feed
         .entries
         .iter()
         .cloned()
@@ -58,24 +57,12 @@ pub async fn parse_entries(url: &str) -> FeedResult<Vec<ParsedEntry>> {
                 content_html: entry
                     .content
                     .and_then(|content| content.body.map(|content| extract_html(&content))),
-                content_scraped_html: None,
                 media_url,
                 published_at: entry.published,
                 updated_at: entry.updated,
             }
         })
         .collect::<Vec<model::ParsedEntry>>();
-
-    for entry in entries.iter_mut() {
-        if entry.content_html.is_some() || entry.media_url.is_some() {
-            continue;
-        }
-
-        if let Some(url) = entry.url.clone() {
-            entry.content_scraped_html =
-                scrape::scrape_entry(url).await?.map(|html| extract_html(&html));
-        }
-    }
 
     Ok(entries)
 }

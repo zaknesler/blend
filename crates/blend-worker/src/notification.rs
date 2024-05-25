@@ -6,16 +6,9 @@ use typeshare::typeshare;
 #[derive(Debug, Clone, Serialize)]
 #[serde(tag = "type", content = "data")]
 pub enum Notification {
-    StartedFeedRefresh {
-        feed_uuid: uuid::Uuid,
-    },
-    FinishedFeedRefresh {
-        feed_uuid: uuid::Uuid,
-    },
-    EntriesFetched {
-        feed_uuid: uuid::Uuid,
-        entry_uuids: Vec<uuid::Uuid>,
-    },
+    StartedFeedRefresh { feed_uuid: uuid::Uuid },
+    FinishedFeedRefresh { feed_uuid: uuid::Uuid },
+    FinishedScrapingEntries { feed_uuid: uuid::Uuid },
 }
 
 impl Display for Notification {
@@ -33,15 +26,12 @@ impl Display for Notification {
                 std::mem::size_of_val(self),
                 feed_uuid.hyphenated(),
             ),
-            Notification::EntriesFetched {
-                feed_uuid,
-                entry_uuids,
-            } => write!(
+
+            Notification::FinishedScrapingEntries { feed_uuid } => write!(
                 f,
-                "[notification: entries fetched] (size = {}) feed: {}, entries: {}",
+                "[notification: finished scraping entries] (size = {}) feed: {}",
                 std::mem::size_of_val(self),
                 feed_uuid.hyphenated(),
-                entry_uuids.len()
             ),
         }
     }

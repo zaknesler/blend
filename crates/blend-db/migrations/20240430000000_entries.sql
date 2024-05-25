@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS entries (
   summary_html TEXT,
   content_html TEXT,
   content_scraped_html TEXT,
+  media_url TEXT,
   published_at DATETIME,
   updated_at DATETIME,
   read_at DATETIME,

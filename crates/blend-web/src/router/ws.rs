@@ -23,7 +23,7 @@ async fn notifications(
 }
 
 async fn handle_socket(socket: WebSocket, ctx: crate::Context) {
-    let mut rx = ctx.notifs.lock().await.subscribe();
+    let mut rx = ctx.notif_tx.lock().await.subscribe();
     let (mut ws_sender, _) = socket.split();
 
     while let Ok(notif) = rx.recv().await {

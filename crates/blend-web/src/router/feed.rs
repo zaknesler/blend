@@ -53,7 +53,7 @@ async fn create(
         })
         .await?;
 
-    let worker = ctx.jobs.lock().await;
+    let worker = ctx.job_tx.lock().await;
     worker.send(blend_worker::Job::FetchMetadata(feed.clone())).await?;
     worker.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
 
@@ -92,14 +92,14 @@ async fn refresh_feed(
         .await?
         .ok_or_else(|| WebError::NotFoundError)?;
 
-    let notifier = ctx.notifs.lock().await;
-    let dispatcher = ctx.jobs.lock().await;
+    let notif_tx = ctx.notif_tx.lock().await;
+    let job_tx = ctx.job_tx.lock().await;
 
-    notifier.send(blend_worker::Notification::StartedFeedRefresh {
+    notif_tx.send(blend_worker::Notification::StartedFeedRefresh {
         feed_uuid: feed.uuid,
     })?;
-    dispatcher.send(blend_worker::Job::FetchMetadata(feed.clone())).await?;
-    dispatcher.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
+    job_tx.send(blend_worker::Job::FetchMetadata(feed.clone())).await?;
+    job_tx.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
 
     Ok(Json(json!({ "success": true })))
 }
@@ -107,8 +107,8 @@ async fn refresh_feed(
 async fn refresh_feeds(State(ctx): State<crate::Context>) -> WebResult<impl IntoResponse> {
     let feeds = repo::feed::FeedRepo::new(ctx.db).get_feeds().await?;
 
-    let notifier = ctx.notifs.lock().await;
-    let dispatcher = ctx.jobs.lock().await;
+    let notifier = ctx.notif_tx.lock().await;
+    let dispatcher = ctx.job_tx.lock().await;
 
     for feed in feeds {
         notifier.send(blend_worker::Notification::StartedFeedRefresh {

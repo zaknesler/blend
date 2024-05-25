@@ -35,9 +35,10 @@ export const useNotifications = () => {
 
       case 'FinishedFeedRefresh':
         setFeedsRefreshing(uuids => uuids.filter(uuid => uuid !== notif.data.feed_uuid));
+        invalidateFeed(notif.data.feed_uuid);
         break;
 
-      case 'EntriesFetched':
+      case 'FinishedScrapingEntries':
         invalidateFeed(notif.data.feed_uuid);
         break;
     }

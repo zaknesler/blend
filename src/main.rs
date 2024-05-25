@@ -37,25 +37,30 @@ async fn main() -> error::BlendResult<()> {
 
             // Create job queue channel
             let (job_tx, mut job_rx) = mpsc::channel::<blend_worker::Job>(CHANNEL_BUFFER_SIZE);
-            let jobs = Arc::new(Mutex::new(job_tx));
+            let job_tx = Arc::new(Mutex::new(job_tx));
 
             // Create notification channel
             let (notif_tx, mut notif_rx) =
                 broadcast::channel::<blend_worker::Notification>(CHANNEL_BUFFER_SIZE);
-            let notifs = Arc::new(Mutex::new(notif_tx));
+            let notif_tx = Arc::new(Mutex::new(notif_tx));
 
             // Start queue and refresh workers
-            let queue_worker =
-                blend_worker::start_queue_worker(&mut job_rx, db.clone(), notifs.clone()).fuse();
+            let queue_worker = blend_worker::start_queue_worker(
+                db.clone(),
+                &mut job_rx,
+                job_tx.clone(),
+                notif_tx.clone(),
+            )
+            .fuse();
             let refresh_worker =
-                blend_worker::start_refresh_worker(jobs.clone(), db.clone()).fuse();
+                blend_worker::start_refresh_worker(job_tx.clone(), db.clone()).fuse();
 
             // Start web server
             let web = blend_web::serve(blend_web::Context {
                 blend,
                 db,
-                jobs,
-                notifs,
+                job_tx,
+                notif_tx,
             })
             .fuse();
 

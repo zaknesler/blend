@@ -27,10 +27,21 @@ impl FeedRepo {
     }
 
     pub async fn get_stats(&self) -> DbResult<Vec<model::FeedStats>> {
-        sqlx::query_as::<_, model::FeedStats>("SELECT * from feeds_stats")
-            .fetch_all(&self.db)
-            .await
-            .map_err(|err| err.into())
+        sqlx::query_as::<_, model::FeedStats>(
+            r#"
+            SELECT
+                feeds.uuid,
+                COUNT(entries.uuid) as count_total,
+                COUNT(CASE WHEN entries.read_at IS NULL THEN 1 ELSE NULL END) as count_unread,
+                COUNT(CASE WHEN entries.saved_at IS NOT NULL THEN 1 ELSE NULL END) as count_saved
+            FROM feeds
+            INNER JOIN entries ON feeds.uuid = entries.feed_uuid
+            GROUP BY feeds.uuid
+            "#,
+        )
+        .fetch_all(&self.db)
+        .await
+        .map_err(|err| err.into())
     }
 
     pub async fn get_feed(&self, feed_uuid: uuid::Uuid) -> DbResult<Option<model::Feed>> {
