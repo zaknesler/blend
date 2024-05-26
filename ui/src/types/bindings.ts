@@ -23,7 +23,7 @@ export interface Feed {
   uuid: string;
   id: string;
   url_feed: string;
-  url_site?: string;
+  url_site: string;
   title: string;
   title_display?: string;
   favicon_b64?: string;
@@ -66,6 +66,12 @@ export type Notification =
     }
   | {
       type: 'FinishedFeedRefresh';
+      data: {
+        feed_uuid: string;
+      };
+    }
+  | {
+      type: 'FinishedFetchingFeedFavicon';
       data: {
         feed_uuid: string;
       };

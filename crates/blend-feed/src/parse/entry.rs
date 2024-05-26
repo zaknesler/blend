@@ -9,6 +9,8 @@ use crate::{
 /// Fetch feed and process each entry as needed
 pub async fn parse_entries(url: &str) -> FeedResult<Vec<ParsedEntry>> {
     let url = parse_url(url).ok_or_else(|| FeedError::InvalidUrl(url.to_string()))?;
+
+    // Parse feed
     let (feed, _) = get_feed(url).await?;
 
     let entries = feed

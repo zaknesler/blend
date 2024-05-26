@@ -56,13 +56,15 @@ async fn handle_job(
     job_tx: Arc<Mutex<mpsc::Sender<Job>>>,
     notif_tx: Arc<Mutex<broadcast::Sender<Notification>>>,
 ) -> WorkerResult<()> {
-    match job {
-        Job::FetchEntries(feed) => handler::fetch_entries(feed, db, job_tx, notif_tx).await?,
-        Job::ScrapeEntries(feed) => handler::scrape_entries(feed, db, notif_tx).await?,
-        _ => {}
+    // Handle the job and keep track of the result
+    let result = match job {
+        Job::FetchEntries(feed) => handler::fetch_entries(feed, db, job_tx, notif_tx).await,
+        Job::FetchFavicon(feed) => handler::fetch_favicon(feed, db, notif_tx).await,
+        Job::ScrapeEntries(feed) => handler::scrape_entries(feed, db, notif_tx).await,
     };
 
     // TODO: handle errors cleanly (send error notification or something)
+    result?;
 
     Ok(())
 }

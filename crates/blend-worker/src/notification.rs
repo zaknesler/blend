@@ -8,6 +8,7 @@ use typeshare::typeshare;
 pub enum Notification {
     StartedFeedRefresh { feed_uuid: uuid::Uuid },
     FinishedFeedRefresh { feed_uuid: uuid::Uuid },
+    FinishedFetchingFeedFavicon { feed_uuid: uuid::Uuid },
     FinishedScrapingEntries { feed_uuid: uuid::Uuid },
 }
 
@@ -26,7 +27,12 @@ impl Display for Notification {
                 std::mem::size_of_val(self),
                 feed_uuid.hyphenated(),
             ),
-
+            Notification::FinishedFetchingFeedFavicon { feed_uuid } => write!(
+                f,
+                "[notification: finished fetching feed favicon] (size = {}) feed: {}",
+                std::mem::size_of_val(self),
+                feed_uuid.hyphenated(),
+            ),
             Notification::FinishedScrapingEntries { feed_uuid } => write!(
                 f,
                 "[notification: finished scraping entries] (size = {}) feed: {}",

@@ -4,7 +4,8 @@ use chrono::{DateTime, Utc};
 #[derive(Debug, Clone)]
 pub struct ParsedFeed {
     pub id: String,
-    pub url: String,
+    pub url_feed: String,
+    pub url_site: String,
     pub title: Option<String>,
     pub favicon_url: Option<String>,
     pub published_at: Option<DateTime<Utc>>,

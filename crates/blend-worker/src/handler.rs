@@ -1,11 +1,51 @@
 use crate::{error::WorkerResult, Job, Notification};
+use base64::{engine::general_purpose::URL_SAFE, Engine as _};
 use blend_db::{
     model::Feed,
-    repo::entry::{CreateEntryParams, EntryRepo},
+    repo::{
+        entry::{CreateEntryParams, EntryRepo},
+        feed::FeedRepo,
+    },
 };
 use sqlx::SqlitePool;
 use std::sync::Arc;
 use tokio::sync::{broadcast, mpsc, Mutex};
+
+/// Scrape favicon from feed site URL
+pub async fn fetch_favicon(
+    feed: Feed,
+    db: SqlitePool,
+    notif_tx: Arc<Mutex<broadcast::Sender<Notification>>>,
+) -> WorkerResult<()> {
+    // Don't refetch the favicon if we already have one saved
+    if feed.favicon_b64.is_some() || feed.favicon_url.is_some() {
+        return Ok(());
+    }
+
+    // Scrape favicon from site directly
+    let url = url::Url::parse(&feed.url_site)?;
+    let icon = tokio::task::block_in_place(|| favilib::Favicon::fetch(url, None))?;
+
+    // Potentially save the image as a base64 PNG data string
+    let data_string = icon
+        .clone()
+        .resize(favilib::ImageSize::Custom(64, 64))
+        .change_format(favilib::ImageFormat::Png)
+        .ok()
+        .map(|icon| format!("data:image/png;base64,{}", URL_SAFE.encode(icon.bytes())));
+
+    // Save favicon URL and the data string
+    FeedRepo::new(db)
+        .update_favicon(&feed.uuid, icon.url().to_string(), data_string)
+        .await?;
+
+    // Notify that we've saved the favicon
+    notif_tx.lock().await.send(Notification::FinishedFetchingFeedFavicon {
+        feed_uuid: feed.uuid,
+    })?;
+
+    Ok(())
+}
 
 /// Parse entries from a feed, and scrape content if necessary
 pub async fn fetch_entries(
@@ -14,6 +54,7 @@ pub async fn fetch_entries(
     job_tx: Arc<Mutex<mpsc::Sender<Job>>>,
     notif_tx: Arc<Mutex<broadcast::Sender<Notification>>>,
 ) -> WorkerResult<()> {
+    // Parse any entries directly from the feed
     let mapped = blend_feed::parse_entries(&feed.url_feed)
         .await?
         .into_iter()
@@ -29,6 +70,7 @@ pub async fn fetch_entries(
         })
         .collect::<Vec<_>>();
 
+    // Save any entries we've successfully scraped
     EntryRepo::new(db).upsert_entries(&feed.uuid, &mapped).await?;
 
     // Notify that we've finished a feed refresh

@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS feeds (
   uuid TEXT PRIMARY KEY NOT NULL,
   id TEXT NOT NULL,
   url_feed TEXT NOT NULL,
-  url_site TEXT,
+  url_site TEXT NOT NULL,
   title TEXT NOT NULL,
   title_display TEXT,
   favicon_url TEXT,

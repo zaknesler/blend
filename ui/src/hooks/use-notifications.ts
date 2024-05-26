@@ -39,6 +39,7 @@ export const useNotifications = () => {
         break;
 
       case 'FinishedScrapingEntries':
+      case 'FinishedFetchingFeedFavicon':
         invalidateFeed(notif.data.feed_uuid);
         break;
     }

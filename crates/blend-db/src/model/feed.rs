@@ -10,7 +10,7 @@ pub struct Feed {
     pub uuid: Uuid,
     pub id: String,
     pub url_feed: String,
-    pub url_site: Option<String>,
+    pub url_site: String,
     pub title: String,
     pub title_display: Option<String>,
     pub favicon_b64: Option<String>,

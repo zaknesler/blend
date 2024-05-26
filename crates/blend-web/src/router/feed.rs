@@ -46,7 +46,8 @@ async fn create(
         .create_feed(repo::feed::CreateFeedParams {
             id: parsed.id,
             title: parsed.title.unwrap_or_else(|| data.url.clone()),
-            url_feed: parsed.url,
+            url_feed: parsed.url_feed,
+            url_site: parsed.url_site,
             favicon_url: parsed.favicon_url,
             published_at: parsed.published_at,
             updated_at: parsed.updated_at,
@@ -54,7 +55,7 @@ async fn create(
         .await?;
 
     let worker = ctx.job_tx.lock().await;
-    worker.send(blend_worker::Job::FetchMetadata(feed.clone())).await?;
+    worker.send(blend_worker::Job::FetchFavicon(feed.clone())).await?;
     worker.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
 
     Ok(Json(json!({ "data": feed })))
@@ -98,7 +99,7 @@ async fn refresh_feed(
     notif_tx.send(blend_worker::Notification::StartedFeedRefresh {
         feed_uuid: feed.uuid,
     })?;
-    job_tx.send(blend_worker::Job::FetchMetadata(feed.clone())).await?;
+    job_tx.send(blend_worker::Job::FetchFavicon(feed.clone())).await?;
     job_tx.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
 
     Ok(Json(json!({ "success": true })))
@@ -114,7 +115,6 @@ async fn refresh_feeds(State(ctx): State<crate::Context>) -> WebResult<impl Into
         notifier.send(blend_worker::Notification::StartedFeedRefresh {
             feed_uuid: feed.uuid,
         })?;
-        dispatcher.send(blend_worker::Job::FetchMetadata(feed.clone())).await?;
         dispatcher.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
     }
 
