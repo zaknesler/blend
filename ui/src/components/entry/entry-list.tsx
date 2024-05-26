@@ -25,7 +25,7 @@ export const EntryList: Component<EntryListProps> = props => {
   createEffect(() => {
     if (!listBounds.bottom || !props.containerBounds?.bottom) return;
 
-    const bottomOfListVisible = listBounds.bottom <= props.containerBounds.bottom;
+    const bottomOfListVisible = listBounds.bottom * 0.9 <= props.containerBounds.bottom;
     if (!bottomOfListVisible) return;
 
     entries.fetchMore();

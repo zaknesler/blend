@@ -30,7 +30,7 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
       </Match>
 
       <Match when={feed.isSuccess}>
-        <div class="flex w-full items-start justify-between">
+        <div class="flex w-full items-start gap-4 overflow-hidden">
           <FeedHeader title={feed.data?.title_display || feed.data?.title} subtitle={feed.data?.url_feed} />
 
           <MenuFeed

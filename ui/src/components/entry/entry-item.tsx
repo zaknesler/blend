@@ -43,15 +43,16 @@ export const EntryItem: Component<EntryItemProps> = props => {
     <A
       {...{ [DATA_ATTRIBUTES.ENTRY_ITEM_UUID]: local.entry.uuid }}
       href={state.getEntryUrl(local.entry.uuid)}
-      activeClass="bg-gray-600 dark:bg-gray-950 text-white"
-      inactiveClass={cx(
-        'hover:bg-gray-100 dark:hover:bg-gray-950',
-        'focus:bg-gray-100 focus:dark:bg-gray-950',
-        state.getView() === 'unread' && isRead() && 'opacity-50',
-      )}
       class={cx(
         '-mx-2 flex flex-col gap-1 rounded-lg px-2 py-1.5 ring-gray-300 transition dark:ring-gray-700',
         'focus:outline-none focus:ring',
+        isActive()
+          ? 'bg-gray-600 text-white dark:bg-gray-950'
+          : [
+              'hover:bg-gray-100 dark:hover:bg-gray-950',
+              'focus:bg-gray-100 focus:dark:bg-gray-950',
+              state.getView() === 'unread' && isRead() && 'opacity-50',
+            ],
         local.class,
       )}
       {...rest}

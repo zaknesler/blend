@@ -49,14 +49,14 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
 
         <div class="h-1 w-32 bg-gray-300 dark:bg-gray-700" />
 
-        {local.entry.content_html || local.entry.content_scraped_html ? (
+        {local.entry.content_scraped_html || local.entry.content_html ? (
           <div
             class={cx(
               'prose prose-sm max-w-none lg:prose-base',
               'prose-stone dark:prose-invert prose-pre:text-sm prose-pre:md:text-base',
               'prose-headings:font-bold prose-h1:text-2xl/5 prose-h2:text-xl/5 prose-h3:text-lg/5 prose-h4:text-base/5',
             )}
-            innerHTML={local.entry.content_html || local.entry.content_scraped_html}
+            innerHTML={local.entry.content_scraped_html || local.entry.content_html}
           />
         ) : (
           <div class="flex max-w-xs flex-col items-start gap-2 rounded-lg border border-gray-100 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-950">

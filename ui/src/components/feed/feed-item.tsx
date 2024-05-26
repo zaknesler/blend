@@ -7,6 +7,7 @@ import { MenuFeed } from '../menus/menu-feed';
 import { Dynamic } from 'solid-js/web';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
 import { useQueryState } from '~/hooks/use-query-state';
+import { Image } from '@kobalte/core/image';
 
 type FeedItemProps = {
   feed: Feed;
@@ -69,15 +70,12 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
     )}
   >
     <div class="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-md md:h-5 md:w-5 md:rounded">
-      <Switch
-        fallback={
-          <div class="flex h-full w-full items-center justify-center bg-gray-400 text-white dark:bg-gray-700 dark:text-gray-400">
-            <HiSolidRss class="h-5 w-5 md:h-4 md:w-4" />
-          </div>
-        }
-      >
+      <Switch fallback={<RssIcon />}>
         <Match when={!!props.favicon_src}>
-          <img class="h-full w-full object-fill" src={props.favicon_src} alt={`${props.title} favicon`} />
+          <Image fallbackDelay={500} class="h-full w-full">
+            <Image.Img class="h-full w-full object-fill" src={props.favicon_src} alt={`${props.title} favicon`} />
+            <Image.Fallback as={RssIcon} />
+          </Image>
         </Match>
         <Match when={!!props.icon}>
           <Dynamic component={props.icon} />
@@ -88,7 +86,7 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
     <span class="flex-1 overflow-x-hidden truncate">{props.title}</span>
 
     <Show when={props.unread_count}>
-      <span class="mr-1 w-6 shrink-0 rounded bg-white py-0.5 text-center text-xs/4 text-gray-500 md:-mx-1 md:-my-0.5 dark:bg-gray-800 dark:text-gray-300">
+      <span class="min-w-6 shrink-0 rounded px-1 py-0.5 text-center text-sm text-gray-500 md:-mx-1 md:-my-0.5 md:bg-white md:text-xs/4 dark:text-gray-300 md:dark:bg-gray-800">
         {props.unread_count}
       </span>
     </Show>
@@ -97,4 +95,10 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
       <Dynamic component={props.menu} />
     </div>
   </A>
+);
+
+const RssIcon = () => (
+  <div class="flex h-full w-full items-center justify-center bg-gray-400 text-white dark:bg-gray-700 dark:text-gray-400">
+    <HiSolidRss class="h-5 w-5 md:h-4 md:w-4" />
+  </div>
 );
