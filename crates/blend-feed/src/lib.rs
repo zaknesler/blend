@@ -11,7 +11,7 @@ mod scrape;
 pub use scrape::scrape_entry;
 
 mod parse;
-pub use parse::{parse_entries, parse_feed};
+pub use parse::{entry::*, feed::*, url::*};
 
 mod extract;
 pub use extract::{extract_html, extract_stylistic_html, extract_text};

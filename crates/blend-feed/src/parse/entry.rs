@@ -1,39 +1,15 @@
+use super::get_feed;
 use crate::{
-    error::FeedResult,
+    error::{FeedError, FeedResult},
     extract::*,
-    model::{self, ParsedEntry, ParsedFeed},
+    model::{self, ParsedEntry},
+    parse_url,
 };
-
-/// Fetch feed and handle edge cases
-async fn get_feed(url: &str) -> FeedResult<feed_rs::model::Feed> {
-    let data = reqwest::get(url).await?.text().await?;
-    let feed = feed_rs::parser::parse(data.as_bytes())?;
-
-    Ok(feed)
-}
-
-// Fetch feed and process the basic feed data
-pub async fn parse_feed(url: &str) -> FeedResult<ParsedFeed> {
-    let feed = get_feed(url).await?;
-
-    // Parse favicon URL to use until we can convert the remote image into binary data stored in the db
-    let favicon_url = feed.icon.or_else(|| feed.logo).map(|image| image.uri);
-
-    let parsed = ParsedFeed {
-        id: feed.id,
-        url: Some(url.to_owned()),
-        title: feed.title.map(|text| extract_text(&text.content)),
-        favicon_url,
-        published_at: feed.published,
-        updated_at: feed.updated,
-    };
-
-    Ok(parsed)
-}
 
 /// Fetch feed and process each entry as needed
 pub async fn parse_entries(url: &str) -> FeedResult<Vec<ParsedEntry>> {
-    let feed = get_feed(url).await?;
+    let url = parse_url(url).ok_or_else(|| FeedError::InvalidUrl(url.to_string()))?;
+    let (feed, _) = get_feed(url).await?;
 
     let entries = feed
         .entries

@@ -2,6 +2,9 @@ pub(crate) type FeedResult<T> = Result<T, FeedError>;
 
 #[derive(thiserror::Error, Debug)]
 pub enum FeedError {
+    #[error("invalid url: {0}")]
+    InvalidUrl(String),
+
     #[error(transparent)]
     Io(#[from] std::io::Error),
 

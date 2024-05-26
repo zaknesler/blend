@@ -46,7 +46,7 @@ async fn create(
         .create_feed(repo::feed::CreateFeedParams {
             id: parsed.id,
             title: parsed.title.unwrap_or_else(|| data.url.clone()),
-            url_feed: parsed.url.unwrap_or_else(|| data.url),
+            url_feed: parsed.url,
             favicon_url: parsed.favicon_url,
             published_at: parsed.published_at,
             updated_at: parsed.updated_at,
