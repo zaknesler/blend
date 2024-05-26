@@ -25,8 +25,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
   const isActive = createMemo(() => location.pathname.startsWith(getPath()));
   const getStats = createMemo(() => stats.data?.find(item => item.uuid === props.feed.uuid));
 
-  // TODO: convert b64 to data link and use here before falling back to feed.favicon_url
-  const getFaviconSrc = () => props.feed.favicon_url;
+  const getFaviconSrc = () => props.feed.favicon_b64 || props.feed.favicon_url;
 
   return (
     <BaseFeedItem
