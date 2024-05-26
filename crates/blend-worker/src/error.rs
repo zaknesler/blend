@@ -9,6 +9,12 @@ pub enum WorkerError {
     RequestError(#[from] reqwest::Error),
 
     #[error(transparent)]
+    UrlParseError(#[from] url::ParseError),
+
+    #[error(transparent)]
+    FaviconParseError(#[from] favilib::errors::FavilibError),
+
+    #[error(transparent)]
     NotificationBroadcastSendError(
         #[from] tokio::sync::broadcast::error::SendError<crate::Notification>,
     ),

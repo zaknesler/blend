@@ -6,7 +6,8 @@ use std::fmt::Display;
 #[serde(tag = "type")]
 pub enum Job {
     FetchEntries(model::Feed),
-    FetchMetadata(model::Feed),
+    FetchFavicon(model::Feed),
+    ScrapeEntries(model::Feed),
 }
 
 impl Display for Job {
@@ -23,7 +24,8 @@ impl Display for Job {
 
         match self {
             Job::FetchEntries(feed) => write_job_str("fetch entries", feed.uuid),
-            Job::FetchMetadata(feed) => write_job_str("fetch metadata", feed.uuid),
+            Job::FetchFavicon(feed) => write_job_str("fetch favicon", feed.uuid),
+            Job::ScrapeEntries(feed) => write_job_str("scrape entries", feed.uuid),
         }
     }
 }

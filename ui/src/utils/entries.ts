@@ -1,5 +1,5 @@
 import { DATA_ATTRIBUTES } from '~/constants/attributes';
-import { DEFAULT_DIRECTION } from '~/hooks/use-filter-params';
+import { DEFAULT_DIRECTION } from '~/hooks/use-query-state';
 import { Entry, SortDirection } from '~/types/bindings';
 
 /**

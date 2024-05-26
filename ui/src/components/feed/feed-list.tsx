@@ -3,13 +3,13 @@ import { BaseFeedItem, FeedItem } from './feed-item';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
 import { useLocation } from '@solidjs/router';
-import { useFilterParams } from '~/hooks/use-filter-params';
+import { useQueryState } from '~/hooks/use-query-state';
 import { HiOutlineSquare3Stack3d } from 'solid-icons/hi';
 import { MenuFeeds } from '../menus/menu-feeds';
 
 export const FeedList = () => {
   const location = useLocation();
-  const filter = useFilterParams();
+  const state = useQueryState();
 
   const [allFeedsMenuOpen, setAllFeedsMenuOpen] = createSignal(false);
 
@@ -19,7 +19,7 @@ export const FeedList = () => {
   return (
     <div class="flex w-full flex-col gap-4">
       <BaseFeedItem
-        href={'/'.concat(filter.getQueryString())}
+        href={'/'.concat(state.getQueryString())}
         title="All feeds"
         icon={() => <HiOutlineSquare3Stack3d class="h-6 w-6 text-gray-600 md:h-5 md:w-5" />}
         open={allFeedsMenuOpen()}

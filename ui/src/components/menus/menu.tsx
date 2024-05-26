@@ -99,7 +99,7 @@ const MenuContent: ParentComponent = props => (
       'z-50 min-w-36 overflow-hidden rounded-md border shadow-sm',
       'border-gray-200 bg-white text-gray-600',
       'dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200',
-      'origin-[--kb-menu-content-transform-origin] animate-contentHide ui-expanded:animate-contentShow',
+      'animate-content-hide ui-expanded:animate-content-show origin-[--kb-menu-content-transform-origin]',
     )}
   >
     <div class="flex flex-col gap-0.5 p-1 text-sm">{props.children}</div>

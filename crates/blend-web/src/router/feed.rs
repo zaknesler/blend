@@ -45,15 +45,17 @@ async fn create(
     let feed = repo::feed::FeedRepo::new(ctx.db)
         .create_feed(repo::feed::CreateFeedParams {
             id: parsed.id,
-            title: parsed.title,
-            url_feed: parsed.url,
+            title: parsed.title.unwrap_or_else(|| data.url.clone()),
+            url_feed: parsed.url_feed,
+            url_site: parsed.url_site,
+            favicon_url: parsed.favicon_url,
             published_at: parsed.published_at,
             updated_at: parsed.updated_at,
         })
         .await?;
 
-    let worker = ctx.jobs.lock().await;
-    worker.send(blend_worker::Job::FetchMetadata(feed.clone())).await?;
+    let worker = ctx.job_tx.lock().await;
+    worker.send(blend_worker::Job::FetchFavicon(feed.clone())).await?;
     worker.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
 
     Ok(Json(json!({ "data": feed })))
@@ -91,14 +93,14 @@ async fn refresh_feed(
         .await?
         .ok_or_else(|| WebError::NotFoundError)?;
 
-    let notifier = ctx.notifs.lock().await;
-    let dispatcher = ctx.jobs.lock().await;
+    let notif_tx = ctx.notif_tx.lock().await;
+    let job_tx = ctx.job_tx.lock().await;
 
-    notifier.send(blend_worker::Notification::StartedFeedRefresh {
+    notif_tx.send(blend_worker::Notification::StartedFeedRefresh {
         feed_uuid: feed.uuid,
     })?;
-    dispatcher.send(blend_worker::Job::FetchMetadata(feed.clone())).await?;
-    dispatcher.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
+    job_tx.send(blend_worker::Job::FetchFavicon(feed.clone())).await?;
+    job_tx.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
 
     Ok(Json(json!({ "success": true })))
 }
@@ -106,14 +108,13 @@ async fn refresh_feed(
 async fn refresh_feeds(State(ctx): State<crate::Context>) -> WebResult<impl IntoResponse> {
     let feeds = repo::feed::FeedRepo::new(ctx.db).get_feeds().await?;
 
-    let notifier = ctx.notifs.lock().await;
-    let dispatcher = ctx.jobs.lock().await;
+    let notifier = ctx.notif_tx.lock().await;
+    let dispatcher = ctx.job_tx.lock().await;
 
     for feed in feeds {
         notifier.send(blend_worker::Notification::StartedFeedRefresh {
             feed_uuid: feed.uuid,
         })?;
-        dispatcher.send(blend_worker::Job::FetchMetadata(feed.clone())).await?;
         dispatcher.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
     }
 

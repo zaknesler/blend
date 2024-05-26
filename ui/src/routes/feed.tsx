@@ -1,6 +1,6 @@
 import { EntryPanel } from '~/components/entry/entry-panel';
 import { Sidebar } from '~/components/layout/sidebar';
-import { useFilterParams } from '~/hooks/use-filter-params';
+import { useQueryState } from '~/hooks/use-query-state';
 import { Panel } from '~/components/layout/panel';
 import { EntryList } from '~/components/entry/entry-list';
 import { FeedInfo } from '~/components/feed/feed-info';
@@ -18,7 +18,7 @@ import { MenuFeeds } from '~/components/menus/menu-feeds';
 import { createActiveElement } from '@solid-primitives/active-element';
 
 export default () => {
-  const filter = useFilterParams();
+  const state = useQueryState();
   const isRouting = useIsRouting();
   const { lteBreakpoint } = useViewport();
 
@@ -29,7 +29,7 @@ export default () => {
   const containerBounds = createElementBounds(container);
   const containerScroll = createScrollPosition(container);
 
-  const viewingEntry = () => !!filter.params.entry_uuid;
+  const viewingEntry = () => !!state.params.entry_uuid;
 
   const isMobile = () => lteBreakpoint('md');
   const showPanel = () => !isMobile() || (isMobile() && !viewingEntry());
@@ -38,6 +38,14 @@ export default () => {
   const activeElement = createActiveElement();
   const containsActiveElement = () => container()?.contains(activeElement());
 
+  const handleSkipToContent = () => {
+    const el = container();
+    if (!el) return;
+
+    const focusable = el.querySelector('[tabindex="0"]') as HTMLElement | undefined;
+    focusable?.focus() || el.focus();
+  };
+
   createEffect(() => {
     if (!isRouting()) return;
     setShowFeeds(false);
@@ -45,12 +53,20 @@ export default () => {
 
   createEffect(() => {
     // Scroll to top of list whenever the feed URL changes
-    filter.getFeedUrl();
+    state.getFeedUrl();
     container()?.scrollTo({ top: 0, behavior: 'instant' });
   });
 
   return (
     <>
+      <button
+        class="absolute left-2 top-2 z-[9999] -translate-y-[9999px] select-none appearance-none rounded-lg border bg-white px-3 py-2 text-sm text-black shadow-lg focus:translate-y-0 focus:border-gray-200 focus:outline-none focus:ring-2 active:bg-gray-100"
+        tabindex={1}
+        onClick={handleSkipToContent}
+      >
+        Skip to content
+      </button>
+
       <Sidebar class="hidden xl:flex xl:w-sidebar xl:shrink-0" />
 
       <div class="flex h-full w-full flex-1 flex-col overflow-hidden">
@@ -82,8 +98,8 @@ export default () => {
               {showPanel() && !showFeeds() && (
                 <>
                   <div class="flex justify-between">
-                    {filter.params.feed_uuid ? (
-                      <FeedInfo uuid={filter.params.feed_uuid!} />
+                    {state.params.feed_uuid ? (
+                      <FeedInfo uuid={state.params.feed_uuid!} />
                     ) : (
                       <div class="flex w-full items-start justify-between">
                         <FeedHeader title="All feeds" />

@@ -28,18 +28,20 @@ pub async fn start_refresh_worker(
 
 /// Process jobs added to the job queue
 pub async fn start_queue_worker(
-    job_rx: &mut mpsc::Receiver<Job>,
     db: sqlx::SqlitePool,
-    notifs: Arc<Mutex<broadcast::Sender<Notification>>>,
+    job_rx: &mut mpsc::Receiver<Job>,
+    job_tx: Arc<Mutex<mpsc::Sender<Job>>>,
+    notif_tx: Arc<Mutex<broadcast::Sender<Notification>>>,
 ) -> WorkerResult<()> {
     while let Some(job) = job_rx.recv().await {
         tracing::info!("{}", &job);
 
         let db = db.clone();
-        let notifs = notifs.clone();
+        let job_tx = job_tx.clone();
+        let notif_tx = notif_tx.clone();
 
         tokio::spawn(async move {
-            if let Err(err) = handle_job(job.clone(), db, notifs).await {
+            if let Err(err) = handle_job(job.clone(), db, job_tx, notif_tx).await {
                 tracing::error!("job failed: {} with error: {}", job, err);
             }
         });
@@ -51,14 +53,18 @@ pub async fn start_queue_worker(
 async fn handle_job(
     job: Job,
     db: sqlx::SqlitePool,
-    notifs: Arc<Mutex<broadcast::Sender<Notification>>>,
+    job_tx: Arc<Mutex<mpsc::Sender<Job>>>,
+    notif_tx: Arc<Mutex<broadcast::Sender<Notification>>>,
 ) -> WorkerResult<()> {
-    match job {
-        Job::FetchEntries(feed) => handler::fetch_entries(feed, db, notifs.clone()).await?,
-        _ => {}
+    // Handle the job and keep track of the result
+    let result = match job {
+        Job::FetchEntries(feed) => handler::fetch_entries(feed, db, job_tx, notif_tx).await,
+        Job::FetchFavicon(feed) => handler::fetch_favicon(feed, db, notif_tx).await,
+        Job::ScrapeEntries(feed) => handler::scrape_entries(feed, db, notif_tx).await,
     };
 
     // TODO: handle errors cleanly (send error notification or something)
+    result?;
 
     Ok(())
 }

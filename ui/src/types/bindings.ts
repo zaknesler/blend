@@ -8,22 +8,26 @@ export interface Entry {
   id: string;
   url: string;
   title?: string;
-  summary?: string;
+  summary_html?: string;
   content_html?: string;
   content_scraped_html?: string;
+  media_url?: string;
   published_at?: string;
   updated_at?: string;
   read_at?: string;
+  saved_at?: string;
+  scraped_at?: string;
 }
 
 export interface Feed {
   uuid: string;
   id: string;
   url_feed: string;
-  url_site?: string;
-  title?: string;
+  url_site: string;
+  title: string;
   title_display?: string;
-  favicon_b64?: number[];
+  favicon_b64?: string;
+  favicon_url?: string;
   published_at?: string;
   updated_at?: string;
 }
@@ -32,6 +36,7 @@ export interface FeedStats {
   uuid: string;
   count_total: number;
   count_unread: number;
+  count_saved: number;
 }
 
 export enum SortDirection {
@@ -66,9 +71,14 @@ export type Notification =
       };
     }
   | {
-      type: 'EntriesFetched';
+      type: 'FinishedFetchingFeedFavicon';
       data: {
         feed_uuid: string;
-        entry_uuids: string[];
+      };
+    }
+  | {
+      type: 'FinishedScrapingEntries';
+      data: {
+        feed_uuid: string;
       };
     };

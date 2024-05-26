@@ -10,12 +10,12 @@ use futures_util::{sink::SinkExt, stream::StreamExt};
 
 pub fn router(ctx: crate::Context) -> Router {
     Router::new()
-        .route("/notifs", get(notifs))
+        .route("/notifications", get(notifications))
         .route_layer(from_fn_with_state(ctx.clone(), crate::middleware::auth))
         .with_state(ctx)
 }
 
-async fn notifs(
+async fn notifications(
     ws: WebSocketUpgrade,
     State(ctx): State<crate::Context>,
 ) -> WebResult<impl IntoResponse> {
@@ -23,7 +23,7 @@ async fn notifs(
 }
 
 async fn handle_socket(socket: WebSocket, ctx: crate::Context) {
-    let mut rx = ctx.notifs.lock().await.subscribe();
+    let mut rx = ctx.notif_tx.lock().await.subscribe();
     let (mut ws_sender, _) = socket.split();
 
     while let Ok(notif) = rx.recv().await {

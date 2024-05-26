@@ -19,7 +19,7 @@ Demo is available at [blend.zak.fm](https://blend.zak.fm).
 - [x] Fetch metadata and feed entries in background
 - [x] Notifications via websocket
 - [x] Automatic + manual refreshing
-- [ ] Scrape HTML if entries do not contain article content
+- [x] Scrape HTML if entries do not contain article content
 - [ ] Organize feeds into folders
 - [ ] UI options for theme, font, etc.
 - [ ] Keyboard shortcuts

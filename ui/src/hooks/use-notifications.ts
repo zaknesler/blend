@@ -1,16 +1,12 @@
 import { wsUrl } from '~/utils/url';
 import { WebSocket } from 'partysocket';
 import type { Notification } from '~/types/bindings';
-import { useQueryClient } from '@tanstack/solid-query';
-import { QUERY_KEYS } from '~/constants/query';
-import { useFilterParams } from './use-filter-params';
 import { createEffect, createSignal } from 'solid-js';
+import { useInvalidateFeed } from './queries/use-invalidate-feed';
 
 export const useNotifications = () => {
-  const filter = useFilterParams();
-  const queryClient = useQueryClient();
-
   const [feedsRefreshing, setFeedsRefreshing] = createSignal<string[]>([]);
+  const invalidateFeed = useInvalidateFeed();
 
   createEffect(() => {
     const refreshing = feedsRefreshing();
@@ -19,7 +15,7 @@ export const useNotifications = () => {
     console.log(`refreshing ${refreshing.length} feeds`);
   });
 
-  const socket = new WebSocket(wsUrl('/notifs'), undefined, {
+  const socket = new WebSocket(wsUrl('/notifications'), undefined, {
     connectionTimeout: 1000,
     maxRetries: 10,
   });
@@ -39,14 +35,12 @@ export const useNotifications = () => {
 
       case 'FinishedFeedRefresh':
         setFeedsRefreshing(uuids => uuids.filter(uuid => uuid !== notif.data.feed_uuid));
+        invalidateFeed(notif.data.feed_uuid);
         break;
 
-      case 'EntriesFetched':
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS] });
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS_STATS] });
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS_VIEW, notif.data.feed_uuid] });
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX] }); // TODO: move this to only run after all feeds have been refreshed
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX, notif.data.feed_uuid, filter.getView()] });
+      case 'FinishedScrapingEntries':
+      case 'FinishedFetchingFeedFavicon':
+        invalidateFeed(notif.data.feed_uuid);
         break;
     }
   });

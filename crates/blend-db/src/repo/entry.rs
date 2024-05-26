@@ -14,8 +14,9 @@ pub struct CreateEntryParams {
     pub id: String,
     pub url: Option<String>,
     pub title: Option<String>,
-    pub summary: Option<String>,
+    pub summary_html: Option<String>,
     pub content_html: Option<String>,
+    pub media_url: Option<String>,
     pub published_at: Option<DateTime<Utc>>,
     pub updated_at: Option<DateTime<Utc>>,
 }
@@ -86,7 +87,7 @@ impl EntryRepo {
         let el = filter.sort.query_elements();
         let el_inv = filter.sort.query_elements_inverse();
 
-        let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary, published_at, updated_at, read_at FROM entries WHERE 1=1");
+        let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary_html, media_url, published_at, updated_at, read_at, saved_at, scraped_at FROM entries WHERE 1=1");
 
         match filter.view {
             View::All => query.push(""),
@@ -146,6 +147,17 @@ impl EntryRepo {
             .map_err(|err| err.into())
     }
 
+    pub async fn get_entries_to_scrape(
+        &self,
+        feed_uuid: &uuid::Uuid,
+    ) -> DbResult<Vec<model::Entry>> {
+        sqlx::query_as::<_, model::Entry>("SELECT * FROM entries WHERE feed_uuid = ?1 AND content_html IS NULL AND content_scraped_html IS NULL AND scraped_at IS NULL")
+            .bind(feed_uuid)
+            .fetch_all(&self.db)
+            .await
+            .map_err(|err| err.into())
+    }
+
     pub async fn update_entry_as_read(&self, entry_uuid: &uuid::Uuid) -> DbResult<bool> {
         let rows_affected = sqlx::query("UPDATE entries SET read_at = ?1 WHERE uuid = ?2")
             .bind(Utc::now())
@@ -176,15 +188,16 @@ impl EntryRepo {
             return Ok(vec![]);
         }
 
-        let mut query = QueryBuilder::<Sqlite>::new("INSERT INTO entries (feed_uuid, uuid, id, url, title, summary, content_html, published_at, updated_at) ");
+        let mut query = QueryBuilder::<Sqlite>::new("INSERT INTO entries (feed_uuid, uuid, id, url, title, summary_html, content_html, media_url, published_at, updated_at) ");
         query.push_values(entries.iter(), |mut b, entry| {
             b.push_bind(feed_uuid)
                 .push_bind(uuid::Uuid::new_v4())
                 .push_bind(entry.id.clone())
                 .push_bind(entry.url.clone())
                 .push_bind(entry.title.clone())
-                .push_bind(entry.summary.clone())
+                .push_bind(entry.summary_html.clone())
                 .push_bind(entry.content_html.clone())
+                .push_bind(entry.media_url.clone())
                 .push_bind(entry.published_at)
                 .push_bind(entry.updated_at);
         });
@@ -194,7 +207,7 @@ impl EntryRepo {
             DO UPDATE SET
                 url = excluded.url,
                 title = excluded.title,
-                summary = excluded.summary,
+                summary_html = excluded.summary_html,
                 content_html = excluded.content_html,
                 updated_at = excluded.updated_at
             RETURNING uuid
@@ -208,5 +221,23 @@ impl EntryRepo {
             .into_iter()
             .map(|row| row.try_get("uuid").map_err(|err| err.into()))
             .collect::<DbResult<Vec<uuid::Uuid>>>()
+    }
+
+    pub async fn update_scraped_entry(
+        &self,
+        entry_uuid: &uuid::Uuid,
+        content_scraped_html: Option<String>,
+    ) -> DbResult<bool> {
+        let rows_affected = sqlx::query(
+            "UPDATE entries SET content_scraped_html = ?1, scraped_at = ?2 WHERE uuid = ?3",
+        )
+        .bind(content_scraped_html)
+        .bind(Utc::now())
+        .bind(entry_uuid)
+        .execute(&self.db)
+        .await?
+        .rows_affected();
+
+        Ok(rows_affected > 0)
     }
 }

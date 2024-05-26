@@ -22,22 +22,22 @@ export default {
         sidebar: '16rem',
       },
       keyframes: {
-        overlayShow: { from: { opacity: '0' }, to: { opacity: '1' } },
-        overlayHide: { from: { opacity: '1' }, to: { opacity: '0' } },
-        contentShow: {
+        'overlay-show': { from: { opacity: '0' }, to: { opacity: '1' } },
+        'overlay-hide': { from: { opacity: '1' }, to: { opacity: '0' } },
+        'content-show': {
           from: { opacity: '0', transform: 'scale(0.95) translateY(0.25rem)' },
           to: { opacity: '1', transform: 'scale(1) translateY(0rem)' },
         },
-        contentHide: {
+        'content-hide': {
           from: { opacity: '1', transform: 'scale(1) translateY(0rem)' },
           to: { opacity: '0', transform: 'scale(0.95) translateY(0.25rem)' },
         },
       },
       animation: {
-        overlayShow: 'overlayShow 150ms ease-in-out',
-        overlayHide: 'overlayHide 150ms ease-in-out',
-        contentShow: 'contentShow 150ms ease-in-out',
-        contentHide: 'contentHide 150ms ease-in-out',
+        'overlay-show': 'overlay-show 150ms ease-in-out',
+        'overlay-hide': 'overlay-hide 150ms ease-in-out',
+        'content-show': 'content-show 150ms ease-in-out',
+        'content-hide': 'content-hide 150ms ease-in-out',
       },
     },
   },

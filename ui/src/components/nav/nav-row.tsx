@@ -1,7 +1,7 @@
 import { HiOutlineQueueList, HiSolidArrowLeft, HiSolidXMark } from 'solid-icons/hi';
 import { Dynamic } from 'solid-js/web';
 import { Button } from '@kobalte/core/button';
-import { useFilterParams } from '~/hooks/use-filter-params';
+import { useQueryState } from '~/hooks/use-query-state';
 import { Component, Setter } from 'solid-js';
 import { cx } from 'class-variance-authority';
 import { Tooltip } from '../ui/tooltip';
@@ -18,7 +18,7 @@ type NavRowProps = {
 };
 
 export const NavRow: Component<NavRowProps> = props => {
-  const filter = useFilterParams();
+  const state = useQueryState();
   const navigate = useNavigate();
 
   return (
@@ -49,7 +49,7 @@ export const NavRow: Component<NavRowProps> = props => {
               as={(local: TooltipTriggerProps) => (
                 <Button
                   {...local}
-                  onClick={() => navigate(filter.getFeedUrl())}
+                  onClick={() => navigate(state.getFeedUrl())}
                   class="-m-1 ml-auto rounded-lg p-1 hover:bg-gray-100"
                 >
                   <HiSolidArrowLeft class="h-5 w-5 text-gray-500" />
