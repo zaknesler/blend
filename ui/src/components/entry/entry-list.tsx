@@ -3,6 +3,7 @@ import { type Component, For, Match, Switch, createEffect, createSignal } from '
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useInfiniteEntries } from '~/hooks/queries/use-infinite-entries';
 import { useListNav } from '~/hooks/use-list-nav';
+import { formatRelativeDate } from '~/utils/date';
 import { Empty } from '../ui/empty';
 import { Spinner } from '../ui/spinner';
 import { EntryItem } from './entry-item';
@@ -22,7 +23,7 @@ export const EntryList: Component<EntryListProps> = props => {
   // Handle arrow navigation
   useListNav(() => ({
     enabled: !!props.containsActiveElement,
-    entries: entries.getAllEntries(),
+    entries: entries.allEntries(),
   }));
 
   createEffect(() => {
@@ -49,14 +50,21 @@ export const EntryList: Component<EntryListProps> = props => {
       </Match>
 
       <Match when={entries.query.isSuccess && feeds.data}>
-        {entries.getAllEntries().length ? (
-          <div class="-mt-2 flex flex-col gap-2 px-4 pb-2">
-            <For each={entries.getAllEntries()}>
-              {(entry, index) => (
-                <EntryItem
-                  tabIndex={index() === 0 ? 0 : -1} // Disable tabindex so we can override it with arrow keys
-                  entry={entry}
-                />
+        {entries.allEntries().length ? (
+          <div class="flex flex-col gap-4">
+            <For each={Object.entries(entries.groupedEntries())}>
+              {([date, entries]) => (
+                <div class="flex flex-col gap-1 px-4 pb-2">
+                  <span class="text-gray-500 text-xs">{formatRelativeDate(date)}</span>
+                  <For each={entries}>
+                    {(entry, index) => (
+                      <EntryItem
+                        tabIndex={index() === 0 ? 0 : -1} // Disable tabindex so we can override it with arrow keys
+                        entry={entry}
+                      />
+                    )}
+                  </For>
+                </div>
               )}
             </For>
 

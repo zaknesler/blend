@@ -9,6 +9,7 @@ import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useQueryState } from '~/hooks/use-query-state';
 import type { Entry } from '~/types/bindings';
 import { formatDate } from '~/utils/date';
+import { getEntryDate } from '~/utils/entries';
 
 type EntryItemProps = Omit<AnchorProps, 'href' | 'activeClass' | 'inactiveClass'> & {
   entry: Entry;
@@ -32,7 +33,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
   const feed = () => feeds.findFeed(local.entry.feed_uuid);
   const isRead = () => !!local.entry.read_at || !!entryData.data?.read_at;
 
-  const getDate = () => local.entry.published_at || local.entry.updated_at;
+  const getDate = () => getEntryDate(local.entry);
 
   const entryRouteMatch = useMatch(() => state.getEntryUrl(local.entry.uuid, false));
   const isActive = () => Boolean(entryRouteMatch());
