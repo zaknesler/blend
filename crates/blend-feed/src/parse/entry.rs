@@ -1,9 +1,5 @@
 use super::{get_feed, parse_url};
-use crate::{
-    error::FeedResult,
-    extract::*,
-    model::{self, ParsedEntry},
-};
+use crate::{error::FeedResult, extract::*, ParsedEntry};
 
 /// Fetch feed and process each entry as needed
 pub async fn parse_entries(url: &str) -> FeedResult<Vec<ParsedEntry>> {
@@ -39,7 +35,7 @@ pub async fn parse_entries(url: &str) -> FeedResult<Vec<ParsedEntry>> {
                 updated_at: entry.updated,
             }
         })
-        .collect::<Vec<model::ParsedEntry>>();
+        .collect::<Vec<ParsedEntry>>();
 
     Ok(entries)
 }

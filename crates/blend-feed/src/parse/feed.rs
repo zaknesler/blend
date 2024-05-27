@@ -1,5 +1,5 @@
 use super::{get_feed, parse_url};
-use crate::{error::FeedResult, extract::*, model::ParsedFeed};
+use crate::{error::FeedResult, extract::*, ParsedFeed};
 
 // Fetch feed and process the basic feed data
 pub async fn parse_feed(url: &str) -> FeedResult<ParsedFeed> {
