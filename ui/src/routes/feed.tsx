@@ -1,21 +1,21 @@
-import { EntryPanel } from '~/components/entry/entry-panel';
-import { Sidebar } from '~/components/layout/sidebar';
-import { useQueryState } from '~/hooks/use-query-state';
-import { Panel } from '~/components/layout/panel';
-import { EntryList } from '~/components/entry/entry-list';
-import { FeedInfo } from '~/components/feed/feed-info';
-import { FeedHeader } from '~/components/feed/feed-header';
-import { createEffect, createSignal } from 'solid-js';
+import { createActiveElement } from '@solid-primitives/active-element';
 import { createElementBounds } from '@solid-primitives/bounds';
-import { cx } from 'class-variance-authority';
 import { createScrollPosition } from '@solid-primitives/scroll';
 import { useIsRouting } from '@solidjs/router';
-import { NavViewSwitcher } from '~/components/nav/nav-view-switcher';
-import { NavRow } from '~/components/nav/nav-row';
+import { cx } from 'class-variance-authority';
+import { createEffect, createSignal } from 'solid-js';
+import { EntryList } from '~/components/entry/entry-list';
+import { EntryPanel } from '~/components/entry/entry-panel';
+import { FeedHeader } from '~/components/feed/feed-header';
+import { FeedInfo } from '~/components/feed/feed-info';
 import { FeedList } from '~/components/feed/feed-list';
-import { useViewport } from '~/hooks/use-viewport';
+import { Panel } from '~/components/layout/panel';
+import { Sidebar } from '~/components/layout/sidebar';
 import { MenuFeeds } from '~/components/menus/menu-feeds';
-import { createActiveElement } from '@solid-primitives/active-element';
+import { NavRow } from '~/components/nav/nav-row';
+import { NavViewSwitcher } from '~/components/nav/nav-view-switcher';
+import { useQueryState } from '~/hooks/use-query-state';
+import { useViewport } from '~/hooks/use-viewport';
 
 export default () => {
   const state = useQueryState();
@@ -60,7 +60,8 @@ export default () => {
   return (
     <>
       <button
-        class="absolute left-2 top-2 z-[9999] -translate-y-[9999px] select-none appearance-none rounded-lg border bg-white px-3 py-2 text-sm text-black shadow-lg focus:translate-y-0 focus:border-gray-200 focus:outline-none focus:ring-2 active:bg-gray-100"
+        type="button"
+        class="-translate-y-[9999px] absolute top-2 left-2 z-[9999] select-none appearance-none rounded-lg border bg-white px-3 py-2 text-black text-sm shadow-lg focus:translate-y-0 focus:border-gray-200 active:bg-gray-100 focus:outline-none focus:ring-2"
         tabindex={1}
         onClick={handleSkipToContent}
       >
@@ -73,7 +74,7 @@ export default () => {
         <div class="flex flex-1 flex-col overflow-auto md:flex-row md:gap-4 md:p-4">
           <Panel
             class={cx(
-              'flex shrink-0 flex-col md:max-w-[16rem] lg:max-w-xs xl:max-w-md',
+              'flex shrink-0 flex-col lg:max-w-xs md:max-w-[16rem] xl:max-w-md',
               showPanel() ? 'flex-1' : 'z-10 flex-none shadow dark:shadow-xl',
             )}
             ref={setContainer}

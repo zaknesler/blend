@@ -1,5 +1,5 @@
 import { cx } from 'class-variance-authority';
-import { JSX, ParentComponent, splitProps } from 'solid-js';
+import { type JSX, type ParentComponent, splitProps } from 'solid-js';
 
 type PanelProps = JSX.IntrinsicElements['div'];
 
@@ -10,7 +10,7 @@ export const Panel: ParentComponent<PanelProps> = props => {
     <div
       {...rest}
       class={cx(
-        'overflow-touch-scrolling flex-1 overflow-auto bg-white md:rounded-lg md:shadow-md dark:bg-gray-900',
+        'overflow-touch-scrolling flex-1 overflow-auto bg-white md:rounded-lg dark:bg-gray-900 md:shadow-md',
         local.class,
       )}
     >

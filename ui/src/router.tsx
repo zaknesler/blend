@@ -1,4 +1,4 @@
-import { Router, Route } from '@solidjs/router';
+import { Route, Router } from '@solidjs/router';
 import { lazy } from 'solid-js';
 
 export default () => (

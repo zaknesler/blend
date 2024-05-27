@@ -1,7 +1,7 @@
 import type { PolymorphicProps } from '@kobalte/core/polymorphic';
 import * as TooltipPrimitive from '@kobalte/core/tooltip';
 import { cx } from 'class-variance-authority';
-import { type ValidComponent, splitProps, mergeProps, JSX } from 'solid-js';
+import { type JSX, type ValidComponent, mergeProps, splitProps } from 'solid-js';
 
 const TooltipBase = (props: TooltipPrimitive.TooltipRootProps) => <TooltipPrimitive.Root {...props} />;
 
@@ -20,12 +20,12 @@ const TooltipContent = <T extends ValidComponent = 'div'>(props: PolymorphicProp
       <TooltipPrimitive.Content
         {...rest}
         class={cx(
-          'z-50 rounded-lg bg-gray-800 px-4 py-2 text-xs text-white',
-          'animate-content-hide ui-expanded:animate-content-show origin-[--kb-menu-content-transform-origin]',
+          'z-50 rounded-lg bg-gray-800 px-4 py-2 text-white text-xs',
+          'origin-[--kb-menu-content-transform-origin] animate-content-hide ui-expanded:animate-content-show',
           local.class,
         )}
       >
-        {merge.showArrow && <Tooltip.Arrow class="z-50 -mb-px" />}
+        {merge.showArrow && <Tooltip.Arrow class="-mb-px z-50" />}
         {merge.children}
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>

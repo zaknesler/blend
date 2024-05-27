@@ -1,7 +1,7 @@
-import type { FeedStats, Feed } from '~/types/bindings';
-import { ApiResponse, ApiSuccessResponse } from '.';
-import { apiUrl } from '../utils/url';
 import wretch from 'wretch';
+import type { Feed, FeedStats } from '~/types/bindings';
+import type { ApiResponse, ApiSuccessResponse } from '.';
+import { apiUrl } from '../utils/url';
 
 export const getFeeds = async () =>
   wretch(apiUrl('/feeds'))

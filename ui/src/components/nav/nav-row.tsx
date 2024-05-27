@@ -1,13 +1,13 @@
-import { HiOutlineQueueList, HiSolidArrowLeft, HiSolidXMark } from 'solid-icons/hi';
-import { Dynamic } from 'solid-js/web';
 import { Button } from '@kobalte/core/button';
-import { useQueryState } from '~/hooks/use-query-state';
-import { Component, Setter } from 'solid-js';
-import { cx } from 'class-variance-authority';
-import { Tooltip } from '../ui/tooltip';
-import { TooltipTriggerProps } from '@kobalte/core/tooltip';
+import type { TooltipTriggerProps } from '@kobalte/core/tooltip';
 import { useNavigate } from '@solidjs/router';
+import { cx } from 'class-variance-authority';
+import { HiOutlineQueueList, HiSolidArrowLeft, HiSolidXMark } from 'solid-icons/hi';
+import type { Component, Setter } from 'solid-js';
+import { Dynamic } from 'solid-js/web';
+import { useQueryState } from '~/hooks/use-query-state';
 import { LogoSquare } from '../layout/logo';
+import { Tooltip } from '../ui/tooltip';
 
 type NavRowProps = {
   class?: string;

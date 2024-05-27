@@ -1,6 +1,6 @@
-import { type VariantProps } from 'class-variance-authority';
-import { JSX, ParentComponent } from 'solid-js';
-import { Button as BaseButton, ButtonRootProps } from '@kobalte/core/button';
+import { Button as BaseButton, type ButtonRootProps } from '@kobalte/core/button';
+import type { VariantProps } from 'class-variance-authority';
+import type { JSX, ParentComponent } from 'solid-js';
 import { buttonClass } from '~/constants/ui/button';
 
 export type ButtonProps = JSX.IntrinsicElements['button'] &

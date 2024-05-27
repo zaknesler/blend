@@ -1,9 +1,7 @@
-/* eslint-disable solid/no-innerhtml */
-
-import { A, AnchorProps, useMatch } from '@solidjs/router';
+import { A, type AnchorProps, useMatch } from '@solidjs/router';
 import { createQuery } from '@tanstack/solid-query';
 import { cx } from 'class-variance-authority';
-import { splitProps, type Component } from 'solid-js';
+import { type Component, splitProps } from 'solid-js';
 import { getEntry } from '~/api/entries';
 import { DATA_ATTRIBUTES } from '~/constants/attributes';
 import { QUERY_KEYS } from '~/constants/query';
@@ -49,7 +47,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
         isActive()
           ? 'bg-gray-600 text-white dark:bg-gray-950'
           : [
-              'hover:bg-gray-100 dark:hover:bg-gray-950',
+              'dark:hover:bg-gray-950 hover:bg-gray-100',
               'focus:bg-gray-100 focus:dark:bg-gray-950',
               state.getView() === 'unread' && isRead() && 'opacity-50',
             ],

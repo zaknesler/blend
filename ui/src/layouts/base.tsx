@@ -1,4 +1,4 @@
-import { type RouteSectionProps } from '@solidjs/router';
+import type { RouteSectionProps } from '@solidjs/router';
 import { useNotifications } from '~/hooks/use-notifications';
 
 export default (props: RouteSectionProps) => {

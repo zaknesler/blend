@@ -1,9 +1,9 @@
 import { createQuery } from '@tanstack/solid-query';
-import { Switch, Match, Component, createSignal } from 'solid-js';
+import { type Component, Match, Switch, createSignal } from 'solid-js';
 import { getFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
-import { FeedHeader } from './feed-header';
 import { MenuFeed } from '../menus/menu-feed';
+import { FeedHeader } from './feed-header';
 
 type FeedInfoProps = {
   uuid: string;

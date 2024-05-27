@@ -1,7 +1,7 @@
 import { debounce, leadingAndTrailing } from '@solid-primitives/scheduled';
+import { useQueryClient } from '@tanstack/solid-query';
 import { QUERY_KEYS } from '~/constants/query';
 import { useQueryState } from '../use-query-state';
-import { useQueryClient } from '@tanstack/solid-query';
 
 const DEBOUNCE_MS = 500;
 

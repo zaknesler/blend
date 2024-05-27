@@ -1,11 +1,11 @@
 import {
   DropdownMenu,
-  DropdownMenuItemProps,
-  DropdownMenuRootProps,
-  DropdownMenuTriggerProps,
+  type DropdownMenuItemProps,
+  type DropdownMenuRootProps,
+  type DropdownMenuTriggerProps,
 } from '@kobalte/core/dropdown-menu';
 import { cx } from 'class-variance-authority';
-import { type IconTypes } from 'solid-icons';
+import type { IconTypes } from 'solid-icons';
 import { HiSolidEllipsisHorizontal } from 'solid-icons/hi';
 import { type ParentComponent, type Setter, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
@@ -66,11 +66,11 @@ const MenuTrigger: ParentComponent<MenuTrigger> = props => {
       {...rest}
       class={cx(
         'flex shrink-0 appearance-none items-center justify-center border border-gray-200 transition dark:border-gray-700',
-        'focus:border-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-200 dark:focus:ring-gray-600',
+        'focus:border-gray-400 focus:outline-none dark:focus:ring-gray-600 focus:ring-1 focus:ring-gray-200',
         local.onlyDisplayForGroup && 'opacity-0 focus:opacity-100 group-focus:opacity-100',
         local.onlyDisplayForGroup && local.forceFocus
           ? 'border-gray-500 bg-gray-100 opacity-100 outline-none ring-1 ring-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:ring-gray-600'
-          : 'bg-white hover:border-gray-300 hover:bg-gray-100 group-hover:opacity-100 dark:bg-gray-800 dark:hover:border-gray-700 dark:hover:bg-gray-600',
+          : 'bg-white dark:hover:border-gray-700 hover:border-gray-300 dark:bg-gray-800 dark:hover:bg-gray-600 hover:bg-gray-100 group-hover:opacity-100',
         props.class,
       )}
     >
@@ -85,8 +85,8 @@ const MenuItem: ParentComponent<DropdownMenuItemProps> = props => (
     class={cx(
       'select-none appearance-none rounded px-2 py-1 text-left',
       'ui-disabled:cursor-not-allowed ui-disabled:opacity-50',
-      'hover:bg-gray-100 focus:bg-gray-100 focus:outline-none active:bg-gray-100',
-      'dark:hover:bg-gray-700 dark:focus:bg-gray-700 dark:focus:outline-none dark:active:bg-gray-700',
+      'active:bg-gray-100 focus:bg-gray-100 hover:bg-gray-100 focus:outline-none',
+      'dark:active:bg-gray-700 dark:focus:bg-gray-700 dark:hover:bg-gray-700 dark:focus:outline-none',
     )}
   >
     {props.children}
@@ -99,7 +99,7 @@ const MenuContent: ParentComponent = props => (
       'z-50 min-w-36 overflow-hidden rounded-md border shadow-sm',
       'border-gray-200 bg-white text-gray-600',
       'dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200',
-      'animate-content-hide ui-expanded:animate-content-show origin-[--kb-menu-content-transform-origin]',
+      'origin-[--kb-menu-content-transform-origin] animate-content-hide ui-expanded:animate-content-show',
     )}
   >
     <div class="flex flex-col gap-0.5 p-1 text-sm">{props.children}</div>

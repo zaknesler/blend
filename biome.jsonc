@@ -1,0 +1,49 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.7.3/schema.json",
+  "organizeImports": { "enabled": true },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "nursery": {
+        "useSortedClasses": {
+          "level": "warn",
+          "options": {
+            "functions": ["cx", "cva", "mergeProps"]
+          }
+        }
+      },
+      "style": {
+        "noNonNullAssertion": "off"
+      },
+      "a11y": {
+        // This doesn't work for Solid.js (innerHTML is not supported)
+        "useHeadingContent": "off"
+      }
+    },
+    "ignore": ["./ui/dist/**", "./ui/public/**"]
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 120,
+    "ignore": ["./ui/dist/**", "./ui/public/**"]
+  },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "asNeeded",
+      "bracketSameLine": false,
+      "bracketSpacing": true,
+      "quoteProperties": "asNeeded",
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingComma": "all"
+    }
+  },
+  "json": {
+    "formatter": {
+      "trailingCommas": "none"
+    }
+  }
+}

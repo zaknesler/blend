@@ -1,5 +1,5 @@
-import { VariantProps, cva } from 'class-variance-authority';
-import { Component } from 'solid-js';
+import { type VariantProps, cva } from 'class-variance-authority';
+import type { Component } from 'solid-js';
 
 const skeletonClass = cva('w-full animate-pulse rounded-lg', {
   variants: {

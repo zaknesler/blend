@@ -1,6 +1,6 @@
 import { DATA_ATTRIBUTES } from '~/constants/attributes';
 import { DEFAULT_DIRECTION } from '~/hooks/use-query-state';
-import { Entry, SortDirection } from '~/types/bindings';
+import { type Entry, SortDirection } from '~/types/bindings';
 
 /**
  * Get the function to compare two entries for sorting.

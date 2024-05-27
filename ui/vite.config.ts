@@ -1,7 +1,7 @@
-import tsconfigPaths from 'vite-tsconfig-paths';
+import devtools from 'solid-devtools/vite';
 import { defineConfig } from 'vite';
 import solid from 'vite-plugin-solid';
-import devtools from 'solid-devtools/vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(async () => ({
   plugins: [solid(), tsconfigPaths(), devtools()],
