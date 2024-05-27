@@ -6,7 +6,7 @@ type Props = ParentProps<AnchorProps>;
 export const Link: Component<Props> = props => (
   <A
     {...props}
-    class="font-sans font-semibold text-gray-500 transition-colors hover:text-gray-800 hover:underline dark:text-gray-200 dark:hover:text-white"
+    class="font-sans font-semibold text-gray-500 transition-colors dark:hover:text-white dark:text-gray-200 hover:text-gray-800 hover:underline"
     classList={{ [String(props.class)]: !!props.class }}
   >
     {props.children}

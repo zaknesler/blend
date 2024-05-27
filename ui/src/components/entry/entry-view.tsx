@@ -1,11 +1,9 @@
-/* eslint-disable solid/no-innerhtml */
-
 import { cx } from 'class-variance-authority';
-import { JSX, ParentComponent, splitProps, For } from 'solid-js';
+import { For, type JSX, type ParentComponent, splitProps } from 'solid-js';
 import type { Entry } from '~/types/bindings';
-import { Link } from '../ui/link';
-import { Button } from '../ui/button';
 import { formatDateTime } from '~/utils/date';
+import { Button } from '../ui/button';
+import { Link } from '../ui/link';
 
 type EntryViewProps = JSX.IntrinsicElements['div'] & {
   entry: Entry;
@@ -34,15 +32,15 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
 
       <article class="flex flex-col gap-4">
         <h1
-          class="text-balance text-xl font-bold text-gray-800 lg:text-2xl dark:text-gray-100"
+          class="text-balance font-bold text-gray-800 text-xl dark:text-gray-100 lg:text-2xl"
           innerHTML={local.entry.title}
         />
 
-        {!!getDate() && <div class="text-sm text-gray-500 dark:text-gray-400">{formatDateTime(getDate()!)}</div>}
+        {!!getDate() && <div class="text-gray-500 text-sm dark:text-gray-400">{formatDateTime(getDate()!)}</div>}
 
         {local.entry.summary_html && (
           <h4
-            class="prose prose-stone max-w-none text-base text-gray-500 dark:prose-invert lg:text-lg dark:text-gray-300"
+            class="prose prose-stone dark:prose-invert max-w-none text-base text-gray-500 dark:text-gray-300 lg:text-lg"
             innerHTML={local.entry.summary_html}
           />
         )}
@@ -52,8 +50,8 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
         {local.entry.content_scraped_html || local.entry.content_html ? (
           <div
             class={cx(
-              'prose prose-sm max-w-none lg:prose-base',
-              'prose-stone dark:prose-invert prose-pre:text-sm prose-pre:md:text-base',
+              'prose prose-sm lg:prose-base max-w-none',
+              'prose-stone dark:prose-invert prose-pre:md:text-base prose-pre:text-sm',
               'prose-headings:font-bold prose-h1:text-2xl/5 prose-h2:text-xl/5 prose-h3:text-lg/5 prose-h4:text-base/5',
             )}
             innerHTML={local.entry.content_scraped_html || local.entry.content_html}

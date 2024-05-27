@@ -2,9 +2,9 @@ import { cva } from 'class-variance-authority';
 
 export const inputClass = cva(
   [
-    'appearance-none shadow-xs font-normal transition-[border,box-shadow] h-full form-input w-full rounded-lg bg-white border',
+    'form-input h-full w-full appearance-none rounded-lg border bg-white font-normal shadow-xs transition-[border,box-shadow]',
     'focus:outline-none focus:ring-4 focus:ring-opacity-30',
-    'placeholder:text-gray-400 dark:placeholder:text-gray-500',
+    'dark:placeholder:text-gray-500 placeholder:text-gray-400',
     'dark:bg-gray-900 dark:text-gray-100',
   ],
   {
@@ -18,7 +18,7 @@ export const inputClass = cva(
         false: [
           'border-gray-200 text-gray-700',
           'focus:border-gray-600 focus:ring-gray-500',
-          'dark:focus:ring-gray-800 dark:border-gray-800 dark:focus:border-gray-500',
+          'dark:border-gray-800 dark:focus:border-gray-500 dark:focus:ring-gray-800',
         ],
       },
       size: {

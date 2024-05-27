@@ -1,11 +1,11 @@
+import { useKeyDownEvent } from '@solid-primitives/keyboard';
+import { debounce } from '@solid-primitives/scheduled';
 import { useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
 import type { Entry } from '~/types/bindings';
-import { useKeyDownEvent } from '@solid-primitives/keyboard';
-import { useQueryState } from './use-query-state';
-import { debounce } from '@solid-primitives/scheduled';
-import { useViewport } from './use-viewport';
 import { findEntryItem } from '~/utils/entries';
+import { useQueryState } from './use-query-state';
+import { useViewport } from './use-viewport';
 
 type UseListNavParams = {
   enabled: boolean;

@@ -1,6 +1,6 @@
-import { A, AnchorProps } from '@solidjs/router';
+import { A, type AnchorProps } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
-import { Component, createUniqueId, mergeProps, splitProps } from 'solid-js';
+import { type Component, createUniqueId, mergeProps, splitProps } from 'solid-js';
 
 type LogoProps = Omit<AnchorProps, 'href'>;
 
@@ -15,11 +15,12 @@ export const Logo: Component<LogoProps> = props => {
       {...rest}
       href="/"
       class={cx(
-        'shrink-0 select-none overflow-hidden rounded-lg focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-30 dark:focus:ring-gray-600',
+        'shrink-0 select-none overflow-hidden rounded-lg focus:outline-none dark:focus:ring-gray-600 focus:ring-4 focus:ring-gray-500 focus:ring-opacity-30',
         local.class,
       )}
     >
       <svg class="h-auto w-20" viewBox="0 0 202 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <title>Blend Logo</title>
         <rect width="202" height="72" fill={`url(#${id}-a)`} />
         <g filter={`url(#${id}-b)`}>
           <path
@@ -87,18 +88,19 @@ export const LogoSquare: Component<LogoProps> = props => {
   const id = createUniqueId();
 
   const [_local, rest] = splitProps(props, ['class']);
-  const local = mergeProps({ class: 'w-5 h-5' }, _local);
+  const local = mergeProps({ class: 'h-5 w-5' }, _local);
 
   return (
     <A
       {...rest}
       href="/"
       class={cx(
-        'shrink-0 select-none overflow-hidden rounded-md focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-30 dark:focus:ring-gray-600',
+        'shrink-0 select-none overflow-hidden rounded-md focus:outline-none dark:focus:ring-gray-600 focus:ring-4 focus:ring-gray-500 focus:ring-opacity-30',
         local.class,
       )}
     >
       <svg class="h-full w-full" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
+        <title>Blend Logo</title>
         <rect width="72" height="72" fill={`url(#${id}-a)`} />
         <g filter={`url(#${id}-b)`}>
           <path

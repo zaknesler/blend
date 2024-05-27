@@ -1,10 +1,10 @@
+import { debounce, leading } from '@solid-primitives/scheduled';
 import { createInfiniteQuery } from '@tanstack/solid-query';
-import { ApiPaginatedResponse } from '~/api';
+import type { ApiPaginatedResponse } from '~/api';
 import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
-import { type Entry } from '~/types/bindings';
+import type { Entry } from '~/types/bindings';
 import { useQueryState } from '../use-query-state';
-import { debounce, leading } from '@solid-primitives/scheduled';
 
 export const useInfiniteEntries = () => {
   const state = useQueryState();

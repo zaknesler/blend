@@ -1,7 +1,7 @@
-import { wsUrl } from '~/utils/url';
 import { WebSocket } from 'partysocket';
-import type { Notification } from '~/types/bindings';
 import { createEffect, createSignal } from 'solid-js';
+import type { Notification } from '~/types/bindings';
+import { wsUrl } from '~/utils/url';
 import { useInvalidateFeed } from './queries/use-invalidate-feed';
 
 export const useNotifications = () => {
@@ -26,6 +26,7 @@ export const useNotifications = () => {
 
   socket.addEventListener('message', event => {
     const notif = JSON.parse(event.data) as Notification;
+
     console.info('[ws] received message:', notif);
 
     switch (notif.type) {

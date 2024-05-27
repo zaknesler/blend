@@ -1,13 +1,13 @@
-import type { Entry, FilterEntriesParams } from '~/types/bindings';
-import { ApiPaginatedResponse, ApiResponse, ApiSuccessResponse } from '.';
-import { apiUrl } from '../utils/url';
 import wretch from 'wretch';
+import type { Entry, FilterEntriesParams } from '~/types/bindings';
+import type { ApiPaginatedResponse, ApiResponse, ApiSuccessResponse } from '.';
+import { apiUrl } from '../utils/url';
 
 export const getEntries = async (params: FilterEntriesParams) => {
   const filtered = Object.entries(params).filter(([, value]) => Boolean(value));
   const query = new URLSearchParams(filtered);
 
-  return wretch(`${apiUrl(`/entries`)}?${query}`)
+  return wretch(`${apiUrl('/entries')}?${query}`)
     .get()
     .json<ApiPaginatedResponse<Entry[]>>();
 };

@@ -1,6 +1,6 @@
 import { createQuery } from '@tanstack/solid-query';
-import { QUERY_KEYS } from '~/constants/query';
 import { getFeeds } from '~/api/feeds';
+import { QUERY_KEYS } from '~/constants/query';
 
 export const useFeeds = () => {
   const feeds = createQuery(() => ({

@@ -1,16 +1,16 @@
 import { createQuery, useQueryClient } from '@tanstack/solid-query';
-import { EntryView } from '~/components/entry/entry-view';
-import { Match, Switch, createEffect, Show } from 'solid-js';
+import { createMutation } from '@tanstack/solid-query';
+import { Match, Show, Switch, createEffect } from 'solid-js';
 import { getEntry } from '~/api/entries';
+import { updateEntryAsRead } from '~/api/entries';
+import { EntryView } from '~/components/entry/entry-view';
 import { Panel } from '~/components/layout/panel';
 import { QUERY_KEYS } from '~/constants/query';
-import { updateEntryAsRead } from '~/api/entries';
-import { createMutation } from '@tanstack/solid-query';
-import { useQueryState } from '~/hooks/use-query-state';
-import { Empty } from '../ui/empty';
-import { useViewport } from '~/hooks/use-viewport';
-import { Spinner } from '../ui/spinner';
 import { useInvalidateStats } from '~/hooks/queries/use-invalidate-stats';
+import { useQueryState } from '~/hooks/use-query-state';
+import { useViewport } from '~/hooks/use-viewport';
+import { Empty } from '../ui/empty';
+import { Spinner } from '../ui/spinner';
 
 export const EntryPanel = () => {
   const state = useQueryState();
@@ -36,7 +36,9 @@ export const EntryPanel = () => {
 
     markAsRead.mutateAsync(entry.data.uuid).then(() => {
       invalidateStats();
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_VIEW, entry.data.uuid] });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.ENTRIES_VIEW, entry.data.uuid],
+      });
     });
   });
 

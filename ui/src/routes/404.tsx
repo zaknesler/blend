@@ -9,7 +9,7 @@ export default () => (
       <Logo />
 
       <div class="flex flex-col gap-4">
-        <h2 class="text-4xl font-black">404</h2>
+        <h2 class="font-black text-4xl">404</h2>
         <p class="text-gray-500">Page not found.</p>
         <Link href="/" class="flex items-center gap-2">
           <HiSolidArrowSmallLeft class="h-6 w-6 text-gray-400" />

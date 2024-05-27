@@ -1,11 +1,11 @@
+import { useLocation } from '@solidjs/router';
+import { HiOutlineSquare3Stack3d } from 'solid-icons/hi';
 import { For, Match, Switch, createSignal } from 'solid-js';
-import { BaseFeedItem, FeedItem } from './feed-item';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
-import { useLocation } from '@solidjs/router';
 import { useQueryState } from '~/hooks/use-query-state';
-import { HiOutlineSquare3Stack3d } from 'solid-icons/hi';
 import { MenuFeeds } from '../menus/menu-feeds';
+import { BaseFeedItem, FeedItem } from './feed-item';
 
 export const FeedList = () => {
   const location = useLocation();
@@ -32,7 +32,7 @@ export const FeedList = () => {
       />
 
       <div class="flex w-full flex-col gap-1">
-        <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Feeds</h3>
+        <h3 class="font-semibold text-gray-500 text-xs uppercase tracking-wider dark:text-gray-400">Feeds</h3>
         <Switch>
           <Match when={feeds.isError}>
             <p>Error: {feeds.error?.message}</p>

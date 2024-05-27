@@ -40,38 +40,53 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        name: Install Node.js ${{ env.NODE_VERSION }}
+      - name: Check for typos
+        uses: crate-ci/typos@master
+
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v2
+        with:
+          version: latest
+
+      - name: Install Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - uses: pnpm/action-setup@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
         id: pnpm-install
         with:
           version: 9
           run_install: false
+
       - name: Get pnpm store directory
         id: pnpm-cache
         shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-      - uses: actions/cache@v4
-        name: Setup pnpm cache
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Configure pnpm cache
+        uses: actions/cache@v4
         with:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
           key: ${{ matrix.target }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ matrix.target }}-pnpm-store-
+          restore-keys: ${{ matrix.target }}-pnpm-store-
 
-      - run: mkdir $GITHUB_WORKSPACE/ui/dist
+      - name: Create empty dist directory
         shell: bash
+        run: mkdir $GITHUB_WORKSPACE/ui/dist
 
-      - uses: dtolnay/rust-toolchain@stable
+      - name: Configure Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
         with:
           targets: "${{ matrix.target }}"
-      - uses: Swatinem/rust-cache@v2
 
-      - run: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+      - name: Configure Rust cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install cargo-binstall
         shell: bash
+        run: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 
       - run: cargo binstall --no-confirm --force cross
         if: matrix.command == 'cross'
@@ -88,10 +103,10 @@ jobs:
         if: matrix.command == 'cross'
 
       - run: pnpm install
-      - run: pnpm typeshare:generate
-      - run: pnpm tsc
-      - run: pnpm test:cov
-      - run: pnpm build
+      - run: pnpm run ci
+      - run: pnpm run typeshare:generate
+      - run: pnpm run test:cov
+      - run: pnpm run build
 
       - run: ${{ matrix.command }} build --verbose --locked --release --target ${{ matrix.target }}
 

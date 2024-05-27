@@ -1,6 +1,6 @@
 import { createMutation } from '@tanstack/solid-query';
-import { QUERY_KEYS } from '~/constants/query';
 import { refreshFeeds } from '~/api/feeds';
+import { QUERY_KEYS } from '~/constants/query';
 
 export const useRefreshFeeds = () => {
   const query = createMutation(() => ({

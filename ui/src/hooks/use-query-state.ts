@@ -1,5 +1,5 @@
 import { useParams, useSearchParams } from '@solidjs/router';
-import { FilterEntriesParams, SortDirection, View } from '~/types/bindings';
+import { type FilterEntriesParams, SortDirection, View } from '~/types/bindings';
 
 type RouterParams = {
   feed_uuid?: string;
@@ -45,7 +45,7 @@ export const useQueryState = () => {
   };
 
   const getFeedUrl = (append?: string, withQuery = true) => {
-    const path = params.feed_uuid ? `/feeds/${params.feed_uuid}` : `/`;
+    const path = params.feed_uuid ? `/feeds/${params.feed_uuid}` : '/';
     const withAppended = append ? path.concat(append) : path;
     const trimmed = withAppended.replace(/\/\//g, '/');
     return withQuery ? trimmed.concat(getQueryString()) : trimmed;

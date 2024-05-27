@@ -1,5 +1,5 @@
-import { cva, type VariantProps } from 'class-variance-authority';
-import { Component, JSX } from 'solid-js';
+import { type VariantProps, cva } from 'class-variance-authority';
+import type { Component, JSX } from 'solid-js';
 
 const spinner = cva('animate-spin', {
   variants: {
@@ -31,6 +31,7 @@ export const Spinner: Component<SpinnerProps> = props => (
     {...props}
     class={spinner({ class: props.class, size: props.size, variant: props.variant })}
   >
+    <title>Loading spinner</title>
     <path
       d="M7.5 1.25C8.32076 1.25 9.13349 1.41166 9.89177 1.72575C10.6501 2.03984 11.3391 2.50022 11.9194 3.08058C12.4998 3.66095 12.9602 4.34994 13.2742 5.10823C13.5883 5.86651 13.75 6.67924 13.75 7.5"
       stroke="currentColor"

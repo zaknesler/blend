@@ -1,11 +1,11 @@
-import { Switch, Match, For, Component, createEffect, createSignal } from 'solid-js';
-import { useInfiniteEntries } from '~/hooks/queries/use-infinite-entries';
-import { Spinner } from '../ui/spinner';
 import { type NullableBounds, createElementBounds } from '@solid-primitives/bounds';
-import { EntryItem } from './entry-item';
+import { type Component, For, Match, Switch, createEffect, createSignal } from 'solid-js';
 import { useFeeds } from '~/hooks/queries/use-feeds';
-import { Empty } from '../ui/empty';
+import { useInfiniteEntries } from '~/hooks/queries/use-infinite-entries';
 import { useListNav } from '~/hooks/use-list-nav';
+import { Empty } from '../ui/empty';
+import { Spinner } from '../ui/spinner';
+import { EntryItem } from './entry-item';
 
 type EntryListProps = {
   containerBounds?: Readonly<NullableBounds>;
@@ -20,7 +20,10 @@ export const EntryList: Component<EntryListProps> = props => {
   const entries = useInfiniteEntries();
 
   // Handle arrow navigation
-  useListNav(() => ({ enabled: !!props.containsActiveElement, entries: entries.getAllEntries() }));
+  useListNav(() => ({
+    enabled: !!props.containsActiveElement,
+    entries: entries.getAllEntries(),
+  }));
 
   createEffect(() => {
     if (!listBounds.bottom || !props.containerBounds?.bottom) return;
