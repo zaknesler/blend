@@ -17,7 +17,7 @@
         "noNonNullAssertion": "off"
       },
       "a11y": {
-        // This is invalid for Solidjs
+        // This doesn't work for Solid.js (innerHTML is not supported)
         "useHeadingContent": "off"
       }
     },
