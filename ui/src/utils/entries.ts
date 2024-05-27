@@ -3,13 +3,18 @@ import { DEFAULT_DIRECTION } from '~/hooks/use-query-state';
 import { type Entry, SortDirection } from '~/types/bindings';
 
 /**
+ * Get the publish date of an entry, falling back to the updated date.
+ */
+export const getEntryDate = (entry: Entry) => entry.published_at || entry.updated_at;
+
+/**
  * Get the function to compare two entries for sorting.
  */
 export const getEntryComparator =
   (sort = DEFAULT_DIRECTION) =>
   (a: Entry, b: Entry) => {
-    const dateA = a.published_at || a.updated_at;
-    const dateB = b.published_at || b.updated_at;
+    const dateA = getEntryDate(a);
+    const dateB = getEntryDate(b);
 
     // If we have no dates for comparison, push the item to the end of the list
     if (!dateA || !dateB) return -1;
@@ -22,6 +27,9 @@ export const getEntryComparator =
     }
   };
 
+/**
+ * Find the entry item in the DOM by UUID.
+ */
 export const findEntryItem = (uuid?: string) => {
   if (!uuid) return null;
 

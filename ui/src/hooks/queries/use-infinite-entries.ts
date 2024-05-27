@@ -1,9 +1,12 @@
 import { debounce, leading } from '@solid-primitives/scheduled';
 import { createInfiniteQuery } from '@tanstack/solid-query';
+import { groupBy } from 'lodash';
 import type { ApiPaginatedResponse } from '~/api';
 import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import type { Entry } from '~/types/bindings';
+import { dateWithinWeek, formatDate, formatDateIso } from '~/utils/date';
+import { getEntryDate } from '~/utils/entries';
 import { useQueryState } from '../use-query-state';
 
 export const useInfiniteEntries = () => {
@@ -24,7 +27,15 @@ export const useInfiniteEntries = () => {
     refetchOnMount: false,
   }));
 
-  const getAllEntries = () => query.data?.pages.flatMap(page => page.data) || [];
+  const allEntries = () => query.data?.pages.flatMap(page => page.data) || [];
+
+  const groupedEntries = () =>
+    groupBy(allEntries(), entry => {
+      const date = getEntryDate(entry);
+
+      // Format date as ISO so order is preserved, we should format only when displaying
+      return date && formatDateIso(date);
+    });
 
   const fetchMore = leading(
     debounce,
@@ -39,7 +50,8 @@ export const useInfiniteEntries = () => {
 
   return {
     query,
-    getAllEntries,
+    allEntries,
+    groupedEntries,
     fetchMore,
   };
 };

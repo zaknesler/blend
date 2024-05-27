@@ -2,6 +2,7 @@ import { cx } from 'class-variance-authority';
 import { For, type JSX, type ParentComponent, splitProps } from 'solid-js';
 import type { Entry } from '~/types/bindings';
 import { formatDateTime } from '~/utils/date';
+import { getEntryDate } from '~/utils/entries';
 import { Button } from '../ui/button';
 import { Link } from '../ui/link';
 
@@ -13,7 +14,7 @@ type EntryViewProps = JSX.IntrinsicElements['div'] & {
 export const EntryView: ParentComponent<EntryViewProps> = props => {
   const [local, rest] = splitProps(props, ['class', 'entry', 'breadcrumbs']);
 
-  const getDate = () => local.entry.published_at || local.entry.updated_at;
+  const getDate = () => getEntryDate(local.entry);
 
   return (
     <div {...rest} class={cx('flex flex-col gap-4', local.class)}>
