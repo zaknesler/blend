@@ -1,10 +1,7 @@
-mod stylistic;
-pub use stylistic::extract_stylistic_html;
-
-mod text;
-pub use text::extract_text;
-
 mod html;
-pub use html::extract_html;
+mod stylistic;
+mod text;
 
-// TODO: use `.url_relative(UrlRelative::RewriteWithBase(...))` with ammonia and pass in site URL to rewrite relative URLs
+pub use html::*;
+pub use stylistic::*;
+pub use text::*;

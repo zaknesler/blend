@@ -1,8 +1,8 @@
 mod error;
 mod handler;
-pub mod job;
-pub mod notification;
-pub mod worker;
+mod job;
+mod notification;
+mod worker;
 
 pub use error::WorkerError as Error;
 pub use job::Job;

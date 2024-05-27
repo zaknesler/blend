@@ -91,6 +91,7 @@ pub async fn scrape_entries(
     notif_tx: Arc<Mutex<broadcast::Sender<Notification>>>,
 ) -> WorkerResult<()> {
     let repo = EntryRepo::new(db);
+    let url = blend_feed::parse_url(&feed.url_site)?;
 
     // Fetch all entries that have no content and haven't been scraped yet
     let entries_to_scrape = repo.get_entries_to_scrape(&feed.uuid).await?;
@@ -99,7 +100,7 @@ pub async fn scrape_entries(
     for entry in entries_to_scrape {
         let content_scraped_html = blend_feed::scrape_entry(entry.url)
             .await?
-            .map(|html| blend_feed::extract_html(&html));
+            .map(|html| blend_feed::extract_html(&html, &url.base));
         repo.update_scraped_entry(&entry.uuid, content_scraped_html).await?;
     }
 

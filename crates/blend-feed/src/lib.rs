@@ -7,9 +7,9 @@ pub mod model;
 mod parse;
 mod readability;
 mod scrape;
-pub(crate) mod util;
+mod util;
 
 pub use error::FeedError as Error;
-pub use extract::{extract_html, extract_stylistic_html, extract_text};
+pub use extract::*;
 pub use parse::*;
 pub use scrape::scrape_entry;

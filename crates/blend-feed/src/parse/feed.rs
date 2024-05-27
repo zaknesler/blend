@@ -1,13 +1,9 @@
 use super::{get_feed, parse_url};
-use crate::{
-    error::{FeedError, FeedResult},
-    extract::*,
-    model::ParsedFeed,
-};
+use crate::{error::FeedResult, extract::*, model::ParsedFeed};
 
 // Fetch feed and process the basic feed data
 pub async fn parse_feed(url: &str) -> FeedResult<ParsedFeed> {
-    let url = parse_url(url).ok_or_else(|| FeedError::InvalidUrl(url.to_string()))?;
+    let url = parse_url(url)?;
     let url_feed = url.base.clone();
 
     // Parse feed and get URL that we used to scrape the content

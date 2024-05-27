@@ -1,10 +1,9 @@
 #![allow(unused_variables, unused_imports, dead_code)]
 
 mod auth;
-pub use auth::middleware as auth;
-
-mod guest;
-pub use guest::middleware as guest;
-
 mod cache;
+mod guest;
+
+pub use auth::middleware as auth;
 pub use cache::middleware as cache;
+pub use guest::middleware as guest;

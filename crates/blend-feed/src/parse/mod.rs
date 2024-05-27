@@ -7,7 +7,7 @@ mod entry;
 mod feed;
 mod url;
 
-pub use entry::parse_entries;
+pub use entry::*;
 pub use feed::*;
 pub use url::*;
 
@@ -31,7 +31,6 @@ async fn get_feed(url: ParsedUrl) -> FeedResult<(feed_rs::model::Feed, String)> 
 
 async fn parse_feed_from_url(url: &str, base_url: &str) -> FeedResult<feed_rs::model::Feed> {
     let data = make_request(url).await?.text().await?;
-    dbg!(&data);
     let feed = feed_rs::parser::Builder::new()
         .base_uri(Some(base_url))
         .build()

@@ -12,7 +12,7 @@ use std::{
     str::FromStr,
 };
 
-pub mod config;
+mod config;
 mod error;
 
 pub use config::BlendConfig as Config;
