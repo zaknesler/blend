@@ -12,7 +12,7 @@
     "test:cov": "jest --coverage",
     "watch": "mprocs \"pnpm dev\" \"cargo watch -x \\\"run -- start\\\"\"",
     "watch:trace": "mprocs \"pnpm dev\" \"cargo watch -x \\\"run -- -ltrace start\\\"\"",
-    "typeshare:generate": "typeshare ./ --lang=typescript --output-file=./ui/src/types/bindings.ts && biome check --apply \"./ui/src/types/bindings.ts\""
+    "typeshare:generate": "typeshare ./ --lang typescript --output-file ./ui/src/types/bindings.ts && biome check --apply ./ui/src/types/bindings.ts"
   },
   "dependencies": {
     "@kobalte/core": "^0.13.1",
