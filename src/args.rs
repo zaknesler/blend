@@ -24,6 +24,12 @@ pub enum Command {
         force: bool,
     },
 
+    /// Parse a URL and debug print the result
+    Parse {
+        #[arg(value_name = "URL")]
+        url: String,
+    },
+
     /// Start web and worker processes
     Start,
 }

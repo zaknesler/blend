@@ -1,9 +1,8 @@
-use super::get_feed;
+use super::{get_feed, parse_url};
 use crate::{
     error::{FeedError, FeedResult},
     extract::*,
     model::ParsedFeed,
-    parse_url,
 };
 
 // Fetch feed and process the basic feed data

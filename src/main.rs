@@ -31,6 +31,11 @@ async fn main() -> error::BlendResult<()> {
             }
         }
 
+        args::Command::Parse { url } => {
+            let feed = blend_feed::parse_feed(&url).await?;
+            dbg!(&feed);
+        }
+
         crate::args::Command::Start => {
             let blend = blend_config::parse(args.config)?;
             let db = blend_db::client::init(blend.clone()).await?;

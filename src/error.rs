@@ -13,5 +13,8 @@ pub enum BlendError {
     WebError(#[from] blend_web::Error),
 
     #[error(transparent)]
+    FeedError(#[from] blend_feed::Error),
+
+    #[error(transparent)]
     WorkerError(#[from] blend_worker::Error),
 }
