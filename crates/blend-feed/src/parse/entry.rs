@@ -1,8 +1,8 @@
 use super::{get_feed, parse_url};
 use crate::{error::FeedResult, extract::*, ParsedEntry};
 
-/// How many characters should the summary be before we treat it as the content (if there is already no content)
-const SWAP_THRESHOLD: usize = 100;
+/// Number of characters after which we can just assume the summary is the content, without needing to guess that it's HTML
+const MAX_SUMMARY_LENGTH: usize = 1000;
 
 /// Fetch feed and process each entry as needed
 pub async fn parse_entries(url: &str) -> FeedResult<Vec<ParsedEntry>> {
@@ -16,7 +16,7 @@ pub async fn parse_entries(url: &str) -> FeedResult<Vec<ParsedEntry>> {
         .iter()
         .cloned()
         .map(|entry| {
-            // TODO: Find the best link somehow? Maybe not always the first?
+            // TODO: improve this to not use just the first link
             let media_url = entry
                 .media
                 .first()
@@ -26,16 +26,19 @@ pub async fn parse_entries(url: &str) -> FeedResult<Vec<ParsedEntry>> {
             let mut summary_html = entry
                 .summary
                 .as_ref()
-                .map(|text| extract_stylistic_html(&text.content, &url.base));
+                .map(|text| extract_stylistic_html(&text.content, &url.base))
+                .and_then(|val| (val.len() != 0).then_some(val));
 
             let mut content_html = entry
                 .content
-                .and_then(|content| content.body.map(|content| extract_html(&content, &url.base)));
+                .and_then(|content| content.body.map(|content| extract_html(&content, &url.base)))
+                .and_then(|val| (val.len() != 0).then_some(val));
 
-            // Some feeds may return article content as the summary/teaser. If this is the case, we want to
-            // swap the (empty) content with the summary, but only if it's a respectable length.
-            if content_html.as_ref().map_or(true, |html| html.is_empty())
-                && summary_html.as_ref().is_some_and(|summary| summary.len() > SWAP_THRESHOLD)
+            // Some feeds may return article content as the summary/teaser, so if it's likely HTML, let's swap these fields
+            if content_html.is_none()
+                && summary_html
+                    .as_ref()
+                    .is_some_and(|value| value.len() >= MAX_SUMMARY_LENGTH || likely_html(value))
             {
                 content_html = entry.summary.map(|text| extract_html(&text.content, &url.base));
                 summary_html = None;
@@ -43,7 +46,7 @@ pub async fn parse_entries(url: &str) -> FeedResult<Vec<ParsedEntry>> {
 
             ParsedEntry {
                 id: entry.id,
-                url: entry.links.first().map(|link| link.href.clone()),
+                url: entry.links.first().map(|link| link.href.clone()), // TODO: improve this to not use just the first link
                 title: entry.title.map(|text| extract_text(&text.content)),
                 summary_html,
                 content_html,
