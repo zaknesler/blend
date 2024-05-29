@@ -23,15 +23,22 @@ pub async fn parse_entries(url: &str) -> FeedResult<Vec<ParsedEntry>> {
                 .and_then(|media| media.content.first().and_then(|content| content.url.clone()))
                 .map(|url| url.to_string());
 
+            // TODO: improve this to not use just the first link
+            let entry_url = entry.links.first().map(|link| link.href.clone());
+
+            // Use the entry/article URL as the base URL to replace relative links in the content,
+            // otherwise fallback to the feed URL
+            let base_url = entry_url.as_ref().unwrap_or(&url.base).as_str();
+
             let mut summary_html = entry
                 .summary
                 .as_ref()
-                .map(|text| extract_stylistic_html(&text.content, &url.base))
+                .map(|text| extract_stylistic_html(&text.content, base_url))
                 .and_then(|val| (val.len() != 0).then_some(val));
 
             let mut content_html = entry
                 .content
-                .and_then(|content| content.body.map(|content| extract_html(&content, &url.base)))
+                .and_then(|content| content.body.map(|content| extract_html(&content, base_url)))
                 .and_then(|val| (val.len() != 0).then_some(val));
 
             // Some feeds may return article content as the summary/teaser, so if it's likely HTML, let's swap these fields
@@ -40,13 +47,13 @@ pub async fn parse_entries(url: &str) -> FeedResult<Vec<ParsedEntry>> {
                     .as_ref()
                     .is_some_and(|value| value.len() >= MAX_SUMMARY_LENGTH || likely_html(value))
             {
-                content_html = entry.summary.map(|text| extract_html(&text.content, &url.base));
+                content_html = entry.summary.map(|text| extract_html(&text.content, base_url));
                 summary_html = None;
             }
 
             ParsedEntry {
                 id: entry.id,
-                url: entry.links.first().map(|link| link.href.clone()), // TODO: improve this to not use just the first link
+                url: entry_url,
                 title: entry.title.map(|text| extract_text(&text.content)),
                 summary_html,
                 content_html,
