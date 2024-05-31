@@ -98,6 +98,8 @@ export default () => {
 
               {showPanel() && !showFeeds() && (
                 <>
+                  <NavViewSwitcher />
+
                   <div class="flex justify-between">
                     {state.params.feed_uuid ? (
                       <FeedInfo uuid={state.params.feed_uuid!} />
@@ -114,8 +116,6 @@ export default () => {
                       </div>
                     )}
                   </div>
-
-                  <NavViewSwitcher />
                 </>
               )}
             </div>

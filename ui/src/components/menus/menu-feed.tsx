@@ -1,3 +1,4 @@
+import { HiSolidArrowPath, HiSolidPencilSquare, HiSolidTrash } from 'solid-icons/hi';
 import { type Component, mergeProps } from 'solid-js';
 import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
 import { Menu, type MenuProps } from './menu';
@@ -23,10 +24,16 @@ export const MenuFeed: Component<FeedMenuProps> = props => {
   };
 
   return (
-    <Menu {...local}>
-      <Menu.Item onSelect={handleRefresh}>Refresh</Menu.Item>
-      <Menu.Item disabled>Rename</Menu.Item>
-      <Menu.Item disabled>Delete</Menu.Item>
+    <Menu {...local} size="sm">
+      <Menu.Item onSelect={handleRefresh} icon={HiSolidArrowPath}>
+        Refresh
+      </Menu.Item>
+      <Menu.Item disabled icon={HiSolidPencilSquare}>
+        Rename
+      </Menu.Item>
+      <Menu.Item disabled icon={HiSolidTrash}>
+        Delete
+      </Menu.Item>
     </Menu>
   );
 };

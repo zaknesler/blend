@@ -4,19 +4,15 @@ import {
   type DropdownMenuRootProps,
   type DropdownMenuTriggerProps,
 } from '@kobalte/core/dropdown-menu';
-import { cx } from 'class-variance-authority';
+import { type VariantProps, cx } from 'class-variance-authority';
 import type { IconTypes } from 'solid-icons';
 import { HiSolidEllipsisHorizontal } from 'solid-icons/hi';
 import { type ParentComponent, type Setter, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
-
-type SharedMenuProps = {
-  forceFocus?: boolean;
-  onlyDisplayForGroup?: boolean;
-};
+import * as menuClasses from '~/constants/ui/menu';
 
 export type MenuProps = Omit<DropdownMenuRootProps, 'open' | 'onOpenChange'> &
-  SharedMenuProps & {
+  MenuContentProps & {
     open: boolean;
     setOpen: Setter<boolean>;
     triggerIcon?: IconTypes;
@@ -26,83 +22,64 @@ export type MenuProps = Omit<DropdownMenuRootProps, 'open' | 'onOpenChange'> &
 
 const MenuRoot: ParentComponent<MenuProps> = props => {
   const [local, rest] = splitProps(props, [
+    'size',
     'children',
     'open',
     'setOpen',
-    'forceFocus',
     'triggerIcon',
     'triggerClass',
     'triggerIconClass',
-    'onlyDisplayForGroup',
   ]);
 
   return (
     <DropdownMenu placement="bottom-end" {...rest} open={local.open} onOpenChange={local.setOpen} modal>
-      <MenuTrigger
-        onlyDisplayForGroup={local.onlyDisplayForGroup}
-        forceFocus={local.forceFocus || (local.onlyDisplayForGroup && local.open)}
-        class={cx('relative', local.triggerClass)}
-      >
+      <MenuTrigger class={cx('relative', local.triggerClass)}>
         <Dynamic component={local.triggerIcon || HiSolidEllipsisHorizontal} class={local.triggerIconClass} />
       </MenuTrigger>
 
       <DropdownMenu.Portal>
-        <MenuContent>{local.children}</MenuContent>
+        <MenuContent size={local.size}>{local.children}</MenuContent>
       </DropdownMenu.Portal>
     </DropdownMenu>
   );
 };
 
-type MenuTrigger = DropdownMenuTriggerProps &
-  SharedMenuProps & {
-    class?: string;
-  };
+type MenuTrigger = DropdownMenuTriggerProps & {
+  class?: string;
+};
 
 const MenuTrigger: ParentComponent<MenuTrigger> = props => {
-  const [local, rest] = splitProps(props, ['onlyDisplayForGroup', 'forceFocus', 'class']);
+  const [local, rest] = splitProps(props, ['class']);
 
   return (
-    <DropdownMenu.Trigger
-      {...rest}
-      class={cx(
-        'flex shrink-0 appearance-none items-center justify-center border border-gray-200 transition dark:border-gray-700',
-        'focus:border-gray-400 focus:outline-none dark:focus:ring-gray-600 focus:ring-1 focus:ring-gray-200',
-        local.onlyDisplayForGroup && 'opacity-0 focus:opacity-100 group-focus:opacity-100',
-        local.onlyDisplayForGroup && local.forceFocus
-          ? 'border-gray-500 bg-gray-100 opacity-100 outline-none ring-1 ring-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:ring-gray-600'
-          : 'bg-white dark:hover:border-gray-700 hover:border-gray-300 dark:bg-gray-800 dark:hover:bg-gray-600 hover:bg-gray-100 group-hover:opacity-100',
-        props.class,
-      )}
-    >
+    <DropdownMenu.Trigger {...rest} class={menuClasses.trigger({ class: local.class })}>
       {props.children}
     </DropdownMenu.Trigger>
   );
 };
 
-const MenuItem: ParentComponent<DropdownMenuItemProps> = props => (
-  <DropdownMenu.Item
-    {...props}
-    class={cx(
-      'select-none appearance-none rounded px-2 py-1 text-left',
-      'ui-disabled:cursor-not-allowed ui-disabled:opacity-50',
-      'active:bg-gray-100 focus:bg-gray-100 hover:bg-gray-100 focus:outline-none',
-      'dark:active:bg-gray-700 dark:focus:bg-gray-700 dark:hover:bg-gray-700 dark:focus:outline-none',
-    )}
-  >
-    {props.children}
-  </DropdownMenu.Item>
-);
+type MenuItemProps = DropdownMenuItemProps & {
+  icon?: IconTypes;
+};
 
-const MenuContent: ParentComponent = props => (
+const MenuItem: ParentComponent<MenuItemProps> = props => {
+  const [local, rest] = splitProps(props, ['icon']);
+
+  return (
+    <DropdownMenu.Item {...rest} class={menuClasses.item()}>
+      <Dynamic component={local.icon} class="h-4 w-4 text-gray-400 dark:text-gray-500" />
+      {props.children}
+    </DropdownMenu.Item>
+  );
+};
+
+type MenuContentProps = VariantProps<typeof menuClasses.content>;
+
+const MenuContent: ParentComponent<MenuContentProps> = props => (
   <DropdownMenu.Content
-    class={cx(
-      'z-50 min-w-36 overflow-hidden rounded-md border shadow-sm',
-      'border-gray-200 bg-white text-gray-600',
-      'dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200',
-      'origin-[--kb-menu-content-transform-origin] animate-content-hide ui-expanded:animate-content-show',
-    )}
+    class={menuClasses.content({ class: 'origin-[--kb-menu-content-transform-origin]', size: props.size })}
   >
-    <div class="flex flex-col gap-0.5 p-1 text-sm">{props.children}</div>
+    <div class={menuClasses.contentInner()}>{props.children}</div>
   </DropdownMenu.Content>
 );
 

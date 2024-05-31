@@ -1,5 +1,5 @@
 use super::{get_feed, parse_url};
-use crate::{error::FeedResult, extract::*, ParsedEntry};
+use crate::{error::FeedResult, extract::*, util::*, ParsedEntry};
 
 /// Number of characters after which we can just assume the summary is the content, without needing to guess that it's HTML
 const MAX_SUMMARY_LENGTH: usize = 1000;
@@ -43,9 +43,9 @@ pub async fn parse_entries(url: &str) -> FeedResult<Vec<ParsedEntry>> {
 
             // Some feeds may return article content as the summary/teaser, so if it's likely HTML, let's swap these fields
             if content_html.is_none()
-                && summary_html
-                    .as_ref()
-                    .is_some_and(|value| value.len() >= MAX_SUMMARY_LENGTH || likely_html(value))
+                && entry.summary.as_ref().is_some_and(|text| {
+                    text.content.len() >= MAX_SUMMARY_LENGTH || likely_html(&text.content)
+                })
             {
                 content_html = entry.summary.map(|text| extract_html(&text.content, base_url));
                 summary_html = None;

@@ -12,7 +12,7 @@ export const NavViewSwitcher = () => {
     <Tabs
       value={state.getView()}
       onChange={value => state.setView(value as View)}
-      class="flex w-full self-stretch rounded-lg bg-gray-200/40 font-medium text-gray-600 text-xs backdrop-blur-sm dark:bg-gray-400/25 dark:text-white"
+      class="flex w-full select-none self-stretch rounded-lg bg-gray-200/40 font-medium text-gray-600 text-xs backdrop-blur-sm dark:bg-gray-400/25 dark:text-white"
     >
       <Tabs.List class="-space-x-1 relative flex w-full">
         <For each={VIEWS}>

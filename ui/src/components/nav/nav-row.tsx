@@ -3,10 +3,11 @@ import type { TooltipTriggerProps } from '@kobalte/core/tooltip';
 import { useNavigate } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { HiOutlineQueueList, HiSolidArrowLeft, HiSolidXMark } from 'solid-icons/hi';
-import type { Component, Setter } from 'solid-js';
+import { type Component, type Setter, createSignal } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { useQueryState } from '~/hooks/use-query-state';
 import { LogoSquare } from '../layout/logo';
+import { MenuSettings } from '../menus/menu-settings';
 import { Tooltip } from '../ui/tooltip';
 
 type NavRowProps = {
@@ -21,9 +22,12 @@ export const NavRow: Component<NavRowProps> = props => {
   const state = useQueryState();
   const navigate = useNavigate();
 
+  const [settingsOpen, setSettingsOpen] = createSignal(false);
+
   return (
     <div class={cx('flex w-full items-center gap-4 bg-gray-200/20 p-4', props.class)}>
       <LogoSquare class="h-6 w-6" />
+      <MenuSettings open={settingsOpen()} setOpen={setSettingsOpen} gutter={4} />
 
       <div class="flex flex-1 items-center justify-end">
         {props.showFeedSwitch && (

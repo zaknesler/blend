@@ -1,8 +1,18 @@
+import {
+  HiSolidArrowDownTray,
+  HiSolidArrowRightOnRectangle,
+  HiSolidCog,
+  HiSolidCog6Tooth,
+  HiSolidPlus,
+} from 'solid-icons/hi';
 import { TiCog } from 'solid-icons/ti';
-import { type Component, mergeProps } from 'solid-js';
+import { type Component, createSignal, mergeProps } from 'solid-js';
+import { CreateFeedModal } from '../modals/create-feed';
 import { Menu, type MenuProps } from './menu';
 
 export const MenuSettings: Component<MenuProps> = props => {
+  const [createFeedModalOpen, setCreateFeedModalOpen] = createSignal(false);
+
   const local = mergeProps(
     {
       triggerClass: 'h-6 w-6 rounded-md',
@@ -12,11 +22,28 @@ export const MenuSettings: Component<MenuProps> = props => {
     props,
   );
 
+  const handleAddFeed = () => {
+    setCreateFeedModalOpen(true);
+  };
+
   return (
-    <Menu {...local}>
-      <Menu.Item disabled>Import/export</Menu.Item>
-      <Menu.Item disabled>Settings</Menu.Item>
-      <Menu.Item disabled>Sign out</Menu.Item>
-    </Menu>
+    <>
+      <Menu {...local}>
+        <Menu.Item onSelect={handleAddFeed} icon={HiSolidPlus}>
+          Add feed
+        </Menu.Item>
+        <Menu.Item disabled icon={HiSolidArrowDownTray}>
+          Import/export
+        </Menu.Item>
+        <Menu.Item disabled icon={HiSolidCog6Tooth}>
+          Settings
+        </Menu.Item>
+        <Menu.Item disabled icon={HiSolidArrowRightOnRectangle}>
+          Sign out
+        </Menu.Item>
+      </Menu>
+
+      <CreateFeedModal open={createFeedModalOpen()} setOpen={setCreateFeedModalOpen} />
+    </>
   );
 };

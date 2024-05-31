@@ -1,26 +1,24 @@
-import type { PolymorphicCallbackProps } from '@kobalte/core';
-import { Dialog, type DialogTriggerOptions } from '@kobalte/core/dialog';
+import { Dialog } from '@kobalte/core/dialog';
 import { TextField } from '@kobalte/core/text-field';
 import { useNavigate } from '@solidjs/router';
 import { createMutation, useQueryClient } from '@tanstack/solid-query';
-import { cx } from 'class-variance-authority';
-import { HiSolidPlus, HiSolidXMark } from 'solid-icons/hi';
-import { type Component, createSignal } from 'solid-js';
+import { HiSolidXMark } from 'solid-icons/hi';
+import { type Component, type Setter, createSignal } from 'solid-js';
 import { addFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
 import { inputClass } from '~/constants/ui/input';
-import { Button, type ButtonProps } from '../ui/button';
+import { Button } from '../ui/button';
 import { Spinner } from '../ui/spinner';
 
 type CreateFeedProps = {
-  triggerClass?: string;
+  open: boolean;
+  setOpen: Setter<boolean>;
 };
 
-export const CreateFeed: Component<CreateFeedProps> = props => {
+export const CreateFeedModal: Component<CreateFeedProps> = props => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const [open, setOpen] = createSignal(false);
   const [value, setValue] = createSignal('');
   const [inputElement, setInputElement] = createSignal<HTMLDivElement>();
 
@@ -40,7 +38,7 @@ export const CreateFeed: Component<CreateFeedProps> = props => {
     const feed = await add.mutateAsync({ url: value() });
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS] });
     navigate(`/feeds/${feed.uuid}`);
-    setOpen(false);
+    props.setOpen(false);
     add.reset();
     setValue('');
   };
@@ -51,69 +49,53 @@ export const CreateFeed: Component<CreateFeedProps> = props => {
   };
 
   return (
-    <>
-      <Dialog open={open()} onOpenChange={setOpen}>
-        <Dialog.Trigger
-          as={(triggerProps: PolymorphicCallbackProps<ButtonProps, DialogTriggerOptions, DialogTriggerOptions>) => (
-            <Button
-              {...triggerProps}
-              class={cx('inline-flex items-center gap-2 text-sm', props.triggerClass)}
-              size="sm"
-              disabled={isDisabled()}
-            >
-              Add feed
-              <HiSolidPlus class="h-4 w-4 text-gray-300" />
-            </Button>
-          )}
-        />
+    <Dialog open={props.open} onOpenChange={props.setOpen}>
+      <Dialog.Portal>
+        <Dialog.Overlay class="fixed inset-0 z-50 animate-overlay-hide bg-black/25 backdrop-blur ui-expanded:animate-overlay-show" />
 
-        <Dialog.Portal>
-          <Dialog.Overlay class="fixed inset-0 z-50 animate-overlay-hide bg-black/25 backdrop-blur ui-expanded:animate-overlay-show" />
+        <div class="fixed inset-0 z-50 flex items-end justify-center p-8 sm:items-center">
+          <Dialog.Content
+            class="z-50 w-full animate-content-hide overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-all md:max-w-sm ui-expanded:animate-content-show dark:border-gray-700 dark:bg-gray-950"
+            onOpenAutoFocus={handleOpenAutoFocus}
+          >
+            <div class="flex flex-col gap-2 border-b bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900">
+              <div class="flex items-baseline justify-between gap-4">
+                <Dialog.Title class="font-semibold text-lg/4 dark:text-gray-200">Add a new feed</Dialog.Title>
 
-          <div class="fixed inset-0 z-50 flex items-end justify-center p-8 sm:items-center">
-            <Dialog.Content
-              class="z-50 w-full animate-content-hide overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-all md:max-w-sm ui-expanded:animate-content-show dark:border-gray-700 dark:bg-gray-950"
-              onOpenAutoFocus={handleOpenAutoFocus}
-            >
-              <div class="flex flex-col gap-2 border-b bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900">
-                <div class="flex items-baseline justify-between gap-4">
-                  <Dialog.Title class="font-semibold text-lg/4 dark:text-gray-200">Add a new feed</Dialog.Title>
+                <Dialog.CloseButton class="rounded-lg p-1 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2">
+                  <HiSolidXMark class="h-5 w-5 text-gray-500" />
+                </Dialog.CloseButton>
+              </div>
+              <Dialog.Description class="text-gray-600 text-sm dark:text-gray-400">
+                Add an RSS feed link or the website's URL. Feed entries will be fetched in the background.
+              </Dialog.Description>
+            </div>
 
-                  <Dialog.CloseButton class="rounded-lg p-1 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2">
-                    <HiSolidXMark class="h-5 w-5 text-gray-500" />
-                  </Dialog.CloseButton>
+            <div class="flex flex-col items-stretch gap-4 p-4">
+              <form onSubmit={handleSubmit} class="flex flex-col gap-4">
+                <TextField value={value()} onChange={setValue} class="flex flex-col items-stretch gap-1">
+                  <TextField.Label class="text-gray-600 text-sm dark:text-gray-400">URL</TextField.Label>
+                  <TextField.Input
+                    ref={setInputElement}
+                    class={inputClass({ disabled: isDisabled() })}
+                    placeholder="https://example.com/feed.xml"
+                  />
+                </TextField>
+
+                <div class="flex items-center justify-between gap-4">
+                  <Button size="sm" class="self-start" onClick={handleSubmit} disabled={isDisabled()}>
+                    Add feed
+                  </Button>
+
+                  {isDisabled() && <Spinner />}
                 </div>
-                <Dialog.Description class="text-gray-600 text-sm dark:text-gray-400">
-                  Add an RSS feed link or the website's URL. Feed entries will be fetched in the background.
-                </Dialog.Description>
-              </div>
+              </form>
 
-              <div class="flex flex-col items-stretch gap-4 p-4">
-                <form onSubmit={handleSubmit} class="flex flex-col gap-4">
-                  <TextField value={value()} onChange={setValue} class="flex flex-col items-stretch gap-1">
-                    <TextField.Label class="text-gray-600 text-sm dark:text-gray-400">URL</TextField.Label>
-                    <TextField.Input
-                      ref={setInputElement}
-                      class={inputClass({ disabled: isDisabled() })}
-                      placeholder="https://example.com/feed.xml"
-                    />
-                  </TextField>
-
-                  <div class="flex items-center justify-between gap-4">
-                    <Button size="sm" class="self-start" onClick={handleSubmit} disabled={isDisabled()}>
-                      Add feed
-                    </Button>
-
-                    {isDisabled() && <Spinner />}
-                  </div>
-                </form>
-
-                {add.isError && <p>Error: {add.error?.message}</p>}
-              </div>
-            </Dialog.Content>
-          </div>
-        </Dialog.Portal>
-      </Dialog>
-    </>
+              {add.isError && <p>Error: {add.error?.message}</p>}
+            </div>
+          </Dialog.Content>
+        </div>
+      </Dialog.Portal>
+    </Dialog>
   );
 };

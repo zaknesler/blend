@@ -2,7 +2,6 @@ import { cx } from 'class-variance-authority';
 import { type Component, createSignal } from 'solid-js';
 import { FeedList } from '../feed/feed-list';
 import { MenuSettings } from '../menus/menu-settings';
-import { CreateFeed } from '../modals/create-feed';
 import { LogoSquare } from './logo';
 
 type SidebarProps = {
@@ -20,7 +19,6 @@ export const Sidebar: Component<SidebarProps> = props => {
       </div>
 
       <FeedList />
-      <CreateFeed triggerClass="absolute bottom-4 right-4" />
     </div>
   );
 };

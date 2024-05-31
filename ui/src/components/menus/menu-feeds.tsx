@@ -1,3 +1,4 @@
+import { HiSolidArrowPath } from 'solid-icons/hi';
 import { type Component, mergeProps } from 'solid-js';
 import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
 import { Menu, type MenuProps } from './menu';
@@ -19,8 +20,10 @@ export const MenuFeeds: Component<MenuProps> = props => {
   };
 
   return (
-    <Menu {...local}>
-      <Menu.Item onSelect={handleRefreshFeeds}>Refresh all feeds</Menu.Item>
+    <Menu {...local} size="lg">
+      <Menu.Item onSelect={handleRefreshFeeds} icon={HiSolidArrowPath}>
+        Refresh all feeds
+      </Menu.Item>
     </Menu>
   );
 };

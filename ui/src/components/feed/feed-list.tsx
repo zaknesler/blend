@@ -4,7 +4,6 @@ import { For, Match, Switch, createSignal } from 'solid-js';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
 import { useQueryState } from '~/hooks/use-query-state';
-import { MenuFeeds } from '../menus/menu-feeds';
 import { BaseFeedItem, FeedItem } from './feed-item';
 
 export const FeedList = () => {
@@ -26,13 +25,12 @@ export const FeedList = () => {
         active={location.pathname === '/'}
         setOpen={setAllFeedsMenuOpen}
         unread_count={totalStats()?.count_unread}
-        menu={() => (
-          <MenuFeeds onlyDisplayForGroup open={allFeedsMenuOpen()} setOpen={setAllFeedsMenuOpen} gutter={4} />
-        )}
       />
 
       <div class="flex w-full flex-col gap-1">
-        <h3 class="font-semibold text-gray-500 text-xs uppercase tracking-wider dark:text-gray-400">Feeds</h3>
+        <h3 class="select-none font-semibold text-gray-500 text-xs uppercase tracking-wider dark:text-gray-400">
+          Feeds
+        </h3>
         <Switch>
           <Match when={feeds.isError}>
             <p>Error: {feeds.error?.message}</p>
