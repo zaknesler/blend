@@ -55,7 +55,7 @@ export const CreateFeedModal: Component<CreateFeedProps> = props => {
 
         <div class="fixed inset-0 z-50 flex items-end justify-center p-8 sm:items-center">
           <Dialog.Content
-            class="z-50 w-full animate-content-hide overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-all md:max-w-sm ui-expanded:animate-content-show dark:border-gray-700 dark:bg-gray-950"
+            class="z-50 w-full animate-content-hide overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-all md:max-w-sm ui-expanded:animate-content-show dark:border-gray-800 dark:bg-gray-950 dark:shadow-xl"
             onOpenAutoFocus={handleOpenAutoFocus}
           >
             <div class="flex flex-col gap-2 border-b bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900">

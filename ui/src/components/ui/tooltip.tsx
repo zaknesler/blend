@@ -20,7 +20,7 @@ const TooltipContent = <T extends ValidComponent = 'div'>(props: PolymorphicProp
       <TooltipPrimitive.Content
         {...rest}
         class={cx(
-          'z-50 rounded-lg bg-gray-800 px-4 py-2 text-white text-xs',
+          'z-50 select-none rounded-lg bg-gray-800 px-4 py-2 text-white text-xs',
           'origin-[--kb-menu-content-transform-origin] animate-content-hide ui-expanded:animate-content-show',
           local.class,
         )}

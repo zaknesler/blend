@@ -37,7 +37,7 @@ export const EntryList: Component<EntryListProps> = props => {
   return (
     <Switch>
       <Match when={entries.query.isPending}>
-        <div class="h-full w-full flex-1 px-4 pb-4">
+        <div class="h-full w-full flex-1 p-4">
           <Empty>
             <Spinner />
           </Empty>
@@ -52,12 +52,12 @@ export const EntryList: Component<EntryListProps> = props => {
         <Show
           when={entries.getAllEntries().length}
           fallback={
-            <div class="h-full w-full flex-1 px-4 pb-4">
+            <div class="h-full w-full flex-1 p-4">
               <Empty>No entries to display.</Empty>
             </div>
           }
         >
-          <div class="-mt-2 flex flex-col gap-2 px-4 pb-2">
+          <div class="flex flex-col gap-2 px-4 py-2">
             <For each={entries.getAllEntries()}>
               {(entry, index) => (
                 <EntryItem

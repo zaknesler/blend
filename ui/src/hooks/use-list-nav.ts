@@ -14,9 +14,9 @@ type UseListNavParams = {
 
 export const useListNav = (params: () => UseListNavParams) => {
   const state = useQueryState();
-  const keyDownEvent = useKeyDownEvent();
-  const navigate = useNavigate();
   const viewport = useViewport();
+  const navigate = useNavigate();
+  const keyDownEvent = useKeyDownEvent();
 
   createEffect(() => {
     if (!params().entries.length || viewport.lteBreakpoint('md') || !params().enabled) return;

@@ -42,7 +42,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
       {...{ [DATA_ATTRIBUTES.ENTRY_ITEM_UUID]: local.entry.uuid }}
       href={state.getEntryUrl(local.entry.uuid)}
       class={cx(
-        '-mx-2 flex flex-col gap-1 rounded-lg px-2 py-1.5 ring-gray-300 transition dark:ring-gray-700',
+        '-mx-2 flex select-none flex-col gap-1 rounded-lg px-2 py-1.5 ring-gray-300 transition dark:ring-gray-700',
         'focus:outline-none focus:ring',
         isActive()
           ? 'bg-gray-600 text-white dark:bg-gray-950'

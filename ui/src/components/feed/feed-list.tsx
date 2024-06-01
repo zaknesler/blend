@@ -7,8 +7,8 @@ import { useQueryState } from '~/hooks/use-query-state';
 import { BaseFeedItem, FeedItem } from './feed-item';
 
 export const FeedList = () => {
-  const location = useLocation();
   const state = useQueryState();
+  const location = useLocation();
 
   const { feeds } = useFeeds();
   const { totalStats } = useFeedsStats();
@@ -16,7 +16,7 @@ export const FeedList = () => {
   const [allFeedsMenuOpen, setAllFeedsMenuOpen] = createSignal(false);
 
   return (
-    <div class="flex w-full flex-col gap-4">
+    <div class="flex w-full flex-col gap-4 p-4 xl:p-0">
       <BaseFeedItem
         href={'/'.concat(state.getQueryString())}
         title="All feeds"

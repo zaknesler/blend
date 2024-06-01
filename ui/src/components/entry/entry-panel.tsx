@@ -14,8 +14,8 @@ import { Spinner } from '../ui/spinner';
 
 export const EntryPanel = () => {
   const state = useQueryState();
+  const viewport = useViewport();
   const queryClient = useQueryClient();
-  const { gtBreakpoint } = useViewport();
   const invalidateStats = useInvalidateStats();
 
   const entry = createQuery(() => ({
@@ -46,7 +46,7 @@ export const EntryPanel = () => {
     <Show
       when={state.params.entry_uuid}
       fallback={
-        <Show when={gtBreakpoint('md')}>
+        <Show when={viewport.gtBreakpoint('md')}>
           <Panel class="h-full w-full p-4 lg:p-8">
             <Empty />
           </Panel>

@@ -1,6 +1,5 @@
 import { createActiveElement } from '@solid-primitives/active-element';
 import { createElementBounds } from '@solid-primitives/bounds';
-import { createScrollPosition } from '@solid-primitives/scroll';
 import { useIsRouting } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { Match, Show, Switch, createEffect, createSignal } from 'solid-js';
@@ -31,21 +30,20 @@ export default () => (
 
 const ListPanel = () => {
   const state = useQueryState();
+  const viewport = useViewport();
   const isRouting = useIsRouting();
-  const { lteBreakpoint } = useViewport();
 
   const [showFeedSelector, setShowFeedSelector] = createSignal(false);
   const [allFeedsMenuOpen, setAllFeedsMenuOpen] = createSignal(false);
 
   const [container, setContainer] = createSignal<HTMLElement>();
   const containerBounds = createElementBounds(container);
-  const containerScroll = createScrollPosition(container);
 
   const viewingEntry = () => !!state.params.entry_uuid;
 
-  const isMobile = () => lteBreakpoint('md');
+  const isMobile = () => viewport.lteBreakpoint('md');
   const showPanel = () => !isMobile() || (isMobile() && !viewingEntry());
-  const showFeeds = () => lteBreakpoint('xl') && showFeedSelector();
+  const showFeeds = () => viewport.lteBreakpoint('xl') && showFeedSelector();
 
   const activeElement = createActiveElement();
   const containsActiveElement = () => container()?.contains(activeElement());
@@ -84,21 +82,13 @@ const ListPanel = () => {
       </Portal>
 
       <Panel
-        ref={setContainer}
         class={cx(
           'flex shrink-0 flex-col lg:max-w-xs md:max-w-[16rem] xl:max-w-md',
-          showPanel() ? 'flex-1' : 'z-10 flex-none shadow dark:shadow-xl',
+          showPanel() ? 'flex-1 overflow-hidden' : 'z-10 flex-none shadow dark:shadow-xl',
         )}
       >
-        <div
-          class={cx(
-            'sticky top-0 flex flex-col gap-4 bg-white/25 p-4 backdrop-blur-md dark:bg-gray-900/25',
-            !showPanel() && 'pb-0',
-            showFeeds() && 'mb-4 pb-0',
-            showPanel() && containerScroll.y > 0 && 'z-10 shadow dark:shadow-xl',
-          )}
-        >
-          <div class="-m-4 mb-0 xl:hidden">
+        <div class="z-10 flex shrink-0 flex-col gap-4 bg-gray-50 p-4 shadow dark:bg-gray-900 dark:shadow-xl">
+          <div class="-m-4 xl:hidden">
             <NavRow
               open={showFeeds()}
               setOpen={setShowFeedSelector}
@@ -119,7 +109,7 @@ const ListPanel = () => {
 
                 {/* Showing all feeds -- create custom label */}
                 <Match when={!state.params.feed_uuid}>
-                  <div class="flex w-full items-start justify-between">
+                  <div class="flex w-full select-none items-start justify-between">
                     <FeedHeader title="All feeds" />
                     <MenuFeeds
                       open={allFeedsMenuOpen()}
@@ -136,7 +126,7 @@ const ListPanel = () => {
         </div>
 
         <Show when={showPanel()}>
-          <div class={cx('flex-1', containerScroll.y > 0 ? 'z-auto' : 'z-10')}>
+          <div ref={setContainer} class="z-10 flex-1 overflow-auto pt-0.5">
             <Switch>
               <Match when={showFeeds()}>
                 <FeedList />
