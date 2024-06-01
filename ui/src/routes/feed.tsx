@@ -4,6 +4,7 @@ import { createScrollPosition } from '@solid-primitives/scroll';
 import { useIsRouting } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { Match, Show, Switch, createEffect, createSignal } from 'solid-js';
+import { Portal } from 'solid-js/web';
 import { EntryList } from '~/components/entry/entry-list';
 import { EntryPanel } from '~/components/entry/entry-panel';
 import { FeedHeader } from '~/components/feed/feed-header';
@@ -17,12 +18,23 @@ import { NavViewSwitcher } from '~/components/nav/nav-view-switcher';
 import { useQueryState } from '~/hooks/use-query-state';
 import { useViewport } from '~/hooks/use-viewport';
 
-export default () => {
+export default () => (
+  <>
+    <Sidebar class="hidden xl:flex xl:w-sidebar xl:shrink-0" />
+
+    <div class="flex h-full w-full flex-1 flex-col overflow-hidden md:flex-row md:gap-4 md:p-4">
+      <ListPanel />
+      <EntryPanel />
+    </div>
+  </>
+);
+
+const ListPanel = () => {
   const state = useQueryState();
   const isRouting = useIsRouting();
   const { lteBreakpoint } = useViewport();
 
-  const [_showFeeds, setShowFeeds] = createSignal(false);
+  const [showFeedSelector, setShowFeedSelector] = createSignal(false);
   const [allFeedsMenuOpen, setAllFeedsMenuOpen] = createSignal(false);
 
   const [container, setContainer] = createSignal<HTMLElement>();
@@ -33,7 +45,7 @@ export default () => {
 
   const isMobile = () => lteBreakpoint('md');
   const showPanel = () => !isMobile() || (isMobile() && !viewingEntry());
-  const showFeeds = () => lteBreakpoint('xl') && _showFeeds();
+  const showFeeds = () => lteBreakpoint('xl') && showFeedSelector();
 
   const activeElement = createActiveElement();
   const containsActiveElement = () => container()?.contains(activeElement());
@@ -47,8 +59,9 @@ export default () => {
   };
 
   createEffect(() => {
+    // Hide feed selector when routing
     if (!isRouting()) return;
-    setShowFeeds(false);
+    setShowFeedSelector(false);
   });
 
   createEffect(() => {
@@ -59,89 +72,83 @@ export default () => {
 
   return (
     <>
-      <button
-        type="button"
-        class="-translate-y-[9999px] absolute top-2 left-2 z-[9999] select-none appearance-none rounded-lg border bg-white px-3 py-2 text-black text-sm shadow-lg focus:translate-y-0 focus:border-gray-200 active:bg-gray-100 focus:outline-none focus:ring-2"
-        tabindex={1}
-        onClick={handleSkipToContent}
+      <Portal>
+        <button
+          type="button"
+          class="-translate-y-[9999px] absolute top-2 left-2 z-[9999] select-none appearance-none rounded-lg border bg-white px-3 py-2 text-black text-sm shadow-lg focus:translate-y-0 focus:border-gray-200 active:bg-gray-100 focus:outline-none focus:ring-2"
+          tabindex={1}
+          onClick={handleSkipToContent}
+        >
+          Skip to content
+        </button>
+      </Portal>
+
+      <Panel
+        ref={setContainer}
+        class={cx(
+          'flex shrink-0 flex-col lg:max-w-xs md:max-w-[16rem] xl:max-w-md',
+          showPanel() ? 'flex-1' : 'z-10 flex-none shadow dark:shadow-xl',
+        )}
       >
-        Skip to content
-      </button>
+        <div
+          class={cx(
+            'sticky top-0 flex flex-col gap-4 bg-white/25 p-4 backdrop-blur-md dark:bg-gray-900/25',
+            !showPanel() && 'pb-0',
+            showFeeds() && 'mb-4 pb-0',
+            showPanel() && containerScroll.y > 0 && 'z-10 shadow dark:shadow-xl',
+          )}
+        >
+          <div class="-m-4 mb-0 xl:hidden">
+            <NavRow
+              open={showFeeds()}
+              setOpen={setShowFeedSelector}
+              showFeedSwitch={(!viewingEntry() && isMobile()) || !isMobile()}
+              showBackArrow={viewingEntry() && isMobile()}
+            />
+          </div>
 
-      <Sidebar class="hidden xl:flex xl:w-sidebar xl:shrink-0" />
+          <Show when={showPanel() && !showFeeds()}>
+            <NavViewSwitcher />
 
-      <div class="flex h-full w-full flex-1 flex-col overflow-hidden">
-        <div class="flex flex-1 flex-col overflow-auto md:flex-row md:gap-4 md:p-4">
-          <Panel
-            ref={setContainer}
-            class={cx(
-              'flex shrink-0 flex-col lg:max-w-xs md:max-w-[16rem] xl:max-w-md',
-              showPanel() ? 'flex-1' : 'z-10 flex-none shadow dark:shadow-xl',
-            )}
-          >
-            <div
-              class={cx(
-                'sticky top-0 flex flex-col gap-4 bg-white/25 p-4 backdrop-blur-md dark:bg-gray-900/25',
-                !showPanel() && 'pb-0',
-                showFeeds() && 'mb-4 pb-0',
-                showPanel() && containerScroll.y > 0 && 'z-10 shadow dark:shadow-xl',
-              )}
-            >
-              <div class="-m-4 mb-0 xl:hidden">
-                <NavRow
-                  open={showFeeds()}
-                  setOpen={setShowFeeds}
-                  showFeedSwitch={(!viewingEntry() && isMobile()) || !isMobile()}
-                  showBackArrow={viewingEntry() && isMobile()}
-                />
-              </div>
+            <div class="flex justify-between">
+              <Switch>
+                {/* Showing single feed -- show feed info */}
+                <Match when={state.params.feed_uuid}>
+                  <FeedInfo uuid={state.params.feed_uuid!} />
+                </Match>
 
-              <Show when={showPanel() && !showFeeds()}>
-                <NavViewSwitcher />
-
-                <div class="flex justify-between">
-                  <Switch>
-                    {/* Showing single feed -- show feed info */}
-                    <Match when={state.params.feed_uuid}>
-                      <FeedInfo uuid={state.params.feed_uuid!} />
-                    </Match>
-
-                    {/* Showing all feeds -- create custom label */}
-                    <Match when={!state.params.feed_uuid}>
-                      <div class="flex w-full items-start justify-between">
-                        <FeedHeader title="All feeds" />
-                        <MenuFeeds
-                          open={allFeedsMenuOpen()}
-                          setOpen={setAllFeedsMenuOpen}
-                          triggerClass="h-6 w-6 rounded-md"
-                          triggerIconClass="w-4 h-4 text-gray-500"
-                          gutter={4}
-                        />
-                      </div>
-                    </Match>
-                  </Switch>
-                </div>
-              </Show>
+                {/* Showing all feeds -- create custom label */}
+                <Match when={!state.params.feed_uuid}>
+                  <div class="flex w-full items-start justify-between">
+                    <FeedHeader title="All feeds" />
+                    <MenuFeeds
+                      open={allFeedsMenuOpen()}
+                      setOpen={setAllFeedsMenuOpen}
+                      triggerClass="h-6 w-6 rounded-md"
+                      triggerIconClass="w-4 h-4 text-gray-500"
+                      gutter={4}
+                    />
+                  </div>
+                </Match>
+              </Switch>
             </div>
-
-            <Show when={showPanel()}>
-              <div class={cx('flex-1', containerScroll.y > 0 ? 'z-auto' : 'z-10')}>
-                <Switch>
-                  <Match when={showFeeds()}>
-                    <FeedList />
-                  </Match>
-
-                  <Match when={!showFeeds()}>
-                    <EntryList containerBounds={containerBounds} containsActiveElement={containsActiveElement()} />
-                  </Match>
-                </Switch>
-              </div>
-            </Show>
-          </Panel>
-
-          <EntryPanel />
+          </Show>
         </div>
-      </div>
+
+        <Show when={showPanel()}>
+          <div class={cx('flex-1', containerScroll.y > 0 ? 'z-auto' : 'z-10')}>
+            <Switch>
+              <Match when={showFeeds()}>
+                <FeedList />
+              </Match>
+
+              <Match when={!showFeeds()}>
+                <EntryList containerBounds={containerBounds} containsActiveElement={containsActiveElement()} />
+              </Match>
+            </Switch>
+          </div>
+        </Show>
+      </Panel>
     </>
   );
 };

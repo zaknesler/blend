@@ -1,0 +1,9 @@
+@tailwind base;
+
+/* Fix top margin on image in first element */
+.prose *:first-child img:first-child {
+  margin-top: 0;
+}
+
+@tailwind components;
+@tailwind utilities;
