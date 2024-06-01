@@ -3,7 +3,7 @@ import { TextField } from '@kobalte/core/text-field';
 import { useNavigate } from '@solidjs/router';
 import { createMutation, useQueryClient } from '@tanstack/solid-query';
 import { HiSolidXMark } from 'solid-icons/hi';
-import { type Component, type Setter, createSignal } from 'solid-js';
+import { type Component, type Setter, Show, createSignal } from 'solid-js';
 import { addFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
 import { inputClass } from '~/constants/ui/input';
@@ -87,11 +87,15 @@ export const CreateFeedModal: Component<CreateFeedProps> = props => {
                     Add feed
                   </Button>
 
-                  {isDisabled() && <Spinner />}
+                  <Show when={isDisabled()}>
+                    <Spinner />
+                  </Show>
                 </div>
               </form>
 
-              {add.isError && <p>Error: {add.error?.message}</p>}
+              <Show when={add.isError}>
+                <p>Error: {add.error?.message}</p>
+              </Show>
             </div>
           </Dialog.Content>
         </div>

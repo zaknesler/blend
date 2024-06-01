@@ -65,13 +65,13 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
   >
     <div class="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-md md:h-5 md:w-5 md:rounded">
       <Switch fallback={<RssIcon />}>
-        <Match when={!!props.favicon_src}>
+        <Match when={props.favicon_src}>
           <Image fallbackDelay={500} class="h-full w-full">
             <Image.Img class="h-full w-full object-fill" src={props.favicon_src} alt={`${props.title} favicon`} />
             <Image.Fallback as={RssIcon} />
           </Image>
         </Match>
-        <Match when={!!props.icon}>
+        <Match when={props.icon}>
           <Dynamic component={props.icon} />
         </Match>
       </Switch>

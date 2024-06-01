@@ -1,5 +1,5 @@
 import { type NullableBounds, createElementBounds } from '@solid-primitives/bounds';
-import { type Component, For, Match, Switch, createEffect, createSignal } from 'solid-js';
+import { type Component, For, Match, Show, Switch, createEffect, createSignal } from 'solid-js';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useInfiniteEntries } from '~/hooks/queries/use-infinite-entries';
 import { useListNav } from '~/hooks/use-list-nav';
@@ -49,7 +49,14 @@ export const EntryList: Component<EntryListProps> = props => {
       </Match>
 
       <Match when={entries.query.isSuccess && feeds.data}>
-        {entries.getAllEntries().length ? (
+        <Show
+          when={entries.getAllEntries().length}
+          fallback={
+            <div class="h-full w-full flex-1 px-4 pb-4">
+              <Empty>No entries to display.</Empty>
+            </div>
+          }
+        >
           <div class="-mt-2 flex flex-col gap-2 px-4 pb-2">
             <For each={entries.getAllEntries()}>
               {(entry, index) => (
@@ -62,17 +69,13 @@ export const EntryList: Component<EntryListProps> = props => {
 
             <div ref={setBottomOfList} class="-mt-1" />
 
-            {entries.query.isFetchingNextPage && (
+            <Show when={entries.query.isFetchingNextPage}>
               <div class="flex w-full items-center justify-center p-4">
                 <Spinner />
               </div>
-            )}
+            </Show>
           </div>
-        ) : (
-          <div class="h-full w-full flex-1 px-4 pb-4">
-            <Empty>No entries to display.</Empty>
-          </div>
-        )}
+        </Show>
       </Match>
     </Switch>
   );

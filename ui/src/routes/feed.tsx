@@ -3,7 +3,7 @@ import { createElementBounds } from '@solid-primitives/bounds';
 import { createScrollPosition } from '@solid-primitives/scroll';
 import { useIsRouting } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
-import { createEffect, createSignal } from 'solid-js';
+import { Match, Show, Switch, createEffect, createSignal } from 'solid-js';
 import { EntryList } from '~/components/entry/entry-list';
 import { EntryPanel } from '~/components/entry/entry-panel';
 import { FeedHeader } from '~/components/feed/feed-header';
@@ -73,11 +73,11 @@ export default () => {
       <div class="flex h-full w-full flex-1 flex-col overflow-hidden">
         <div class="flex flex-1 flex-col overflow-auto md:flex-row md:gap-4 md:p-4">
           <Panel
+            ref={setContainer}
             class={cx(
               'flex shrink-0 flex-col lg:max-w-xs md:max-w-[16rem] xl:max-w-md',
               showPanel() ? 'flex-1' : 'z-10 flex-none shadow dark:shadow-xl',
             )}
-            ref={setContainer}
           >
             <div
               class={cx(
@@ -96,14 +96,18 @@ export default () => {
                 />
               </div>
 
-              {showPanel() && !showFeeds() && (
-                <>
-                  <NavViewSwitcher />
+              <Show when={showPanel() && !showFeeds()}>
+                <NavViewSwitcher />
 
-                  <div class="flex justify-between">
-                    {state.params.feed_uuid ? (
+                <div class="flex justify-between">
+                  <Switch>
+                    {/* Showing single feed -- show feed info */}
+                    <Match when={state.params.feed_uuid}>
                       <FeedInfo uuid={state.params.feed_uuid!} />
-                    ) : (
+                    </Match>
+
+                    {/* Showing all feeds -- create custom label */}
+                    <Match when={!state.params.feed_uuid}>
                       <div class="flex w-full items-start justify-between">
                         <FeedHeader title="All feeds" />
                         <MenuFeeds
@@ -114,23 +118,25 @@ export default () => {
                           gutter={4}
                         />
                       </div>
-                    )}
-                  </div>
-                </>
-              )}
+                    </Match>
+                  </Switch>
+                </div>
+              </Show>
             </div>
 
-            {showPanel() && (
+            <Show when={showPanel()}>
               <div class={cx('flex-1', containerScroll.y > 0 ? 'z-auto' : 'z-10')}>
-                {showFeeds() ? (
-                  <div class="flex w-full flex-col items-stretch gap-1 px-4">
+                <Switch>
+                  <Match when={showFeeds()}>
                     <FeedList />
-                  </div>
-                ) : (
-                  <EntryList containerBounds={containerBounds} containsActiveElement={containsActiveElement()} />
-                )}
+                  </Match>
+
+                  <Match when={!showFeeds()}>
+                    <EntryList containerBounds={containerBounds} containsActiveElement={containsActiveElement()} />
+                  </Match>
+                </Switch>
               </div>
-            )}
+            </Show>
           </Panel>
 
           <EntryPanel />

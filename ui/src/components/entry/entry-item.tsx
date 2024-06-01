@@ -1,7 +1,7 @@
 import { A, type AnchorProps, useMatch } from '@solidjs/router';
 import { createQuery } from '@tanstack/solid-query';
 import { cx } from 'class-variance-authority';
-import { type Component, splitProps } from 'solid-js';
+import { type Component, Show, splitProps } from 'solid-js';
 import { getEntry } from '~/api/entries';
 import { DATA_ATTRIBUTES } from '~/constants/attributes';
 import { QUERY_KEYS } from '~/constants/query';
@@ -63,23 +63,26 @@ export const EntryItem: Component<EntryItemProps> = props => {
           isActive() ? 'text-gray-300' : 'text-gray-500 dark:text-gray-400',
         )}
       >
-        {!isRead() && (
+        <Show when={!isRead()}>
           <span
             class={cx(
               'h-2 w-2 shrink-0 self-center rounded-full transition',
               isActive() ? 'bg-gray-400' : 'bg-gray-500 dark:bg-gray-300',
             )}
           />
-        )}
+        </Show>
 
-        {!state.params.feed_uuid && (
-          <>
-            <span class="truncate break-all font-medium">{feed()?.title_display || feed()?.title}</span>
-            {!!getDate() && <span class="opacity-50">&ndash;</span>}
-          </>
-        )}
+        <Show when={!state.params.feed_uuid}>
+          <span class="truncate break-all font-medium">{feed()?.title_display || feed()?.title}</span>
 
-        {!!getDate() && <span class="shrink-0">{formatDate(getDate()!)}</span>}
+          <Show when={getDate()}>
+            <span class="opacity-50">&ndash;</span>
+          </Show>
+        </Show>
+
+        <Show when={getDate()}>
+          <span class="shrink-0">{formatDate(getDate()!)}</span>
+        </Show>
       </small>
     </A>
   );

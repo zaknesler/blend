@@ -46,11 +46,11 @@ export const EntryPanel = () => {
     <Show
       when={state.params.entry_uuid}
       fallback={
-        gtBreakpoint('md') && (
+        <Show when={gtBreakpoint('md')}>
           <Panel class="h-full w-full p-4 lg:p-8">
             <Empty />
           </Panel>
-        )
+        </Show>
       }
     >
       <Switch>
@@ -68,7 +68,9 @@ export const EntryPanel = () => {
 
         <Match when={entry.isSuccess}>
           <Panel class="p-4 lg:p-8">
-            {entry.data ? <EntryView entry={entry.data} class="max-w-4xl" /> : 'No entry'}
+            <Show when={entry.data} fallback="No data.">
+              <EntryView entry={entry.data!} class="max-w-4xl" />
+            </Show>
           </Panel>
         </Match>
       </Switch>

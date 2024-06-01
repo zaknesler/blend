@@ -1,6 +1,6 @@
 import { Button as BaseButton, type ButtonRootProps } from '@kobalte/core/button';
 import type { VariantProps } from 'class-variance-authority';
-import type { JSX, ParentComponent } from 'solid-js';
+import { type JSX, type ParentComponent, Show } from 'solid-js';
 import { buttonClass } from '~/constants/ui/button';
 
 export type ButtonProps = JSX.IntrinsicElements['button'] &
@@ -23,14 +23,10 @@ export const Button: ParentComponent<ButtonProps> = props => (
       class: props.class,
     })}
   >
-    {props.icon ? (
-      <>
-        {props.iconSide === 'left' && props.icon}
-        <span>{props.children}</span>
-        {props.iconSide === 'right' && props.icon}
-      </>
-    ) : (
-      props.children
-    )}
+    <Show when={props.icon} fallback={props.children}>
+      <Show when={props.iconSide === 'left'}>{props.icon}</Show>
+      <span>{props.children}</span>
+      <Show when={props.iconSide === 'right'}>{props.icon}</Show>
+    </Show>
   </BaseButton>
 );

@@ -3,7 +3,7 @@ import type { TooltipTriggerProps } from '@kobalte/core/tooltip';
 import { useNavigate } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { HiOutlineQueueList, HiSolidArrowLeft, HiSolidXMark } from 'solid-icons/hi';
-import { type Component, type Setter, createSignal } from 'solid-js';
+import { type Component, type Setter, Show, createSignal } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { useQueryState } from '~/hooks/use-query-state';
 import { LogoSquare } from '../layout/logo';
@@ -30,7 +30,7 @@ export const NavRow: Component<NavRowProps> = props => {
       <MenuSettings open={settingsOpen()} setOpen={setSettingsOpen} gutter={4} />
 
       <div class="flex flex-1 items-center justify-end">
-        {props.showFeedSwitch && (
+        <Show when={props.showFeedSwitch}>
           <Tooltip openDelay={100}>
             <Tooltip.Trigger
               as={(local: TooltipTriggerProps) => (
@@ -45,9 +45,9 @@ export const NavRow: Component<NavRowProps> = props => {
             />
             <Tooltip.Content>{props.open ? 'Hide feeds' : 'Show feeds'}</Tooltip.Content>
           </Tooltip>
-        )}
+        </Show>
 
-        {props.showBackArrow && (
+        <Show when={props.showBackArrow}>
           <Tooltip openDelay={100}>
             <Tooltip.Trigger
               as={(local: TooltipTriggerProps) => (
@@ -62,7 +62,7 @@ export const NavRow: Component<NavRowProps> = props => {
             />
             <Tooltip.Content>Back to feeds</Tooltip.Content>
           </Tooltip>
-        )}
+        </Show>
       </div>
     </div>
   );
