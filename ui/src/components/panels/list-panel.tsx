@@ -52,6 +52,7 @@ export const ListPanel = () => {
   createEffect(() => {
     // Scroll to top of list whenever the feed URL changes
     state.getFeedUrl();
+
     container()?.scrollTo({ top: 0, behavior: 'instant' });
   });
 
@@ -101,7 +102,7 @@ export const ListPanel = () => {
                     <MenuFeeds
                       open={allFeedsMenuOpen()}
                       setOpen={setAllFeedsMenuOpen}
-                      triggerClass="h-6 w-6 rounded-md"
+                      triggerClass="size-6 rounded-md"
                       triggerIconClass="w-4 h-4 text-gray-500"
                       gutter={4}
                     />

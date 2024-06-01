@@ -1,4 +1,5 @@
 import { type NullableBounds, createElementBounds } from '@solid-primitives/bounds';
+import { HiOutlineInbox } from 'solid-icons/hi';
 import { type Component, For, Match, Show, Switch, createEffect, createSignal } from 'solid-js';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useInfiniteEntries } from '~/hooks/queries/use-infinite-entries';
@@ -37,7 +38,7 @@ export const EntryList: Component<EntryListProps> = props => {
   return (
     <Switch>
       <Match when={entries.query.isPending}>
-        <div class="h-full w-full flex-1 p-4">
+        <div class="size-full flex-1 p-4">
           <Empty>
             <Spinner />
           </Empty>
@@ -52,8 +53,8 @@ export const EntryList: Component<EntryListProps> = props => {
         <Show
           when={entries.getAllEntries().length}
           fallback={
-            <div class="h-full w-full flex-1 p-4">
-              <Empty>No entries to display.</Empty>
+            <div class="size-full flex-1 p-4">
+              <Empty icon={HiOutlineInbox} text="No items to display" />
             </div>
           }
         >

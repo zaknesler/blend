@@ -28,7 +28,7 @@ export const NavRow: Component<NavRowProps> = props => {
 
   return (
     <div class={cx('flex w-full items-center gap-4 bg-gray-50 p-4 dark:bg-gray-900', props.class)}>
-      <LogoSquare class="h-6 w-6" />
+      <LogoSquare class="size-6" />
 
       <Show when={viewport.lteBreakpoint('md') ? !state.params.entry_uuid : true}>
         <MenuSettings open={settingsOpen()} setOpen={setSettingsOpen} gutter={4} />
@@ -46,7 +46,7 @@ export const NavRow: Component<NavRowProps> = props => {
                 >
                   <Dynamic
                     component={props.open ? HiSolidXMark : HiOutlineQueueList}
-                    class="h-5 w-5 text-gray-500 dark:text-gray-400"
+                    class="size-5 text-gray-500 dark:text-gray-400"
                   />
                 </Button>
               )}
@@ -64,7 +64,7 @@ export const NavRow: Component<NavRowProps> = props => {
                   onClick={() => navigate(state.getFeedUrl())}
                   class="-m-1 ml-auto cursor-default appearance-none rounded-lg p-1 dark:hover:bg-gray-800 hover:bg-gray-100"
                 >
-                  <HiSolidArrowLeft class="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  <HiSolidArrowLeft class="size-5 text-gray-500 dark:text-gray-400" />
                 </Button>
               )}
             />

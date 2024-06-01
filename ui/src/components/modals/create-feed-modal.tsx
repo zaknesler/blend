@@ -63,7 +63,7 @@ export const CreateFeedModal: Component<CreateFeedProps> = props => {
                 <Dialog.Title class="font-semibold text-lg/4 dark:text-gray-200">Add a new feed</Dialog.Title>
 
                 <Dialog.CloseButton class="rounded-lg p-1 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2">
-                  <HiSolidXMark class="h-5 w-5 text-gray-500" />
+                  <HiSolidXMark class="size-5 text-gray-500" />
                 </Dialog.CloseButton>
               </div>
               <Dialog.Description class="text-gray-600 text-sm dark:text-gray-400">

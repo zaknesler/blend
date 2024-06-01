@@ -8,11 +8,11 @@ const spinner = cva('animate-spin', {
       light: 'text-white',
     },
     size: {
-      xs: 'h-4 w-4',
-      sm: 'h-5 w-5',
-      md: 'h-6 w-6',
-      lg: 'h-8 w-8',
-      full: 'h-full w-full',
+      xs: 'size-4',
+      sm: 'size-5',
+      md: 'size-6',
+      lg: 'size-8',
+      full: 'size-full',
     },
   },
   defaultVariants: {

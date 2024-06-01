@@ -9,8 +9,8 @@ export const MenuSettings: Component<MenuProps> = props => {
 
   const local = mergeProps(
     {
-      triggerClass: 'h-6 w-6 rounded-md',
-      triggerIconClass: 'h-5 w-5 text-gray-500',
+      triggerClass: 'size-6 rounded-md',
+      triggerIconClass: 'size-5 text-gray-500',
       triggerIcon: TiCog,
     } as MenuProps,
     props,

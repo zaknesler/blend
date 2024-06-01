@@ -37,7 +37,7 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
             uuid={props.uuid}
             open={contextMenuOpen()}
             setOpen={setContextMenuOpen}
-            triggerClass="h-6 w-6 rounded-md"
+            triggerClass="size-6 rounded-md"
             gutter={4}
           />
         </div>

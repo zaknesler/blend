@@ -19,7 +19,14 @@ export const Logo: Component<LogoProps> = props => {
         local.class,
       )}
     >
-      <svg class="h-auto w-20" viewBox="0 0 202 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        class="h-auto w-20"
+        viewBox="0 0 202 72"
+        width="202"
+        height="72"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <title>Blend Logo</title>
         <rect width="202" height="72" fill={`url(#${id}-a)`} />
         <g filter={`url(#${id}-b)`}>
@@ -88,7 +95,7 @@ export const LogoSquare: Component<LogoProps> = props => {
   const id = createUniqueId();
 
   const [_local, rest] = splitProps(props, ['class']);
-  const local = mergeProps({ class: 'h-5 w-5' }, _local);
+  const local = mergeProps({ class: 'size-5' }, _local);
 
   return (
     <A
@@ -99,7 +106,7 @@ export const LogoSquare: Component<LogoProps> = props => {
         local.class,
       )}
     >
-      <svg class="h-full w-full" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
+      <svg class="size-full" fill="none" xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72">
         <title>Blend Logo</title>
         <rect width="72" height="72" fill={`url(#${id}-a)`} />
         <g filter={`url(#${id}-b)`}>

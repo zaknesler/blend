@@ -66,7 +66,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
         <Show when={!isRead()}>
           <span
             class={cx(
-              'h-2 w-2 shrink-0 self-center rounded-full transition',
+              'size-2 shrink-0 self-center rounded-full transition',
               isActive() ? 'bg-gray-400' : 'bg-gray-500 dark:bg-gray-300',
             )}
           />

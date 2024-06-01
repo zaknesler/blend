@@ -67,7 +67,7 @@ const MenuItem: ParentComponent<MenuItemProps> = props => {
 
   return (
     <DropdownMenu.Item {...rest} class={menuClasses.item()}>
-      <Dynamic component={local.icon} class="h-4 w-4 text-gray-400 dark:text-gray-500" />
+      <Dynamic component={local.icon} class="size-4 text-gray-400 dark:text-gray-500" />
       {props.children}
     </DropdownMenu.Item>
   );

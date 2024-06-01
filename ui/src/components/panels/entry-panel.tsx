@@ -47,7 +47,7 @@ export const EntryPanel = () => {
       when={state.params.entry_uuid}
       fallback={
         <Show when={viewport.gtBreakpoint('md')}>
-          <Panel class="h-full w-full p-4 lg:p-8">
+          <Panel class="size-full p-4 lg:p-8">
             <Empty />
           </Panel>
         </Show>
@@ -55,7 +55,7 @@ export const EntryPanel = () => {
     >
       <Switch>
         <Match when={entry.isPending}>
-          <Panel class="h-full w-full p-4 lg:p-8">
+          <Panel class="size-full p-4 lg:p-8">
             <Empty>
               <Spinner />
             </Empty>

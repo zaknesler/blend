@@ -10,8 +10,8 @@ type FeedMenuProps = MenuProps & {
 export const MenuFeed: Component<FeedMenuProps> = props => {
   const local = mergeProps(
     {
-      triggerClass: 'h-5 w-5 rounded',
-      triggerIconClass: 'h-4 w-4 text-gray-500',
+      triggerClass: 'size-5 rounded',
+      triggerIconClass: 'size-4 text-gray-500',
     } as MenuProps,
     props,
   );

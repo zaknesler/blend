@@ -63,11 +63,11 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
         : 'border-transparent dark:hover:bg-gray-800 hover:bg-gray-200 dark:hover:text-white hover:text-gray-900',
     )}
   >
-    <div class="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-md md:h-5 md:w-5 md:rounded">
+    <div class="flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-md md:h-5 md:w-5 md:rounded">
       <Switch fallback={<RssIcon />}>
         <Match when={props.favicon_src}>
-          <Image fallbackDelay={500} class="h-full w-full">
-            <Image.Img class="h-full w-full object-fill" src={props.favicon_src} alt={`${props.title} favicon`} />
+          <Image fallbackDelay={500} class="size-full">
+            <Image.Img class="size-full object-fill" src={props.favicon_src} alt={`${props.title} favicon`} />
             <Image.Fallback as={RssIcon} />
           </Image>
         </Match>
@@ -89,7 +89,7 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
 );
 
 const RssIcon = () => (
-  <div class="flex h-full w-full items-center justify-center bg-gray-400 text-white dark:bg-gray-700 dark:text-gray-400">
-    <HiSolidRss class="h-5 w-5 md:h-4 md:w-4" />
+  <div class="flex size-full items-center justify-center bg-gray-400 text-white dark:bg-gray-700 dark:text-gray-400">
+    <HiSolidRss class="size-5 md:h-4 md:w-4" />
   </div>
 );

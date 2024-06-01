@@ -20,7 +20,7 @@ export const FeedList = () => {
       <BaseFeedItem
         href={'/'.concat(state.getQueryString())}
         title="All feeds"
-        icon={() => <HiOutlineSquare3Stack3d class="h-6 w-6 text-gray-600 md:h-5 md:w-5" />}
+        icon={() => <HiOutlineSquare3Stack3d class="size-6 text-gray-600 md:h-5 md:w-5" />}
         open={allFeedsMenuOpen()}
         active={location.pathname === '/'}
         setOpen={setAllFeedsMenuOpen}

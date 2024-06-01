@@ -23,7 +23,7 @@
     "@solid-primitives/resize-observer": "^2.0.25",
     "@solid-primitives/scheduled": "^1.4.3",
     "@solid-primitives/scroll": "^2.0.23",
-    "@solidjs/router": "^0.13.4",
+    "@solidjs/router": "^0.13.5",
     "@tanstack/solid-query": "^5.40.0",
     "@tanstack/solid-query-devtools": "^5.40.0",
     "class-variance-authority": "^0.7.0",
