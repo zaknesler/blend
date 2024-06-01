@@ -4,7 +4,7 @@ import type { ApiPaginatedResponse } from '~/api';
 import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import type { Entry } from '~/types/bindings';
-import { useQueryState } from '../use-query-state';
+import { useQueryState } from '../../contexts/query-state-context';
 
 export const useInfiniteEntries = () => {
   const state = useQueryState();

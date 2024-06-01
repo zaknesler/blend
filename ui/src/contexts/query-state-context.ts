@@ -1,5 +1,15 @@
 import { useParams, useSearchParams } from '@solidjs/router';
+import { createContext, useContext } from 'solid-js';
 import { type FilterEntriesParams, SortDirection, View } from '~/types/bindings';
+
+type QueryStateContext = ReturnType<typeof makeQueryStateContext>;
+export const QueryStateContext = createContext<QueryStateContext>();
+
+export const useQueryState = () => {
+  const state = useContext(QueryStateContext);
+  if (!state) throw new Error('QueryStateContext has not been initialized.');
+  return state;
+};
 
 type RouterParams = {
   feed_uuid?: string;
@@ -11,10 +21,7 @@ type QueryParams = Partial<Pick<FilterEntriesParams, 'view' | 'sort'>>;
 export const DEFAULT_VIEW = View.Unread;
 export const DEFAULT_DIRECTION = SortDirection.Newest;
 
-/**
- * App state derived from query parameters.
- */
-export const useQueryState = () => {
+export const makeQueryStateContext = () => {
   const params = useParams<RouterParams>();
   const [query, setQuery] = useSearchParams<QueryParams>();
 

@@ -1,10 +1,20 @@
 import { WebSocket } from 'partysocket';
-import { createEffect, createSignal } from 'solid-js';
+import { createContext, createEffect, createSignal, useContext } from 'solid-js';
 import type { Notification } from '~/types/bindings';
 import { wsUrl } from '~/utils/url';
-import { useInvalidateFeed } from './queries/use-invalidate-feed';
+import { useInvalidateFeed } from '../hooks/queries/use-invalidate-feed';
+
+type NotificationsContextType = ReturnType<typeof makeNotificationsContext>;
+export const NotificationsContext = createContext<NotificationsContextType>();
 
 export const useNotifications = () => {
+  const notifications = useContext(NotificationsContext);
+  if (!notifications) throw new Error('NotificationsContext has not been initialized.');
+
+  return notifications;
+};
+
+export const makeNotificationsContext = () => {
   const [feedsRefreshing, setFeedsRefreshing] = createSignal<string[]>([]);
   const invalidateFeed = useInvalidateFeed();
 
@@ -45,4 +55,8 @@ export const useNotifications = () => {
         break;
     }
   });
+
+  return {
+    feedsRefreshing,
+  };
 };

@@ -1,9 +1,9 @@
 import { useLocation } from '@solidjs/router';
 import { HiOutlineSquare3Stack3d } from 'solid-icons/hi';
 import { For, Match, Show, Switch, createSignal } from 'solid-js';
+import { useQueryState } from '~/contexts/query-state-context';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
-import { useQueryState } from '~/hooks/use-query-state';
 import { BaseFeedItem, FeedItem } from './feed-item';
 
 export const FeedList = () => {

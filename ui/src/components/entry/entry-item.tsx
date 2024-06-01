@@ -5,8 +5,8 @@ import { type Component, Show, splitProps } from 'solid-js';
 import { getEntry } from '~/api/entries';
 import { DATA_ATTRIBUTES } from '~/constants/attributes';
 import { QUERY_KEYS } from '~/constants/query';
+import { useQueryState } from '~/contexts/query-state-context';
 import { useFeeds } from '~/hooks/queries/use-feeds';
-import { useQueryState } from '~/hooks/use-query-state';
 import type { Entry } from '~/types/bindings';
 import { formatDate } from '~/utils/date';
 

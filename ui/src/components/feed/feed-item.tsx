@@ -4,8 +4,8 @@ import { cx } from 'class-variance-authority';
 import { HiSolidRss } from 'solid-icons/hi';
 import { type Component, type JSX, Match, type Setter, Show, Switch, createMemo, createSignal } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
+import { useQueryState } from '~/contexts/query-state-context';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
-import { useQueryState } from '~/hooks/use-query-state';
 import type { Feed } from '~/types/bindings';
 
 type FeedItemProps = {

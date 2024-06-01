@@ -2,7 +2,7 @@ import { Tabs } from '@kobalte/core/tabs';
 import { cx } from 'class-variance-authority';
 import { For } from 'solid-js';
 import { VIEWS, VIEW_LABELS } from '~/constants/views';
-import { useQueryState } from '~/hooks/use-query-state';
+import { useQueryState } from '~/contexts/query-state-context';
 import type { View } from '~/types/bindings';
 
 export const NavViewSwitcher = () => {

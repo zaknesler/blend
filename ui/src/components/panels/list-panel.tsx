@@ -12,7 +12,7 @@ import { Panel } from '~/components/layout/panel';
 import { MenuFeeds } from '~/components/menus/feeds-menu';
 import { NavRow } from '~/components/nav/nav-row';
 import { NavViewSwitcher } from '~/components/nav/nav-view-switcher';
-import { useQueryState } from '~/hooks/use-query-state';
+import { useQueryState } from '~/contexts/query-state-context';
 import { useViewport } from '~/hooks/use-viewport';
 
 export const ListPanel = () => {

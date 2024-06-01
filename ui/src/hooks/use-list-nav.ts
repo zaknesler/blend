@@ -4,7 +4,7 @@ import { useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
 import type { Entry } from '~/types/bindings';
 import { findEntryItem } from '~/utils/entries';
-import { useQueryState } from './use-query-state';
+import { useQueryState } from '../contexts/query-state-context';
 import { useViewport } from './use-viewport';
 
 type UseListNavParams = {

@@ -5,7 +5,7 @@ import { cx } from 'class-variance-authority';
 import { HiOutlineQueueList, HiSolidArrowLeft, HiSolidXMark } from 'solid-icons/hi';
 import { type Component, type Setter, Show, createSignal } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
-import { useQueryState } from '~/hooks/use-query-state';
+import { useQueryState } from '~/contexts/query-state-context';
 import { useViewport } from '~/hooks/use-viewport';
 import { LogoSquare } from '../layout/logo';
 import { MenuSettings } from '../menus/settings-menu';
