@@ -1,5 +1,5 @@
 import { WebSocket } from 'partysocket';
-import { createContext, createEffect, createSignal, useContext } from 'solid-js';
+import { createContext, createSignal, useContext } from 'solid-js';
 import type { Notification } from '~/types/bindings';
 import { wsUrl } from '~/utils/url';
 import { useInvalidateFeed } from '../hooks/queries/use-invalidate-feed';
@@ -15,19 +15,13 @@ export const useNotifications = () => {
 };
 
 export const makeNotificationsContext = () => {
-  const [feedsRefreshing, setFeedsRefreshing] = createSignal<string[]>([]);
   const invalidateFeed = useInvalidateFeed();
 
-  createEffect(() => {
-    const refreshing = feedsRefreshing();
-    if (!refreshing.length) return;
-
-    console.log(`refreshing ${refreshing.length} feeds`);
-  });
+  const [feedsRefreshing, setFeedsRefreshing] = createSignal<string[]>([]);
 
   const socket = new WebSocket(wsUrl('/notifications'), undefined, {
     connectionTimeout: 1000,
-    maxRetries: 10,
+    maxRetries: 20,
   });
 
   socket.addEventListener('open', () => console.info('[ws] connection established'));

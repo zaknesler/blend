@@ -4,21 +4,25 @@ import { cx } from 'class-variance-authority';
 import { HiSolidRss } from 'solid-icons/hi';
 import { type Component, type JSX, Match, type Setter, Show, Switch, createMemo, createSignal } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
+import { Transition } from 'solid-transition-group';
+import { useNotifications } from '~/contexts/notifications-context';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
 import type { Feed } from '~/types/bindings';
+import { Spinner } from '../ui/spinner';
 
 type FeedItemProps = {
   feed: Feed;
 };
 
 export const FeedItem: Component<FeedItemProps> = props => {
-  const location = useLocation();
   const state = useQueryState();
-
-  const [open, setOpen] = createSignal(false);
+  const location = useLocation();
 
   const { stats } = useFeedsStats();
+  const notifications = useNotifications();
+
+  const [open, setOpen] = createSignal(false);
 
   const getPath = createMemo(() => `/feeds/${props.feed.uuid}`);
   const isActive = createMemo(() => location.pathname.startsWith(getPath()));
@@ -26,13 +30,16 @@ export const FeedItem: Component<FeedItemProps> = props => {
 
   const getFaviconSrc = () => props.feed.favicon_b64 || props.feed.favicon_url;
 
+  const isLoading = createMemo(() => notifications.feedsRefreshing().includes(props.feed.uuid));
+
   return (
     <BaseFeedItem
       href={getPath().concat(state.getQueryString())}
       title={props.feed.title_display || props.feed.title}
       open={open()}
-      active={isActive()}
       setOpen={setOpen}
+      active={isActive()}
+      loading={isLoading()}
       unread_count={getStats()?.count_unread}
       favicon_src={getFaviconSrc()}
     />
@@ -41,11 +48,12 @@ export const FeedItem: Component<FeedItemProps> = props => {
 
 type BaseFeedItemProps = {
   href: string;
-  unread_count?: number;
-  title?: string;
-  active: boolean;
   open: boolean;
   setOpen: Setter<boolean>;
+  active: boolean;
+  title?: string;
+  loading?: boolean;
+  unread_count?: number;
   favicon_src?: string;
   icon?: () => JSX.Element;
 };
@@ -63,7 +71,7 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
         : 'border-transparent dark:hover:bg-gray-800 hover:bg-gray-200 dark:hover:text-white hover:text-gray-900',
     )}
   >
-    <div class="flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-md md:h-5 md:w-5 md:rounded">
+    <div class="relative flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-md md:h-5 md:w-5 md:rounded">
       <Switch fallback={<RssIcon />}>
         <Match when={props.favicon_src}>
           <Image fallbackDelay={500} class="size-full">
@@ -76,6 +84,21 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
           <Dynamic component={props.icon} />
         </Match>
       </Switch>
+
+      <Transition
+        enterActiveClass="transition duration-50 ease-in-out"
+        exitActiveClass="transition duration-50 ease-in-out"
+        enterClass="opacity-0"
+        exitToClass="opacity-0"
+      >
+        <Show when={props.loading}>
+          <div class="absolute z-10 size-full bg-gray-100/50 backdrop-blur">
+            <div class="size-full scale-75">
+              <Spinner class="size-full" />
+            </div>
+          </div>
+        </Show>
+      </Transition>
     </div>
 
     <span class="flex-1 overflow-x-hidden truncate">{props.title}</span>

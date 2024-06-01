@@ -1,10 +1,10 @@
-import defaultTheme from 'tailwindcss/defaultTheme';
+import kobaltePlugin from '@kobalte/tailwindcss';
+import formsPlugin from '@tailwindcss/forms';
+import typographyPlugin from '@tailwindcss/typography';
 import type { Config } from 'tailwindcss';
 import colors from 'tailwindcss/colors';
+import defaultTheme from 'tailwindcss/defaultTheme';
 import plugin from 'tailwindcss/plugin';
-import formsPlugin from '@tailwindcss/forms';
-import kobaltePlugin from '@kobalte/tailwindcss';
-import typographyPlugin from '@tailwindcss/typography';
 import { screens } from './ui/src/constants/screens';
 
 export default {

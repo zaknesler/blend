@@ -53,6 +53,9 @@ importers:
       solid-js:
         specifier: ^1.8.17
         version: 1.8.17
+      solid-transition-group:
+        specifier: ^0.2.3
+        version: 0.2.3(solid-js@1.8.17)
       wretch:
         specifier: ^2.8.1
         version: 2.8.1
@@ -841,6 +844,11 @@ packages:
 
   '@solid-primitives/styles@0.0.111':
     resolution: {integrity: sha1-sRNy3Af2S4cELCDAvnQuLALKKGk=}
+    peerDependencies:
+      solid-js: ^1.6.12
+
+  '@solid-primitives/transition-group@1.0.5':
+    resolution: {integrity: sha1-8TdsRkjXjLaiKijUCUyUq02QI0Y=}
     peerDependencies:
       solid-js: ^1.6.12
 
@@ -2030,6 +2038,12 @@ packages:
     peerDependencies:
       solid-js: ^1.3
 
+  solid-transition-group@0.2.3:
+    resolution: {integrity: sha1-70QdnkYgzdxNKc28lYsJ+U21FcQ=}
+    engines: {node: '>=18.0.0', pnpm: '>=8.6.0'}
+    peerDependencies:
+      solid-js: ^1.6.12
+
   source-map-js@1.2.0:
     resolution: {integrity: sha1-FrgJwWJRe1uMPn3NMVoqXCYSsq8=}
     engines: {node: '>=0.10.0'}
@@ -3062,6 +3076,10 @@ snapshots:
     dependencies:
       '@solid-primitives/rootless': 1.4.5(solid-js@1.8.17)
       '@solid-primitives/utils': 6.2.3(solid-js@1.8.17)
+      solid-js: 1.8.17
+
+  '@solid-primitives/transition-group@1.0.5(solid-js@1.8.17)':
+    dependencies:
       solid-js: 1.8.17
 
   '@solid-primitives/trigger@1.0.11(solid-js@1.8.17)':
@@ -4382,6 +4400,12 @@ snapshots:
       '@babel/generator': 7.24.6
       '@babel/helper-module-imports': 7.24.6
       '@babel/types': 7.24.6
+      solid-js: 1.8.17
+
+  solid-transition-group@0.2.3(solid-js@1.8.17):
+    dependencies:
+      '@solid-primitives/refs': 1.0.8(solid-js@1.8.17)
+      '@solid-primitives/transition-group': 1.0.5(solid-js@1.8.17)
       solid-js: 1.8.17
 
   source-map-js@1.2.0: {}
