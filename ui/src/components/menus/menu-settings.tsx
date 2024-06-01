@@ -1,10 +1,4 @@
-import {
-  HiSolidArrowDownTray,
-  HiSolidArrowRightOnRectangle,
-  HiSolidCog,
-  HiSolidCog6Tooth,
-  HiSolidPlus,
-} from 'solid-icons/hi';
+import { HiSolidArrowDownTray, HiSolidArrowRightOnRectangle, HiSolidCog6Tooth, HiSolidPlus } from 'solid-icons/hi';
 import { TiCog } from 'solid-icons/ti';
 import { type Component, createSignal, mergeProps } from 'solid-js';
 import { CreateFeedModal } from '../modals/create-feed';

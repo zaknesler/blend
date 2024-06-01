@@ -71,6 +71,7 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
             <Image.Fallback as={RssIcon} />
           </Image>
         </Match>
+
         <Match when={props.icon}>
           <Dynamic component={props.icon} />
         </Match>
