@@ -10,6 +10,7 @@ use tower_http::{
 };
 
 mod context;
+mod crypto;
 mod error;
 mod middleware;
 mod response;

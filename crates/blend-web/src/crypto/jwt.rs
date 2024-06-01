@@ -1,4 +1,4 @@
-use crate::error::{CryptoError, CryptoResult};
+use super::error::{CryptoError, CryptoResult};
 use chrono::{DateTime, Duration, Utc};
 use hmac::{Hmac, Mac};
 use jwt::{SignWithKey, VerifyWithKey};

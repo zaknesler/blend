@@ -8,18 +8,21 @@ license.workspace = true
 
 [dependencies]
 blend-config = { path = "../blend-config" }
-blend-crypto = { path = "../blend-crypto" }
 blend-feed = { path = "../blend-feed" }
 blend-db = { path = "../blend-db" }
 blend-worker = { path = "../blend-worker" }
+argon2 = { version = "0.5", features = ["std"] }
 axum = { version = "0.7", features = ["ws"] }
 axum-embed = "0.1"
 chrono = { workspace = true, features = ["serde"] }
 futures = "0.3"
 futures-util = "0.3"
+hmac = "0.12"
+jwt = "0.16"
 rust-embed = { workspace = true, features = ["interpolate-folder-path"] }
 serde = { workspace = true }
 serde_json = { workspace = true }
+sha2 = "0.10"
 sqlx = { workspace = true, features = ["chrono"] }
 thiserror = { workspace = true }
 tokio = { workspace = true }

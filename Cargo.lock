@@ -439,19 +439,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "blend-crypto"
-version = "0.0.0"
-dependencies = [
- "argon2",
- "blend-config",
- "chrono",
- "hmac",
- "jwt",
- "sha2",
- "thiserror",
-]
-
-[[package]]
 name = "blend-db"
 version = "0.0.0"
 dependencies = [
@@ -491,19 +478,22 @@ dependencies = [
 name = "blend-web"
 version = "0.0.0"
 dependencies = [
+ "argon2",
  "axum",
  "axum-embed",
  "blend-config",
- "blend-crypto",
  "blend-db",
  "blend-feed",
  "blend-worker",
  "chrono",
  "futures",
  "futures-util",
+ "hmac",
+ "jwt",
  "rust-embed",
  "serde",
  "serde_json",
+ "sha2",
  "sqlx",
  "thiserror",
  "tokio",

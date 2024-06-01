@@ -1,4 +1,4 @@
-use crate::error::CryptoResult;
+use super::error::CryptoResult;
 use argon2::{
     password_hash::{rand_core, SaltString},
     Argon2, PasswordHash, PasswordHasher, PasswordVerifier,

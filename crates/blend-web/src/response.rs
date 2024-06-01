@@ -1,10 +1,10 @@
 use super::error::WebError;
+use crate::crypto::Error as CryptoError;
 use axum::{
     http::StatusCode,
     response::{IntoResponse, Response},
     Json,
 };
-use blend_crypto::Error as CryptoError;
 use serde_json::{json, Value};
 
 impl IntoResponse for WebError {
