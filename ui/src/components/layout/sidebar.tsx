@@ -1,7 +1,7 @@
 import { cx } from 'class-variance-authority';
 import { type Component, createSignal } from 'solid-js';
 import { FeedList } from '../feed/feed-list';
-import { MenuSettings } from '../menus/menu-settings';
+import { MenuSettings } from '../menus/settings-menu';
 import { LogoSquare } from './logo';
 
 type SidebarProps = {

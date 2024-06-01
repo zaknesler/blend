@@ -8,7 +8,7 @@ import { Dynamic } from 'solid-js/web';
 import { useQueryState } from '~/hooks/use-query-state';
 import { useViewport } from '~/hooks/use-viewport';
 import { LogoSquare } from '../layout/logo';
-import { MenuSettings } from '../menus/menu-settings';
+import { MenuSettings } from '../menus/settings-menu';
 import { Tooltip } from '../ui/tooltip';
 
 type NavRowProps = {

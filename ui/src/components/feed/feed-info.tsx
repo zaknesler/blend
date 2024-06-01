@@ -2,7 +2,7 @@ import { createQuery } from '@tanstack/solid-query';
 import { type Component, Match, Switch, createSignal } from 'solid-js';
 import { getFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
-import { MenuFeed } from '../menus/menu-feed';
+import { MenuFeed } from '../menus/feed-menu';
 import { FeedHeader } from './feed-header';
 
 type FeedInfoProps = {

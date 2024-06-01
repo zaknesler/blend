@@ -9,7 +9,7 @@ import { FeedHeader } from '~/components/feed/feed-header';
 import { FeedInfo } from '~/components/feed/feed-info';
 import { FeedList } from '~/components/feed/feed-list';
 import { Panel } from '~/components/layout/panel';
-import { MenuFeeds } from '~/components/menus/menu-feeds';
+import { MenuFeeds } from '~/components/menus/feeds-menu';
 import { NavRow } from '~/components/nav/nav-row';
 import { NavViewSwitcher } from '~/components/nav/nav-view-switcher';
 import { useQueryState } from '~/hooks/use-query-state';
