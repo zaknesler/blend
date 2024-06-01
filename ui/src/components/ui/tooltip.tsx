@@ -1,29 +1,30 @@
 import type { PolymorphicProps } from '@kobalte/core/polymorphic';
 import * as TooltipPrimitive from '@kobalte/core/tooltip';
-import { cx } from 'class-variance-authority';
+import type { VariantProps } from 'class-variance-authority';
 import { type JSX, Show, type ValidComponent, mergeProps, splitProps } from 'solid-js';
+import * as classes from '~/constants/ui/tooltip';
 
 const TooltipBase = (props: TooltipPrimitive.TooltipRootProps) => <TooltipPrimitive.Root {...props} />;
 
-type TooltipContentProps = TooltipPrimitive.TooltipContentProps & {
-  class?: string;
-  showArrow?: boolean;
-  children?: JSX.Element;
-};
+type TooltipContentProps = TooltipPrimitive.TooltipContentProps &
+  VariantProps<typeof classes.content> & {
+    class?: string;
+    showArrow?: boolean;
+    children?: JSX.Element;
+  };
 
 const TooltipContent = <T extends ValidComponent = 'div'>(props: PolymorphicProps<T, TooltipContentProps>) => {
-  const [local, rest] = splitProps(props as TooltipContentProps, ['class', 'showArrow', 'children']);
+  const [local, rest] = splitProps(props as TooltipContentProps, ['class', 'showArrow', 'children', 'size']);
   const merge = mergeProps({ showArrow: true }, local);
 
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
         {...rest}
-        class={cx(
-          'z-50 select-none rounded-lg bg-gray-800 px-4 py-2 text-white text-xs',
-          'origin-[--kb-menu-content-transform-origin] animate-content-hide ui-expanded:animate-content-show',
-          local.class,
-        )}
+        class={classes.content({
+          size: local.size,
+          class: ['origin-[--kb-menu-content-transform-origin]', local.class],
+        })}
       >
         <Show when={merge.showArrow}>
           <Tooltip.Arrow class="-mb-px z-50" />

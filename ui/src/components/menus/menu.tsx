@@ -7,7 +7,7 @@ import {
 import { type VariantProps, cx } from 'class-variance-authority';
 import type { IconTypes } from 'solid-icons';
 import { HiSolidEllipsisHorizontal } from 'solid-icons/hi';
-import { type ParentComponent, type Setter, splitProps } from 'solid-js';
+import { type JSX, type ParentComponent, type Setter, Show, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import * as menuClasses from '~/constants/ui/menu';
 
@@ -15,6 +15,7 @@ export type MenuProps = Omit<DropdownMenuRootProps, 'open' | 'onOpenChange'> &
   MenuContentProps & {
     open: boolean;
     setOpen: Setter<boolean>;
+    trigger?: () => JSX.Element;
     triggerIcon?: IconTypes;
     triggerClass?: string;
     triggerIconClass?: string;
@@ -26,6 +27,7 @@ const MenuRoot: ParentComponent<MenuProps> = props => {
     'children',
     'open',
     'setOpen',
+    'trigger',
     'triggerIcon',
     'triggerClass',
     'triggerIconClass',
@@ -33,9 +35,16 @@ const MenuRoot: ParentComponent<MenuProps> = props => {
 
   return (
     <DropdownMenu placement="bottom-end" {...rest} open={local.open} onOpenChange={local.setOpen} modal>
-      <MenuTrigger class={cx('relative', local.triggerClass)}>
-        <Dynamic component={local.triggerIcon || HiSolidEllipsisHorizontal} class={local.triggerIconClass} />
-      </MenuTrigger>
+      <Show
+        when={local.trigger}
+        fallback={
+          <MenuTrigger class={cx('relative', local.triggerClass)}>
+            <Dynamic component={local.triggerIcon || HiSolidEllipsisHorizontal} class={local.triggerIconClass} />
+          </MenuTrigger>
+        }
+      >
+        <Dynamic component={local.trigger} />
+      </Show>
 
       <DropdownMenu.Portal>
         <MenuContent size={local.size}>{local.children}</MenuContent>
@@ -86,4 +95,5 @@ const MenuContent: ParentComponent<MenuContentProps> = props => (
 export const Menu = Object.assign(MenuRoot, {
   Item: MenuItem,
   Content: MenuContent,
+  Trigger: MenuTrigger,
 });

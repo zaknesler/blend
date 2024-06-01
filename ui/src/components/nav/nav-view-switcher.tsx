@@ -25,7 +25,7 @@ export const NavViewSwitcher = () => {
                 class={cx(
                   'w-full rounded-md border border-transparent px-2 py-1.5 transition',
                   'group-focus:!border-gray-400 group-hover:border-gray-200/50 group-hover:bg-gray-50 group-focus:ring-[2px] group-focus:ring-gray-200',
-                  'dark:group-focus:!border-gray-600 dark:group-hover:bg-gray-800 dark:group-focus:ring-gray-800',
+                  'dark:group-focus:!border-gray-600 dark:group-hover:!border-gray-700 dark:group-hover:bg-gray-700 dark:group-focus:ring-gray-800',
                   'ui-group-selected:bg-white ui-group-selected:shadow',
                   'ui-group-selected:dark:bg-gray-900 ui-group-selected:shadow',
                 )}

@@ -6,9 +6,7 @@ import { HiOutlineQueueList, HiSolidArrowLeft, HiSolidXMark } from 'solid-icons/
 import { type Component, type Setter, Show, createSignal } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { useQueryState } from '~/contexts/query-state-context';
-import { useViewport } from '~/hooks/use-viewport';
-import { LogoSquare } from '../layout/logo';
-import { MenuSettings } from '../menus/settings-menu';
+import { AppMenu } from '../menus/menu-app';
 import { Tooltip } from '../ui/tooltip';
 
 type NavRowProps = {
@@ -21,18 +19,13 @@ type NavRowProps = {
 
 export const NavRow: Component<NavRowProps> = props => {
   const state = useQueryState();
-  const viewport = useViewport();
   const navigate = useNavigate();
 
   const [settingsOpen, setSettingsOpen] = createSignal(false);
 
   return (
     <div class={cx('flex w-full items-center gap-4 bg-gray-50 p-4 dark:bg-gray-900', props.class)}>
-      <LogoSquare class="size-6" />
-
-      <Show when={viewport.lteBreakpoint('md') ? !state.params.entry_uuid : true}>
-        <MenuSettings open={settingsOpen()} setOpen={setSettingsOpen} gutter={4} />
-      </Show>
+      <AppMenu open={settingsOpen()} setOpen={setSettingsOpen} gutter={4} />
 
       <div class="flex flex-1 items-center justify-end">
         <Show when={props.showFeedSwitch}>
@@ -42,7 +35,7 @@ export const NavRow: Component<NavRowProps> = props => {
                 <Button
                   {...local}
                   onClick={() => props.setOpen(val => !val)}
-                  class="-m-1 cursor-default appearance-none rounded-lg p-1 dark:hover:bg-gray-800 hover:bg-gray-100"
+                  class="-m-1 z-10 cursor-default appearance-none rounded-lg p-1 dark:hover:bg-gray-700 hover:bg-gray-100 focus:outline-none dark:focus:ring-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30"
                 >
                   <Dynamic
                     component={props.open ? HiSolidXMark : HiOutlineQueueList}
@@ -62,7 +55,7 @@ export const NavRow: Component<NavRowProps> = props => {
                 <Button
                   {...local}
                   onClick={() => navigate(state.getFeedUrl())}
-                  class="-m-1 ml-auto cursor-default appearance-none rounded-lg p-1 dark:hover:bg-gray-800 hover:bg-gray-100"
+                  class="-m-1 z-10 ml-auto cursor-default appearance-none rounded-lg p-1 dark:hover:bg-gray-800 hover:bg-gray-100"
                 >
                   <HiSolidArrowLeft class="size-5 text-gray-500 dark:text-gray-400" />
                 </Button>

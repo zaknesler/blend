@@ -71,7 +71,7 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
         : 'border-transparent dark:hover:bg-gray-800 hover:bg-gray-200 dark:hover:text-white hover:text-gray-900',
     )}
   >
-    <div class="relative flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-md md:h-5 md:w-5 md:rounded">
+    <div class="relative flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-md md:size-5 md:rounded">
       <Switch fallback={<RssIcon />}>
         <Match when={props.favicon_src}>
           <Image fallbackDelay={500} class="size-full">

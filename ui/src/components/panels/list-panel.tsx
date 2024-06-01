@@ -2,6 +2,7 @@ import { createActiveElement } from '@solid-primitives/active-element';
 import { createElementBounds } from '@solid-primitives/bounds';
 import { useIsRouting } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
+import { HiOutlineArrowPath } from 'solid-icons/hi';
 import { Match, Show, Switch, createEffect, createSignal } from 'solid-js';
 import { Portal } from 'solid-js/web';
 import { EntryList } from '~/components/entry/entry-list';
@@ -9,19 +10,21 @@ import { FeedHeader } from '~/components/feed/feed-header';
 import { FeedInfo } from '~/components/feed/feed-info';
 import { FeedList } from '~/components/feed/feed-list';
 import { Panel } from '~/components/layout/panel';
-import { MenuFeeds } from '~/components/menus/feeds-menu';
 import { NavRow } from '~/components/nav/nav-row';
 import { NavViewSwitcher } from '~/components/nav/nav-view-switcher';
 import { useQueryState } from '~/contexts/query-state-context';
+import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
 import { useViewport } from '~/hooks/use-viewport';
+import { IconButton } from '../ui/button/icon-button';
 
 export const ListPanel = () => {
   const state = useQueryState();
   const viewport = useViewport();
   const isRouting = useIsRouting();
 
+  const refresh = useRefreshFeeds();
+
   const [showFeedSelector, setShowFeedSelector] = createSignal(false);
-  const [allFeedsMenuOpen, setAllFeedsMenuOpen] = createSignal(false);
 
   const [container, setContainer] = createSignal<HTMLElement>();
   const containerBounds = createElementBounds(container);
@@ -61,7 +64,7 @@ export const ListPanel = () => {
       <Portal>
         <button
           type="button"
-          class="-translate-y-[9999px] absolute top-2 left-2 z-[9999] select-none appearance-none rounded-lg border bg-white px-3 py-2 text-black text-sm shadow-lg focus:translate-y-0 focus:border-gray-200 active:bg-gray-100 focus:outline-none focus:ring-2"
+          class="-translate-y-[9999px] absolute top-2 left-2 z-[9999] select-none appearance-none rounded-lg border bg-white px-3 py-2 text-black text-sm shadow-lg focus:translate-y-0 dark:focus:border-gray-400 focus:border-gray-200 active:bg-gray-100 dark:bg-gray-950 dark:text-gray-300 focus:outline-none dark:focus:ring-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30"
           tabindex={1}
           onClick={handleSkipToContent}
         >
@@ -97,14 +100,14 @@ export const ListPanel = () => {
 
                 {/* Showing all feeds -- create custom label */}
                 <Match when={!state.params.feed_uuid}>
-                  <div class="flex w-full select-none items-start justify-between">
+                  <div class="flex w-full select-none items-start justify-between gap-2">
                     <FeedHeader title="All feeds" />
-                    <MenuFeeds
-                      open={allFeedsMenuOpen()}
-                      setOpen={setAllFeedsMenuOpen}
-                      triggerClass="size-6 rounded-md"
-                      triggerIconClass="w-4 h-4 text-gray-500"
-                      gutter={4}
+
+                    <IconButton
+                      onClick={() => refresh.refreshFeeds()}
+                      icon={HiOutlineArrowPath}
+                      tooltip="Refresh all feeds"
+                      class="z-10 size-6 rounded-md text-gray-500"
                     />
                   </div>
                 </Match>

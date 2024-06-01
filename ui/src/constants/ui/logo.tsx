@@ -1,8 +1,11 @@
 import { A, type AnchorProps } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
-import { type Component, createUniqueId, mergeProps, splitProps } from 'solid-js';
+import { type Component, Show, createUniqueId, mergeProps, splitProps } from 'solid-js';
+import { Dynamic } from 'solid-js/web';
 
-type LogoProps = Omit<AnchorProps, 'href'>;
+type LogoProps = Omit<AnchorProps, 'href'> & {
+  iconOnly?: boolean;
+};
 
 export const Logo: Component<LogoProps> = props => {
   // Create a unique ID so the IDs don't clash when the component is used multiple times
@@ -27,7 +30,7 @@ export const Logo: Component<LogoProps> = props => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <title>Blend Logo</title>
+        <title>Blend logo</title>
         <rect width="202" height="72" fill={`url(#${id}-a)`} />
         <g filter={`url(#${id}-b)`}>
           <path
@@ -94,54 +97,69 @@ export const LogoSquare: Component<LogoProps> = props => {
   // Create a unique ID so the IDs don't clash when the component is used multiple times
   const id = createUniqueId();
 
-  const [_local, rest] = splitProps(props, ['class']);
+  const [_local, rest] = splitProps(props, ['class', 'iconOnly']);
   const local = mergeProps({ class: 'size-5' }, _local);
 
+  const wrapperClass = cx('shrink-0 select-none overflow-hidden rounded-md', local.class);
+
+  const icon = () => (
+    <svg class="size-full" fill="none" xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72">
+      <title>Blend logo</title>
+      <rect width="72" height="72" fill={`url(#${id}-a)`} />
+      <g filter={`url(#${id}-b)`}>
+        <path
+          d="M18.37 36.046c0-1.586.213-3.111.639-4.575a18.537 18.537 0 0 1 1.73-4.21L15 21.588 21.56 15l5.648 5.673a18.378 18.378 0 0 1 4.191-1.738 16.76 16.76 0 0 1 4.555-.64c1.58 0 3.098.213 4.556.64 1.458.366 2.854.976 4.19 1.83L50.35 15 57 21.405l-5.74 5.765c.73 1.22 1.306 2.623 1.731 4.21.425 1.524.638 3.08.638 4.666 0 1.647-.212 3.202-.638 4.666a15.786 15.786 0 0 1-1.73 4.21l5.557 5.581L50.349 57l-5.648-5.582a21.447 21.447 0 0 1-4.191 1.647c-1.458.427-2.976.64-4.556.64a20.15 20.15 0 0 1-4.737-.548 14.326 14.326 0 0 1-4.1-1.739l-5.557 5.49-6.469-6.496 5.649-5.582a18.382 18.382 0 0 1-1.822-4.21 18.869 18.869 0 0 1-.547-4.574Zm9.203 0c0 1.525.364 2.928 1.093 4.209a9.459 9.459 0 0 0 3.098 3.111c1.275.732 2.672 1.098 4.19 1.098 1.58 0 3.007-.366 4.282-1.098 1.337-.793 2.37-1.83 3.098-3.111a7.87 7.87 0 0 0 1.184-4.21c0-1.585-.394-3.019-1.184-4.3-.729-1.28-1.761-2.288-3.098-3.02-1.275-.793-2.702-1.19-4.282-1.19a7.784 7.784 0 0 0-4.19 1.19 8.655 8.655 0 0 0-3.098 3.02c-.729 1.281-1.093 2.715-1.093 4.3Z"
+          fill="#fff"
+          fill-opacity=".5"
+          shape-rendering="crispEdges"
+        />
+      </g>
+      <defs>
+        <linearGradient id={`${id}-a`} x1="0" y1="0" x2="83.169" y2="16.842" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#78716C" />
+          <stop offset="1" stop-color="#57534E" />
+        </linearGradient>
+        <filter
+          id={`${id}-b`}
+          x="9"
+          y="11"
+          width="58"
+          height="58"
+          filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB"
+        >
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+          <feOffset dx="2" dy="4" />
+          <feGaussianBlur stdDeviation="4" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
+          <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_633_12" />
+          <feBlend in="SourceGraphic" in2="effect1_dropShadow_633_12" result="shape" />
+        </filter>
+      </defs>
+    </svg>
+  );
+
   return (
-    <A
-      {...rest}
-      href="/"
-      class={cx(
-        'shrink-0 select-none overflow-hidden rounded-md focus:outline-none dark:focus:ring-gray-600 focus:ring-4 focus:ring-gray-500 focus:ring-opacity-30',
-        local.class,
-      )}
+    <Show
+      when={!local.iconOnly}
+      fallback={
+        <div class={wrapperClass}>
+          <Dynamic component={icon} />
+        </div>
+      }
     >
-      <svg class="size-full" fill="none" xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72">
-        <title>Blend Logo</title>
-        <rect width="72" height="72" fill={`url(#${id}-a)`} />
-        <g filter={`url(#${id}-b)`}>
-          <path
-            d="M18.37 36.046c0-1.586.213-3.111.639-4.575a18.537 18.537 0 0 1 1.73-4.21L15 21.588 21.56 15l5.648 5.673a18.378 18.378 0 0 1 4.191-1.738 16.76 16.76 0 0 1 4.555-.64c1.58 0 3.098.213 4.556.64 1.458.366 2.854.976 4.19 1.83L50.35 15 57 21.405l-5.74 5.765c.73 1.22 1.306 2.623 1.731 4.21.425 1.524.638 3.08.638 4.666 0 1.647-.212 3.202-.638 4.666a15.786 15.786 0 0 1-1.73 4.21l5.557 5.581L50.349 57l-5.648-5.582a21.447 21.447 0 0 1-4.191 1.647c-1.458.427-2.976.64-4.556.64a20.15 20.15 0 0 1-4.737-.548 14.326 14.326 0 0 1-4.1-1.739l-5.557 5.49-6.469-6.496 5.649-5.582a18.382 18.382 0 0 1-1.822-4.21 18.869 18.869 0 0 1-.547-4.574Zm9.203 0c0 1.525.364 2.928 1.093 4.209a9.459 9.459 0 0 0 3.098 3.111c1.275.732 2.672 1.098 4.19 1.098 1.58 0 3.007-.366 4.282-1.098 1.337-.793 2.37-1.83 3.098-3.111a7.87 7.87 0 0 0 1.184-4.21c0-1.585-.394-3.019-1.184-4.3-.729-1.28-1.761-2.288-3.098-3.02-1.275-.793-2.702-1.19-4.282-1.19a7.784 7.784 0 0 0-4.19 1.19 8.655 8.655 0 0 0-3.098 3.02c-.729 1.281-1.093 2.715-1.093 4.3Z"
-            fill="#fff"
-            fill-opacity=".5"
-            shape-rendering="crispEdges"
-          />
-        </g>
-        <defs>
-          <linearGradient id={`${id}-a`} x1="0" y1="0" x2="83.169" y2="16.842" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#78716C" />
-            <stop offset="1" stop-color="#57534E" />
-          </linearGradient>
-          <filter
-            id={`${id}-b`}
-            x="9"
-            y="11"
-            width="58"
-            height="58"
-            filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
-          >
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
-            <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-            <feOffset dx="2" dy="4" />
-            <feGaussianBlur stdDeviation="4" />
-            <feComposite in2="hardAlpha" operator="out" />
-            <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-            <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_633_12" />
-            <feBlend in="SourceGraphic" in2="effect1_dropShadow_633_12" result="shape" />
-          </filter>
-        </defs>
-      </svg>
-    </A>
+      <A
+        href="/"
+        {...rest}
+        class={cx(
+          'focus:outline-none dark:focus:ring-gray-600 focus:ring-4 focus:ring-gray-500 focus:ring-opacity-30',
+          wrapperClass,
+        )}
+      >
+        <Dynamic component={icon} />
+      </A>
+    </Show>
   );
 };
