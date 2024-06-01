@@ -70,8 +70,8 @@ export const ListPanel = () => {
 
       <Panel
         class={cx(
-          'flex shrink-0 flex-col lg:max-w-xs md:max-w-[16rem] xl:max-w-md',
-          showPanel() ? 'flex-1 overflow-hidden' : 'z-10 flex-none shadow dark:shadow-xl',
+          'z-10 flex shrink-0 flex-col lg:max-w-xs md:max-w-[16rem] xl:max-w-md',
+          showPanel() ? 'flex-1 overflow-hidden' : 'flex-none shadow dark:shadow-xl',
         )}
       >
         <div class="z-10 flex shrink-0 flex-col gap-4 bg-gray-50 p-4 shadow dark:bg-gray-900 dark:shadow-xl">
@@ -113,7 +113,7 @@ export const ListPanel = () => {
         </div>
 
         <Show when={showPanel()}>
-          <div ref={setContainer} class="z-10 flex-1 overflow-auto pt-0.5">
+          <div ref={setContainer} class="flex-1 overflow-auto pt-0.5">
             <Switch>
               <Match when={showFeeds()}>
                 <FeedList />
