@@ -98,7 +98,7 @@ export const CreateFeedModal: Component<CreateFeedProps> = props => {
               </form>
 
               <Show when={add.isError && getErrorMessage(add.error)}>
-                <p>Error: {getErrorMessage(add.error)}</p>
+                <p class="font-medium text-red-700 text-sm dark:text-red-500">Error: {getErrorMessage(add.error)}</p>
               </Show>
             </div>
           </Dialog.Content>
