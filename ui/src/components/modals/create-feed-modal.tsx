@@ -1,13 +1,13 @@
 import { Dialog } from '@kobalte/core/dialog';
-import { TextField } from '@kobalte/core/text-field';
 import { useNavigate } from '@solidjs/router';
 import { createMutation, useQueryClient } from '@tanstack/solid-query';
 import { HiSolidXMark } from 'solid-icons/hi';
 import { type Component, type Setter, Show, createSignal } from 'solid-js';
+import { getErrorMessage } from '~/api';
 import { addFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
-import { inputClass } from '~/constants/ui/input';
 import { Button } from '../ui/button';
+import { TextInput } from '../ui/input';
 import { Spinner } from '../ui/spinner';
 
 type CreateFeedProps = {
@@ -35,9 +35,12 @@ export const CreateFeedModal: Component<CreateFeedProps> = props => {
 
     if (!value() || isDisabled()) return;
 
-    const feed = await add.mutateAsync({ url: value() });
+    const feed = await add.mutateAsync({ url: value() }).catch(() => null);
+    if (!feed) return;
+
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS] });
     navigate(`/feeds/${feed.uuid}`);
+
     props.setOpen(false);
     add.reset();
     setValue('');
@@ -73,14 +76,15 @@ export const CreateFeedModal: Component<CreateFeedProps> = props => {
 
             <div class="flex flex-col items-stretch gap-4 p-4">
               <form onSubmit={handleSubmit} class="flex flex-col gap-4">
-                <TextField value={value()} onChange={setValue} class="flex flex-col items-stretch gap-1">
-                  <TextField.Label class="text-gray-600 text-sm dark:text-gray-400">URL</TextField.Label>
-                  <TextField.Input
-                    ref={setInputElement}
-                    class={inputClass({ disabled: isDisabled() })}
-                    placeholder="https://example.com/feed.xml"
-                  />
-                </TextField>
+                <TextInput
+                  name="url"
+                  label="URL"
+                  value={value()}
+                  onChange={setValue}
+                  placeholder="https://example.com/feed.xml"
+                  error={add.error}
+                  ref={setInputElement}
+                />
 
                 <div class="flex items-center justify-between gap-4">
                   <Button size="sm" class="self-start" onClick={handleSubmit} disabled={isDisabled()}>
@@ -93,8 +97,8 @@ export const CreateFeedModal: Component<CreateFeedProps> = props => {
                 </div>
               </form>
 
-              <Show when={add.isError}>
-                <p>Error: {add.error?.message}</p>
+              <Show when={add.isError && getErrorMessage(add.error)}>
+                <p>Error: {getErrorMessage(add.error)}</p>
               </Show>
             </div>
           </Dialog.Content>

@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority';
 
-export const inputClass = cva(
+export const input = cva(
   [
     'form-input size-full appearance-none rounded-lg border bg-white font-normal shadow-xs transition-[border,box-shadow]',
     'focus:outline-none focus:ring-4 focus:ring-opacity-30',
@@ -10,11 +10,7 @@ export const inputClass = cva(
   {
     variants: {
       error: {
-        true: [
-          'border-red-500 bg-[right_2.75rem_center] pr-12',
-          'focus:border-red-600 focus:ring-red-500',
-          'dark:border-red-900',
-        ],
+        true: ['border-red-500', 'focus:border-red-600 focus:ring-red-500', 'dark:border-red-900'],
         false: [
           'border-gray-200 text-gray-700',
           'focus:border-gray-600 focus:ring-gray-500',
