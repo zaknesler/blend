@@ -2,7 +2,7 @@ import { cva } from 'class-variance-authority';
 
 export const content = cva(
   [
-    'z-50 select-none bg-gray-800 text-gray-100 dark:bg-gray-950',
+    'z-50 select-none bg-gray-800 text-gray-100 dark:bg-gray-700',
     'animate-content-hide ui-expanded:animate-content-show',
   ],
   {

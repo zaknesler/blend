@@ -60,7 +60,7 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
         >
           <div
             class={cx(
-              'prose prose-sm lg:prose-base max-w-none',
+              'prose prose-base max-w-none',
               'prose-stone dark:prose-invert prose-pre:md:text-base prose-pre:text-sm',
               'prose-headings:font-bold prose-h1:text-2xl/5 prose-h2:text-xl/5 prose-h3:text-lg/5 prose-h4:text-base/5',
             )}

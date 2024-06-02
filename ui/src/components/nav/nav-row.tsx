@@ -24,7 +24,7 @@ export const NavRow: Component<NavRowProps> = props => {
   const [settingsOpen, setSettingsOpen] = createSignal(false);
 
   return (
-    <div class={cx('flex w-full items-center gap-4 bg-gray-50 p-4 dark:bg-gray-900', props.class)}>
+    <div class={cx('flex w-full items-center gap-4 bg-gray-50 p-4 dark:bg-gray-950 md:dark:bg-gray-900', props.class)}>
       <AppMenu open={settingsOpen()} setOpen={setSettingsOpen} gutter={4} />
 
       <div class="flex flex-1 items-center justify-end">

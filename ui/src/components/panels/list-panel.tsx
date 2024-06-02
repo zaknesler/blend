@@ -78,7 +78,7 @@ export const ListPanel = () => {
           showPanel() ? 'flex-1 overflow-hidden' : 'flex-none shadow dark:shadow-xl',
         )}
       >
-        <div class="z-10 flex shrink-0 flex-col gap-4 bg-gray-50 p-4 shadow dark:bg-gray-900 dark:shadow-xl">
+        <div class="z-10 flex shrink-0 flex-col gap-4 bg-gray-50 p-4 shadow dark:bg-gray-950 md:dark:bg-gray-900 dark:shadow-xl">
           <div class="-m-4 xl:hidden">
             <NavRow
               open={showFeeds()}

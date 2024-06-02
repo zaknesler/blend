@@ -46,7 +46,7 @@ export const EntryList: Component<EntryListProps> = props => {
       </Match>
 
       <Match when={entries.query.isError}>
-        <p class="px-4">Error: {entries.query.error?.message}</p>
+        <p class="p-4">Error: {entries.query.error?.message}</p>
       </Match>
 
       <Match when={entries.query.isSuccess && feeds.data}>

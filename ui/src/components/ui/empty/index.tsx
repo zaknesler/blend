@@ -21,11 +21,11 @@ export const Empty: ParentComponent<EmptyProps> = props => {
       )}
     >
       <Show when={local.icon}>
-        <Dynamic component={local.icon} class={cx('size-16 text-gray-300', styles.icon)} />
+        <Dynamic component={local.icon} class={cx('size-16 text-gray-300 dark:text-gray-600', styles.icon)} />
       </Show>
 
       <Show when={local.text}>
-        <small class="text-gray-400 text-sm dark:text-gray-300">{local.text}</small>
+        <small class="text-gray-400 text-sm dark:text-gray-500">{local.text}</small>
       </Show>
 
       {local.children}
