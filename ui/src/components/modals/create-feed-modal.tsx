@@ -2,7 +2,7 @@ import { Dialog } from '@kobalte/core/dialog';
 import { useNavigate } from '@solidjs/router';
 import { createMutation, useQueryClient } from '@tanstack/solid-query';
 import { HiSolidXMark } from 'solid-icons/hi';
-import { type Component, type Setter, Show, createSignal } from 'solid-js';
+import { type Component, type Setter, Show, createEffect, createSignal } from 'solid-js';
 import { getErrorMessage } from '~/api';
 import { addFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
@@ -42,14 +42,23 @@ export const CreateFeedModal: Component<CreateFeedProps> = props => {
     navigate(`/feeds/${feed.uuid}`);
 
     props.setOpen(false);
-    add.reset();
-    setValue('');
   };
 
   const handleOpenAutoFocus = (event: Event) => {
     event.preventDefault();
     inputElement()?.focus();
   };
+
+  // Reset form state on close
+  createEffect(() => {
+    if (props.open) return;
+
+    // Delay 150ms to let animation play out
+    setTimeout(() => {
+      add.reset();
+      setValue('');
+    }, 150);
+  });
 
   return (
     <Dialog open={props.open} onOpenChange={props.setOpen}>
