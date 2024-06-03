@@ -1,12 +1,12 @@
-import { createQuery, useQueryClient } from '@tanstack/solid-query';
+import { useQueryClient } from '@tanstack/solid-query';
 import { createMutation } from '@tanstack/solid-query';
 import { Match, Show, Switch, createEffect } from 'solid-js';
-import { getEntry } from '~/api/entries';
 import { updateEntryAsRead } from '~/api/entries';
 import { EntryView } from '~/components/entry/entry-view';
 import { Panel } from '~/components/layout/panel';
 import { QUERY_KEYS } from '~/constants/query';
 import { useQueryState } from '~/contexts/query-state-context';
+import { useEntry } from '~/hooks/queries/use-entry';
 import { useInvalidateStats } from '~/hooks/queries/use-invalidate-stats';
 import { useViewport } from '~/hooks/use-viewport';
 import { Empty } from '../ui/empty';
@@ -18,13 +18,7 @@ export const EntryPanel = () => {
   const queryClient = useQueryClient();
   const invalidateStats = useInvalidateStats();
 
-  const entry = createQuery(() => ({
-    enabled: !!state.params.entry_uuid,
-    queryKey: [QUERY_KEYS.ENTRIES_VIEW, state.params.entry_uuid],
-    queryFn: () => getEntry(state.params.entry_uuid!),
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-  }));
+  const entry = useEntry(() => ({ entry_uuid: state.params.entry_uuid }));
 
   const markAsRead = createMutation(() => ({
     mutationKey: [QUERY_KEYS.ENTRIES_VIEW_READ],

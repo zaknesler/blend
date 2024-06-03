@@ -24,7 +24,7 @@ export const useInfiniteEntries = () => {
     refetchOnMount: false,
   }));
 
-  const getAllEntries = () => query.data?.pages.flatMap(page => page.data) || [];
+  const allEntries = () => query.data?.pages.flatMap(page => page.data) || [];
 
   const fetchMore = leading(
     debounce,
@@ -39,7 +39,7 @@ export const useInfiniteEntries = () => {
 
   return {
     query,
-    getAllEntries,
     fetchMore,
+    allEntries,
   };
 };

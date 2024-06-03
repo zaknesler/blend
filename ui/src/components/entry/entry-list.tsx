@@ -23,7 +23,7 @@ export const EntryList: Component<EntryListProps> = props => {
   // Handle arrow navigation
   useListNav(() => ({
     enabled: !!props.containsActiveElement,
-    entries: entries.getAllEntries(),
+    entries: entries.allEntries(),
   }));
 
   createEffect(() => {
@@ -51,7 +51,7 @@ export const EntryList: Component<EntryListProps> = props => {
 
       <Match when={entries.query.isSuccess && feeds.data}>
         <Show
-          when={entries.getAllEntries().length}
+          when={entries.allEntries().length}
           fallback={
             <div class="size-full flex-1 p-4">
               <Empty icon={HiOutlineInbox} text="No items to display" />
@@ -59,7 +59,7 @@ export const EntryList: Component<EntryListProps> = props => {
           }
         >
           <div class="flex flex-col gap-2 px-4 py-2">
-            <For each={entries.getAllEntries()}>
+            <For each={entries.allEntries()}>
               {(entry, index) => (
                 <EntryItem
                   tabIndex={index() === 0 ? 0 : -1} // Disable tabindex so we can override it with arrow keys

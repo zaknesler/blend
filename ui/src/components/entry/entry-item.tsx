@@ -1,11 +1,9 @@
 import { A, type AnchorProps, useMatch } from '@solidjs/router';
-import { createQuery } from '@tanstack/solid-query';
 import { cx } from 'class-variance-authority';
 import { type Component, Show, splitProps } from 'solid-js';
-import { getEntry } from '~/api/entries';
 import { DATA_ATTRIBUTES } from '~/constants/attributes';
-import { QUERY_KEYS } from '~/constants/query';
 import { useQueryState } from '~/contexts/query-state-context';
+import { useEntry } from '~/hooks/queries/use-entry';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import type { Entry } from '~/types/bindings';
 import { formatDate } from '~/utils/date';
@@ -21,17 +19,13 @@ export const EntryItem: Component<EntryItemProps> = props => {
   const [local, rest] = splitProps(props, ['entry', 'class']);
 
   // Get the data for an entry to check if user marked it as read
-  const entryData = createQuery(() => ({
+  const entryData = useEntry(() => ({
+    entry_uuid: local.entry.uuid,
     enabled: state.params.entry_uuid === local.entry.uuid,
-    queryKey: [QUERY_KEYS.ENTRIES_VIEW, local.entry.uuid],
-    queryFn: () => getEntry(local.entry.uuid),
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
   }));
 
   const feed = () => feeds.findFeed(local.entry.feed_uuid);
   const isRead = () => !!local.entry.read_at || !!entryData.data?.read_at;
-
   const getDate = () => local.entry.published_at || local.entry.updated_at;
 
   const entryRouteMatch = useMatch(() => state.getEntryUrl(local.entry.uuid, false));
