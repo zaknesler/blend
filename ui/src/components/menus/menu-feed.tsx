@@ -17,12 +17,8 @@ export const FeedMenu: Component<FeedMenuProps> = props => {
 
   return (
     <Menu {...local} size="sm">
-      <Menu.Item disabled icon={HiSolidPencilSquare}>
-        Rename
-      </Menu.Item>
-      <Menu.Item disabled icon={HiSolidTrash}>
-        Delete
-      </Menu.Item>
+      <Menu.Item label="Rename" disabled icon={HiSolidPencilSquare} />
+      <Menu.Item label="Delete" disabled icon={HiSolidTrash} />
     </Menu>
   );
 };
