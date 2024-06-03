@@ -25,7 +25,7 @@ export const content = cva(
       size: {
         sm: 'min-w-36 md:min-w-28',
         md: 'min-w-48 md:min-w-36',
-        lg: 'min-w-64 md:min-w-40',
+        lg: 'min-w-64 md:min-w-48',
       },
     },
     defaultVariants: {

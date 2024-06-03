@@ -2,20 +2,16 @@ import { Dialog } from '@kobalte/core/dialog';
 import { useNavigate } from '@solidjs/router';
 import { createMutation, useQueryClient } from '@tanstack/solid-query';
 import { HiSolidXMark } from 'solid-icons/hi';
-import { type Component, type Setter, Show, createEffect, createSignal } from 'solid-js';
+import { Show, createEffect, createSignal } from 'solid-js';
 import { getErrorMessage } from '~/api';
 import { addFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
+import { modalOpen, setModalStore } from '~/stores/modal';
 import { Button } from '../ui/button';
 import { TextInput } from '../ui/input';
 import { Spinner } from '../ui/spinner';
 
-type CreateFeedProps = {
-  open: boolean;
-  setOpen: Setter<boolean>;
-};
-
-export const CreateFeedModal: Component<CreateFeedProps> = props => {
+export const CreateFeedModal = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -41,7 +37,7 @@ export const CreateFeedModal: Component<CreateFeedProps> = props => {
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS] });
     navigate(`/feeds/${feed.uuid}`);
 
-    props.setOpen(false);
+    setModalStore('addFeed', false);
   };
 
   const handleOpenAutoFocus = (event: Event) => {
@@ -51,7 +47,7 @@ export const CreateFeedModal: Component<CreateFeedProps> = props => {
 
   // Reset form state on close
   createEffect(() => {
-    if (props.open) return;
+    if (modalOpen('addFeed')) return;
 
     // Delay 150ms to let animation play out
     setTimeout(() => {
@@ -61,7 +57,7 @@ export const CreateFeedModal: Component<CreateFeedProps> = props => {
   });
 
   return (
-    <Dialog open={props.open} onOpenChange={props.setOpen}>
+    <Dialog open={modalOpen('addFeed')} onOpenChange={value => setModalStore('addFeed', value)}>
       <Dialog.Portal>
         <Dialog.Overlay class="fixed inset-0 z-50 animate-overlay-hide bg-black/25 backdrop-blur ui-expanded:animate-overlay-show" />
 

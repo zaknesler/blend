@@ -5,7 +5,7 @@ import { HiSolidRss } from 'solid-icons/hi';
 import { type Component, type JSX, Match, type Setter, Show, Switch, createMemo, createSignal } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { Transition } from 'solid-transition-group';
-import { useNotifications } from '~/contexts/notifications-context';
+import { useNotifications } from '~/contexts/notification-context';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
 import type { Feed } from '~/types/bindings';

@@ -8,15 +8,13 @@ import {
   HiSolidPlus,
 } from 'solid-icons/hi';
 import { TiCog } from 'solid-icons/ti';
-import { type Component, createSignal, mergeProps } from 'solid-js';
+import { type Component, mergeProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
+import { setModalStore } from '~/stores/modal';
 import { LogoSquare } from '../../constants/ui/logo';
-import { CreateFeedModal } from '../modals/create-feed-modal';
 import { Menu, type MenuProps } from './menu';
 
 export const AppMenu: Component<MenuProps> = props => {
-  const [createFeedModalOpen, setCreateFeedModalOpen] = createSignal(false);
-
   const local = mergeProps(
     {
       triggerClass: 'size-6 rounded-md',
@@ -27,7 +25,7 @@ export const AppMenu: Component<MenuProps> = props => {
   );
 
   const handleAddFeed = () => {
-    setCreateFeedModalOpen(true);
+    setModalStore('addFeed', true);
   };
 
   return (
@@ -35,6 +33,7 @@ export const AppMenu: Component<MenuProps> = props => {
       <Menu
         {...local}
         shift={4}
+        size="lg"
         trigger={() => (
           <DropdownMenu.Trigger
             as={(polyProps: DropdownMenuTriggerProps) => (
@@ -49,21 +48,11 @@ export const AppMenu: Component<MenuProps> = props => {
           />
         )}
       >
-        <Menu.Item onSelect={handleAddFeed} icon={HiSolidPlus}>
-          Add feed
-        </Menu.Item>
-        <Menu.Item disabled icon={HiSolidArrowDownTray}>
-          Import/export
-        </Menu.Item>
-        <Menu.Item disabled icon={HiSolidCog6Tooth}>
-          Settings
-        </Menu.Item>
-        <Menu.Item disabled icon={HiSolidArrowRightOnRectangle}>
-          Sign out
-        </Menu.Item>
+        <Menu.Item label="Add feed" kbd="Alt ⇧ A" icon={HiSolidPlus} onSelect={handleAddFeed} />
+        <Menu.Item label="Import/export" icon={HiSolidArrowDownTray} disabled />
+        <Menu.Item label="Settings" icon={HiSolidCog6Tooth} disabled />
+        <Menu.Item label="Sign out" icon={HiSolidArrowRightOnRectangle} disabled />
       </Menu>
-
-      <CreateFeedModal open={createFeedModalOpen()} setOpen={setCreateFeedModalOpen} />
     </>
   );
 };

@@ -7,17 +7,17 @@ import { wsUrl } from '~/utils/url';
 import { useInvalidateFeed } from '../hooks/queries/use-invalidate-feed';
 import { useQueryState } from './query-state-context';
 
-type NotificationsContextType = ReturnType<typeof makeNotificationsContext>;
-export const NotificationsContext = createContext<NotificationsContextType>();
+type NotificationContextType = ReturnType<typeof makeNotificationContext>;
+export const NotificationContext = createContext<NotificationContextType>();
 
 export const useNotifications = () => {
-  const notifications = useContext(NotificationsContext);
-  if (!notifications) throw new Error('NotificationsContext has not been initialized.');
+  const notification = useContext(NotificationContext);
+  if (!notification) throw new Error('NotificationContext has not been initialized.');
 
-  return notifications;
+  return notification;
 };
 
-export const makeNotificationsContext = () => {
+export const makeNotificationContext = () => {
   const state = useQueryState();
 
   const currentEntry = useEntry(() => ({ entry_uuid: state.params.entry_uuid }));

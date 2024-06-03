@@ -7,7 +7,7 @@ import {
 import { type VariantProps, cx } from 'class-variance-authority';
 import type { IconTypes } from 'solid-icons';
 import { HiSolidEllipsisHorizontal } from 'solid-icons/hi';
-import { type JSX, type ParentComponent, type Setter, Show, splitProps } from 'solid-js';
+import { type Component, type JSX, type ParentComponent, type Setter, Show, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import * as menuClasses from '~/constants/ui/menu';
 
@@ -68,16 +68,21 @@ const MenuTrigger: ParentComponent<MenuTrigger> = props => {
 };
 
 type MenuItemProps = DropdownMenuItemProps & {
+  label: string;
+  kbd?: string;
   icon?: IconTypes;
 };
 
-const MenuItem: ParentComponent<MenuItemProps> = props => {
-  const [local, rest] = splitProps(props, ['icon']);
+const MenuItem: Component<MenuItemProps> = props => {
+  const [local, rest] = splitProps(props, ['icon', 'label', 'kbd']);
 
   return (
     <DropdownMenu.Item {...rest} class={menuClasses.item()}>
       <Dynamic component={local.icon} class="size-4 text-gray-400 dark:text-gray-500" />
-      {props.children}
+      {local.label}
+      <Show when={local.kbd}>
+        <kbd class="ml-auto font-mono text-gray-400 text-xs dark:text-gray-500">{local.kbd}</kbd>
+      </Show>
     </DropdownMenu.Item>
   );
 };
