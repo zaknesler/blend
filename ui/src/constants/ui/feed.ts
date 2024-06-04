@@ -5,8 +5,11 @@ const base = cx(
   'text-gray-600 dark:focus:border-gray-600 focus:border-gray-400 dark:text-gray-300',
 );
 
-const inactiveClass =
-  'border-transparent dark:hover:bg-gray-800 hover:bg-gray-100 xl:hover:bg-gray-200 dark:hover:text-white hover:text-gray-900 focus:text-gray-700 dark:focus:text-white';
+const inactiveClass = cx(
+  'border-transparent',
+  'dark:hover:bg-gray-800 hover:bg-gray-100 xl:hover:bg-gray-200 dark:hover:text-white hover:text-gray-900',
+  'dark:focus:text-white focus:text-gray-700',
+);
 
 export const item = cva(
   [

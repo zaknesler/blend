@@ -9,7 +9,7 @@ import { FeedHeader } from '~/components/feed/feed-header';
 import { FeedInfo } from '~/components/feed/feed-info';
 import { FeedList } from '~/components/feed/feed-list';
 import { NavRow } from '~/components/nav/nav-row';
-import { NavViewSwitcher } from '~/components/nav/nav-view-switcher';
+import { NavViewTabs } from '~/components/nav/nav-view-tabs';
 import { Panel } from '~/components/ui/layout/panel';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
@@ -85,7 +85,7 @@ export const ListPanel = () => {
           </div>
 
           <Show when={showPanel() && !showFeeds()}>
-            <NavViewSwitcher />
+            <NavViewTabs />
 
             <div class="flex justify-between">
               <Switch>
