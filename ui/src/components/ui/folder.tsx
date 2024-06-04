@@ -28,7 +28,7 @@ export const Folder: ParentComponent<FolderProps> = props => {
       </Collapsible.Trigger>
 
       <Collapsible.Content class="mr-1 flex">
-        <div class="w-7 shrink-0" />
+        <div class="w-8 shrink-0" />
         <div class="flex flex-1 flex-col gap-1">{props.children}</div>
       </Collapsible.Content>
     </Collapsible>
