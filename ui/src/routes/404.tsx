@@ -1,7 +1,7 @@
 import { HiSolidArrowSmallLeft } from 'solid-icons/hi';
-import { Panel } from '~/components/layout/panel';
+import { Panel } from '~/components/ui/layout/panel';
 import { Link } from '~/components/ui/link';
-import { Logo } from '~/constants/ui/logo';
+import { Logo } from '~/components/ui/logo';
 
 export default () => (
   <div class="size-full p-4 md:p-8">

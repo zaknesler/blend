@@ -15,7 +15,7 @@
     "typeshare:generate": "typeshare ./ --lang typescript --output-file ./ui/src/types/bindings.ts && biome check --apply ./ui/src/types/bindings.ts"
   },
   "dependencies": {
-    "@kobalte/core": "^0.13.2",
+    "@kobalte/core": "^0.13.3",
     "@kobalte/tailwindcss": "^0.9.0",
     "@solid-primitives/active-element": "^2.0.20",
     "@solid-primitives/bounds": "^0.0.121",

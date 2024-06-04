@@ -1,7 +1,7 @@
-import { Sidebar } from '~/components/layout/sidebar';
 import { CreateFeedModal } from '~/components/modals/create-feed-modal';
 import { EntryPanel } from '~/components/panels/entry-panel';
 import { ListPanel } from '~/components/panels/list-panel';
+import { Sidebar } from '~/components/ui/layout/sidebar';
 import { NotificationContext, makeNotificationContext } from '~/contexts/notification-context';
 import { QueryStateContext, makeQueryStateContext } from '~/contexts/query-state-context';
 import { useShortcuts } from '~/hooks/use-shortcuts';

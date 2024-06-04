@@ -2,11 +2,10 @@ import { createShortcut } from '@solid-primitives/keyboard';
 import { setModalStore } from '~/stores/modal';
 
 export const useShortcuts = () => {
-  createShortcut(
-    ['Alt', 'Shift', 'A'],
-    () => {
-      setModalStore('addFeed', true);
-    },
-    { preventDefault: true, requireReset: true },
-  );
+  const handleAddFeed = () => {
+    setModalStore('addFeed', true);
+  };
+
+  createShortcut(['Alt', 'Shift', 'A'], handleAddFeed, { preventDefault: true, requireReset: true });
+  createShortcut(['Meta', 'Shift', 'A'], handleAddFeed, { preventDefault: true, requireReset: true });
 };

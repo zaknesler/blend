@@ -2,7 +2,7 @@ import { Image } from '@kobalte/core/image';
 import { A, useLocation } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { HiSolidRss } from 'solid-icons/hi';
-import { type Component, type JSX, Match, type Setter, Show, Switch, createMemo, createSignal } from 'solid-js';
+import { type Component, type JSX, Match, Show, Switch, createMemo } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { Transition } from 'solid-transition-group';
 import { useNotifications } from '~/contexts/notification-context';
@@ -22,22 +22,18 @@ export const FeedItem: Component<FeedItemProps> = props => {
   const { stats } = useFeedsStats();
   const notifications = useNotifications();
 
-  const [open, setOpen] = createSignal(false);
-
   const getPath = createMemo(() => `/feeds/${props.feed.uuid}`);
   const isActive = createMemo(() => location.pathname.startsWith(getPath()));
   const getStats = createMemo(() => stats.data?.find(item => item.uuid === props.feed.uuid));
 
   const getFaviconSrc = () => props.feed.favicon_b64 || props.feed.favicon_url;
 
-  const isLoading = createMemo(() => notifications.feedsRefreshing().includes(props.feed.uuid));
+  const isLoading = () => notifications.isFeedRefreshing(props.feed.uuid);
 
   return (
     <BaseFeedItem
       href={getPath().concat(state.getQueryString())}
       title={props.feed.title_display || props.feed.title}
-      open={open()}
-      setOpen={setOpen}
       active={isActive()}
       loading={isLoading()}
       unread_count={getStats()?.count_unread}
@@ -48,8 +44,6 @@ export const FeedItem: Component<FeedItemProps> = props => {
 
 type BaseFeedItemProps = {
   href: string;
-  open: boolean;
-  setOpen: Setter<boolean>;
   active: boolean;
   title?: string;
   loading?: boolean;
@@ -62,12 +56,12 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
   <A
     href={props.href}
     class={cx(
-      'group -mx-1 flex select-none items-center gap-2 rounded-lg border p-1 text-base no-underline outline-none transition',
-      'md:-mx-1 md:rounded-md md:p-1 md:text-sm',
+      'flex flex-1 select-none items-center gap-2 rounded-lg border p-1 text-base no-underline outline-none transition',
+      'md:rounded-md md:p-1 md:text-sm',
       'text-gray-600 ring-gray-200 dark:text-gray-300 dark:ring-gray-700',
       'dark:focus:border-gray-600 focus:border-gray-400',
       props.active
-        ? 'border-gray-200 bg-white text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-white'
+        ? 'border-gray-200 bg-gray-100 text-gray-900 dark:border-gray-700 dark:bg-gray-800 xl:bg-white dark:text-white'
         : 'border-transparent dark:hover:bg-gray-800 hover:bg-gray-200 dark:hover:text-white hover:text-gray-900',
     )}
   >
@@ -104,7 +98,7 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
     <span class="flex-1 overflow-x-hidden truncate">{props.title}</span>
 
     <Show when={props.unread_count}>
-      <span class="min-w-6 shrink-0 rounded px-1 py-0.5 text-center text-gray-500 text-sm md:bg-white md:dark:bg-gray-800 dark:text-gray-300 md:text-xs/4">
+      <span class="shrink-0 px-1 text-right text-gray-400 text-sm dark:text-gray-300 md:text-xs/4">
         {props.unread_count}
       </span>
     </Show>

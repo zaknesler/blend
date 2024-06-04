@@ -11,7 +11,7 @@ import { TiCog } from 'solid-icons/ti';
 import { type Component, mergeProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { setModalStore } from '~/stores/modal';
-import { LogoSquare } from '../../constants/ui/logo';
+import { LogoSquare } from '../ui/logo';
 import { Menu, type MenuProps } from './menu';
 
 export const AppMenu: Component<MenuProps> = props => {
@@ -39,7 +39,7 @@ export const AppMenu: Component<MenuProps> = props => {
             as={(polyProps: DropdownMenuTriggerProps) => (
               <BaseButton
                 {...polyProps}
-                class="-m-1 inline-flex items-center gap-2 self-start rounded-lg p-1 pr-2 transition dark:hover:bg-gray-700 hover:bg-gray-200 focus:outline-none dark:focus:ring-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30"
+                class="m-1 inline-flex items-center gap-2 self-start rounded-lg p-1 pr-2 transition dark:hover:bg-gray-700 hover:bg-gray-200 focus:outline-none dark:focus:ring-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30"
               >
                 <LogoSquare iconOnly class="inline-flex size-6" />
                 <Dynamic component={HiSolidChevronDown} class="size-4 text-gray-500 dark:text-gray-400" />

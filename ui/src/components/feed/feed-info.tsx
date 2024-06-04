@@ -1,8 +1,10 @@
 import { createQuery } from '@tanstack/solid-query';
+import { cx } from 'class-variance-authority';
 import { HiOutlineArrowPath } from 'solid-icons/hi';
 import { type Component, Match, Switch, createSignal } from 'solid-js';
 import { getFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
+import { useNotifications } from '~/contexts/notification-context';
 import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
 import { FeedMenu } from '../menus/menu-feed';
 import { IconButton } from '../ui/button/icon-button';
@@ -14,6 +16,7 @@ type FeedInfoProps = {
 
 export const FeedInfo: Component<FeedInfoProps> = props => {
   const refresh = useRefreshFeed();
+  const notifications = useNotifications();
 
   const feed = createQuery(() => ({
     queryKey: [QUERY_KEYS.FEEDS_VIEW, props.uuid],
@@ -23,6 +26,8 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
   }));
 
   const [contextMenuOpen, setContextMenuOpen] = createSignal(false);
+
+  const isRefreshing = () => notifications.isFeedRefreshing(props.uuid);
 
   return (
     <Switch>
@@ -43,6 +48,7 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
             icon={HiOutlineArrowPath}
             tooltip="Refresh feed"
             class="size-6 rounded-md text-gray-500"
+            iconClass={cx(isRefreshing() && 'animate-spin')}
           />
 
           <FeedMenu

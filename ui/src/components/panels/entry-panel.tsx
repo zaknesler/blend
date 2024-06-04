@@ -3,7 +3,7 @@ import { createMutation } from '@tanstack/solid-query';
 import { Match, Show, Switch, createEffect } from 'solid-js';
 import { updateEntryAsRead } from '~/api/entries';
 import { EntryView } from '~/components/entry/entry-view';
-import { Panel } from '~/components/layout/panel';
+import { Panel } from '~/components/ui/layout/panel';
 import { QUERY_KEYS } from '~/constants/query';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useEntry } from '~/hooks/queries/use-entry';
