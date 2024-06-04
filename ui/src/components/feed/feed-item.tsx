@@ -56,7 +56,7 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
   <A
     href={props.href}
     class={cx(
-      'flex flex-1 select-none items-center gap-2 rounded-lg border p-1 text-base no-underline outline-none transition',
+      '-mx-1 flex flex-1 select-none items-center gap-2 rounded-lg border p-1 text-base no-underline outline-none transition',
       'md:rounded-md md:p-1 md:text-sm',
       'text-gray-600 ring-gray-200 dark:text-gray-300 dark:ring-gray-700',
       'dark:focus:border-gray-600 focus:border-gray-400',

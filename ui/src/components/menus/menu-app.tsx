@@ -3,7 +3,7 @@ import { DropdownMenu, type DropdownMenuTriggerProps } from '@kobalte/core/dropd
 import {
   HiSolidArrowDownTray,
   HiSolidArrowRightOnRectangle,
-  HiSolidChevronDown,
+  HiSolidBars2,
   HiSolidCog6Tooth,
   HiSolidPlus,
 } from 'solid-icons/hi';
@@ -39,10 +39,10 @@ export const AppMenu: Component<MenuProps> = props => {
             as={(polyProps: DropdownMenuTriggerProps) => (
               <BaseButton
                 {...polyProps}
-                class="m-1 inline-flex items-center gap-2 self-start rounded-lg p-1 pr-2 transition dark:hover:bg-gray-700 hover:bg-gray-200 focus:outline-none dark:focus:ring-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30"
+                class="-m-1 inline-flex items-center gap-2 self-start rounded-lg p-1 pr-2 transition dark:hover:bg-gray-700 hover:bg-gray-200 focus:outline-none dark:focus:ring-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30"
               >
                 <LogoSquare iconOnly class="inline-flex size-6" />
-                <Dynamic component={HiSolidChevronDown} class="size-4 text-gray-500 dark:text-gray-400" />
+                <Dynamic component={HiSolidBars2} class="size-4 text-gray-500 dark:text-gray-400" />
               </BaseButton>
             )}
           />

@@ -11,7 +11,7 @@ export const Folder: ParentComponent<FolderProps> = props => {
   const [open, setOpen] = createSignal(false);
 
   return (
-    <Collapsible open={open()} onOpenChange={setOpen} class="flex w-full flex-col gap-1">
+    <Collapsible open={open()} onOpenChange={setOpen} class="-mx-1 flex flex-col gap-1">
       <Collapsible.Trigger
         as="button"
         class={cx(
@@ -27,7 +27,7 @@ export const Folder: ParentComponent<FolderProps> = props => {
         <span class="text-sm">{props.label}</span>
       </Collapsible.Trigger>
 
-      <Collapsible.Content class="flex">
+      <Collapsible.Content class="mr-1 flex">
         <div class="w-7 shrink-0" />
         <div class="flex flex-1 flex-col gap-1">{props.children}</div>
       </Collapsible.Content>

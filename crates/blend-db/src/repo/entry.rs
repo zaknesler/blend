@@ -47,6 +47,7 @@ pub enum View {
     All,
     Read,
     Unread,
+    Saved,
 }
 
 impl Default for View {
@@ -93,6 +94,7 @@ impl EntryRepo {
             View::All => query.push(""),
             View::Read => query.push(" AND read_at IS NOT NULL"),
             View::Unread => query.push(" AND read_at IS NULL"),
+            View::Saved => query.push(" AND saved_at IS NOT NULL"),
         };
 
         match filter.feed {

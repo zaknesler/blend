@@ -48,6 +48,7 @@ export enum View {
   All = 'all',
   Read = 'read',
   Unread = 'unread',
+  Saved = 'saved',
 }
 
 export interface FilterEntriesParams {
