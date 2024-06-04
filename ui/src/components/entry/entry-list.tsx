@@ -1,6 +1,8 @@
+import { createActiveElement } from '@solid-primitives/active-element';
 import { type NullableBounds, createElementBounds } from '@solid-primitives/bounds';
 import { HiOutlineInbox } from 'solid-icons/hi';
 import { type Component, For, Match, Show, Switch, createEffect, createSignal } from 'solid-js';
+import { IDS } from '~/constants/elements';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useInfiniteEntries } from '~/hooks/queries/use-infinite-entries';
 import { useListNav } from '~/hooks/use-list-nav';
@@ -10,7 +12,6 @@ import { EntryItem } from './entry-item';
 
 type EntryListProps = {
   containerBounds?: Readonly<NullableBounds>;
-  containsActiveElement?: boolean;
 };
 
 export const EntryList: Component<EntryListProps> = props => {
@@ -20,9 +21,13 @@ export const EntryList: Component<EntryListProps> = props => {
   const { feeds } = useFeeds();
   const entries = useInfiniteEntries();
 
+  // If the user is focused within the entry content, don't respond to arrow keys
+  const activeElement = createActiveElement();
+  const isFocusedWithinEntry = () => !!document.getElementById(IDS.ARTICLE)?.contains(activeElement());
+
   // Handle arrow navigation
   useListNav(() => ({
-    enabled: !!props.containsActiveElement,
+    enabled: !isFocusedWithinEntry(),
     entries: entries.allEntries(),
   }));
 

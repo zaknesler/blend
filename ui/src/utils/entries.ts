@@ -1,4 +1,4 @@
-import { DATA_ATTRIBUTES } from '~/constants/attributes';
+import { DATA_ATTRIBUTES } from '~/constants/elements';
 import { DEFAULT_DIRECTION } from '~/contexts/query-state-context';
 import { type Entry, SortDirection } from '~/types/bindings';
 

@@ -24,8 +24,8 @@
     "@solid-primitives/scheduled": "^1.4.3",
     "@solid-primitives/scroll": "^2.0.23",
     "@solidjs/router": "^0.13.5",
-    "@tanstack/solid-query": "^5.40.0",
-    "@tanstack/solid-query-devtools": "^5.40.0",
+    "@tanstack/solid-query": "^5.40.1",
+    "@tanstack/solid-query-devtools": "^5.40.1",
     "class-variance-authority": "^0.7.0",
     "partysocket": "^1.0.1",
     "solid-icons": "^1.1.0",
@@ -34,7 +34,7 @@
     "wretch": "^2.9.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.7.3",
+    "@biomejs/biome": "1.8.0",
     "@swc/core": "^1.5.24",
     "@swc/jest": "^0.2.36",
     "@tailwindcss/forms": "^0.5.7",

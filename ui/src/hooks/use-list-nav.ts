@@ -1,7 +1,9 @@
 import { useKeyDownEvent } from '@solid-primitives/keyboard';
 import { debounce } from '@solid-primitives/scheduled';
 import { useNavigate } from '@solidjs/router';
+import { useQueryClient } from '@tanstack/solid-query';
 import { createEffect } from 'solid-js';
+import { QUERY_KEYS } from '~/constants/query';
 import type { Entry } from '~/types/bindings';
 import { findEntryItem } from '~/utils/entries';
 import { useQueryState } from '../contexts/query-state-context';
@@ -17,6 +19,8 @@ export const useListNav = (params: () => UseListNavParams) => {
   const viewport = useViewport();
   const navigate = useNavigate();
   const keyDownEvent = useKeyDownEvent();
+
+  const queryClient = useQueryClient();
 
   createEffect(() => {
     if (!params().entries.length || viewport.lteBreakpoint('md') || !params().enabled) return;
@@ -46,6 +50,9 @@ export const useListNav = (params: () => UseListNavParams) => {
 
     const activeItem = findEntryItem(entry.uuid);
     if (activeItem) activeItem.focus();
+
+    // Cancel the current entry view request
+    queryClient.cancelQueries({ queryKey: [QUERY_KEYS.ENTRIES_VIEW, state.params.entry_uuid] });
 
     navigate(state.getEntryUrl(entry.uuid));
   }, 30);

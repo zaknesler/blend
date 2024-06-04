@@ -181,6 +181,27 @@ impl EntryRepo {
         Ok(rows_affected > 0)
     }
 
+    pub async fn update_entry_as_saved(&self, entry_uuid: &uuid::Uuid) -> DbResult<bool> {
+        let rows_affected = sqlx::query("UPDATE entries SET saved_at = ?1 WHERE uuid = ?2")
+            .bind(Utc::now())
+            .bind(entry_uuid)
+            .execute(&self.db)
+            .await?
+            .rows_affected();
+
+        Ok(rows_affected > 0)
+    }
+
+    pub async fn update_entry_as_unsaved(&self, entry_uuid: &uuid::Uuid) -> DbResult<bool> {
+        let rows_affected = sqlx::query("UPDATE entries SET saved_at = NULL WHERE uuid = ?1")
+            .bind(entry_uuid)
+            .execute(&self.db)
+            .await?
+            .rows_affected();
+
+        Ok(rows_affected > 0)
+    }
+
     pub async fn upsert_entries(
         &self,
         feed_uuid: &uuid::Uuid,

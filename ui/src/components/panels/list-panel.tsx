@@ -1,4 +1,3 @@
-import { createActiveElement } from '@solid-primitives/active-element';
 import { createElementBounds } from '@solid-primitives/bounds';
 import { useIsRouting } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
@@ -34,9 +33,6 @@ export const ListPanel = () => {
   const isMobile = () => viewport.lteBreakpoint('md');
   const showPanel = () => !isMobile() || (isMobile() && !viewingEntry());
   const showFeeds = () => viewport.lteBreakpoint('xl') && showFeedSelector();
-
-  const activeElement = createActiveElement();
-  const containsActiveElement = () => container()?.contains(activeElement());
 
   const handleSkipToContent = () => {
     const el = container();
@@ -124,7 +120,7 @@ export const ListPanel = () => {
               </Match>
 
               <Match when={!showFeeds()}>
-                <EntryList containerBounds={containerBounds} containsActiveElement={containsActiveElement()} />
+                <EntryList containerBounds={containerBounds} />
               </Match>
             </Switch>
           </div>

@@ -12,8 +12,8 @@ export const getEntries = async (params: FilterEntriesParams) => {
     .json<ApiPaginatedResponse<Entry[]>>();
 };
 
-export const getEntry = async (entry_uuid: string) =>
-  wretch(apiUrl(`/entries/${entry_uuid}`))
+export const getEntry = async (entry_uuid: string, signal: AbortSignal) =>
+  wretch(apiUrl(`/entries/${entry_uuid}`), { signal })
     .get()
     .json<ApiResponse<Entry>>()
     .then(res => res.data);
@@ -25,5 +25,15 @@ export const updateEntryAsRead = async (entry_uuid: string) =>
 
 export const updateEntryAsUnread = async (entry_uuid: string) =>
   wretch(apiUrl(`/entries/${entry_uuid}/unread`))
+    .post()
+    .json<ApiSuccessResponse>();
+
+export const updateEntryAsSaved = async (entry_uuid: string) =>
+  wretch(apiUrl(`/entries/${entry_uuid}/saved`))
+    .post()
+    .json<ApiSuccessResponse>();
+
+export const updateEntryAsUnsaved = async (entry_uuid: string) =>
+  wretch(apiUrl(`/entries/${entry_uuid}/unsaved`))
     .post()
     .json<ApiSuccessResponse>();

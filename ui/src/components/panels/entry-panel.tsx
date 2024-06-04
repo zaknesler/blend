@@ -4,6 +4,7 @@ import { Match, Show, Switch, createEffect } from 'solid-js';
 import { updateEntryAsRead } from '~/api/entries';
 import { EntryView } from '~/components/entry/entry-view';
 import { Panel } from '~/components/ui/layout/panel';
+import { IDS } from '~/constants/elements';
 import { QUERY_KEYS } from '~/constants/query';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useEntry } from '~/hooks/queries/use-entry';
@@ -61,7 +62,7 @@ export const EntryPanel = () => {
         </Match>
 
         <Match when={entry.isSuccess}>
-          <Panel class="p-4 lg:p-8">
+          <Panel id={IDS.ARTICLE} class="p-4 lg:p-8">
             <Show when={entry.data} fallback="No data.">
               <EntryView entry={entry.data!} class="max-w-4xl" />
             </Show>

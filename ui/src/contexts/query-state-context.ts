@@ -12,8 +12,9 @@ export const useQueryState = () => {
 };
 
 type RouterParams = {
-  feed_uuid?: string;
   entry_uuid?: string;
+  feed_uuid?: string;
+  folder_name?: string;
 };
 
 type QueryParams = Partial<Pick<FilterEntriesParams, 'view' | 'sort'>>;
@@ -51,8 +52,14 @@ export const makeQueryStateContext = () => {
     return `?${builder.toString()}`;
   };
 
+  const getBasePath = () => {
+    if (params.folder_name) `/folder/${params.folder_name}`;
+    if (params.feed_uuid) `/feeds/${params.feed_uuid}`;
+    return '/';
+  };
+
   const getFeedUrl = (append?: string, withQuery = true) => {
-    const path = params.feed_uuid ? `/feeds/${params.feed_uuid}` : '/';
+    const path = getBasePath();
     const withAppended = append ? path.concat(append) : path;
     const trimmed = withAppended.replace(/\/\//g, '/');
     return withQuery ? trimmed.concat(getQueryString()) : trimmed;

@@ -1,10 +1,10 @@
 import { Image } from '@kobalte/core/image';
 import { A, useLocation } from '@solidjs/router';
-import { cx } from 'class-variance-authority';
 import { HiSolidRss } from 'solid-icons/hi';
 import { type Component, type JSX, Match, Show, Switch, createMemo } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { Transition } from 'solid-transition-group';
+import * as feedClasses from '~/constants/ui/feed';
 import { useNotifications } from '~/contexts/notification-context';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
@@ -53,18 +53,7 @@ type BaseFeedItemProps = {
 };
 
 export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
-  <A
-    href={props.href}
-    class={cx(
-      '-mx-1 flex flex-1 select-none items-center gap-2 rounded-lg border p-1 text-base no-underline outline-none transition',
-      'md:rounded-md md:p-1 md:text-sm',
-      'text-gray-600 ring-gray-200 dark:text-gray-300 dark:ring-gray-700',
-      'dark:focus:border-gray-600 focus:border-gray-400',
-      props.active
-        ? 'border-gray-200 bg-gray-100 text-gray-900 dark:border-gray-700 dark:bg-gray-800 xl:bg-white dark:text-white'
-        : 'border-transparent dark:hover:bg-gray-800 hover:bg-gray-200 dark:hover:text-white hover:text-gray-900',
-    )}
-  >
+  <A href={props.href} class={feedClasses.item({ active: props.active })}>
     <div class="relative flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-md md:size-5 md:rounded">
       <Switch fallback={<RssIcon />}>
         <Match when={props.favicon_src}>

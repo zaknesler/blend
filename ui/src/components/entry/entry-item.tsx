@@ -1,7 +1,7 @@
 import { A, type AnchorProps, useMatch } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { type Component, Show, splitProps } from 'solid-js';
-import { DATA_ATTRIBUTES } from '~/constants/attributes';
+import { DATA_ATTRIBUTES } from '~/constants/elements';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useEntry } from '~/hooks/queries/use-entry';
 import { useFeeds } from '~/hooks/queries/use-feeds';

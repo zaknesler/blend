@@ -4,7 +4,7 @@ import { For, Match, Show, Switch } from 'solid-js';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
-import { Folder } from '../ui/folder';
+import { FeedFolder } from './feed-folder';
 import { BaseFeedItem, FeedItem } from './feed-item';
 
 export const FeedList = () => {
@@ -29,22 +29,19 @@ export const FeedList = () => {
           Feeds
         </h3>
 
-        <Folder label="Photography">
-          <BaseFeedItem href="#" title="PetaPixel" active={false} unread_count={4} />
-          <BaseFeedItem href="#" title="PetaPixel" active={false} unread_count={4} />
-        </Folder>
+        <FeedFolder label="Photography">
+          <Switch>
+            <Match when={feeds.isError}>
+              <p>Error: {feeds.error?.message}</p>
+            </Match>
 
-        <Switch>
-          <Match when={feeds.isError}>
-            <p>Error: {feeds.error?.message}</p>
-          </Match>
-
-          <Match when={feeds.isSuccess}>
-            <Show when={feeds.data?.length} fallback={<div>No feeds.</div>}>
-              <For each={feeds.data}>{feed => <FeedItem feed={feed} />}</For>
-            </Show>
-          </Match>
-        </Switch>
+            <Match when={feeds.isSuccess}>
+              <Show when={feeds.data?.length} fallback={<div>No feeds.</div>}>
+                <For each={feeds.data}>{feed => <FeedItem feed={feed} />}</For>
+              </Show>
+            </Match>
+          </Switch>
+        </FeedFolder>
       </div>
     </div>
   );

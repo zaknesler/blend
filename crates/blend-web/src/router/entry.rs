@@ -17,6 +17,8 @@ pub fn router(ctx: crate::Context) -> Router {
         .route("/:entry_uuid", get(view))
         .route("/:entry_uuid/read", post(update_read))
         .route("/:entry_uuid/unread", post(update_unread))
+        .route("/:entry_uuid/saved", post(update_saved))
+        .route("/:entry_uuid/unsaved", post(update_unsaved))
         .route_layer(from_fn_with_state(ctx.clone(), crate::middleware::auth))
         .with_state(ctx)
 }
@@ -64,6 +66,28 @@ async fn update_unread(
 ) -> WebResult<impl IntoResponse> {
     let success = repo::entry::EntryRepo::new(ctx.db)
         .update_entry_as_unread(&params.entry_uuid)
+        .await?;
+
+    Ok(Json(json!({ "success": success })))
+}
+
+async fn update_saved(
+    State(ctx): State<crate::Context>,
+    Path(params): Path<ViewEntryParams>,
+) -> WebResult<impl IntoResponse> {
+    let success = repo::entry::EntryRepo::new(ctx.db)
+        .update_entry_as_saved(&params.entry_uuid)
+        .await?;
+
+    Ok(Json(json!({ "success": success })))
+}
+
+async fn update_unsaved(
+    State(ctx): State<crate::Context>,
+    Path(params): Path<ViewEntryParams>,
+) -> WebResult<impl IntoResponse> {
+    let success = repo::entry::EntryRepo::new(ctx.db)
+        .update_entry_as_unsaved(&params.entry_uuid)
         .await?;
 
     Ok(Json(json!({ "success": success })))
