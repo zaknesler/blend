@@ -101,6 +101,7 @@ jobs:
 
       - run: pnpm install
       - run: pnpm run ci
+        if: matrix.target == 'x86_64-unknown-linux-gnu'
       - run: pnpm run typeshare:generate
       - run: pnpm run test:cov
       - run: pnpm run build
