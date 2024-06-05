@@ -14,7 +14,7 @@ export const useQueryState = () => {
 type RouterParams = {
   entry_uuid?: string;
   feed_uuid?: string;
-  folder_name?: string;
+  folder_slug?: string;
 };
 
 type QueryParams = Partial<Pick<FilterEntriesParams, 'view' | 'sort'>>;
@@ -53,7 +53,7 @@ export const makeQueryStateContext = () => {
   };
 
   const getBasePath = () => {
-    if (params.folder_name) `/folder/${params.folder_name}`;
+    if (params.folder_slug) `/folder/${params.folder_slug}`;
     if (params.feed_uuid) `/feeds/${params.feed_uuid}`;
     return '/';
   };

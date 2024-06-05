@@ -15,8 +15,8 @@ export default () => (
         '/entries/:entry_uuid',
 
         // Folder
-        '/folder/:folder_name',
-        '/folder/:folder_name/entries/:entry_uuid',
+        '/folder/:folder_slug',
+        '/folder/:folder_slug/entries/:entry_uuid',
       ]}
       component={lazy(() => import('./routes/feed'))}
     />

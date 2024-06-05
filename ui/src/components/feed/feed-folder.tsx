@@ -1,3 +1,4 @@
+import { Button } from '@kobalte/core/button';
 import { Collapsible } from '@kobalte/core/collapsible';
 import { cx } from 'class-variance-authority';
 import { HiSolidChevronRight } from 'solid-icons/hi';
@@ -5,6 +6,7 @@ import { type ParentComponent, createSignal } from 'solid-js';
 import * as feedClasses from '~/constants/ui/feed';
 
 type FeedFolderProps = {
+  slug: string;
   label: string;
 };
 

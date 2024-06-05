@@ -24,10 +24,11 @@ pub struct CreateEntryParams {
 #[typeshare]
 #[derive(Deserialize)]
 pub struct FilterEntriesParams {
-    #[serde(default = "SortDirection::latest")]
-    pub sort: SortDirection,
     pub cursor: Option<Uuid>,
     pub feed: Option<Uuid>,
+    pub folder: Option<String>,
+    #[serde(default = "SortDirection::latest")]
+    pub sort: SortDirection,
     #[serde(default)]
     pub view: View,
 }
@@ -91,16 +92,22 @@ impl EntryRepo {
         let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary_html, media_url, published_at, updated_at, read_at, saved_at, scraped_at FROM entries WHERE 1=1");
 
         match filter.view {
-            View::All => query.push(""),
+            View::All => &mut query,
             View::Read => query.push(" AND read_at IS NOT NULL"),
             View::Unread => query.push(" AND read_at IS NULL"),
             View::Saved => query.push(" AND saved_at IS NOT NULL"),
         };
 
-        match filter.feed {
-            Some(uuid) => query.push(" AND feed_uuid = ").push_bind(uuid),
-            _ => query.push(""),
-        };
+        if let Some(uuid) = filter.feed {
+            query.push(" AND feed_uuid = ").push_bind(uuid);
+        }
+
+        if let Some(slug) = filter.folder {
+            query
+                .push(" AND feed_uuid IN (SELECT feed_uuid FROM folders INNER JOIN folders_feeds ON folders.id = folders_feeds.id WHERE folders.slug = ")
+                .push_bind(slug)
+                .push(")");
+        }
 
         // Use the cursor to find the next batch of items, based on the published/updated date and the rowid (opposite direction) as a fallback
         match filter.cursor {
