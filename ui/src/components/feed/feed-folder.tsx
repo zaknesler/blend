@@ -1,4 +1,3 @@
-import { Button } from '@kobalte/core/button';
 import { Collapsible } from '@kobalte/core/collapsible';
 import { cx } from 'class-variance-authority';
 import { HiSolidChevronRight } from 'solid-icons/hi';

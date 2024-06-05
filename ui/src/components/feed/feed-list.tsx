@@ -29,7 +29,7 @@ export const FeedList = () => {
           Feeds
         </h3>
 
-        <FeedFolder label="Photography">
+        <FeedFolder slug="photography" label="Photography">
           <Switch>
             <Match when={feeds.isError}>
               <p>Error: {feeds.error?.message}</p>
