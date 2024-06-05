@@ -39,6 +39,13 @@ export interface FeedStats {
   count_saved: number;
 }
 
+export interface Folder {
+  id: string;
+  slug: string;
+  label: string;
+  feed_uuids: string[];
+}
+
 export enum SortDirection {
   Oldest = 'oldest',
   Newest = 'newest',
@@ -55,6 +62,7 @@ export interface FilterEntriesParams {
   sort: SortDirection;
   cursor?: string;
   feed?: string;
+  folder?: string;
   view?: View;
 }
 

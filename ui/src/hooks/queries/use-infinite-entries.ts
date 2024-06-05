@@ -16,6 +16,7 @@ export const useInfiniteEntries = () => {
         feed: state.params.feed_uuid,
         view: state.getView(),
         sort: state.getSort(),
+        folder: state.params.folder_slug,
         cursor: fetchParams.pageParam as undefined | string,
       }),
     getNextPageParam: last => last.next_cursor,

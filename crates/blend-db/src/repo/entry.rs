@@ -24,11 +24,11 @@ pub struct CreateEntryParams {
 #[typeshare]
 #[derive(Deserialize)]
 pub struct FilterEntriesParams {
+    #[serde(default = "SortDirection::latest")]
+    pub sort: SortDirection,
     pub cursor: Option<Uuid>,
     pub feed: Option<Uuid>,
     pub folder: Option<String>,
-    #[serde(default = "SortDirection::latest")]
-    pub sort: SortDirection,
     #[serde(default)]
     pub view: View,
 }
