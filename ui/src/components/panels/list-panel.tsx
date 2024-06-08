@@ -60,7 +60,7 @@ export const ListPanel = () => {
       <Portal>
         <button
           type="button"
-          class="-translate-y-[9999px] absolute top-2 left-2 z-[9999] select-none appearance-none rounded-lg border bg-white px-3 py-2 text-black text-sm shadow-lg focus:translate-y-0 dark:focus:border-gray-400 focus:border-gray-200 active:bg-gray-100 dark:bg-gray-950 dark:text-gray-300 focus:outline-none dark:focus:ring-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30"
+          class="-translate-y-[9999px] absolute top-2 left-2 z-[9999] hidden select-none appearance-none rounded-lg border bg-white px-3 py-2 text-black text-sm shadow-lg md:flex focus:translate-y-0 dark:focus:border-gray-400 focus:border-gray-200 active:bg-gray-100 dark:bg-gray-950 dark:text-gray-300 focus:outline-none dark:focus:ring-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30"
           tabindex={1}
           onClick={handleSkipToContent}
         >
