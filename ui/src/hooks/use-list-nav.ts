@@ -31,12 +31,12 @@ export const useListNav = (params: () => UseListNavParams) => {
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
-        maybeNavigate('back');
+        maybeNavigate('next');
         break;
 
       case 'ArrowUp':
         e.preventDefault();
-        maybeNavigate('next');
+        maybeNavigate('back');
         break;
     }
   });
