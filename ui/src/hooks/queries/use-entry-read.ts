@@ -19,19 +19,19 @@ export const useEntryRead = () => {
     mutationFn: updateEntryAsUnread,
   }));
 
-  const invalidate = (entry_uuid: string, feed_uuid: string, invalidateIndex: boolean) => {
+  const invalidate = (entry_uuid: string, invalidateIndex: boolean) => {
     invalidateStats();
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_VIEW, entry_uuid] });
 
     if (invalidateIndex)
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX, feed_uuid, state.getView()] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX, undefined, state.getView()] });
   };
 
-  const handleMarkRead = (entry_uuid: string, feed_uuid: string, invalidateIndex = false) =>
-    markAsRead.mutateAsync(entry_uuid).then(() => invalidate(entry_uuid, feed_uuid, invalidateIndex));
+  const handleMarkRead = (entry_uuid: string, invalidateIndex = false) =>
+    markAsRead.mutateAsync(entry_uuid).then(() => invalidate(entry_uuid, invalidateIndex));
 
-  const handleMarkUnread = (entry_uuid: string, feed_uuid: string, invalidateIndex = false) =>
-    markAsUnread.mutateAsync(entry_uuid).then(() => invalidate(entry_uuid, feed_uuid, invalidateIndex));
+  const handleMarkUnread = (entry_uuid: string, invalidateIndex = false) =>
+    markAsUnread.mutateAsync(entry_uuid).then(() => invalidate(entry_uuid, invalidateIndex));
 
   return {
     markRead: handleMarkRead,

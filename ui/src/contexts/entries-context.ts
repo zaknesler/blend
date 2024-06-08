@@ -25,6 +25,7 @@ export const makeEntriesContext = () => {
     enabled: !isFocusedWithinEntry(),
     entryUuids: data.allEntries().map(entry => entry.uuid),
     fetchMore: data.fetchMore,
+    hasNextPage: data.query.hasNextPage,
   }));
 
   return {

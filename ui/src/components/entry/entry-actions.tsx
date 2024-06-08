@@ -1,5 +1,6 @@
 import { cx } from 'class-variance-authority';
 import {
+  HiOutlineArrowTopRightOnSquare,
   HiOutlineBookmark,
   HiOutlineEnvelope,
   HiSolidArrowLeft,
@@ -24,12 +25,12 @@ export const EntryActions: Component<EntryActionsProps> = props => {
 
   const handleToggleRead = () => {
     const action = props.entry.read_at ? entryRead.markUnread : entryRead.markRead;
-    action(props.entry.uuid, props.entry.feed_uuid);
+    action(props.entry.uuid);
   };
 
   const handleToggleSaved = () => {
     const action = props.entry.saved_at ? entrySaved.markUnsaved : entrySaved.markSaved;
-    action(props.entry.uuid, props.entry.feed_uuid);
+    action(props.entry.uuid, true);
   };
 
   const handleNavigateBack = () => {
@@ -59,6 +60,13 @@ export const EntryActions: Component<EntryActionsProps> = props => {
         onClick={handleToggleSaved}
         icon={props.entry.saved_at ? HiSolidBookmark : HiOutlineBookmark}
         tooltip={props.entry.saved_at ? 'Mark as unsaved' : 'Mark as saved'}
+        class="p-2 md:p-1"
+      />
+
+      <ActionButton
+        href={props.entry.url}
+        icon={HiOutlineArrowTopRightOnSquare}
+        tooltip="Open entry URL"
         class="p-2 md:p-1"
       />
 

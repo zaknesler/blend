@@ -19,19 +19,19 @@ export const useEntrySaved = () => {
     mutationFn: updateEntryAsUnsaved,
   }));
 
-  const invalidate = (entry_uuid: string, feed_uuid: string, invalidateIndex: boolean) => {
+  const invalidate = (entry_uuid: string, invalidateIndex: boolean) => {
     invalidateStats();
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_VIEW, entry_uuid] });
 
     if (invalidateIndex)
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX, feed_uuid, state.getView()] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX, undefined, state.getView()] });
   };
 
-  const handleMarkSaved = (entry_uuid: string, feed_uuid: string, invalidateIndex = false) =>
-    markAsSaved.mutateAsync(entry_uuid).then(() => invalidate(entry_uuid, feed_uuid, invalidateIndex));
+  const handleMarkSaved = (entry_uuid: string, invalidateIndex = false) =>
+    markAsSaved.mutateAsync(entry_uuid).then(() => invalidate(entry_uuid, invalidateIndex));
 
-  const handleMarkUnsaved = (entry_uuid: string, feed_uuid: string, invalidateIndex = false) =>
-    markAsUnsaved.mutateAsync(entry_uuid).then(() => invalidate(entry_uuid, feed_uuid, invalidateIndex));
+  const handleMarkUnsaved = (entry_uuid: string, invalidateIndex = false) =>
+    markAsUnsaved.mutateAsync(entry_uuid).then(() => invalidate(entry_uuid, invalidateIndex));
 
   return {
     markSaved: handleMarkSaved,

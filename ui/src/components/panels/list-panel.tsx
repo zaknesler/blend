@@ -42,16 +42,15 @@ export const ListPanel = () => {
     focusable?.focus() || el.focus();
   };
 
+  // Close the feed selector when routing (i.e. we've clicked a feed link)
   createEffect(() => {
-    // Hide feed selector when routing
     if (!isRouting()) return;
     setShowFeedSelector(false);
   });
 
+  // Scroll to top of list whenever the feed URL changes
   createEffect(() => {
-    // Scroll to top of list whenever the feed URL changes
     state.getFeedUrl();
-
     container()?.scrollTo({ top: 0, behavior: 'instant' });
   });
 

@@ -17,9 +17,10 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
   const [isRead, setIsRead] = createSignal(!!props.entry.read_at);
   const markRead = useEntryRead();
 
+  // Mark the entry as read as soon as we view the page (and the entry is not already read)
   createEffect(() => {
     if (isRead()) return;
-    markRead.markRead(props.entry.uuid, props.entry.feed_uuid, false).then(() => setIsRead(true));
+    markRead.markRead(props.entry.uuid, false).then(() => setIsRead(true));
   });
 
   const getDate = () => local.entry.published_at || local.entry.updated_at;

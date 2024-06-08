@@ -18,6 +18,7 @@ export const EntryList: Component<EntryListProps> = props => {
   const feeds = useFeeds();
   const entries = useEntries();
 
+  // Fetch more entries when the user scrolls to the bottom of the list
   createEffect(() => {
     if (!listBounds.bottom || !props.containerBounds?.bottom) return;
 

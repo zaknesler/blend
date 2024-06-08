@@ -1,9 +1,11 @@
 import { debounce, leading } from '@solid-primitives/scheduled';
 import { createInfiniteQuery } from '@tanstack/solid-query';
+import { createEffect, createSignal } from 'solid-js';
 import type { ApiPaginatedResponse } from '~/api';
 import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import type { Entry } from '~/types/bindings';
+import { findEntryItem } from '~/utils/entries';
 import { useQueryState } from '../../contexts/query-state-context';
 
 export const useInfiniteEntries = () => {
@@ -37,6 +39,27 @@ export const useInfiniteEntries = () => {
     },
     100,
   );
+
+  const [init, setInit] = createSignal(false);
+
+  // Continue fetching entries until the active item is on the page
+  createEffect(() => {
+    if (init() || !state.params.entry_uuid) return;
+
+    const uuids = allEntries().map(entry => entry.uuid);
+    const loaded = uuids.includes(state.params.entry_uuid);
+
+    // Stop the loop if we've loaded the entry
+    if (loaded) {
+      const activeItem = findEntryItem(state.params.entry_uuid);
+      if (activeItem) activeItem.focus();
+
+      setInit(true);
+      return;
+    }
+
+    query.fetchNextPage();
+  });
 
   return {
     query,
