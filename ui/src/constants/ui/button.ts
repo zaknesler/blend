@@ -56,6 +56,7 @@ export const action = cva(
     'hover:bg-gray-200',
     'focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30',
     'dark:hover:bg-gray-700 dark:text-gray-400 dark:focus:ring-gray-600',
+    'disabled:pointer-events-none disabled:opacity-25',
   ],
   {
     variants: {

@@ -4,14 +4,14 @@ import { useNavigate } from '@solidjs/router';
 import { useQueryClient } from '@tanstack/solid-query';
 import { createEffect } from 'solid-js';
 import { QUERY_KEYS } from '~/constants/query';
-import type { Entry } from '~/types/bindings';
 import { findEntryItem } from '~/utils/entries';
 import { useQueryState } from '../contexts/query-state-context';
 import { useViewport } from '../contexts/viewport-context';
 
 type UseListNavParams = {
   enabled: boolean;
-  entries: Entry[];
+  entryUuids: string[];
+  fetchMore: () => void;
 };
 
 export const useListNav = (params: () => UseListNavParams) => {
@@ -23,7 +23,7 @@ export const useListNav = (params: () => UseListNavParams) => {
   const queryClient = useQueryClient();
 
   createEffect(() => {
-    if (!params().entries.length || viewport.lteBreakpoint('md') || !params().enabled) return;
+    if (!params().enabled || !params().entryUuids.length || viewport.lteBreakpoint('md')) return;
 
     const e = keyDownEvent();
     if (!e) return;
@@ -41,23 +41,33 @@ export const useListNav = (params: () => UseListNavParams) => {
     }
   });
 
+  const getCurrentIndex = () => params().entryUuids.findIndex(uuid => uuid === state.params.entry_uuid);
+
+  const canGoBack = () => getCurrentIndex() > 0;
+  const canGoForward = () => getCurrentIndex() < params().entryUuids.length;
+
   const maybeNavigate = debounce((direction: 'next' | 'back') => {
-    const currentIndex = params().entries.findIndex(entry => entry.uuid === state.params.entry_uuid);
+    const currentIndex = getCurrentIndex();
 
-    const offset = direction === 'next' ? -1 : 1;
-    const entry = params().entries[currentIndex + offset];
-    if (!entry) return;
+    const offset = direction === 'back' ? -1 : 1;
+    const entry_uuid = params().entryUuids[currentIndex + offset];
+    if (!entry_uuid) return;
 
-    const activeItem = findEntryItem(entry.uuid);
+    const activeItem = findEntryItem(entry_uuid);
     if (activeItem) activeItem.focus();
 
     // Cancel the current entry view request
     queryClient.cancelQueries({ queryKey: [QUERY_KEYS.ENTRIES_VIEW, state.params.entry_uuid] });
 
-    navigate(state.getEntryUrl(entry.uuid));
+    // Maybe fetch more if we're nearing the end of the list
+    if (currentIndex > params().entryUuids.length - 3) params().fetchMore();
+
+    navigate(state.getEntryUrl(entry_uuid));
   }, 30);
 
   return {
+    canGoBack,
+    canGoForward,
     maybeNavigate,
   };
 };

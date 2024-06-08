@@ -3,15 +3,15 @@ import { getFeedStats } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
 
 export const useFeedsStats = () => {
-  const stats = createQuery(() => ({
+  const query = createQuery(() => ({
     queryKey: [QUERY_KEYS.FEEDS_STATS],
     queryFn: getFeedStats,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   }));
 
-  const totalStats = () =>
-    stats.data?.reduce(
+  const total = () =>
+    query.data?.reduce(
       (acc, stat) => ({
         count_total: acc.count_total + stat.count_total,
         count_unread: acc.count_unread + stat.count_unread,
@@ -21,7 +21,7 @@ export const useFeedsStats = () => {
     );
 
   return {
-    stats,
-    totalStats,
+    query,
+    total,
   };
 };

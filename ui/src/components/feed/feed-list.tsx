@@ -11,8 +11,8 @@ export const FeedList = () => {
   const state = useQueryState();
   const location = useLocation();
 
-  const { feeds } = useFeeds();
-  const { totalStats } = useFeedsStats();
+  const feeds = useFeeds();
+  const stats = useFeedsStats();
 
   return (
     <div class="flex w-full flex-col gap-4 p-4 xl:p-0">
@@ -21,7 +21,7 @@ export const FeedList = () => {
         title="All feeds"
         icon={() => <HiOutlineSquare3Stack3d class="size-6 text-gray-600 md:size-5 dark:text-gray-500" />}
         active={location.pathname === '/'}
-        unread_count={totalStats()?.count_unread}
+        unread_count={stats.total()?.count_unread}
       />
 
       <div class="flex w-full flex-col gap-1">
@@ -31,13 +31,13 @@ export const FeedList = () => {
 
         <FeedFolder slug="photography" label="Photography">
           <Switch>
-            <Match when={feeds.isError}>
-              <p>Error: {feeds.error?.message}</p>
+            <Match when={feeds.query.isError}>
+              <p>Error: {feeds.query.error?.message}</p>
             </Match>
 
-            <Match when={feeds.isSuccess}>
-              <Show when={feeds.data?.length} fallback={<div>No feeds.</div>}>
-                <For each={feeds.data}>{feed => <FeedItem feed={feed} />}</For>
+            <Match when={feeds.query.isSuccess}>
+              <Show when={feeds.query.data?.length} fallback={<div>No feeds.</div>}>
+                <For each={feeds.query.data}>{feed => <FeedItem feed={feed} />}</For>
               </Show>
             </Match>
           </Switch>

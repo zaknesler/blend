@@ -19,12 +19,12 @@ export const FeedItem: Component<FeedItemProps> = props => {
   const state = useQueryState();
   const location = useLocation();
 
-  const { stats } = useFeedsStats();
+  const stats = useFeedsStats();
   const notifications = useNotifications();
 
   const getPath = createMemo(() => `/feeds/${props.feed.uuid}`);
   const isActive = createMemo(() => location.pathname.startsWith(getPath()));
-  const getStats = createMemo(() => stats.data?.find(item => item.uuid === props.feed.uuid));
+  const getStats = createMemo(() => stats.query.data?.find(item => item.uuid === props.feed.uuid));
 
   const getFaviconSrc = () => props.feed.favicon_b64 || props.feed.favicon_url;
 
