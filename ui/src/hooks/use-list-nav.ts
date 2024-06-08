@@ -65,7 +65,7 @@ export const useListNav = (params: () => UseListNavParams) => {
   const getCurrentIndex = () => params().entryUuids.findIndex(uuid => uuid === state.params.entry_uuid);
 
   const canGoBack = () => getCurrentIndex() > 0;
-  const canGoForward = () => params().hasNextPage || getCurrentIndex() < params().entryUuids.length - 1;
+  const canGoForward = () => getCurrentIndex() < params().entryUuids.length - 1;
 
   const maybeNavigate = debounce((direction: 'next' | 'back') => {
     const currentIndex = getCurrentIndex();
@@ -81,7 +81,7 @@ export const useListNav = (params: () => UseListNavParams) => {
     queryClient.cancelQueries({ queryKey: [QUERY_KEYS.ENTRIES_VIEW, state.params.entry_uuid] });
 
     // Fetch more if we're nearing the end of the list
-    if (currentIndex > params().entryUuids.length - 2) params().fetchMore();
+    if (currentIndex > params().entryUuids.length - 3) params().fetchMore();
 
     navigate(state.getEntryUrl(entry_uuid));
   }, 30);
