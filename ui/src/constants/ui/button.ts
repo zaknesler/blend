@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority';
 
-export const buttonClass = cva(
+export const button = cva(
   [
     'inline-flex shrink-0 select-none appearance-none items-center justify-center gap-1.5 overflow-hidden font-semibold shadow-gray-200 transition-colors',
     'focus:outline-none focus:ring-4 focus:ring-opacity-30',
@@ -46,6 +46,26 @@ export const buttonClass = cva(
       size: 'md',
       disabled: false,
       fullWidth: false,
+    },
+  },
+);
+
+export const action = cva(
+  [
+    'cursor-default appearance-none rounded-lg text-gray-500',
+    'hover:bg-gray-200',
+    'focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30',
+    'dark:hover:bg-gray-700 dark:text-gray-400 dark:focus:ring-gray-600',
+  ],
+  {
+    variants: {
+      size: {
+        md: 'p-1',
+        lg: 'p-2',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
     },
   },
 );

@@ -1,5 +1,6 @@
 import { cx } from 'class-variance-authority';
-import { For, type JSX, type ParentComponent, Show, splitProps } from 'solid-js';
+import { For, type JSX, type ParentComponent, Show, createEffect, createSignal, splitProps } from 'solid-js';
+import { useEntryRead } from '~/hooks/queries/use-entry-read';
 import type { Entry } from '~/types/bindings';
 import { formatDateTime } from '~/utils/date';
 import { Button } from '../ui/button';
@@ -12,6 +13,14 @@ type EntryViewProps = JSX.IntrinsicElements['div'] & {
 
 export const EntryView: ParentComponent<EntryViewProps> = props => {
   const [local, rest] = splitProps(props, ['class', 'entry', 'breadcrumbs']);
+
+  const [isRead, setIsRead] = createSignal(!!props.entry.read_at);
+  const markRead = useEntryRead();
+
+  createEffect(() => {
+    if (isRead()) return;
+    markRead.markRead(props.entry.uuid, props.entry.feed_uuid, false).then(() => setIsRead(true));
+  });
 
   const getDate = () => local.entry.published_at || local.entry.updated_at;
 
@@ -31,14 +40,16 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
       </Show>
 
       <article id={local.entry.uuid} class="flex flex-col gap-4">
-        <h1
-          class="text-balance font-bold text-gray-800 text-xl dark:text-gray-100 lg:text-2xl"
-          innerHTML={local.entry.title}
-        />
+        <div class="flex flex-col gap-4 md:max-w-[37rem]">
+          <h1
+            class="text-balance font-bold text-gray-800 text-xl dark:text-gray-100 lg:text-2xl"
+            innerHTML={local.entry.title}
+          />
 
-        <Show when={getDate()}>
-          <div class="text-gray-500 text-sm dark:text-gray-400">{formatDateTime(getDate()!)}</div>
-        </Show>
+          <Show when={getDate()}>
+            <div class="text-gray-500 text-sm dark:text-gray-400">{formatDateTime(getDate()!)}</div>
+          </Show>
+        </div>
 
         <Show when={local.entry.summary_html}>
           <h4

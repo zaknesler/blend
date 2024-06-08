@@ -7,7 +7,7 @@ import { QUERY_KEYS } from '~/constants/query';
 import type { Entry } from '~/types/bindings';
 import { findEntryItem } from '~/utils/entries';
 import { useQueryState } from '../contexts/query-state-context';
-import { useViewport } from './use-viewport';
+import { useViewport } from '../contexts/viewport-context';
 
 type UseListNavParams = {
   enabled: boolean;
@@ -31,20 +31,20 @@ export const useListNav = (params: () => UseListNavParams) => {
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
-        maybeNavigate('down');
+        maybeNavigate('back');
         break;
 
       case 'ArrowUp':
         e.preventDefault();
-        maybeNavigate('up');
+        maybeNavigate('next');
         break;
     }
   });
 
-  const maybeNavigate = debounce((direction: 'up' | 'down') => {
+  const maybeNavigate = debounce((direction: 'next' | 'back') => {
     const currentIndex = params().entries.findIndex(entry => entry.uuid === state.params.entry_uuid);
 
-    const offset = direction === 'up' ? -1 : 1;
+    const offset = direction === 'next' ? -1 : 1;
     const entry = params().entries[currentIndex + offset];
     if (!entry) return;
 
@@ -56,4 +56,8 @@ export const useListNav = (params: () => UseListNavParams) => {
 
     navigate(state.getEntryUrl(entry.uuid));
   }, 30);
+
+  return {
+    maybeNavigate,
+  };
 };

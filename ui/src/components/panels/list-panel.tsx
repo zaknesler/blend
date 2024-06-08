@@ -12,8 +12,8 @@ import { NavRow } from '~/components/nav/nav-row';
 import { NavViewTabs } from '~/components/nav/nav-view-tabs';
 import { Panel } from '~/components/ui/layout/panel';
 import { useQueryState } from '~/contexts/query-state-context';
+import { useViewport } from '~/contexts/viewport-context';
 import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
-import { useViewport } from '~/hooks/use-viewport';
 import { IconButton } from '../ui/button/icon-button';
 
 export const ListPanel = () => {
@@ -74,13 +74,18 @@ export const ListPanel = () => {
           showPanel() ? 'flex-1 overflow-hidden' : 'flex-none shadow dark:shadow-xl',
         )}
       >
-        <div class="z-10 flex shrink-0 flex-col gap-4 bg-gray-50 p-4 shadow dark:bg-gray-950 md:dark:bg-gray-900 dark:shadow-xl">
+        <div
+          class={cx(
+            'z-10 flex shrink-0 flex-col gap-4 bg-gray-50 p-4 dark:bg-gray-950 md:dark:bg-gray-900',
+            showPanel() && 'shadow dark:shadow-xl',
+          )}
+        >
           <div class="-m-4 xl:hidden">
             <NavRow
               open={showFeeds()}
               setOpen={setShowFeedSelector}
               showFeedSwitch={(!viewingEntry() && isMobile()) || !isMobile()}
-              showBackArrow={viewingEntry() && isMobile()}
+              showCloseButton={viewingEntry() && isMobile()}
             />
           </div>
 

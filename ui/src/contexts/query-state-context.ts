@@ -53,8 +53,8 @@ export const makeQueryStateContext = () => {
   };
 
   const getBasePath = () => {
-    if (params.folder_slug) `/folder/${params.folder_slug}`;
-    if (params.feed_uuid) `/feeds/${params.feed_uuid}`;
+    if (params.folder_slug) return `/folder/${params.folder_slug}`;
+    if (params.feed_uuid) return `/feeds/${params.feed_uuid}`;
     return '/';
   };
 
