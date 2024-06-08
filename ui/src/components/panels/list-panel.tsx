@@ -30,9 +30,9 @@ export const ListPanel = () => {
 
   const viewingEntry = () => !!state.params.entry_uuid;
 
-  const isMobile = () => viewport.lteBreakpoint('md');
+  const isMobile = () => viewport.lte('md');
   const showPanel = () => !isMobile() || (isMobile() && !viewingEntry());
-  const showFeeds = () => viewport.lteBreakpoint('xl') && showFeedSelector();
+  const showFeeds = () => viewport.lte('xl') && showFeedSelector();
 
   const handleSkipToContent = () => {
     const el = container();

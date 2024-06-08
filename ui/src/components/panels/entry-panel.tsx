@@ -19,7 +19,7 @@ export const EntryPanel = () => {
     <Show
       when={state.params.entry_uuid}
       fallback={
-        <Show when={viewport.gtBreakpoint('md')}>
+        <Show when={viewport.gt('md')}>
           <Panel class="size-full p-4 lg:p-8">
             <Empty dashed={false} />
           </Panel>

@@ -17,12 +17,12 @@ export const useViewport = () => {
 export const makeViewportContext = () => {
   const size = useWindowSize();
 
-  const lteBreakpoint = (screen: ScreenSize) => size.width <= getBreakpoint(screen);
-  const gtBreakpoint = (screen: ScreenSize) => size.width > getBreakpoint(screen);
+  const lte = (screen: ScreenSize) => size.width <= getBreakpoint(screen);
+  const gt = (screen: ScreenSize) => size.width > getBreakpoint(screen);
 
   return {
     size,
-    lteBreakpoint,
-    gtBreakpoint,
+    lte,
+    gt,
   };
 };

@@ -30,7 +30,7 @@ export const useListNav = (params: () => UseListNavParams) => {
     const e = keyDownEvent();
     if (!e) return;
 
-    if (viewport.lteBreakpoint('md')) {
+    if (viewport.lte('md')) {
       // Don't listen to any navigation on mobile when not viewing an entry
       if (!state.params.entry_uuid) return;
 
@@ -81,7 +81,7 @@ export const useListNav = (params: () => UseListNavParams) => {
     queryClient.cancelQueries({ queryKey: [QUERY_KEYS.ENTRIES_VIEW, state.params.entry_uuid] });
 
     // Fetch more if we're nearing the end of the list
-    if (currentIndex > params().entryUuids.length - 3) params().fetchMore();
+    // if (currentIndex > params().entryUuids.length - 3) params().fetchMore();
 
     navigate(state.getEntryUrl(entry_uuid));
   }, 30);

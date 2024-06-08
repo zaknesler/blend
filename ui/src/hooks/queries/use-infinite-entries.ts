@@ -44,17 +44,17 @@ export const useInfiniteEntries = () => {
 
   const [init, setInit] = createSignal(false);
 
-  // Continue fetching entries until the active item is on the page or until we're not viewing the last item on mobile
+  // All the entries up until the current entry (and maybe fetch more on mobile)
   createEffect(() => {
     if (init() || !state.params.entry_uuid || !query.hasNextPage) return;
 
     const uuids = allEntries().map(entry => entry.uuid);
 
-    const loadedOnDesktop = viewport.gtBreakpoint('md') ? uuids.includes(state.params.entry_uuid) : true;
-    const viewingLastEntryOnMobile =
-      viewport.lteBreakpoint('md') && uuids[uuids.length - 1] === state.params.entry_uuid;
+    const entryIsLoaded = uuids.includes(state.params.entry_uuid);
+    const viewingLastMobile = viewport.lte('md') ? uuids[uuids.length - 1] === state.params.entry_uuid : false;
 
-    if (!loadedOnDesktop || viewingLastEntryOnMobile) {
+    // If the entry is not listed or if we're viewing the last item on mobile, fetch more entries
+    if (!entryIsLoaded || viewingLastMobile) {
       query.fetchNextPage();
       return;
     }

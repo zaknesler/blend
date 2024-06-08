@@ -16,7 +16,7 @@ render(() => {
       <QueryClientProvider client={queryClient}>
         <Router />
 
-        <Show when={viewport.gtBreakpoint('md')}>
+        <Show when={viewport.gt('md')}>
           <SolidQueryDevtools initialIsOpen={false} />
         </Show>
       </QueryClientProvider>
