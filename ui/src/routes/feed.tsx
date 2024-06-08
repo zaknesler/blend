@@ -1,11 +1,13 @@
+import { lazy } from 'solid-js';
 import { CreateFeedModal } from '~/components/modals/create-feed-modal';
-import { EntryPanel } from '~/components/panels/entry-panel';
-import { ListPanel } from '~/components/panels/list-panel';
-import { Sidebar } from '~/components/ui/layout/sidebar';
 import { EntriesContext, makeEntriesContext } from '~/contexts/entries-context';
 import { NotificationContext, makeNotificationContext } from '~/contexts/notification-context';
 import { QueryStateContext, makeQueryStateContext } from '~/contexts/query-state-context';
 import { useShortcuts } from '~/hooks/use-shortcuts';
+
+const Sidebar = lazy(() => import('~/components/ui/layout/sidebar').then(d => ({ default: d.Sidebar })));
+const EntryPanel = lazy(() => import('~/components/panels/entry-panel').then(d => ({ default: d.EntryPanel })));
+const ListPanel = lazy(() => import('~/components/panels/list-panel').then(d => ({ default: d.ListPanel })));
 
 export default () => {
   const queryState = makeQueryStateContext();
