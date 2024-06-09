@@ -54,7 +54,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
       <small
         class={cx(
           'flex w-full gap-1 overflow-hidden text-xs transition',
-          isActive() ? 'text-gray-300' : 'text-gray-500 dark:text-gray-400',
+          isActive() ? 'text-gray-300 dark:text-gray-400' : 'text-gray-400 dark:text-gray-500',
         )}
       >
         <Show when={!isRead()}>
@@ -67,7 +67,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
         </Show>
 
         <Show when={!state.params.feed_uuid}>
-          <span class="truncate break-all font-medium">{feed()?.title_display || feed()?.title}</span>
+          <span class="truncate break-all font-medium" innerHTML={feed()?.title_display || feed()?.title} />
 
           <Show when={getDate()}>
             <span class="opacity-50">&ndash;</span>
