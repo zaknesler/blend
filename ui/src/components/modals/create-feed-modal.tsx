@@ -1,7 +1,7 @@
 import { Dialog } from '@kobalte/core/dialog';
 import { useNavigate } from '@solidjs/router';
 import { createMutation, useQueryClient } from '@tanstack/solid-query';
-import { HiSolidXMark } from 'solid-icons/hi';
+import { HiOutlineXMark } from 'solid-icons/hi';
 import { Show, createEffect, createSignal } from 'solid-js';
 import { getErrorMessage } from '~/api';
 import { addFeed } from '~/api/feeds';
@@ -71,7 +71,7 @@ export const CreateFeedModal = () => {
                 <Dialog.Title class="font-semibold text-lg/4 dark:text-gray-200">Add a new feed</Dialog.Title>
 
                 <Dialog.CloseButton class="rounded-lg p-1 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2">
-                  <HiSolidXMark class="size-5 text-gray-500" />
+                  <HiOutlineXMark class="size-5 text-gray-500" />
                 </Dialog.CloseButton>
               </div>
               <Dialog.Description class="text-gray-600 text-sm dark:text-gray-400">

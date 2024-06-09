@@ -13,6 +13,10 @@ export const item = cva([
   'dark:active:bg-gray-800 dark:focus:bg-gray-800 dark:hover:bg-gray-800',
 ]);
 
+export const itemIcon = cva('size-4 text-gray-400 dark:text-gray-500');
+
+export const itemKbd = cva('ml-auto font-mono text-gray-400 text-xs dark:text-gray-500');
+
 export const content = cva(
   [
     'z-50 overflow-hidden rounded-lg border shadow-sm md:rounded-md dark:shadow-md focus:outline-none',
@@ -34,4 +38,4 @@ export const content = cva(
   },
 );
 
-export const contentInner = cva(['flex flex-col gap-0.5 p-1.5 text-base md:p-1 md:text-sm']);
+export const contentInner = cva('flex flex-col gap-0.5 p-1.5 text-base md:p-1 md:text-sm');

@@ -1,10 +1,10 @@
 import { cx } from 'class-variance-authority';
 import {
+  HiOutlineArrowLeft,
+  HiOutlineArrowRight,
   HiOutlineArrowTopRightOnSquare,
   HiOutlineBookmark,
   HiOutlineEnvelope,
-  HiSolidArrowLeft,
-  HiSolidArrowRight,
   HiSolidBookmark,
 } from 'solid-icons/hi';
 import type { Component } from 'solid-js';
@@ -73,7 +73,7 @@ export const EntryActions: Component<EntryActionsProps> = props => {
       <ActionButton
         onClick={handleNavigateBack}
         disabled={!entries.nav.canGoBack()}
-        icon={HiSolidArrowLeft}
+        icon={HiOutlineArrowLeft}
         tooltip="View previous item"
         class="ml-auto p-2 md:hidden md:p-1"
       />
@@ -81,7 +81,7 @@ export const EntryActions: Component<EntryActionsProps> = props => {
       <ActionButton
         onClick={handleNavigateNext}
         disabled={!entries.nav.canGoForward()}
-        icon={HiSolidArrowRight}
+        icon={HiOutlineArrowRight}
         tooltip="View next item"
         class="p-2 md:hidden md:p-1"
       />

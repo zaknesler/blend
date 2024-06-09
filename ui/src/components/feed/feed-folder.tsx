@@ -1,6 +1,6 @@
 import { Collapsible } from '@kobalte/core/collapsible';
 import { cx } from 'class-variance-authority';
-import { HiSolidChevronRight } from 'solid-icons/hi';
+import { HiOutlineChevronRight } from 'solid-icons/hi';
 import { type ParentComponent, createSignal } from 'solid-js';
 import * as feedClasses from '~/constants/ui/feed';
 
@@ -16,7 +16,7 @@ export const FeedFolder: ParentComponent<FeedFolderProps> = props => {
     <Collapsible open={open()} onOpenChange={setOpen} class="flex flex-col items-stretch gap-1">
       <Collapsible.Trigger as="button" class={feedClasses.folder({ active: open() })}>
         <div class="flex size-7 items-center justify-center md:size-5">
-          <HiSolidChevronRight
+          <HiOutlineChevronRight
             class={cx('size-4 text-gray-500 transition-transform md:size-3', open() && 'rotate-90')}
           />
         </div>

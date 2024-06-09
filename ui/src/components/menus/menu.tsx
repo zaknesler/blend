@@ -6,7 +6,7 @@ import {
 } from '@kobalte/core/dropdown-menu';
 import { type VariantProps, cx } from 'class-variance-authority';
 import type { IconTypes } from 'solid-icons';
-import { HiSolidEllipsisHorizontal } from 'solid-icons/hi';
+import { HiOutlineEllipsisHorizontal } from 'solid-icons/hi';
 import { type Component, type JSX, type ParentComponent, type Setter, Show, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import * as menuClasses from '~/constants/ui/menu';
@@ -39,7 +39,7 @@ const MenuRoot: ParentComponent<MenuProps> = props => {
         when={local.trigger}
         fallback={
           <MenuTrigger class={cx('relative', local.triggerClass)}>
-            <Dynamic component={local.triggerIcon || HiSolidEllipsisHorizontal} class={local.triggerIconClass} />
+            <Dynamic component={local.triggerIcon || HiOutlineEllipsisHorizontal} class={local.triggerIconClass} />
           </MenuTrigger>
         }
       >
@@ -78,10 +78,10 @@ const MenuItem: Component<MenuItemProps> = props => {
 
   return (
     <DropdownMenu.Item {...rest} class={menuClasses.item()}>
-      <Dynamic component={local.icon} class="size-4 text-gray-400 dark:text-gray-500" />
+      <Dynamic component={local.icon} class={menuClasses.itemIcon()} />
       {local.label}
       <Show when={local.kbd}>
-        <kbd class="ml-auto font-mono text-gray-400 text-xs dark:text-gray-500">{local.kbd}</kbd>
+        <kbd class={menuClasses.itemKbd()}>{local.kbd}</kbd>
       </Show>
     </DropdownMenu.Item>
   );

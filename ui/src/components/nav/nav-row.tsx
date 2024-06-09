@@ -1,6 +1,6 @@
 import { useNavigate } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
-import { HiOutlineQueueList, HiSolidXMark } from 'solid-icons/hi';
+import { HiOutlineQueueList, HiOutlineXMark } from 'solid-icons/hi';
 import { type Component, type Setter, Show, createSignal } from 'solid-js';
 import { useQueryState } from '~/contexts/query-state-context';
 import { AppMenu } from '../menus/menu-app';
@@ -30,7 +30,7 @@ export const NavRow: Component<NavRowProps> = props => {
             onClick={() => props.setOpen(val => !val)}
             class="-m-1"
             tooltip={props.open ? 'Hide feeds' : 'Show feeds'}
-            icon={props.open ? HiSolidXMark : HiOutlineQueueList}
+            icon={props.open ? HiOutlineXMark : HiOutlineQueueList}
           />
         </Show>
 
@@ -39,7 +39,7 @@ export const NavRow: Component<NavRowProps> = props => {
             onClick={() => navigate(state.getFeedUrl())}
             class="-m-1 ml-auto"
             tooltip="Back to feeds"
-            icon={HiSolidXMark}
+            icon={HiOutlineXMark}
           />
         </Show>
       </div>
