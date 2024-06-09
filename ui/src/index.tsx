@@ -1,25 +1,17 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/solid-query';
-import { SolidQueryDevtools } from '@tanstack/solid-query-devtools';
-import { Show, render } from 'solid-js/web';
-import Router from './router';
+import { lazy } from 'solid-js';
+import { render } from 'solid-js/web';
+import { ViewportContext, makeViewportContext } from './contexts/viewport-context';
 import 'solid-devtools';
 import './styles/app.css';
-import { ViewportContext, makeViewportContext } from './contexts/viewport-context';
 
-const queryClient = new QueryClient();
+const App = lazy(() => import('./app'));
 
 render(() => {
   const viewport = makeViewportContext();
 
   return (
     <ViewportContext.Provider value={viewport}>
-      <QueryClientProvider client={queryClient}>
-        <Router />
-
-        <Show when={viewport.gt('md')}>
-          <SolidQueryDevtools initialIsOpen={false} />
-        </Show>
-      </QueryClientProvider>
+      <App />
     </ViewportContext.Provider>
   );
 }, document.getElementById('root')!);
