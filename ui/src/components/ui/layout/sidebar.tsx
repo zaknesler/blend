@@ -16,7 +16,7 @@ export const Sidebar: Component<SidebarProps> = props => {
         <AppMenu open={settingsOpen()} setOpen={setSettingsOpen} gutter={4} />
       </div>
 
-      <div class="flex-1 flex-col items-stretch gap-4 px-4 xl:px-3">
+      <div class="flex-1 flex-col items-stretch gap-4 overflow-y-auto px-4 xl:px-3">
         <FeedList />
       </div>
     </div>
