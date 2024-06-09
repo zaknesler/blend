@@ -15,7 +15,7 @@ export const FeedList = () => {
   const stats = useFeedsStats();
 
   return (
-    <div class="flex w-full flex-col gap-4 p-4 xl:p-0">
+    <div class="flex w-full flex-col gap-4 px-3 py-4 xl:p-0">
       <BaseFeedItem
         href={'/'.concat(state.getQueryString())}
         title="All feeds"
@@ -25,7 +25,7 @@ export const FeedList = () => {
       />
 
       <div class="flex w-full flex-col gap-1">
-        <h3 class="select-none font-semibold text-gray-500 text-xs uppercase tracking-wider dark:text-gray-400">
+        <h3 class="mx-1 select-none font-semibold text-gray-500 text-xs uppercase tracking-wider dark:text-gray-400">
           Feeds
         </h3>
 
@@ -42,6 +42,18 @@ export const FeedList = () => {
             </Match>
           </Switch>
         </FeedFolder>
+
+        <Switch>
+          <Match when={feeds.query.isError}>
+            <p>Error: {feeds.query.error?.message}</p>
+          </Match>
+
+          <Match when={feeds.query.isSuccess}>
+            <Show when={feeds.query.data?.length} fallback={<div>No feeds.</div>}>
+              <For each={feeds.query.data}>{feed => <FeedItem feed={feed} />}</For>
+            </Show>
+          </Match>
+        </Switch>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const inactiveClass = cx(
 export const item = cva(
   [
     base,
-    '-mx-1 flex flex-1 select-none items-center gap-2 rounded-lg border p-1 text-base no-underline outline-none transition',
+    'flex w-full flex-1 select-none items-center gap-2 rounded-lg border p-1 text-base no-underline outline-none transition',
   ],
   {
     variants: {

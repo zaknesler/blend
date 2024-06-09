@@ -32,12 +32,22 @@ export default {
           from: { opacity: '1', transform: 'scale(1) translateY(0rem)' },
           to: { opacity: '0', transform: 'scale(0.95) translateY(0.25rem)' },
         },
+        'collapse-down': {
+          from: { height: '0' },
+          to: { height: 'var(--kb-collapsible-content-height)' },
+        },
+        'collapse-up': {
+          from: { height: 'var(--kb-collapsible-content-height)' },
+          to: { height: '0' },
+        },
       },
       animation: {
         'overlay-show': 'overlay-show 150ms ease-in-out',
         'overlay-hide': 'overlay-hide 150ms ease-in-out',
         'content-show': 'content-show 150ms ease-in-out',
         'content-hide': 'content-hide 150ms ease-in-out',
+        'collapse-up': 'collapse-up 100ms ease-in-out',
+        'collapse-down': 'collapse-down 100ms ease-in-out',
       },
       boxShadow: {
         top: '0 -1px 3px 0 rgb(0 0 0 / 0.1), 0 -1px 2px -1px rgb(0 0 0 / 0.1)',

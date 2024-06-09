@@ -13,19 +13,18 @@ export const FeedFolder: ParentComponent<FeedFolderProps> = props => {
   const [open, setOpen] = createSignal(false);
 
   return (
-    <Collapsible open={open()} onOpenChange={setOpen} class="-mx-1 flex flex-col gap-1">
+    <Collapsible open={open()} onOpenChange={setOpen} class="flex flex-col items-stretch gap-1">
       <Collapsible.Trigger as="button" class={feedClasses.folder({ active: open() })}>
         <div class="flex size-7 items-center justify-center md:size-5">
           <HiSolidChevronRight
             class={cx('size-4 text-gray-500 transition-transform md:size-3', open() && 'rotate-90')}
           />
         </div>
-        <span class="text-sm">{props.label}</span>
+        <span class="text-base md:text-sm">{props.label}</span>
       </Collapsible.Trigger>
 
-      <Collapsible.Content class="mr-1 flex">
-        <div class="w-4 shrink-0" />
-        <div class="flex flex-1 flex-col gap-1">{props.children}</div>
+      <Collapsible.Content class="flex animate-collapse-up overflow-hidden ui-expanded:animate-collapse-down">
+        <div class="flex flex-col gap-1 overflow-hidden pl-4">{props.children}</div>
       </Collapsible.Content>
     </Collapsible>
   );

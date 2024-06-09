@@ -84,7 +84,7 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
       </Transition>
     </div>
 
-    <span class="flex-1 overflow-x-hidden truncate">{props.title}</span>
+    <span class="flex-1 overflow-hidden truncate break-all">{props.title}</span>
 
     <Show when={props.unread_count}>
       <span class="shrink-0 px-1 text-right text-gray-400 text-sm dark:text-gray-300 md:text-xs/4">
