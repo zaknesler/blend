@@ -46,8 +46,8 @@ export default {
         'overlay-hide': 'overlay-hide 150ms ease-in-out',
         'content-show': 'content-show 150ms ease-in-out',
         'content-hide': 'content-hide 150ms ease-in-out',
-        'collapse-up': 'collapse-up 100ms ease-in-out',
-        'collapse-down': 'collapse-down 100ms ease-in-out',
+        'collapse-up': 'collapse-up 150ms ease-in-out',
+        'collapse-down': 'collapse-down 150ms ease-in-out',
       },
       boxShadow: {
         top: '0 -1px 3px 0 rgb(0 0 0 / 0.1), 0 -1px 2px -1px rgb(0 0 0 / 0.1)',
