@@ -1,6 +1,6 @@
 import { DATA_ATTRIBUTES } from '~/constants/elements';
 import { DEFAULT_DIRECTION } from '~/contexts/query-state-context';
-import { type Entry, SortDirection } from '~/types/bindings';
+import { type Entry, SortDirection, View } from '~/types/bindings';
 
 /**
  * Get the function to compare two entries for sorting.
@@ -29,4 +29,22 @@ export const findEntryItem = (uuid?: string) => {
   if (!(activeItem instanceof HTMLElement)) return null;
 
   return activeItem;
+};
+
+/**
+ * Check if the given entry could ever appear in the selected view.
+ *
+ * e.g. an entry with no `saved_at` date could never appear in the "saved" view.
+ */
+export const entryMayExistInView = (entry: Entry, view: View) => {
+  switch (view) {
+    case View.Unread:
+      return !entry.read_at;
+    case View.Read:
+      return !!entry.read_at;
+    case View.Saved:
+      return !!entry.saved_at;
+  }
+
+  return true;
 };

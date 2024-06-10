@@ -6,17 +6,20 @@ import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import { useViewport } from '~/contexts/viewport-context';
 import type { Entry } from '~/types/bindings';
-import { findEntryItem } from '~/utils/entries';
+import { entryMayExistInView, findEntryItem } from '~/utils/entries';
 import { useQueryState } from '../../contexts/query-state-context';
+import { useEntry } from './use-entry';
 
 /**
  * How many times are we willing to fetch more pages in order to populate the entry list up to the currently-viewed entry?
  */
-const MAX_FETCHES = 25;
+const MAX_FETCHES = 20;
 
 export const useInfiniteEntries = () => {
   const state = useQueryState();
   const viewport = useViewport();
+
+  const entry = useEntry(() => ({ entry_uuid: state.params.entry_uuid }));
 
   const query = createInfiniteQuery<ApiPaginatedResponse<Entry[]>>(() => ({
     queryKey: [QUERY_KEYS.ENTRIES_INDEX, state.params.feed_uuid, state.getView()],
@@ -47,9 +50,22 @@ export const useInfiniteEntries = () => {
   const [fetches, setFetches] = createSignal(0);
   const [lastCursor, setLastCursor] = createSignal(getNextCursor());
 
-  // All the entries up until the current entry (and maybe fetch more on mobile)
   createEffect(() => {
-    if (init() || !state.params.entry_uuid || getNextCursor() === lastCursor() || !canFetchMore()) return;
+    state.getFeedUrl();
+    setInit(false);
+  });
+
+  // Load the entries up until the current entry (and maybe fetch more on mobile)
+  createEffect(() => {
+    if (
+      init() ||
+      !state.params.entry_uuid ||
+      !entry.data ||
+      !entryMayExistInView(entry.data, state.getView()) ||
+      getNextCursor() === lastCursor() ||
+      !canFetchMore()
+    )
+      return;
 
     setTimeout(() => {
       const activeItem = findEntryItem(state.params.entry_uuid);
