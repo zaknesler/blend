@@ -68,7 +68,6 @@ export const FeedItem: Component<FeedItemProps> = props => {
 
 export const AllFeedsItem = () => {
   const state = useQueryState();
-  const location = useLocation();
 
   const stats = useFeedsStats();
 
@@ -82,7 +81,7 @@ export const AllFeedsItem = () => {
               href={'/'.concat(state.getQueryString())}
               title="All feeds"
               icon={() => <HiOutlineSquare3Stack3d class="size-6 text-gray-600 md:size-5 dark:text-gray-500" />}
-              active={location.pathname === '/'}
+              active={!state.params.feed_uuid && !state.params.folder_slug}
               unread_count={stats.total()?.count_unread}
             />
           )}
