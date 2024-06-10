@@ -57,6 +57,15 @@ export const EntryItem: Component<EntryItemProps> = props => {
           isActive() ? 'text-gray-300 dark:text-gray-400' : 'text-gray-400 dark:text-gray-500',
         )}
       >
+        <Show when={!isRead()}>
+          <span
+            class={cx(
+              'size-2 shrink-0 self-center rounded-full transition',
+              isActive() ? 'bg-gray-400' : 'bg-gray-500 dark:bg-gray-300',
+            )}
+          />
+        </Show>
+
         <Show when={!state.params.feed_uuid}>
           <span class="truncate break-all font-medium" innerHTML={feed()?.title_display || feed()?.title} />
 
