@@ -1,4 +1,4 @@
-import { DATA_ATTRIBUTES } from '~/constants/elements';
+import { IDS } from '~/constants/elements';
 import { DEFAULT_DIRECTION } from '~/contexts/query-state-context';
 import { type Entry, SortDirection, View } from '~/types/bindings';
 
@@ -25,7 +25,7 @@ export const getEntryComparator =
 export const findEntryItem = (uuid?: string) => {
   if (!uuid) return null;
 
-  const activeItem = document.querySelector(`[${DATA_ATTRIBUTES.ENTRY_ITEM_UUID}="${uuid}"]`);
+  const activeItem = document.getElementById(IDS.ENTRY(uuid));
   if (!(activeItem instanceof HTMLElement)) return null;
 
   return activeItem;

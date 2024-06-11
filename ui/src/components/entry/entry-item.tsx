@@ -1,7 +1,7 @@
 import { A, type AnchorProps, useMatch } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { type Component, Show, splitProps } from 'solid-js';
-import { DATA_ATTRIBUTES } from '~/constants/elements';
+import { IDS } from '~/constants/elements';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useEntry } from '~/hooks/queries/use-entry';
 import { useFeeds } from '~/hooks/queries/use-feeds';
@@ -33,7 +33,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
 
   return (
     <A
-      {...{ [DATA_ATTRIBUTES.ENTRY_ITEM_UUID]: local.entry.uuid }}
+      id={IDS.ENTRY(local.entry.uuid)}
       href={state.getEntryUrl(local.entry.uuid)}
       class={cx(
         '-mx-2 flex select-none flex-col gap-1 rounded-lg px-2 py-1.5 ring-gray-300 transition dark:ring-gray-700',
