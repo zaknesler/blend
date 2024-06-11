@@ -1,12 +1,12 @@
 import { IDS } from '~/constants/elements';
-import { DEFAULT_DIRECTION } from '~/contexts/query-state-context';
+import { DEFAULTS } from '~/contexts/query-state-context';
 import { type Entry, SortDirection, View } from '~/types/bindings';
 
 /**
  * Get the function to compare two entries for sorting.
  */
 export const getEntryComparator =
-  (sort = DEFAULT_DIRECTION) =>
+  (sort = DEFAULTS.sort) =>
   (a: Entry, b: Entry) => {
     const dateA = a.published_at || a.updated_at;
     const dateB = b.published_at || b.updated_at;

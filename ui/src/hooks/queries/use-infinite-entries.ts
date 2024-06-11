@@ -13,7 +13,7 @@ import { useEntry } from './use-entry';
 /**
  * How many times are we willing to fetch more pages in order to populate the entry list up to the currently-viewed entry?
  */
-const MAX_FETCHES = 20;
+const MAX_FETCHES = 30;
 
 export const useInfiniteEntries = () => {
   const state = useQueryState();
@@ -27,7 +27,7 @@ export const useInfiniteEntries = () => {
       getEntries({
         feed: state.params.feed_uuid,
         folder: state.params.folder_slug,
-        cursor: fetchParams.pageParam as undefined | string,
+        cursor: fetchParams.pageParam as string | undefined,
         view: state.getView(),
         sort: state.getSort(),
       }),
@@ -47,12 +47,13 @@ export const useInfiniteEntries = () => {
   const getNextCursor = () => query.data?.pages[query.data?.pages.length - 1].next_cursor;
 
   const [init, setInit] = createSignal(false);
+  const [initFeed] = createSignal(state.getFeedUrl());
   const [fetches, setFetches] = createSignal(0);
   const [lastCursor, setLastCursor] = createSignal(getNextCursor());
 
   createEffect(() => {
-    state.getFeedUrl();
-    setInit(false);
+    if (viewport.lte('md') || initFeed() === state.getFeedUrl()) return;
+    setInit(true);
   });
 
   // Load the entries up until the current entry (and maybe fetch more on mobile)
@@ -68,6 +69,8 @@ export const useInfiniteEntries = () => {
       return;
 
     setTimeout(() => {
+      if (viewport.lte('md')) return;
+
       const activeItem = findEntryItem(state.params.entry_uuid);
       if (activeItem) activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 500);
@@ -78,7 +81,7 @@ export const useInfiniteEntries = () => {
     const viewingLastMobile = viewport.lte('md') ? uuids[uuids.length - 1] === state.params.entry_uuid : false;
 
     // If the entry is not listed or if we're viewing the last item on mobile, fetch more entries
-    if ((!entryIsLoaded && fetches() < MAX_FETCHES) || viewingLastMobile) {
+    if ((!entryIsLoaded && (fetches() < MAX_FETCHES || viewport.lte('md'))) || viewingLastMobile) {
       query.fetchNextPage();
       setFetches(val => val + 1);
       setLastCursor(getNextCursor());

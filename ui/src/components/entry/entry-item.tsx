@@ -29,7 +29,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
   const getDate = () => local.entry.published_at || local.entry.updated_at;
 
   const entryRouteMatch = useMatch(() => state.getEntryUrl(local.entry.uuid, false));
-  const isActive = () => Boolean(entryRouteMatch());
+  const isActive = () => !!entryRouteMatch();
 
   return (
     <A

@@ -80,8 +80,8 @@ export const useListNav = (params: () => UseListNavParams) => {
     // Cancel the current entry view request
     queryClient.cancelQueries({ queryKey: [QUERY_KEYS.ENTRIES_VIEW, state.params.entry_uuid] });
 
-    // Fetch more if we're nearing the end of the list
-    // if (currentIndex > params().entryUuids.length - 3) params().fetchMore();
+    // Fetch more if we're at the end of the list on mobile
+    if (viewport.lte('md') && currentIndex === params().entryUuids.length - 2) params().fetchMore();
 
     navigate(state.getEntryUrl(entry_uuid));
   }, 30);
