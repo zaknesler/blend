@@ -63,19 +63,14 @@ export const EntryActions: Component<EntryActionsProps> = props => {
         class="p-2"
       />
 
-      <ActionButton
-        href={props.entry.url}
-        icon={HiOutlineArrowTopRightOnSquare}
-        tooltip="Open entry URL"
-        class="p-2 md:p-1"
-      />
+      <ActionButton href={props.entry.url} icon={HiOutlineArrowTopRightOnSquare} tooltip="Open entry URL" class="p-2" />
 
       <ActionButton
         onClick={handleNavigateBack}
         disabled={!entries.nav.canGoBack()}
         icon={HiOutlineArrowLeft}
         tooltip="Previous entry"
-        class="ml-auto p-2 md:hidden md:p-1"
+        class="ml-auto p-2 md:hidden"
       />
 
       <ActionButton
@@ -83,7 +78,7 @@ export const EntryActions: Component<EntryActionsProps> = props => {
         disabled={!entries.nav.canGoForward()}
         icon={HiOutlineArrowRight}
         tooltip="Next entry"
-        class="p-2 md:hidden md:p-1"
+        class="p-2 md:hidden"
       />
     </div>
   );
