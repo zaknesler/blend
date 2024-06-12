@@ -53,14 +53,14 @@ export const EntryActions: Component<EntryActionsProps> = props => {
         icon={HiOutlineEnvelope}
         tooltip={props.entry.read_at ? 'Mark as unread' : 'Mark as read'}
         showCircle={!props.entry.read_at}
-        class="p-2 md:p-1"
+        class="p-2"
       />
 
       <ActionButton
         onClick={handleToggleSaved}
         icon={props.entry.saved_at ? HiSolidBookmark : HiOutlineBookmark}
         tooltip={props.entry.saved_at ? 'Mark as unsaved' : 'Mark as saved'}
-        class="p-2 md:p-1"
+        class="p-2"
       />
 
       <ActionButton
@@ -74,7 +74,7 @@ export const EntryActions: Component<EntryActionsProps> = props => {
         onClick={handleNavigateBack}
         disabled={!entries.nav.canGoBack()}
         icon={HiOutlineArrowLeft}
-        tooltip="View previous item"
+        tooltip="Previous entry"
         class="ml-auto p-2 md:hidden md:p-1"
       />
 
@@ -82,7 +82,7 @@ export const EntryActions: Component<EntryActionsProps> = props => {
         onClick={handleNavigateNext}
         disabled={!entries.nav.canGoForward()}
         icon={HiOutlineArrowRight}
-        tooltip="View next item"
+        tooltip="Next entry"
         class="p-2 md:hidden md:p-1"
       />
     </div>

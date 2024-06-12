@@ -52,7 +52,7 @@ export const button = cva(
 
 export const action = cva(
   [
-    'cursor-default appearance-none rounded-lg text-gray-500',
+    'cursor-default appearance-none rounded-lg text-gray-600',
     'hover:bg-gray-200',
     'focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30',
     'dark:hover:bg-gray-700 dark:text-gray-400 dark:focus:ring-gray-600',

@@ -41,7 +41,7 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
       </Show>
 
       <article id={local.entry.uuid} class="flex flex-col gap-4">
-        <div class="flex flex-col gap-4 md:max-w-[calc(100%-4rem)]">
+        <div class="flex flex-col gap-4 md:max-w-[calc(100%-7rem)]">
           <h1
             class="text-pretty font-bold text-gray-800 text-xl dark:text-gray-100 lg:text-2xl"
             innerHTML={local.entry.title}
