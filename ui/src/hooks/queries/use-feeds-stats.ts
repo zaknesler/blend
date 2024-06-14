@@ -1,6 +1,7 @@
 import { createQuery } from '@tanstack/solid-query';
 import { getFeedStats } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
+import { sumStats } from '~/utils/stats';
 
 export const useFeedsStats = () => {
   const query = createQuery(() => ({
@@ -10,18 +11,13 @@ export const useFeedsStats = () => {
     refetchOnMount: false,
   }));
 
-  const total = () =>
-    query.data?.reduce(
-      (acc, stat) => ({
-        count_total: acc.count_total + stat.count_total,
-        count_unread: acc.count_unread + stat.count_unread,
-        count_saved: acc.count_saved + stat.count_saved,
-      }),
-      { count_total: 0, count_unread: 0, count_saved: 0 },
-    );
+  const total = () => (query.data ? sumStats(query.data) : undefined);
+
+  const byFeed = (uuid: string) => query.data?.find(item => item.uuid === uuid);
 
   return {
     query,
     total,
+    byFeed,
   };
 };

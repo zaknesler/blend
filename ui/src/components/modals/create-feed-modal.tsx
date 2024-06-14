@@ -59,7 +59,7 @@ export const CreateFeedModal = () => {
   return (
     <Dialog open={modalOpen('addFeed')} onOpenChange={value => setModalStore('addFeed', value)}>
       <Dialog.Portal>
-        <Dialog.Overlay class="fixed inset-0 z-50 animate-overlay-hide bg-black/25 backdrop-blur ui-expanded:animate-overlay-show" />
+        <Dialog.Overlay class="fixed inset-0 z-50 animate-overlay-hide bg-black/25 backdrop-blur-lg ui-expanded:animate-overlay-show" />
 
         <div class="fixed inset-0 z-50 flex items-end justify-center p-8 sm:items-center">
           <Dialog.Content
