@@ -1,6 +1,7 @@
 [workspace.package]
 version = "0.0.0"
 edition = "2021"
+rust-version = "1.79"
 authors = ["Zak Nesler"]
 repository = "https://github.com/zaknesler/blend"
 license = "MIT"
