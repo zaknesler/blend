@@ -58,8 +58,11 @@ const ContextMenuContent: ParentComponent<ContextMenuContentProps> = props => (
   </KbContextMenu.Content>
 );
 
+const ContextMenuSeparator = () => <KbContextMenu.Separator class={menuClasses.contentSeparator()} />;
+
 export const ContextMenu = Object.assign(ContextMenuRoot, {
   Item: ContextMenuItem,
   Content: ContextMenuContent,
+  Separator: ContextMenuSeparator,
   Trigger: KbContextMenu.Trigger,
 });

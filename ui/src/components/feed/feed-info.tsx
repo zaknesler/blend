@@ -1,6 +1,6 @@
 import { createQuery } from '@tanstack/solid-query';
 import { cx } from 'class-variance-authority';
-import { HiOutlineArrowPath } from 'solid-icons/hi';
+import { HiOutlineArrowPath, HiOutlineEnvelope } from 'solid-icons/hi';
 import { type Component, Match, Switch, createSignal } from 'solid-js';
 import { getFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
@@ -42,6 +42,14 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
       <Match when={feed.isSuccess}>
         <div class="flex w-full items-start gap-2">
           <FeedHeader title={feed.data?.title_display || feed.data?.title} subtitle={feed.data?.url_feed} />
+
+          <IconButton
+            disabled
+            icon={HiOutlineEnvelope}
+            tooltip="Mark feed as read"
+            class="size-6 rounded-md text-gray-500"
+            iconClass={cx(isRefreshing() && 'animate-spin')}
+          />
 
           <IconButton
             onClick={() => refresh.refreshFeed(props.uuid)}

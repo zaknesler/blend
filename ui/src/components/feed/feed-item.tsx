@@ -3,6 +3,7 @@ import { Image } from '@kobalte/core/image';
 import { A, type AnchorProps, useLocation } from '@solidjs/router';
 import {
   HiOutlineArrowPath,
+  HiOutlineEnvelope,
   HiOutlineFolder,
   HiOutlinePencilSquare,
   HiOutlineRss,
@@ -41,7 +42,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
 
   return (
     <ContextMenu
-      size="sm"
+      size="md"
       trigger={() => (
         <ContextMenu.Trigger
           as={(polyProps: ContextMenuTriggerProps<'a'>) => (
@@ -59,6 +60,8 @@ export const FeedItem: Component<FeedItemProps> = props => {
       )}
     >
       <ContextMenu.Item label="Refresh feed" disabled icon={HiOutlineArrowPath} />
+      <ContextMenu.Item label="Mark feed as read" disabled icon={HiOutlineEnvelope} />
+      <ContextMenu.Separator />
       <ContextMenu.Item label="Move" disabled icon={HiOutlineFolder} />
       <ContextMenu.Item label="Rename" disabled icon={HiOutlinePencilSquare} />
       <ContextMenu.Item label="Delete" disabled icon={HiOutlineTrash} />
@@ -89,6 +92,7 @@ export const AllFeedsItem = () => {
       )}
     >
       <ContextMenu.Item label="Refresh all feeds" disabled icon={HiOutlineArrowPath} />
+      <ContextMenu.Item label="Mark all as read" disabled icon={HiOutlineEnvelope} />
     </ContextMenu>
   );
 };

@@ -33,7 +33,7 @@ export const ActionButton: Component<ActionButtonProps> = props => {
           >
             <Dynamic component={local.icon} class="size-5 text-current md:size-4" />
             <Show when={local.showCircle}>
-              <div class="absolute top-1.5 right-1.5 z-10 h-2 w-2 rounded-full bg-current md:top-0.5 md:right-0.5" />
+              <div class="absolute top-1.5 right-1.5 z-10 h-2 w-2 rounded-full bg-current" />
             </Show>
           </Button>
         )}
