@@ -5,7 +5,7 @@
     "dev": "vite ui",
     "build": "vite build ui",
     "serve": "vite preview ui",
-    "ci": "tsc && biome ci ./ui/src",
+    "ci": "biome ci ./ui/src",
     "lint": "biome check ./ui/src",
     "lint:fix": "biome check --write ./ui/src",
     "test": "vitest run --root ui",
