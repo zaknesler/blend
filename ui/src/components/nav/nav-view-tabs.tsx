@@ -10,7 +10,7 @@ import { formatQueryString } from '~/utils/query';
 import { sumStats } from '~/utils/stats';
 
 const wrapperClass = cx(
-  'flex w-full select-none self-stretch rounded-lg border border-gray-200/25 bg-gray-100 font-medium text-gray-600 text-xs backdrop-blur-sm',
+  'scrollbar-hide flex w-full select-none self-stretch overflow-auto rounded-lg border border-gray-200/25 bg-gray-100 font-medium text-gray-600 text-xs backdrop-blur-sm',
   'dark:border-gray-950/50 dark:bg-gray-800 dark:text-white dark:shadow-md',
 );
 
