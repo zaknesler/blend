@@ -59,7 +59,7 @@ export const EntryActions: Component<EntryActionsProps> = props => {
       <ActionButton
         onClick={handleToggleSaved}
         icon={props.entry.saved_at ? HiSolidBookmark : HiOutlineBookmark}
-        tooltip={props.entry.saved_at ? 'Mark as unsaved' : 'Mark as saved'}
+        tooltip={props.entry.saved_at ? 'Unsave' : 'Save'}
         class="p-2"
       />
 
