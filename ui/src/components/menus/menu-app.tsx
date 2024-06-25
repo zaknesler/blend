@@ -5,7 +5,7 @@ import {
   HiOutlineArrowRightOnRectangle,
   HiOutlineBars2,
   HiOutlineCog6Tooth,
-  HiOutlinePlus,
+  HiOutlineSquaresPlus,
 } from 'solid-icons/hi';
 import { TiCog } from 'solid-icons/ti';
 import { type Component, mergeProps } from 'solid-js';
@@ -48,7 +48,7 @@ export const AppMenu: Component<MenuProps> = props => {
           />
         )}
       >
-        <Menu.Item label="Add feed" kbd="Alt ⇧ A" icon={HiOutlinePlus} onSelect={handleAddFeed} />
+        <Menu.Item label="Add feed" kbd={['SHIFT', 'A']} icon={HiOutlineSquaresPlus} onSelect={handleAddFeed} />
         <Menu.Item label="Import/export" icon={HiOutlineArrowDownTray} disabled />
         <Menu.Item label="Settings" icon={HiOutlineCog6Tooth} disabled />
         <Menu.Item label="Sign out" icon={HiOutlineArrowRightOnRectangle} disabled />

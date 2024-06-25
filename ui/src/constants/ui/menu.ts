@@ -16,7 +16,7 @@ export const item = cva([
 
 export const itemIcon = cva('size-4 text-gray-400 dark:text-gray-500');
 
-export const itemKbd = cva('ml-auto font-mono text-gray-400 text-xs dark:text-gray-500');
+export const itemKbd = cva('ml-auto inline-flex items-baseline gap-1 font-mono text-gray-400 dark:text-gray-500');
 
 export const content = cva(
   [

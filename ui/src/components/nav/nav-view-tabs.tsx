@@ -4,10 +4,8 @@ import { cx } from 'class-variance-authority';
 import { For } from 'solid-js';
 import { VIEWS, VIEW_LABELS } from '~/constants/views';
 import { DEFAULTS, useQueryState } from '~/contexts/query-state-context';
-import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
-import { View } from '~/types/bindings';
+import type { View } from '~/types/bindings';
 import { formatQueryString } from '~/utils/query';
-import { sumStats } from '~/utils/stats';
 
 const wrapperClass = cx(
   'scrollbar-hide flex w-full select-none self-stretch overflow-auto rounded-lg border border-gray-200/25 bg-gray-100 font-medium text-gray-600 text-xs backdrop-blur-sm',
@@ -31,8 +29,6 @@ export const NavViewTabs = () => {
   const state = useQueryState();
   const navigate = useNavigate();
 
-  const stats = useFeedsStats();
-
   const handleSetView = (view: View) => {
     if (state.getView() === view) return;
 
@@ -46,36 +42,13 @@ export const NavViewTabs = () => {
     navigate(path);
   };
 
-  const getStats = (view: View) => {
-    if (!stats.query?.data) return null;
-
-    const items = state.params.feed_uuid ? [stats.byFeed(state.params.feed_uuid)] : stats.query.data;
-    const sum = sumStats(items.filter(Boolean));
-
-    switch (view) {
-      case View.Unread:
-        return sum.count_unread;
-      case View.Saved:
-        return sum.count_saved;
-      case View.All:
-        return sum.count_total;
-    }
-
-    return null;
-  };
-
   return (
     <Tabs value={state.getView()} onChange={value => handleSetView(value as View)} class={wrapperClass}>
       <Tabs.List class="-space-x-1 relative flex w-full">
         <For each={VIEWS}>
           {view => (
             <Tabs.Trigger class={triggerClass} value={view}>
-              <div class={triggerInnerClass}>
-                {VIEW_LABELS[view]}
-                <span class="-my-0.5 rounded-md bg-white px-1.5 py-0.5 text-gray-400 dark:bg-gray-900 dark:text-gray-500">
-                  {getStats(view)}
-                </span>
-              </div>
+              <div class={triggerInnerClass}>{VIEW_LABELS[view]}</div>
             </Tabs.Trigger>
           )}
         </For>

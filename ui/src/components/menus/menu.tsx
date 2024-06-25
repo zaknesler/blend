@@ -7,7 +7,7 @@ import {
 import { type VariantProps, cx } from 'class-variance-authority';
 import type { IconTypes } from 'solid-icons';
 import { HiOutlineEllipsisHorizontal } from 'solid-icons/hi';
-import { type Component, type JSX, type ParentComponent, type Setter, Show, splitProps } from 'solid-js';
+import { type Component, For, type JSX, type ParentComponent, type Setter, Show, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import * as menuClasses from '~/constants/ui/menu';
 
@@ -69,19 +69,33 @@ const MenuTrigger: ParentComponent<MenuTrigger> = props => {
 
 type MenuItemProps = DropdownMenuItemProps & {
   label: string;
-  kbd?: string;
+  kbd?: string[];
   icon?: IconTypes;
 };
 
 const MenuItem: Component<MenuItemProps> = props => {
   const [local, rest] = splitProps(props, ['icon', 'label', 'kbd']);
 
+  const key = (value: string) => {
+    if (value === 'SHIFT') return '⇧';
+    return value;
+  };
+
+  const keyClass = (value: string) => {
+    if (value === 'SHIFT') return 'text-lg';
+    return undefined;
+  };
+
   return (
     <DropdownMenu.Item {...rest} class={menuClasses.item()}>
       <Dynamic component={local.icon} class={menuClasses.itemIcon()} />
+
       {local.label}
+
       <Show when={local.kbd}>
-        <kbd class={menuClasses.itemKbd()}>{local.kbd}</kbd>
+        <kbd class={menuClasses.itemKbd()} title={local.kbd!.join(' + ')}>
+          <For each={local.kbd!}>{value => <span class={keyClass(value)}>{key(value)}</span>}</For>
+        </kbd>
       </Show>
     </DropdownMenu.Item>
   );
@@ -91,7 +105,10 @@ type MenuContentProps = VariantProps<typeof menuClasses.content>;
 
 const MenuContent: ParentComponent<MenuContentProps> = props => (
   <DropdownMenu.Content
-    class={menuClasses.content({ class: 'origin-[--kb-menu-content-transform-origin]', size: props.size })}
+    class={menuClasses.content({
+      class: 'origin-[--kb-menu-content-transform-origin]',
+      size: props.size,
+    })}
   >
     <div class={menuClasses.contentInner()}>{props.children}</div>
   </DropdownMenu.Content>
