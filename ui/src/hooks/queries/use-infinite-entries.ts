@@ -6,7 +6,7 @@ import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import { useViewport } from '~/contexts/viewport-context';
 import type { Entry } from '~/types/bindings';
-import { entryMayExistInView, findEntryItem } from '~/utils/entries';
+import { entryMayExistInView, findEntryItemElement } from '~/utils/entries';
 import { useQueryState } from '../../contexts/query-state-context';
 import { useEntry } from './use-entry';
 
@@ -71,7 +71,7 @@ export const useInfiniteEntries = () => {
     setTimeout(() => {
       if (viewport.lte('md')) return;
 
-      const activeItem = findEntryItem(state.params.entry_uuid);
+      const activeItem = findEntryItemElement(state.params.entry_uuid);
       if (activeItem) activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 500);
 

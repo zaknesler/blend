@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { type Entry, SortDirection } from '~/types/bindings';
-import { getEntryComparator } from './entries';
+import { getEntryComparator } from '.';
 
 const fakeEntry = (params: Pick<Entry, 'id' | 'published_at' | 'updated_at'>) => ({
   uuid: '00000000-0000-0000-0000-000000000000',

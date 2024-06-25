@@ -3,7 +3,7 @@ import { DEFAULTS } from '~/contexts/query-state-context';
 import { type Entry, SortDirection, View } from '~/types/bindings';
 
 /**
- * Get the function to compare two entries for sorting.
+ * Get the function to compare two entries for sorting by the given sorting direction.
  */
 export const getEntryComparator =
   (sort = DEFAULTS.sort) =>
@@ -17,12 +17,16 @@ export const getEntryComparator =
     switch (sort) {
       case SortDirection.Newest:
         return new Date(dateB).valueOf() - new Date(dateA).valueOf();
+
       case SortDirection.Oldest:
         return new Date(dateA).valueOf() - new Date(dateB).valueOf();
     }
   };
 
-export const findEntryItem = (uuid?: string) => {
+/**
+ * Find the entry item HTML element by the entry's UUID.
+ */
+export const findEntryItemElement = (uuid?: string) => {
   if (!uuid) return null;
 
   const activeItem = document.getElementById(IDS.ENTRY(uuid));

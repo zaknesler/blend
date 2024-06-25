@@ -5,7 +5,7 @@ import {
 } from '@kobalte/core/context-menu';
 import type { VariantProps } from 'class-variance-authority';
 import type { IconTypes } from 'solid-icons';
-import { type Component, type JSX, type ParentComponent, Show, splitProps } from 'solid-js';
+import { type Component, type JSX, type ParentComponent, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import * as menuClasses from '~/constants/ui/menu';
 
@@ -30,20 +30,16 @@ const ContextMenuRoot: ParentComponent<ContextMenuProps> = props => {
 
 type ContextMenuItemProps = KbContextMenuItemProps & {
   label: string;
-  kbd?: string;
   icon?: IconTypes;
 };
 
 const ContextMenuItem: Component<ContextMenuItemProps> = props => {
-  const [local, rest] = splitProps(props, ['icon', 'label', 'kbd']);
+  const [local, rest] = splitProps(props, ['icon', 'label']);
 
   return (
     <KbContextMenu.Item {...rest} class={menuClasses.item()}>
       <Dynamic component={local.icon} class={menuClasses.itemIcon()} />
       {local.label}
-      <Show when={local.kbd}>
-        <kbd class={menuClasses.itemKbd()}>{local.kbd}</kbd>
-      </Show>
     </KbContextMenu.Item>
   );
 };

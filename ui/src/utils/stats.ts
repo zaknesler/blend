@@ -1,5 +1,8 @@
 import type { FeedStats } from '~/types/bindings';
 
+/**
+ * Sum a list of feed stats items into a single object of values.
+ */
 export const sumStats = (items: FeedStats[]) =>
   items.reduce(
     (acc, stat) => ({

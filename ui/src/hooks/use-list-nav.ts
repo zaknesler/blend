@@ -4,7 +4,7 @@ import { useNavigate } from '@solidjs/router';
 import { useQueryClient } from '@tanstack/solid-query';
 import { createEffect } from 'solid-js';
 import { QUERY_KEYS } from '~/constants/query';
-import { findEntryItem } from '~/utils/entries';
+import { findEntryItemElement } from '~/utils/entries';
 import { useQueryState } from '../contexts/query-state-context';
 import { useViewport } from '../contexts/viewport-context';
 
@@ -74,7 +74,7 @@ export const useListNav = (params: () => UseListNavParams) => {
     const entry_uuid = params().entryUuids[currentIndex + offset];
     if (!entry_uuid) return;
 
-    const activeItem = findEntryItem(entry_uuid);
+    const activeItem = findEntryItemElement(entry_uuid);
     if (activeItem) activeItem.focus();
 
     // Cancel the current entry view request

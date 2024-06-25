@@ -94,7 +94,7 @@ const MenuItem: Component<MenuItemProps> = props => {
 
       <Show when={local.kbd}>
         <kbd class={menuClasses.itemKbd()} title={local.kbd!.join(' + ')}>
-          <For each={local.kbd!}>{value => <span class={keyClass(value)}>{key(value)}</span>}</For>
+          <For each={local.kbd!}>{value => <span class={cx(keyClass(value), 'leading-none')}>{key(value)}</span>}</For>
         </kbd>
       </Show>
     </DropdownMenu.Item>
