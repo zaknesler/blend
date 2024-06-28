@@ -1,4 +1,4 @@
-import { type Component, Show } from 'solid-js';
+import { type Component, Match, Show, Switch } from 'solid-js';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
 
 type FeedHeaderProps = {
@@ -18,7 +18,13 @@ export const FeedHeader: Component<FeedHeaderProps> = props => {
       </Show>
 
       <small class="select-none truncate text-gray-500 text-xs dark:text-gray-400">
-        {stats.byView()} {stats.byView() === 1 ? 'item' : 'items'}
+        <Switch>
+          <Match when={stats.byView() === null}>Loading...</Match>
+          <Match when={!stats.byView()}>No items</Match>
+          <Match when={stats.byView()}>
+            {stats.byView()} {stats.byView() === 1 ? 'item' : 'items'}
+          </Match>
+        </Switch>
       </small>
     </div>
   );

@@ -74,6 +74,7 @@ export const CreateFeedModal = () => {
                   <HiOutlineXMark class="size-5 text-gray-500" />
                 </Dialog.CloseButton>
               </div>
+
               <Dialog.Description class="text-gray-600 text-sm dark:text-gray-400">
                 Add an RSS feed link or the website's URL. Feed entries will be fetched in the background.
               </Dialog.Description>

@@ -47,23 +47,24 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
             disabled
             icon={HiOutlineEnvelope}
             tooltip="Mark feed as read"
-            class="size-6 rounded-md text-gray-500"
-            iconClass={cx(isRefreshing() && 'animate-spin')}
+            class="size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
+            iconClass="size-5 md:size-4"
           />
 
           <IconButton
             onClick={() => refresh.refreshFeed(props.uuid)}
             icon={HiOutlineArrowPath}
             tooltip="Refresh feed"
-            class="size-6 rounded-md text-gray-500"
-            iconClass={cx(isRefreshing() && 'animate-spin')}
+            class="size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
+            iconClass={cx('size-5 md:size-4', isRefreshing() && 'animate-spin')}
           />
 
           <FeedMenu
             uuid={props.uuid}
             open={contextMenuOpen()}
             setOpen={setContextMenuOpen}
-            triggerClass="size-6 rounded-md"
+            triggerClass="size-8 md:size-6 rounded-lg lg:rounded-md"
+            triggerIconClass="size-5 md:size-4"
             gutter={4}
           />
         </div>
