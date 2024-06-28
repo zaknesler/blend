@@ -1,7 +1,7 @@
 import { Dialog } from '@kobalte/core/dialog';
 import { useNavigate } from '@solidjs/router';
 import { createMutation, useQueryClient } from '@tanstack/solid-query';
-import { HiSolidXMark } from 'solid-icons/hi';
+import { HiOutlineXMark } from 'solid-icons/hi';
 import { Show, createEffect, createSignal } from 'solid-js';
 import { getErrorMessage } from '~/api';
 import { addFeed } from '~/api/feeds';
@@ -59,11 +59,11 @@ export const CreateFeedModal = () => {
   return (
     <Dialog open={modalOpen('addFeed')} onOpenChange={value => setModalStore('addFeed', value)}>
       <Dialog.Portal>
-        <Dialog.Overlay class="fixed inset-0 z-50 animate-overlay-hide bg-black/25 backdrop-blur ui-expanded:animate-overlay-show" />
+        <Dialog.Overlay class="fixed inset-0 z-50 animate-overlay-hide bg-black/25 backdrop-blur-md ui-expanded:animate-overlay-show" />
 
         <div class="fixed inset-0 z-50 flex items-end justify-center p-8 sm:items-center">
           <Dialog.Content
-            class="z-50 w-full animate-content-hide overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-all md:max-w-sm ui-expanded:animate-content-show dark:border-gray-800 dark:bg-gray-950 dark:shadow-xl"
+            class="z-50 w-full animate-content-hide overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-all sm:max-w-sm ui-expanded:animate-content-show dark:border-gray-800 dark:bg-gray-950 dark:shadow-xl"
             onOpenAutoFocus={handleOpenAutoFocus}
           >
             <div class="flex flex-col gap-2 border-b bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900">
@@ -71,9 +71,10 @@ export const CreateFeedModal = () => {
                 <Dialog.Title class="font-semibold text-lg/4 dark:text-gray-200">Add a new feed</Dialog.Title>
 
                 <Dialog.CloseButton class="rounded-lg p-1 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2">
-                  <HiSolidXMark class="size-5 text-gray-500" />
+                  <HiOutlineXMark class="size-5 text-gray-500" />
                 </Dialog.CloseButton>
               </div>
+
               <Dialog.Description class="text-gray-600 text-sm dark:text-gray-400">
                 Add an RSS feed link or the website's URL. Feed entries will be fetched in the background.
               </Dialog.Description>

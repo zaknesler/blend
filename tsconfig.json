@@ -16,7 +16,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["vite/client", "@types/jest"],
+    "types": ["vite/client", "vitest"],
     "paths": {
       "~/*": ["./ui/src/*"]
     }

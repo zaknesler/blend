@@ -28,6 +28,7 @@ pub struct FilterEntriesParams {
     pub sort: SortDirection,
     pub cursor: Option<Uuid>,
     pub feed: Option<Uuid>,
+    pub folder: Option<String>,
     #[serde(default)]
     pub view: View,
 }
@@ -47,6 +48,7 @@ pub enum View {
     All,
     Read,
     Unread,
+    Saved,
 }
 
 impl Default for View {
@@ -90,15 +92,22 @@ impl EntryRepo {
         let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary_html, media_url, published_at, updated_at, read_at, saved_at, scraped_at FROM entries WHERE 1=1");
 
         match filter.view {
-            View::All => query.push(""),
+            View::All => &mut query,
             View::Read => query.push(" AND read_at IS NOT NULL"),
             View::Unread => query.push(" AND read_at IS NULL"),
+            View::Saved => query.push(" AND saved_at IS NOT NULL"),
         };
 
-        match filter.feed {
-            Some(uuid) => query.push(" AND feed_uuid = ").push_bind(uuid),
-            _ => query.push(""),
-        };
+        if let Some(uuid) = filter.feed {
+            query.push(" AND feed_uuid = ").push_bind(uuid);
+        }
+
+        if let Some(slug) = filter.folder {
+            query
+                .push(" AND feed_uuid IN (SELECT feed_uuid FROM folders INNER JOIN folders_feeds ON folders.id = folders_feeds.id WHERE folders.slug = ")
+                .push_bind(slug)
+                .push(")");
+        }
 
         // Use the cursor to find the next batch of items, based on the published/updated date and the rowid (opposite direction) as a fallback
         match filter.cursor {
@@ -171,6 +180,27 @@ impl EntryRepo {
 
     pub async fn update_entry_as_unread(&self, entry_uuid: &uuid::Uuid) -> DbResult<bool> {
         let rows_affected = sqlx::query("UPDATE entries SET read_at = NULL WHERE uuid = ?1")
+            .bind(entry_uuid)
+            .execute(&self.db)
+            .await?
+            .rows_affected();
+
+        Ok(rows_affected > 0)
+    }
+
+    pub async fn update_entry_as_saved(&self, entry_uuid: &uuid::Uuid) -> DbResult<bool> {
+        let rows_affected = sqlx::query("UPDATE entries SET saved_at = ?1 WHERE uuid = ?2")
+            .bind(Utc::now())
+            .bind(entry_uuid)
+            .execute(&self.db)
+            .await?
+            .rows_affected();
+
+        Ok(rows_affected > 0)
+    }
+
+    pub async fn update_entry_as_unsaved(&self, entry_uuid: &uuid::Uuid) -> DbResult<bool> {
+        let rows_affected = sqlx::query("UPDATE entries SET saved_at = NULL WHERE uuid = ?1")
             .bind(entry_uuid)
             .execute(&self.db)
             .await?

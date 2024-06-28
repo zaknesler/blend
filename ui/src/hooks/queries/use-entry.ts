@@ -11,7 +11,7 @@ export const useEntry = (params: () => UseEntryParams) =>
   createQuery(() => ({
     enabled: (params().enabled ?? true) && !!params().entry_uuid,
     queryKey: [QUERY_KEYS.ENTRIES_VIEW, params().entry_uuid],
-    queryFn: () => getEntry(params().entry_uuid!),
+    queryFn: ({ signal }) => getEntry(params().entry_uuid!, signal),
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   }));

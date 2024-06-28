@@ -13,10 +13,11 @@ export type IconButtonProps = JSX.IntrinsicElements['button'] &
     icon: IconTypes;
     class?: string;
     tooltip?: string;
+    iconClass?: string;
   };
 
 export const IconButton: Component<IconButtonProps> = props => {
-  const [local, rest] = splitProps(props, ['class', 'tooltip', 'icon']);
+  const [local, rest] = splitProps(props, ['class', 'tooltip', 'icon', 'iconClass']);
 
   return (
     <Show
@@ -31,7 +32,7 @@ export const IconButton: Component<IconButtonProps> = props => {
         <Tooltip.Trigger
           as={(polyProps: TooltipTriggerProps) => (
             <BaseButton {...polyProps} {...rest} class={trigger({ class: local.class })}>
-              <Dynamic component={local.icon} />
+              <Dynamic component={local.icon} class={local.iconClass} />
             </BaseButton>
           )}
         />

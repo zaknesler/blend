@@ -1,20 +1,19 @@
-import { createActiveElement } from '@solid-primitives/active-element';
 import { createElementBounds } from '@solid-primitives/bounds';
 import { useIsRouting } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
-import { HiOutlineArrowPath } from 'solid-icons/hi';
+import { HiOutlineArrowPath, HiOutlineEnvelope } from 'solid-icons/hi';
 import { Match, Show, Switch, createEffect, createSignal } from 'solid-js';
 import { Portal } from 'solid-js/web';
 import { EntryList } from '~/components/entry/entry-list';
 import { FeedHeader } from '~/components/feed/feed-header';
 import { FeedInfo } from '~/components/feed/feed-info';
 import { FeedList } from '~/components/feed/feed-list';
-import { Panel } from '~/components/layout/panel';
 import { NavRow } from '~/components/nav/nav-row';
-import { NavViewSwitcher } from '~/components/nav/nav-view-switcher';
+import { NavViewTabs } from '~/components/nav/nav-view-tabs';
+import { Panel } from '~/components/ui/layout/panel';
 import { useQueryState } from '~/contexts/query-state-context';
+import { useViewport } from '~/contexts/viewport-context';
 import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
-import { useViewport } from '~/hooks/use-viewport';
 import { IconButton } from '../ui/button/icon-button';
 
 export const ListPanel = () => {
@@ -31,12 +30,9 @@ export const ListPanel = () => {
 
   const viewingEntry = () => !!state.params.entry_uuid;
 
-  const isMobile = () => viewport.lteBreakpoint('md');
+  const isMobile = () => viewport.lte('md');
   const showPanel = () => !isMobile() || (isMobile() && !viewingEntry());
-  const showFeeds = () => viewport.lteBreakpoint('xl') && showFeedSelector();
-
-  const activeElement = createActiveElement();
-  const containsActiveElement = () => container()?.contains(activeElement());
+  const showFeeds = () => viewport.lte('xl') && showFeedSelector();
 
   const handleSkipToContent = () => {
     const el = container();
@@ -46,16 +42,15 @@ export const ListPanel = () => {
     focusable?.focus() || el.focus();
   };
 
+  // Close the feed selector when routing (i.e. we've clicked a feed link)
   createEffect(() => {
-    // Hide feed selector when routing
     if (!isRouting()) return;
     setShowFeedSelector(false);
   });
 
+  // Scroll to top of list whenever the feed URL changes
   createEffect(() => {
-    // Scroll to top of list whenever the feed URL changes
     state.getFeedUrl();
-
     container()?.scrollTo({ top: 0, behavior: 'instant' });
   });
 
@@ -64,7 +59,7 @@ export const ListPanel = () => {
       <Portal>
         <button
           type="button"
-          class="-translate-y-[9999px] absolute top-2 left-2 z-[9999] select-none appearance-none rounded-lg border bg-white px-3 py-2 text-black text-sm shadow-lg focus:translate-y-0 dark:focus:border-gray-400 focus:border-gray-200 active:bg-gray-100 dark:bg-gray-950 dark:text-gray-300 focus:outline-none dark:focus:ring-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30"
+          class="-translate-y-[9999px] absolute top-2 left-2 z-[9999] hidden select-none appearance-none rounded-lg border bg-white px-3 py-2 text-black text-sm shadow-lg md:flex focus:translate-y-0 dark:focus:border-gray-400 focus:border-gray-200 active:bg-gray-100 dark:bg-gray-950 dark:text-gray-300 focus:outline-none dark:focus:ring-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30"
           tabindex={1}
           onClick={handleSkipToContent}
         >
@@ -78,18 +73,23 @@ export const ListPanel = () => {
           showPanel() ? 'flex-1 overflow-hidden' : 'flex-none shadow dark:shadow-xl',
         )}
       >
-        <div class="z-10 flex shrink-0 flex-col gap-4 bg-gray-50 p-4 shadow dark:bg-gray-950 md:dark:bg-gray-900 dark:shadow-xl">
+        <div
+          class={cx(
+            'z-10 flex shrink-0 flex-col gap-4 bg-gray-50 p-4 dark:bg-gray-950 md:dark:bg-gray-900',
+            showPanel() && 'shadow dark:shadow-xl',
+          )}
+        >
           <div class="-m-4 xl:hidden">
             <NavRow
               open={showFeeds()}
               setOpen={setShowFeedSelector}
               showFeedSwitch={(!viewingEntry() && isMobile()) || !isMobile()}
-              showBackArrow={viewingEntry() && isMobile()}
+              showCloseButton={viewingEntry() && isMobile()}
             />
           </div>
 
           <Show when={showPanel() && !showFeeds()}>
-            <NavViewSwitcher />
+            <NavViewTabs />
 
             <div class="flex justify-between">
               <Switch>
@@ -102,6 +102,13 @@ export const ListPanel = () => {
                 <Match when={!state.params.feed_uuid}>
                   <div class="flex w-full select-none items-start justify-between gap-2">
                     <FeedHeader title="All feeds" />
+
+                    <IconButton
+                      disabled
+                      icon={HiOutlineEnvelope}
+                      tooltip="Mark all as read"
+                      class="z-10 size-6 rounded-md text-gray-500"
+                    />
 
                     <IconButton
                       onClick={() => refresh.refreshFeeds()}
@@ -124,7 +131,7 @@ export const ListPanel = () => {
               </Match>
 
               <Match when={!showFeeds()}>
-                <EntryList containerBounds={containerBounds} containsActiveElement={containsActiveElement()} />
+                <EntryList containerBounds={containerBounds} />
               </Match>
             </Switch>
           </div>

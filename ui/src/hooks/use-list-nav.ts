@@ -1,15 +1,18 @@
 import { useKeyDownEvent } from '@solid-primitives/keyboard';
 import { debounce } from '@solid-primitives/scheduled';
 import { useNavigate } from '@solidjs/router';
+import { useQueryClient } from '@tanstack/solid-query';
 import { createEffect } from 'solid-js';
-import type { Entry } from '~/types/bindings';
-import { findEntryItem } from '~/utils/entries';
+import { QUERY_KEYS } from '~/constants/query';
+import { findEntryItemElement } from '~/utils/entries';
 import { useQueryState } from '../contexts/query-state-context';
-import { useViewport } from './use-viewport';
+import { useViewport } from '../contexts/viewport-context';
 
 type UseListNavParams = {
   enabled: boolean;
-  entries: Entry[];
+  entryUuids: string[];
+  fetchMore: () => void;
+  hasNextPage: boolean;
 };
 
 export const useListNav = (params: () => UseListNavParams) => {
@@ -18,35 +21,74 @@ export const useListNav = (params: () => UseListNavParams) => {
   const navigate = useNavigate();
   const keyDownEvent = useKeyDownEvent();
 
+  const queryClient = useQueryClient();
+
+  // Listen to each keypress to check if the user is attempting to navigate using the arrow keys
   createEffect(() => {
-    if (!params().entries.length || viewport.lteBreakpoint('md') || !params().enabled) return;
+    if (!params().enabled || !params().entryUuids.length) return;
 
     const e = keyDownEvent();
     if (!e) return;
 
+    if (viewport.lte('md')) {
+      // Don't listen to any navigation on mobile when not viewing an entry
+      if (!state.params.entry_uuid) return;
+
+      switch (e.key) {
+        case 'ArrowRight':
+          e.preventDefault();
+          maybeNavigate('next');
+          break;
+
+        case 'ArrowLeft':
+          e.preventDefault();
+          maybeNavigate('back');
+          break;
+      }
+
+      return;
+    }
+
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
-        maybeNavigate('down');
+        maybeNavigate('next');
         break;
 
       case 'ArrowUp':
         e.preventDefault();
-        maybeNavigate('up');
+        maybeNavigate('back');
         break;
     }
   });
 
-  const maybeNavigate = debounce((direction: 'up' | 'down') => {
-    const currentIndex = params().entries.findIndex(entry => entry.uuid === state.params.entry_uuid);
+  const getCurrentIndex = () => params().entryUuids.findIndex(uuid => uuid === state.params.entry_uuid);
 
-    const offset = direction === 'up' ? -1 : 1;
-    const entry = params().entries[currentIndex + offset];
-    if (!entry) return;
+  const canGoBack = () => getCurrentIndex() > 0;
+  const canGoForward = () => getCurrentIndex() < params().entryUuids.length - 1;
 
-    const activeItem = findEntryItem(entry.uuid);
+  const maybeNavigate = debounce((direction: 'next' | 'back') => {
+    const currentIndex = getCurrentIndex();
+
+    const offset = direction === 'back' ? -1 : 1;
+    const entry_uuid = params().entryUuids[currentIndex + offset];
+    if (!entry_uuid) return;
+
+    const activeItem = findEntryItemElement(entry_uuid);
     if (activeItem) activeItem.focus();
 
-    navigate(state.getEntryUrl(entry.uuid));
+    // Cancel the current entry view request
+    queryClient.cancelQueries({ queryKey: [QUERY_KEYS.ENTRIES_VIEW, state.params.entry_uuid] });
+
+    // Fetch more if we're at the end of the list on mobile
+    if (viewport.lte('md') && currentIndex === params().entryUuids.length - 2) params().fetchMore();
+
+    navigate(state.getEntryUrl(entry_uuid));
   }, 30);
+
+  return {
+    canGoBack,
+    canGoForward,
+    maybeNavigate,
+  };
 };

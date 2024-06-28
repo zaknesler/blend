@@ -6,6 +6,7 @@ use std::{cell::Cell, collections::BTreeMap, io::Cursor, path::Path};
 mod dom;
 mod score;
 
+#[allow(dead_code)]
 #[derive(Debug)]
 pub struct Result {
     pub title: String,

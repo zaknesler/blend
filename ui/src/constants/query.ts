@@ -12,4 +12,6 @@ export const QUERY_KEYS = {
   ENTRIES_VIEW: 'entries.view',
   ENTRIES_VIEW_READ: 'mut.entries.view.read',
   ENTRIES_VIEW_UNREAD: 'mut.entries.view.unread',
+  ENTRIES_VIEW_SAVED: 'mut.entries.view.saved',
+  ENTRIES_VIEW_UNSAVED: 'mut.entries.view.unsaved',
 } as const;
