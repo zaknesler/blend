@@ -42,11 +42,13 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
 
           <div class="flex items-baseline gap-2 text-sm">
             <Show when={getDate()}>
-              <div class="text-gray-500 dark:text-gray-400">{formatDateTime(getDate()!)}</div>
+              <div class="shrink-0 text-gray-500 dark:text-gray-400">{formatDateTime(getDate()!)}</div>
               <span class="opacity-50">&ndash;</span>
             </Show>
 
-            <Link href={`/feeds/${local.entry.feed_uuid}${state.getQueryString()}`}>{feedName()}</Link>
+            <Link href={`/feeds/${local.entry.feed_uuid}${state.getQueryString()}`} class="truncate">
+              {feedName()}
+            </Link>
           </div>
         </div>
 
@@ -70,7 +72,7 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
         >
           <div
             class={cx(
-              'prose prose-base max-w-none',
+              'prose prose-base max-w-none hyphens-manual break-words',
               'prose-stone dark:prose-invert prose-pre:text-sm prose-pre:md:text-base',
               'prose-headings:font-bold prose-h1:text-2xl/5 prose-h2:text-xl/5 prose-h3:text-lg/5 prose-h4:text-base/5',
             )}

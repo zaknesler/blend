@@ -50,7 +50,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
                 isActive()
                   ? 'bg-gray-600 text-white dark:bg-gray-950'
                   : [
-                      'hover:bg-gray-100 dark:hover:bg-gray-950',
+                      'text-gray-950 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-950',
                       'focus:bg-gray-100 focus:dark:bg-gray-950',
                       state.getView() === 'unread' && isRead() && 'opacity-50',
                     ],
@@ -63,7 +63,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
               <small
                 class={cx(
                   'flex w-full gap-1 overflow-hidden text-xs transition',
-                  isActive() ? 'text-gray-300 dark:text-gray-400' : 'text-gray-400 dark:text-gray-500',
+                  isActive() ? 'text-gray-300 dark:text-gray-400' : 'text-gray-500 dark:text-gray-400',
                 )}
               >
                 <Show when={!isRead()}>
