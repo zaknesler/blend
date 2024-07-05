@@ -22,3 +22,5 @@ export const formatDateTime = (value: string) => {
 
   return `${formattedDate} at ${formattedTime}`;
 };
+
+export const formatNumber = (value: number | string) => Number(value).toLocaleString();

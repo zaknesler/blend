@@ -4,7 +4,7 @@ import { useQueryState } from '~/contexts/query-state-context';
 import { useEntryRead } from '~/hooks/queries/use-entry-read';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import type { Entry } from '~/types/bindings';
-import { formatDateTime } from '~/utils/date';
+import { formatDateTime } from '~/utils/format';
 import { Button } from '../ui/button';
 import { Link } from '../ui/link';
 

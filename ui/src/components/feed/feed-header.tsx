@@ -1,5 +1,6 @@
 import { type Component, Match, Show, Switch } from 'solid-js';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
+import { formatNumber } from '~/utils/format';
 
 type FeedHeaderProps = {
   title?: string | null;
@@ -22,7 +23,7 @@ export const FeedHeader: Component<FeedHeaderProps> = props => {
           <Match when={stats.byView() === null}>Loading...</Match>
           <Match when={!stats.byView()}>No items</Match>
           <Match when={stats.byView()}>
-            {stats.byView()} {stats.byView() === 1 ? 'item' : 'items'}
+            {formatNumber(stats.byView()!)} {stats.byView() === 1 ? 'item' : 'items'}
           </Match>
         </Switch>
       </small>

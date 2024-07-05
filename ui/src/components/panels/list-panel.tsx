@@ -11,6 +11,7 @@ import { FeedList } from '~/components/feed/feed-list';
 import { NavRow } from '~/components/nav/nav-row';
 import { NavViewTabs } from '~/components/nav/nav-view-tabs';
 import { Panel } from '~/components/ui/layout/panel';
+import { useNotifications } from '~/contexts/notification-context';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useViewport } from '~/contexts/viewport-context';
 import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
@@ -22,6 +23,7 @@ export const ListPanel = () => {
   const isRouting = useIsRouting();
 
   const refresh = useRefreshFeeds();
+  const notifications = useNotifications();
 
   const [showFeedSelector, setShowFeedSelector] = createSignal(false);
 
@@ -116,7 +118,7 @@ export const ListPanel = () => {
                       icon={HiOutlineArrowPath}
                       tooltip="Refresh all feeds"
                       class="z-10 size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
-                      iconClass="size-5 md:size-4"
+                      iconClass={cx('size-5 md:size-4', !!notifications.feedsRefreshing().length && 'animate-spin')}
                     />
                   </div>
                 </Match>
