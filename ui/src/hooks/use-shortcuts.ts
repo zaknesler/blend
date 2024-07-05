@@ -1,13 +1,25 @@
-import { createShortcut } from '@solid-primitives/keyboard';
+import { type KbdKey, createShortcut } from '@solid-primitives/keyboard';
 import { useQueryState } from '~/contexts/query-state-context';
-import { modalOpen, modalStore, setModalStore } from '~/stores/modal';
+import { modalStore, setModalStore } from '~/stores/modal';
 import { View } from '~/types/bindings';
 import { useRefreshFeed } from './queries/use-refresh-feed';
 import { useRefreshFeeds } from './queries/use-refresh-feeds';
 
+export const SHORTCUTS = {
+  OPEN_ADD_FEED_MODAL: ['Shift', 'A'],
+  REFRESH_ALL_FEEDS: ['Shift', 'R'],
+  REFRESH_CURRENT_FEED: ['R'],
+  SWITCH_VIEW_TO_UNREAD: ['1'],
+  SWITCH_VIEW_TO_SAVED: ['2'],
+  SWITCH_VIEW_TO_ALL: ['3'],
+} as const satisfies Record<string, KbdKey[]>;
+
+const DEFAULT_OPTIONS = { preventDefault: false, requireReset: true } as Parameters<typeof createShortcut>[2];
+
 const DISALLOWED_NODES = ['input', 'textarea', 'select'] as const;
 
 const shouldIgnoreEvent = (target: EventTarget | null) => {
+  // Ignore event an input element is focused or within an editable element
   if (target instanceof HTMLElement) {
     const nodeName = target.nodeName.toLowerCase();
     return DISALLOWED_NODES.includes(nodeName) || target.isContentEditable;
@@ -35,38 +47,38 @@ export const useShortcuts = () => {
   };
 
   createShortcut(
-    ['Shift', 'A'],
+    SHORTCUTS.OPEN_ADD_FEED_MODAL,
     handle(() => setModalStore('addFeed', true)),
-    { preventDefault: false, requireReset: true },
+    DEFAULT_OPTIONS,
   );
 
   createShortcut(
-    ['R'],
+    SHORTCUTS.REFRESH_CURRENT_FEED,
     handle(() => state.params.feed_uuid && refreshFeed.refreshFeed(state.params.feed_uuid)),
-    { preventDefault: false, requireReset: true },
+    DEFAULT_OPTIONS,
   );
 
   createShortcut(
-    ['Shift', 'R'],
+    SHORTCUTS.REFRESH_ALL_FEEDS,
     handle(() => refreshFeeds.refreshFeeds()),
-    { preventDefault: false, requireReset: true },
+    DEFAULT_OPTIONS,
   );
 
   createShortcut(
-    ['1'],
+    SHORTCUTS.SWITCH_VIEW_TO_UNREAD,
     handle(() => state.setView(View.Unread)),
-    { preventDefault: false, requireReset: true },
+    DEFAULT_OPTIONS,
   );
 
   createShortcut(
-    ['2'],
+    SHORTCUTS.SWITCH_VIEW_TO_SAVED,
     handle(() => state.setView(View.Saved)),
-    { preventDefault: false, requireReset: true },
+    DEFAULT_OPTIONS,
   );
 
   createShortcut(
-    ['3'],
+    SHORTCUTS.SWITCH_VIEW_TO_ALL,
     handle(() => state.setView(View.All)),
-    { preventDefault: false, requireReset: true },
+    DEFAULT_OPTIONS,
   );
 };

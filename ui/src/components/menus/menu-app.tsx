@@ -10,6 +10,7 @@ import {
 import { TiCog } from 'solid-icons/ti';
 import { type Component, mergeProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
+import { SHORTCUTS } from '~/hooks/use-shortcuts';
 import { setModalStore } from '~/stores/modal';
 import { LogoSquare } from '../ui/logo';
 import { Menu, type MenuProps } from './menu';
@@ -47,7 +48,12 @@ export const AppMenu: Component<MenuProps> = props => {
           />
         )}
       >
-        <Menu.Item label="Add feed" kbd={['SHIFT', 'A']} icon={HiOutlineSquaresPlus} onSelect={handleAddFeed} />
+        <Menu.Item
+          label="Add feed"
+          kbd={SHORTCUTS.OPEN_ADD_FEED_MODAL}
+          icon={HiOutlineSquaresPlus}
+          onSelect={handleAddFeed}
+        />
         <Menu.Item label="Import/export" icon={HiOutlineArrowDownTray} disabled />
         <Menu.Item label="Settings" icon={HiOutlineCog6Tooth} disabled />
         <Menu.Item label="Sign out" icon={HiOutlineArrowRightOnRectangle} disabled />
