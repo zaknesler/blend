@@ -1,7 +1,9 @@
 import { createShortcut } from '@solid-primitives/keyboard';
 import { useQueryState } from '~/contexts/query-state-context';
-import { modalOpen, setModalStore } from '~/stores/modal';
+import { modalOpen, modalStore, setModalStore } from '~/stores/modal';
 import { View } from '~/types/bindings';
+import { useRefreshFeed } from './queries/use-refresh-feed';
+import { useRefreshFeeds } from './queries/use-refresh-feeds';
 
 const DISALLOWED_NODES = ['input', 'textarea', 'select'] as const;
 
@@ -16,6 +18,8 @@ const shouldIgnoreEvent = (target: EventTarget | null) => {
 
 export const useShortcuts = () => {
   const state = useQueryState();
+  const refreshFeed = useRefreshFeed();
+  const refreshFeeds = useRefreshFeeds();
 
   const handle = (callback: (event?: KeyboardEvent | null) => void) => (event: KeyboardEvent | null) => {
     if (!event) return;
@@ -24,26 +28,42 @@ export const useShortcuts = () => {
     event.preventDefault();
     event.stopPropagation();
 
+    // Ignore all shortcuts if a modal is open
+    if (Object.values(modalStore).some(Boolean)) return;
+
     callback(event);
   };
 
-  const handleAddFeed = () => {
-    if (modalOpen('addFeed')) return;
+  createShortcut(
+    ['Shift', 'A'],
+    handle(() => setModalStore('addFeed', true)),
+    { preventDefault: false, requireReset: true },
+  );
 
-    setModalStore('addFeed', true);
-  };
+  createShortcut(
+    ['R'],
+    handle(() => state.params.feed_uuid && refreshFeed.refreshFeed(state.params.feed_uuid)),
+    { preventDefault: false, requireReset: true },
+  );
 
-  createShortcut(['Shift', 'A'], handle(handleAddFeed), { preventDefault: false, requireReset: true });
+  createShortcut(
+    ['Shift', 'R'],
+    handle(() => refreshFeeds.refreshFeeds()),
+    { preventDefault: false, requireReset: true },
+  );
+
   createShortcut(
     ['1'],
     handle(() => state.setView(View.Unread)),
     { preventDefault: false, requireReset: true },
   );
+
   createShortcut(
     ['2'],
     handle(() => state.setView(View.Saved)),
     { preventDefault: false, requireReset: true },
   );
+
   createShortcut(
     ['3'],
     handle(() => state.setView(View.All)),
