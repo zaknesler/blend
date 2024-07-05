@@ -10,7 +10,7 @@ export const Panel: ParentComponent<PanelProps> = props => {
     <div
       {...rest}
       class={cx(
-        'overflow-touch-scrolling flex-1 overflow-auto bg-white md:rounded-lg dark:bg-gray-900 dark:md:shadow-xl md:shadow-md',
+        'overflow-touch-scrolling flex-1 overflow-auto bg-white md:rounded-lg md:shadow-md dark:bg-gray-900 dark:md:shadow-xl',
         local.class,
       )}
     >

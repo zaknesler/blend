@@ -153,7 +153,7 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => {
       <span class="flex-1 overflow-hidden truncate break-all" innerHTML={local.title} />
 
       <Show when={local.unread_count}>
-        <span class="shrink-0 px-1 text-right text-gray-400 text-sm dark:text-gray-300 md:text-xs/4">
+        <span class="shrink-0 px-1 text-right text-gray-400 text-sm md:text-xs/4 dark:text-gray-300">
           {local.unread_count}
         </span>
       </Show>

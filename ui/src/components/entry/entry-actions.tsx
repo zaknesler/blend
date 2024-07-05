@@ -45,7 +45,7 @@ export const EntryActions: Component<EntryActionsProps> = props => {
     <div
       class={cx(
         'z-10 flex items-center gap-2 bg-gray-50 p-2 shadow-top dark:bg-gray-950',
-        'md:fixed md:top-8 md:right-8 md:gap-1 md:rounded-xl md:border md:border-gray-400/25 md:dark:border-gray-500/25 md:bg-white/25 md:dark:bg-black/10 md:p-1 dark:shadow-top-xl md:shadow-none md:backdrop-blur-md',
+        'md:fixed md:top-8 md:right-8 md:gap-1 md:rounded-xl md:border md:border-gray-400/25 md:bg-white/25 md:p-1 md:shadow-none md:backdrop-blur-md dark:shadow-top-xl md:dark:border-gray-500/25 md:dark:bg-black/10',
       )}
     >
       <ActionButton

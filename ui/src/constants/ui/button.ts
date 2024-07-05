@@ -19,7 +19,7 @@ export const button = cva(
           'border border-transparent bg-white text-black ring-1 ring-gray-200 focus:ring-gray-500',
           'hover:border-gray-100 hover:bg-gray-100',
           'focus:border-gray-500',
-          'dark:focus:border-gray-600 dark:hover:border-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-100 dark:ring-gray-800',
+          'dark:bg-gray-900 dark:text-gray-100 dark:ring-gray-800 dark:focus:border-gray-600 dark:hover:border-gray-800 dark:hover:bg-gray-800',
         ],
         danger: [
           'bg-gradient-to-br from-red-500 to-red-600 text-white',
@@ -55,7 +55,7 @@ export const action = cva(
     'cursor-default appearance-none rounded-lg text-gray-600',
     'hover:bg-gray-200',
     'focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30',
-    'dark:hover:bg-gray-700 dark:text-gray-400 dark:focus:ring-gray-600',
+    'dark:text-gray-400 dark:focus:ring-gray-600 dark:hover:bg-gray-700',
     'disabled:pointer-events-none disabled:opacity-25',
   ],
   {

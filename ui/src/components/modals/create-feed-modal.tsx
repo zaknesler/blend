@@ -59,18 +59,18 @@ export const CreateFeedModal = () => {
   return (
     <Dialog open={modalOpen('addFeed')} onOpenChange={value => setModalStore('addFeed', value)}>
       <Dialog.Portal>
-        <Dialog.Overlay class="fixed inset-0 z-50 animate-overlay-hide bg-black/25 backdrop-blur-md ui-expanded:animate-overlay-show" />
+        <Dialog.Overlay class="fixed inset-0 z-50 animate-overlay-hide ui-expanded:animate-overlay-show bg-black/25 backdrop-blur-md" />
 
         <div class="fixed inset-0 z-50 flex items-end justify-center p-8 sm:items-center">
           <Dialog.Content
-            class="z-50 w-full animate-content-hide overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-all sm:max-w-sm ui-expanded:animate-content-show dark:border-gray-800 dark:bg-gray-950 dark:shadow-xl"
+            class="z-50 w-full animate-content-hide ui-expanded:animate-content-show overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-all sm:max-w-sm dark:border-gray-800 dark:bg-gray-950 dark:shadow-xl"
             onOpenAutoFocus={handleOpenAutoFocus}
           >
             <div class="flex flex-col gap-2 border-b bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900">
               <div class="flex items-baseline justify-between gap-4">
                 <Dialog.Title class="font-semibold text-lg/4 dark:text-gray-200">Add a new feed</Dialog.Title>
 
-                <Dialog.CloseButton class="rounded-lg p-1 dark:hover:bg-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2">
+                <Dialog.CloseButton class="rounded-lg p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 dark:hover:bg-gray-800">
                   <HiOutlineXMark class="size-5 text-gray-500" />
                 </Dialog.CloseButton>
               </div>

@@ -18,7 +18,7 @@ export const Logo: Component<LogoProps> = props => {
       {...rest}
       href="/"
       class={cx(
-        'shrink-0 select-none overflow-hidden rounded-lg focus:outline-none dark:focus:ring-gray-600 focus:ring-4 focus:ring-gray-500 focus:ring-opacity-30',
+        'shrink-0 select-none overflow-hidden rounded-lg focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-30 dark:focus:ring-gray-600',
         local.class,
       )}
     >
@@ -154,7 +154,7 @@ export const LogoSquare: Component<LogoProps> = props => {
         href="/"
         {...rest}
         class={cx(
-          'focus:outline-none dark:focus:ring-gray-600 focus:ring-4 focus:ring-gray-500 focus:ring-opacity-30',
+          'focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-30 dark:focus:ring-gray-600',
           wrapperClass,
         )}
       >

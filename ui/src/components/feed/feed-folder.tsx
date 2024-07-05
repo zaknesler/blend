@@ -23,7 +23,7 @@ export const FeedFolder: ParentComponent<FeedFolderProps> = props => {
         <span class="text-base md:text-sm">{props.label}</span>
       </Collapsible.Trigger>
 
-      <Collapsible.Content class="flex animate-collapse-up overflow-hidden ui-expanded:animate-collapse-down">
+      <Collapsible.Content class="flex animate-collapse-up ui-expanded:animate-collapse-down overflow-hidden">
         <div class="flex w-full flex-col gap-1 overflow-hidden pl-4">{props.children}</div>
       </Collapsible.Content>
     </Collapsible>

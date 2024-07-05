@@ -50,7 +50,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
                 isActive()
                   ? 'bg-gray-600 text-white dark:bg-gray-950'
                   : [
-                      'dark:hover:bg-gray-950 hover:bg-gray-100',
+                      'hover:bg-gray-100 dark:hover:bg-gray-950',
                       'focus:bg-gray-100 focus:dark:bg-gray-950',
                       state.getView() === 'unread' && isRead() && 'opacity-50',
                     ],
