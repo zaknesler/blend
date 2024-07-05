@@ -48,7 +48,7 @@ export const makeNotificationContext = () => {
   socket.addEventListener('message', event => {
     const notif = JSON.parse(event.data) as Notification;
 
-    console.info('[ws] received message:', notif);
+    console.debug('[ws] received message:', notif);
 
     switch (notif.type) {
       case 'StartedFeedRefresh': {

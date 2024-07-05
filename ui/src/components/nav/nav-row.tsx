@@ -38,7 +38,7 @@ export const NavRow: Component<NavRowProps> = props => {
           <ActionButton
             onClick={() => navigate(state.getFeedUrl())}
             class="-m-1 ml-auto"
-            tooltip="Back to feeds"
+            tooltip="Back to entries"
             icon={HiOutlineXMark}
           />
         </Show>

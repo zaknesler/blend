@@ -59,7 +59,7 @@ export const ListPanel = () => {
       <Portal>
         <button
           type="button"
-          class="-translate-y-[9999px] absolute top-2 left-2 z-[9999] hidden select-none appearance-none rounded-lg border bg-white px-3 py-2 text-black text-sm shadow-lg md:flex focus:translate-y-0 dark:focus:border-gray-400 focus:border-gray-200 active:bg-gray-100 dark:bg-gray-950 dark:text-gray-300 focus:outline-none dark:focus:ring-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30"
+          class="-translate-y-[9999px] absolute top-2 left-2 z-[9999] hidden select-none appearance-none rounded-lg border bg-white px-3 py-2 text-black text-sm shadow-lg focus:translate-y-0 focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30 active:bg-gray-100 md:flex dark:bg-gray-950 dark:text-gray-300 dark:focus:border-gray-400 dark:focus:ring-gray-600"
           tabindex={1}
           onClick={handleSkipToContent}
         >
@@ -69,7 +69,7 @@ export const ListPanel = () => {
 
       <Panel
         class={cx(
-          'z-10 flex shrink-0 flex-col lg:max-w-xs md:max-w-[16rem] xl:max-w-md',
+          'z-10 flex shrink-0 flex-col md:max-w-[16rem] lg:max-w-xs xl:max-w-md',
           showPanel() ? 'flex-1 overflow-hidden' : 'flex-none shadow dark:shadow-xl',
         )}
       >
@@ -107,14 +107,16 @@ export const ListPanel = () => {
                       disabled
                       icon={HiOutlineEnvelope}
                       tooltip="Mark all as read"
-                      class="z-10 size-6 rounded-md text-gray-500"
+                      class="z-10 size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
+                      iconClass="size-5 md:size-4"
                     />
 
                     <IconButton
                       onClick={() => refresh.refreshFeeds()}
                       icon={HiOutlineArrowPath}
                       tooltip="Refresh all feeds"
-                      class="z-10 size-6 rounded-md text-gray-500"
+                      class="z-10 size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
+                      iconClass="size-5 md:size-4"
                     />
                   </div>
                 </Match>
