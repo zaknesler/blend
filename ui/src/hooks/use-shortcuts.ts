@@ -1,5 +1,7 @@
 import { createShortcut } from '@solid-primitives/keyboard';
+import { useQueryState } from '~/contexts/query-state-context';
 import { modalOpen, setModalStore } from '~/stores/modal';
+import { View } from '~/types/bindings';
 
 const DISALLOWED_NODES = ['input', 'textarea', 'select'] as const;
 
@@ -13,6 +15,8 @@ const shouldIgnoreEvent = (target: EventTarget | null) => {
 };
 
 export const useShortcuts = () => {
+  const state = useQueryState();
+
   const handle = (callback: (event?: KeyboardEvent | null) => void) => (event: KeyboardEvent | null) => {
     if (!event) return;
     if (shouldIgnoreEvent(event.target)) return;
@@ -30,4 +34,19 @@ export const useShortcuts = () => {
   };
 
   createShortcut(['Shift', 'A'], handle(handleAddFeed), { preventDefault: false, requireReset: true });
+  createShortcut(
+    ['1'],
+    handle(() => state.setView(View.Unread)),
+    { preventDefault: false, requireReset: true },
+  );
+  createShortcut(
+    ['2'],
+    handle(() => state.setView(View.Saved)),
+    { preventDefault: false, requireReset: true },
+  );
+  createShortcut(
+    ['3'],
+    handle(() => state.setView(View.All)),
+    { preventDefault: false, requireReset: true },
+  );
 };
