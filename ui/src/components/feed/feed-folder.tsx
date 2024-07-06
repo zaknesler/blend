@@ -1,8 +1,10 @@
 import { Collapsible } from '@kobalte/core/collapsible';
+import { useNavigate } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { HiOutlineChevronRight } from 'solid-icons/hi';
 import { type ParentComponent, createSignal } from 'solid-js';
 import * as feedClasses from '~/constants/ui/feed';
+import { useQueryState } from '~/contexts/query-state-context';
 
 type FeedFolderProps = {
   slug: string;
@@ -10,11 +12,21 @@ type FeedFolderProps = {
 };
 
 export const FeedFolder: ParentComponent<FeedFolderProps> = props => {
-  const [open, setOpen] = createSignal(false);
+  const state = useQueryState();
+  const navigate = useNavigate();
+
+  const isActive = () => state.params.folder_slug === props.slug;
+  const [open, setOpen] = createSignal(isActive());
+
+  const handleClick = (isOpen: boolean) => {
+    navigate(`/folder/${props.slug}`);
+    if (isOpen) setOpen(isOpen);
+    else if (!isOpen && isActive()) setOpen(isOpen);
+  };
 
   return (
-    <Collapsible open={open()} onOpenChange={setOpen} class="flex flex-col items-stretch gap-1">
-      <Collapsible.Trigger as="button" class={feedClasses.folder({ active: open() })}>
+    <Collapsible open={open()} onOpenChange={handleClick} class="flex flex-col items-stretch gap-1">
+      <Collapsible.Trigger as="button" class={feedClasses.item({ active: isActive() })}>
         <div class="flex size-7 items-center justify-center md:size-5">
           <HiOutlineChevronRight
             class={cx('size-4 text-gray-500 transition-transform md:size-3', open() && 'rotate-90')}
