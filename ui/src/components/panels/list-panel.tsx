@@ -1,5 +1,5 @@
 import { createElementBounds } from '@solid-primitives/bounds';
-import { useIsRouting } from '@solidjs/router';
+import { useBeforeLeave } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { HiOutlineArrowPath, HiOutlineEnvelope } from 'solid-icons/hi';
 import { Match, Show, Switch, createEffect, createSignal } from 'solid-js';
@@ -20,12 +20,11 @@ import { IconButton } from '../ui/button/icon-button';
 export const ListPanel = () => {
   const state = useQueryState();
   const viewport = useViewport();
-  const isRouting = useIsRouting();
 
   const refresh = useRefreshFeeds();
   const notifications = useNotifications();
 
-  const [showFeedSelector, setShowFeedSelector] = createSignal(false);
+  const [showFeedSelector, setShowFeedSelector] = createSignal(viewport.lte('xl'));
 
   const [container, setContainer] = createSignal<HTMLElement>();
   const containerBounds = createElementBounds(container);
@@ -45,8 +44,10 @@ export const ListPanel = () => {
   };
 
   // Close the feed selector when routing (i.e. we've clicked a feed link)
-  createEffect(() => {
-    if (!isRouting()) return;
+  useBeforeLeave(e => {
+    // Don't reset if we're just opening a folder
+    if (e.to?.toString().startsWith('/folder')) return;
+
     setShowFeedSelector(false);
   });
 

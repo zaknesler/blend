@@ -58,7 +58,7 @@ export const EntryItem: Component<EntryItemProps> = props => {
               )}
               {...rest}
             >
-              <h4 class="text-pretty text-base/5 md:text-sm xl:text-base/5" innerHTML={local.entry.title} />
+              <h4 class="text-pretty text-sm xl:text-base/5" innerHTML={local.entry.title} />
 
               <small
                 class={cx(

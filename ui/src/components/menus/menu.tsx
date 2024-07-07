@@ -6,6 +6,7 @@ import {
 } from '@kobalte/core/dropdown-menu';
 import type { KbdKey } from '@solid-primitives/keyboard';
 import { type VariantProps, cx } from 'class-variance-authority';
+import type { ClassValue } from 'class-variance-authority/types';
 import type { IconTypes } from 'solid-icons';
 import { HiOutlineEllipsisHorizontal } from 'solid-icons/hi';
 import { type Component, For, type JSX, type ParentComponent, type Setter, Show, splitProps } from 'solid-js';
@@ -72,10 +73,11 @@ type MenuItemProps = DropdownMenuItemProps & {
   label: string;
   kbd?: KbdKey[];
   icon?: IconTypes;
+  iconClass?: ClassValue;
 };
 
 const MenuItem: Component<MenuItemProps> = props => {
-  const [local, rest] = splitProps(props, ['icon', 'label', 'kbd']);
+  const [local, rest] = splitProps(props, ['icon', 'label', 'kbd', 'iconClass']);
 
   const key = (value: KbdKey) => {
     if (value === 'Shift') return '⇧';
@@ -89,7 +91,7 @@ const MenuItem: Component<MenuItemProps> = props => {
 
   return (
     <DropdownMenu.Item {...rest} class={menuClasses.item()}>
-      <Dynamic component={local.icon} class={menuClasses.itemIcon()} />
+      <Dynamic component={local.icon} class={menuClasses.itemIcon({ class: local.iconClass })} />
 
       {local.label}
 

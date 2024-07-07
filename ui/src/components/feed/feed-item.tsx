@@ -17,6 +17,8 @@ import * as feedClasses from '~/constants/ui/feed';
 import { useNotifications } from '~/contexts/notification-context';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
+import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
+import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
 import type { Feed } from '~/types/bindings';
 import { ContextMenu } from '../menus/context-menu';
 import { Spinner } from '../ui/spinner';
@@ -30,6 +32,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
   const location = useLocation();
 
   const stats = useFeedsStats();
+  const refresh = useRefreshFeed();
   const notifications = useNotifications();
 
   const getPath = createMemo(() => `/feeds/${props.feed.uuid}`);
@@ -38,7 +41,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
 
   const getFaviconSrc = () => props.feed.favicon_b64 || props.feed.favicon_url;
 
-  const isLoading = () => notifications.isFeedRefreshing(props.feed.uuid);
+  const isRefreshing = () => notifications.isFeedRefreshing(props.feed.uuid);
 
   return (
     <ContextMenu
@@ -51,7 +54,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
               href={getPath().concat(state.getQueryString())}
               title={props.feed.title_display || props.feed.title}
               active={isActive()}
-              loading={isLoading()}
+              loading={isRefreshing()}
               unread_count={getStats()?.count_unread}
               favicon_src={getFaviconSrc()}
             />
@@ -59,7 +62,13 @@ export const FeedItem: Component<FeedItemProps> = props => {
         />
       )}
     >
-      <ContextMenu.Item label="Refresh feed" disabled icon={HiOutlineArrowPath} />
+      <ContextMenu.Item
+        label="Refresh feed"
+        onClick={() => refresh.refreshFeed(props.feed.uuid)}
+        icon={HiOutlineArrowPath}
+        iconClass={isRefreshing() && 'animate-spin'}
+        disabled={isRefreshing()}
+      />
       <ContextMenu.Item label="Mark feed as read" disabled icon={HiOutlineEnvelope} />
       <ContextMenu.Separator />
       <ContextMenu.Item label="Move" disabled icon={HiOutlineFolder} />
@@ -71,8 +80,10 @@ export const FeedItem: Component<FeedItemProps> = props => {
 
 export const AllFeedsItem = () => {
   const state = useQueryState();
+  const notifications = useNotifications();
 
   const stats = useFeedsStats();
+  const refresh = useRefreshFeeds();
 
   return (
     <ContextMenu
@@ -91,7 +102,13 @@ export const AllFeedsItem = () => {
         />
       )}
     >
-      <ContextMenu.Item label="Refresh all feeds" disabled icon={HiOutlineArrowPath} />
+      <ContextMenu.Item
+        label="Refresh all feeds"
+        onClick={() => refresh.refreshFeeds()}
+        icon={HiOutlineArrowPath}
+        iconClass={!!notifications.feedsRefreshing().length && 'animate-spin'}
+        disabled={!!notifications.feedsRefreshing().length}
+      />
       <ContextMenu.Item label="Mark all as read" disabled icon={HiOutlineEnvelope} />
     </ContextMenu>
   );

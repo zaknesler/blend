@@ -8,7 +8,7 @@ import type { View } from '~/types/bindings';
 import { formatQueryString } from '~/utils/query';
 
 const wrapperClass = cx(
-  'scrollbar-hide flex w-full select-none self-stretch overflow-auto rounded-lg border border-gray-200/25 bg-gray-100 font-medium text-gray-600 text-xs backdrop-blur-sm',
+  '-mx-1 xl:-mt-1 scrollbar-hide flex select-none self-stretch overflow-auto rounded-lg border border-gray-200/25 bg-gray-100 font-medium text-gray-600 text-xs backdrop-blur-sm',
   'dark:border-gray-950/50 dark:bg-gray-800 dark:text-white dark:shadow-md',
 );
 
