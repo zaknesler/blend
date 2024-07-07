@@ -29,7 +29,7 @@ export const FeedHeader: Component<FeedHeaderProps> = props => {
 
   return (
     <div class="flex flex-1 shrink flex-col overflow-hidden whitespace-nowrap">
-      <h2 class="truncate font-semibold text-xs sm:text-sm" innerHTML={props.title || undefined} />
+      <h2 class="truncate font-semibold text-sm" innerHTML={props.title || undefined} />
       <Show when={props.subtitle}>
         <small class="select-none truncate text-gray-500 text-xs dark:text-gray-400">{props.subtitle}</small>
       </Show>
