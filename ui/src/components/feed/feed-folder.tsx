@@ -1,3 +1,4 @@
+import { Button } from '@kobalte/core/button';
 import { Collapsible } from '@kobalte/core/collapsible';
 import { useNavigate } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
@@ -18,20 +19,30 @@ export const FeedFolder: ParentComponent<FeedFolderProps> = props => {
   const isActive = () => state.params.folder_slug === props.slug;
   const [open, setOpen] = createSignal(isActive());
 
-  const handleClick = (isOpen: boolean) => {
+  const handleNavigate = (isOpen: boolean) => {
     navigate(`/folder/${props.slug}`);
     if (isOpen) setOpen(isOpen);
     else if (!isOpen && isActive()) setOpen(isOpen);
   };
 
+  const handleClick = (event: MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    setOpen(value => !value);
+  };
+
   return (
-    <Collapsible open={open()} onOpenChange={handleClick} class="flex flex-col items-stretch gap-1">
+    <Collapsible open={open()} onOpenChange={handleNavigate} class="flex flex-col items-stretch gap-1">
       <Collapsible.Trigger as="button" class={feedClasses.item({ active: isActive() })}>
-        <div class="flex size-7 items-center justify-center md:size-5">
-          <HiOutlineChevronRight
-            class={cx('size-4 text-gray-500 transition-transform md:size-3', open() && 'rotate-90')}
-          />
-        </div>
+        <Button class={feedClasses.folderTrigger({ active: isActive() })} onClick={handleClick}>
+          <div class="flex size-7 items-center justify-center md:size-5">
+            <HiOutlineChevronRight
+              class={cx('size-4 text-gray-500 transition-transform md:size-3', open() && 'rotate-90')}
+            />
+          </div>
+        </Button>
+
         <span class="text-base md:text-sm">{props.label}</span>
       </Collapsible.Trigger>
 

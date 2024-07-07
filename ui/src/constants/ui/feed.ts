@@ -11,28 +11,10 @@ const inactiveClass = cx(
   'focus:text-gray-700 dark:focus:text-white',
 );
 
-export const item = cva(
-  [
-    base,
-    'flex w-full flex-1 select-none items-center gap-2 rounded-lg border p-1 text-base no-underline outline-none transition',
-  ],
-  {
-    variants: {
-      active: {
-        true: 'border-gray-200 bg-gray-100 text-gray-900 xl:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white',
-        false: inactiveClass,
-      },
-    },
-    defaultVariants: {
-      active: false,
-    },
-  },
-);
-
-export const folder = cva([base, inactiveClass], {
+export const item = cva(base, {
   variants: {
     active: {
-      true: '',
+      true: 'border-gray-200 bg-gray-100 text-gray-900 xl:bg-white dark:border-gray-700 dark:bg-gray-800 dark:text-white',
       false: inactiveClass,
     },
   },
@@ -40,3 +22,15 @@ export const folder = cva([base, inactiveClass], {
     active: false,
   },
 });
+
+export const folderTrigger = cva(
+  'rounded-md border border-transparent transition focus:border-gray-400 focus:outline-none md:rounded dark:focus:border-gray-600',
+  {
+    variants: {
+      active: {
+        true: 'hover:bg-gray-200',
+        false: 'hover:bg-gray-200 xl:hover:bg-white',
+      },
+    },
+  },
+);
