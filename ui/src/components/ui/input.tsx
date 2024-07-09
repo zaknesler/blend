@@ -21,7 +21,10 @@ export const TextInput: Component<TextInputProps> = props => {
   return (
     <TextField {...rest} validationState={error() ? 'invalid' : 'valid'} class="flex flex-col items-stretch gap-1">
       <TextField.Label
-        class={cx('text-gray-600 text-sm dark:text-gray-400', !!error() && 'text-red-700 dark:text-red-500')}
+        class={cx(
+          'select-none text-gray-600 text-sm dark:text-gray-400',
+          !!error() && 'text-red-700 dark:text-red-500',
+        )}
       >
         {local.label}
       </TextField.Label>

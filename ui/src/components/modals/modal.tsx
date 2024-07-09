@@ -23,12 +23,12 @@ export const Modal: ParentComponent<ModalProps> = props => {
             class="relative z-50 w-full animate-content-hide ui-expanded:animate-content-show overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-all sm:max-w-sm dark:border-gray-800 dark:bg-gray-950 dark:shadow-xl"
             onOpenAutoFocus={local.onOpenAutoFocus}
           >
-            <Dialog.CloseButton class="absolute top-2 right-2 rounded-lg p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 dark:hover:bg-gray-800">
-              <HiOutlineXMark class="size-5 text-gray-500" />
+            <Dialog.CloseButton class="absolute top-2 right-2 rounded-lg p-1 text-gray-500 ring-gray-400 transition hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:ring-2 dark:text-gray-400 dark:ring-gray-600 dark:focus:bg-gray-700 dark:hover:bg-gray-700">
+              <HiOutlineXMark class="size-5" />
             </Dialog.CloseButton>
 
             <div class="flex flex-col gap-2 border-b bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900">
-              <Dialog.Title class="font-semibold text-lg/4 dark:text-gray-200">{local.title}</Dialog.Title>
+              <Dialog.Title class="font-semibold text-base dark:text-gray-200">{local.title}</Dialog.Title>
               <Dialog.Description class="text-gray-600 text-sm dark:text-gray-400">
                 {local.description}
               </Dialog.Description>
