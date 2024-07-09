@@ -24,13 +24,15 @@ export const item = cva(base, {
 });
 
 export const folderTrigger = cva(
-  'rounded-md border border-transparent transition focus:border-gray-400 focus:outline-none md:rounded dark:focus:border-gray-600',
+  'rounded-md border border-transparent transition hover:bg-gray-200 focus:border-gray-400 focus:outline-none md:rounded dark:focus:border-gray-600 dark:hover:bg-gray-700',
   {
     variants: {
       active: {
-        true: 'hover:bg-gray-200',
-        false: 'hover:bg-gray-200 xl:hover:bg-white',
+        false: 'xl:hover:bg-gray-300',
       },
+    },
+    defaultVariants: {
+      active: false,
     },
   },
 );

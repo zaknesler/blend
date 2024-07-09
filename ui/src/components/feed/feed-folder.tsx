@@ -38,7 +38,10 @@ export const FeedFolder: ParentComponent<FeedFolderProps> = props => {
         <Button class={feedClasses.folderTrigger({ active: isActive() })} onClick={handleClick}>
           <div class="flex size-7 items-center justify-center md:size-5">
             <HiOutlineChevronRight
-              class={cx('size-4 text-gray-500 transition-transform md:size-3', open() && 'rotate-90')}
+              class={cx(
+                'size-4 text-gray-500 transition-transform md:size-3 dark:text-gray-400',
+                open() && 'rotate-90',
+              )}
             />
           </div>
         </Button>

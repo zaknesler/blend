@@ -66,6 +66,14 @@ export interface FilterEntriesParams {
   view?: View;
 }
 
+export interface CreateFeedParams {
+  url: string;
+}
+export interface CreateFolderParams {
+  name: string;
+  slug?: string;
+}
+
 export type Notification =
   | {
       type: 'StartedFeedRefresh';

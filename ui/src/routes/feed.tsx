@@ -1,5 +1,6 @@
 import { lazy } from 'solid-js';
-import { CreateFeedModal } from '~/components/modals/create-feed-modal';
+import { CreateFeedModal } from '~/components/modals/create-feed';
+import { CreateFolderModal } from '~/components/modals/create-folder';
 import { EntriesContext, makeEntriesContext } from '~/contexts/entries-context';
 import { NotificationContext, makeNotificationContext } from '~/contexts/notification-context';
 import { QueryStateContext, makeQueryStateContext } from '~/contexts/query-state-context';
@@ -36,6 +37,7 @@ const Inner = () => {
         </div>
 
         <CreateFeedModal />
+        <CreateFolderModal />
       </NotificationContext.Provider>
     </EntriesContext.Provider>
   );

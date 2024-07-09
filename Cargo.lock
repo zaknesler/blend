@@ -500,6 +500,7 @@ dependencies = [
  "tower-cookies",
  "tower-http",
  "tracing",
+ "typeshare",
  "uuid",
  "validator",
 ]

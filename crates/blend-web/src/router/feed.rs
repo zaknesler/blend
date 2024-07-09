@@ -9,6 +9,7 @@ use axum::{
 use blend_db::repo;
 use serde::Deserialize;
 use serde_json::json;
+use typeshare::typeshare;
 use uuid::Uuid;
 use validator::Validate;
 
@@ -29,15 +30,16 @@ async fn index(State(ctx): State<crate::Context>) -> WebResult<impl IntoResponse
     Ok(Json(json!({ "data": feeds })))
 }
 
+#[typeshare]
 #[derive(Debug, Deserialize, Validate)]
-struct AddFeedParams {
+struct CreateFeedParams {
     #[validate(url(message = "Must be a valid URL"))]
     url: String,
 }
 
 async fn create(
     State(ctx): State<crate::Context>,
-    Json(data): Json<AddFeedParams>,
+    Json(data): Json<CreateFeedParams>,
 ) -> WebResult<impl IntoResponse> {
     data.validate()?;
 

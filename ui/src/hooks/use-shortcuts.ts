@@ -48,7 +48,7 @@ export const useShortcuts = () => {
 
   createShortcut(
     SHORTCUTS.OPEN_ADD_FEED_MODAL,
-    handle(() => setModalStore('addFeed', true)),
+    handle(() => setModalStore('createFeed', true)),
     DEFAULT_OPTIONS,
   );
 

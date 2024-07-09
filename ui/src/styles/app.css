@@ -5,5 +5,10 @@
   margin-top: 0;
 }
 
+/* Fix padding for multiple images in a figure */
+.prose figure img:has(+ img) {
+  margin-bottom: 2em;
+}
+
 @tailwind components;
 @tailwind utilities;

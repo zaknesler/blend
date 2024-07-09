@@ -101,6 +101,29 @@ export const ListPanel = () => {
                   <FeedInfo uuid={state.params.feed_uuid!} />
                 </Match>
 
+                {/* Showing single folder -- show folder info */}
+                <Match when={state.params.folder_slug}>
+                  <div class="flex w-full select-none items-start justify-between gap-2">
+                    <FeedHeader title="Folder name" />
+
+                    <IconButton
+                      disabled
+                      icon={HiOutlineEnvelope}
+                      tooltip="Mark all as read"
+                      class="z-10 size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
+                      iconClass="size-5 md:size-4"
+                    />
+
+                    <IconButton
+                      onClick={() => refresh.refreshFeeds()}
+                      icon={HiOutlineArrowPath}
+                      tooltip="Refresh all feeds"
+                      class="z-10 size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
+                      iconClass={cx('size-5 md:size-4', !!notifications.feedsRefreshing().length && 'animate-spin')}
+                    />
+                  </div>
+                </Match>
+
                 {/* Showing all feeds -- create custom label */}
                 <Match when={!state.params.feed_uuid}>
                   <div class="flex w-full select-none items-start justify-between gap-2">

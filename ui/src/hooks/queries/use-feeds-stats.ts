@@ -15,6 +15,8 @@ export const useFeedsStats = () => {
     refetchOnMount: false,
   }));
 
+  // const folders = useFolders();
+
   const total = () => (query.data ? sumStats(query.data) : undefined);
 
   const byFeed = (uuid: string) => query.data?.find(item => item.uuid === uuid);
@@ -22,7 +24,12 @@ export const useFeedsStats = () => {
   const byView = (view?: View) => {
     if (!query?.data) return null;
 
-    const items = state.params.feed_uuid ? [byFeed(state.params.feed_uuid)] : query.data;
+    const items = (() => {
+      if (state.params.feed_uuid) return [byFeed(state.params.feed_uuid)];
+      if (state.params.folder_slug) return []; // TODO: get all feeds from folder
+      return query.data;
+    })();
+
     const sum = sumStats(items.filter(Boolean));
 
     switch (view || state.getView()) {

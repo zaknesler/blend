@@ -25,10 +25,6 @@ export const AppMenu: Component<MenuProps> = props => {
     props,
   );
 
-  const handleAddFeed = () => {
-    setModalStore('addFeed', true);
-  };
-
   return (
     <>
       <Menu
@@ -52,7 +48,7 @@ export const AppMenu: Component<MenuProps> = props => {
           label="Add feed"
           kbd={SHORTCUTS.OPEN_ADD_FEED_MODAL}
           icon={HiOutlineSquaresPlus}
-          onSelect={handleAddFeed}
+          onSelect={() => setModalStore('createFeed', true)}
         />
         <Menu.Item label="Import/export" icon={HiOutlineArrowDownTray} disabled />
         <Menu.Item label="Settings" icon={HiOutlineCog6Tooth} disabled />
