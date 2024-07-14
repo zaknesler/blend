@@ -1,12 +1,11 @@
 CREATE TABLE IF NOT EXISTS folders (
-  id INTEGER PRIMARY KEY,
+  uuid INTEGER PRIMARY KEY,
   slug TEXT UNIQUE NOT NULL,
   label TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS folders_feeds (
-  id INTEGER PRIMARY KEY,
-  folder_id INTEGER NOT NULL,
+  folder_uuid INTEGER NOT NULL,
   feed_uuid INTEGER NOT NULL,
-  UNIQUE(folder_id, feed_uuid)
+  UNIQUE(folder_uuid, feed_uuid)
 );

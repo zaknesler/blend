@@ -19,14 +19,14 @@
     "@kobalte/core": "^0.13.3",
     "@kobalte/tailwindcss": "^0.9.0",
     "@solid-primitives/active-element": "^2.0.20",
-    "@solid-primitives/bounds": "^0.0.121",
+    "@solid-primitives/bounds": "^0.0.122",
     "@solid-primitives/keyboard": "^1.2.8",
-    "@solid-primitives/resize-observer": "^2.0.25",
+    "@solid-primitives/resize-observer": "^2.0.26",
     "@solid-primitives/scheduled": "^1.4.3",
     "@solid-primitives/scroll": "^2.0.23",
-    "@solidjs/router": "^0.13.6",
-    "@tanstack/solid-query": "^5.50.2",
-    "@tanstack/solid-query-devtools": "^5.50.2",
+    "@solidjs/router": "^0.14.1",
+    "@tanstack/solid-query": "^5.51.2",
+    "@tanstack/solid-query-devtools": "^5.51.2",
     "class-variance-authority": "^0.7.0",
     "partysocket": "^1.0.1",
     "solid-icons": "^1.1.0",
@@ -39,7 +39,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.13",
     "@total-typescript/ts-reset": "^0.5.1",
-    "@vitest/coverage-v8": "^1.6.0",
+    "@vitest/coverage-v8": "^2.0.2",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.39",
     "solid-devtools": "^0.30.1",
@@ -48,7 +48,7 @@
     "vite": "^5.3.3",
     "vite-plugin-solid": "^2.10.2",
     "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^1.6.0"
+    "vitest": "^2.0.2"
   },
   "engines": {
     "node": ">=18"
