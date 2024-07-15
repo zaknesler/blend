@@ -32,7 +32,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
   const location = useLocation();
 
   const stats = useFeedsStats();
-  const refresh = useRefreshFeed();
+  const refreshFeed = useRefreshFeed();
   const notifications = useNotifications();
 
   const getPath = createMemo(() => `/feeds/${props.feed.uuid}`);
@@ -64,7 +64,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
     >
       <ContextMenu.Item
         label="Refresh feed"
-        onClick={() => refresh.refreshFeed(props.feed.uuid)}
+        onClick={() => refreshFeed(props.feed.uuid)}
         icon={HiOutlineArrowPath}
         iconClass={isRefreshing() && 'animate-spin'}
         disabled={isRefreshing()}
@@ -83,7 +83,7 @@ export const AllFeedsItem = () => {
   const notifications = useNotifications();
 
   const stats = useFeedsStats();
-  const refresh = useRefreshFeeds();
+  const refreshFeeds = useRefreshFeeds();
 
   return (
     <ContextMenu
@@ -104,7 +104,7 @@ export const AllFeedsItem = () => {
     >
       <ContextMenu.Item
         label="Refresh all feeds"
-        onClick={() => refresh.refreshFeeds()}
+        onClick={() => refreshFeeds()}
         icon={HiOutlineArrowPath}
         iconClass={!!notifications.feedsRefreshing().length && 'animate-spin'}
         disabled={!!notifications.feedsRefreshing().length}

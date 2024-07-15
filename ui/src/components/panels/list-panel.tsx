@@ -21,7 +21,7 @@ export const ListPanel = () => {
   const state = useQueryState();
   const viewport = useViewport();
 
-  const refresh = useRefreshFeeds();
+  const refreshFeeds = useRefreshFeeds();
   const notifications = useNotifications();
 
   const [showFeedSelector, setShowFeedSelector] = createSignal(viewport.lte('xl'));
@@ -115,7 +115,7 @@ export const ListPanel = () => {
                     />
 
                     <IconButton
-                      onClick={() => refresh.refreshFeeds()}
+                      onClick={() => refreshFeeds()}
                       icon={HiOutlineArrowPath}
                       tooltip="Refresh all feeds"
                       class="z-10 size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
@@ -138,7 +138,7 @@ export const ListPanel = () => {
                     />
 
                     <IconButton
-                      onClick={() => refresh.refreshFeeds()}
+                      onClick={() => refreshFeeds()}
                       icon={HiOutlineArrowPath}
                       tooltip="Refresh all feeds"
                       class="z-10 size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"

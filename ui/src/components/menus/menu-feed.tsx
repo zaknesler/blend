@@ -17,7 +17,7 @@ export const FeedMenu: Component<FeedMenuProps> = props => {
     props,
   );
 
-  const refresh = useRefreshFeed();
+  const refreshFeed = useRefreshFeed();
   const notifications = useNotifications();
   const isRefreshing = () => notifications.isFeedRefreshing(props.uuid);
 
@@ -25,7 +25,7 @@ export const FeedMenu: Component<FeedMenuProps> = props => {
     <Menu {...local} size="sm">
       <Menu.Item
         label="Refresh"
-        onClick={() => refresh.refreshFeed(props.uuid)}
+        onClick={() => refreshFeed(props.uuid)}
         icon={HiOutlineArrowPath}
         iconClass={isRefreshing() && 'animate-spin'}
         disabled={isRefreshing()}

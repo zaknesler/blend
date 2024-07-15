@@ -16,5 +16,6 @@ export const QUERY_KEYS = {
   ENTRIES_VIEW_UNSAVED: 'entries.view.unsaved',
 
   // Folders
+  FOLDERS: 'folders.index',
   FOLDERS_CREATE: 'folders.create',
 } as const;

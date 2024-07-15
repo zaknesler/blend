@@ -2,12 +2,14 @@ import { Button } from '@kobalte/core/button';
 import { HiSolidPlusSmall } from 'solid-icons/hi';
 import { For, Match, Show, Switch } from 'solid-js';
 import { useFeeds } from '~/hooks/queries/use-feeds';
+import { useFolders } from '~/hooks/queries/use-folders';
 import { setModalStore } from '~/stores/modal';
 import { FeedFolder } from './feed-folder';
 import { AllFeedsItem, FeedItem } from './feed-item';
 
 export const FeedList = () => {
   const feeds = useFeeds();
+  const folders = useFolders();
 
   const handleOpenNewFolder = () => {
     setModalStore('createFolder', true);
@@ -30,23 +32,31 @@ export const FeedList = () => {
         </div>
 
         <Switch>
+          <Match when={folders.query.isError}>
+            <p>Error: {folders.query.error?.message}</p>
+          </Match>
+
+          <Match when={folders.query.isSuccess}>
+            <Show when={folders.query.data?.length}>
+              <For each={folders.query.data}>
+                {folder => (
+                  <FeedFolder slug={folder.slug} label={folder.label}>
+                    <For each={feeds.query.data}>{feed => <FeedItem feed={feed} />}</For>
+                  </FeedFolder>
+                )}
+              </For>
+            </Show>
+          </Match>
+        </Switch>
+
+        <Switch>
           <Match when={feeds.query.isError}>
             <p>Error: {feeds.query.error?.message}</p>
           </Match>
 
           <Match when={feeds.query.isSuccess}>
             <Show when={feeds.query.data?.length} fallback={<div>No feeds.</div>}>
-              <FeedFolder slug="photography" label="Photography">
-                <For each={feeds.query.data?.slice(0, feeds.query.data.length / 2)}>
-                  {feed => <FeedItem feed={feed} />}
-                </For>
-              </FeedFolder>
-
-              <FeedFolder slug="other" label="Other">
-                <For each={feeds.query.data?.slice(feeds.query.data.length / 2)}>
-                  {feed => <FeedItem feed={feed} />}
-                </For>
-              </FeedFolder>
+              <For each={feeds.query.data}>{feed => <FeedItem feed={feed} />}</For>
             </Show>
           </Match>
         </Switch>

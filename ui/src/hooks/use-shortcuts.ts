@@ -54,13 +54,13 @@ export const useShortcuts = () => {
 
   createShortcut(
     SHORTCUTS.REFRESH_CURRENT_FEED,
-    handle(() => state.params.feed_uuid && refreshFeed.refreshFeed(state.params.feed_uuid)),
+    handle(() => state.params.feed_uuid && refreshFeed(state.params.feed_uuid)),
     DEFAULT_OPTIONS,
   );
 
   createShortcut(
     SHORTCUTS.REFRESH_ALL_FEEDS,
-    handle(() => refreshFeeds.refreshFeeds()),
+    handle(() => refreshFeeds()),
     DEFAULT_OPTIONS,
   );
 

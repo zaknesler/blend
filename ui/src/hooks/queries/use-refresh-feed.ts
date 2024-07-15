@@ -8,10 +8,5 @@ export const useRefreshFeed = () => {
     mutationFn: refreshFeed,
   }));
 
-  const handleRefresh = async (feed_uuid: string) => query.mutateAsync(feed_uuid);
-
-  return {
-    query,
-    refreshFeed: handleRefresh,
-  };
+  return (feed_uuid: string) => query.mutateAsync(feed_uuid);
 };

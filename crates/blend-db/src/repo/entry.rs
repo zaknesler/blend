@@ -104,7 +104,7 @@ impl EntryRepo {
 
         if let Some(slug) = filter.folder {
             query
-                .push(" AND feed_uuid IN (SELECT feed_uuid FROM folders INNER JOIN folders_feeds ON folders.id = folders_feeds.id WHERE folders.slug = ")
+                .push(" AND feed_uuid IN (SELECT feed_uuid FROM folders INNER JOIN folders_feeds ON folders.uuid = folders_feeds.folder_uuid WHERE folders.slug = ")
                 .push_bind(slug)
                 .push(")");
         }

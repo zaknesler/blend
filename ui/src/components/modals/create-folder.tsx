@@ -4,22 +4,33 @@ import { Show, createEffect, createSignal } from 'solid-js';
 import { getErrorMessage } from '~/api';
 import { createFolder } from '~/api/folders';
 import { QUERY_KEYS } from '~/constants/query';
+import { useInvalidateFolders } from '~/hooks/queries/use-invalidate-folders';
 import { modalOpen, setModalStore } from '~/stores/modal';
 import { Button } from '../ui/button';
 import { TextInput } from '../ui/input';
 import { Spinner } from '../ui/spinner';
 import { Modal } from './modal';
 
+const formatSlug = (str: string) =>
+  str
+    .toLowerCase()
+    .replace(/[^a-z]+/g, ' ') // Replace all consecutive, non-alphabetic characters with spaces
+    .trim()
+    .replace(/ +/g, '-'); // Replace all consecutive spaces with a single hyphen
+
 export const CreateFolderModal = () => {
   const navigate = useNavigate();
 
-  const [value, setValue] = createSignal('');
-  const [inputElement, setInputElement] = createSignal<HTMLDivElement>();
+  const invalidateFolders = useInvalidateFolders();
 
   const create = createMutation(() => ({
     mutationKey: [QUERY_KEYS.FOLDERS_CREATE],
     mutationFn: createFolder,
   }));
+
+  const [labelValue, setLabelValue] = createSignal('');
+  const [slugValue, setSlugValue] = createSignal('');
+  const [inputElement, setInputElement] = createSignal<HTMLDivElement>();
 
   const isDisabled = () => create.isPending || !open;
 
@@ -27,11 +38,12 @@ export const CreateFolderModal = () => {
     event.preventDefault();
     event.stopPropagation();
 
-    if (!value() || isDisabled()) return;
+    if (!labelValue() || isDisabled()) return;
 
-    const folder = await create.mutateAsync({ name: value() }).catch(() => null);
+    const folder = await create.mutateAsync({ label: labelValue(), slug: slugValue() }).catch(() => null);
     if (!folder) return;
 
+    invalidateFolders();
     navigate(`/folder/${folder.slug}`);
     setModalStore('createFolder', false);
   };
@@ -48,8 +60,12 @@ export const CreateFolderModal = () => {
     // Delay 150ms to let animation play out
     setTimeout(() => {
       create.reset();
-      setValue('');
+      setLabelValue('');
     }, 150);
+  });
+
+  createEffect(() => {
+    setSlugValue(formatSlug(labelValue()));
   });
 
   return (
@@ -62,14 +78,16 @@ export const CreateFolderModal = () => {
       <div class="flex flex-col items-stretch gap-4 p-4">
         <form onSubmit={handleSubmit} class="flex flex-col gap-4">
           <TextInput
-            name="name"
-            label="Name"
-            value={value()}
-            onChange={setValue}
+            name="label"
+            label="Label"
+            value={labelValue()}
+            onChange={setLabelValue}
             placeholder="Photography"
             error={create.error}
             ref={setInputElement}
           />
+
+          <TextInput name="slug" label="Slug" value={slugValue()} onChange={setSlugValue} placeholder="photography" />
 
           <div class="flex items-center justify-between gap-4">
             <Button size="sm" class="self-start" onClick={handleSubmit} disabled={isDisabled()}>

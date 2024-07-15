@@ -40,10 +40,9 @@ export interface FeedStats {
 }
 
 export interface Folder {
-  id: string;
+  uuid: string;
   slug: string;
   label: string;
-  feed_uuids: string[];
 }
 
 export enum SortDirection {
@@ -66,12 +65,24 @@ export interface FilterEntriesParams {
   view?: View;
 }
 
+export interface FolderFeedMap {
+  uuid: string;
+  slug: string;
+  label: string;
+  feed_uuids: string[];
+}
+
 export interface CreateFeedParams {
   url: string;
 }
+
 export interface CreateFolderParams {
-  name: string;
-  slug?: string;
+  label: string;
+  slug: string;
+}
+
+export interface UpdateFolderParams {
+  feed_uuids: string[];
 }
 
 export type Notification =
