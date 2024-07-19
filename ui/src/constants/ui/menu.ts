@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority';
 
 export const trigger = cva([
-  'flex shrink-0 cursor-default appearance-none items-center justify-center border border-gray-200 text-gray-500 transition dark:border-gray-700 dark:text-gray-400',
+  'flex shrink-0 cursor-default touch-manipulation appearance-none items-center justify-center border border-gray-200 text-gray-500 transition dark:border-gray-700 dark:text-gray-400',
   'bg-white hover:bg-gray-100 focus:border-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-200 group-hover:opacity-100 dark:focus:border-gray-600 dark:focus:ring-gray-700',
   'hover:border-gray-300 dark:bg-gray-800 dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-100',
   'ui-disabled:cursor-not-allowed ui-disabled:opacity-50',

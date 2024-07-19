@@ -2,7 +2,7 @@ import { cva } from 'class-variance-authority';
 
 export const button = cva(
   [
-    'inline-flex shrink-0 select-none appearance-none items-center justify-center gap-1.5 overflow-hidden font-semibold shadow-gray-200 transition-colors',
+    'inline-flex shrink-0 touch-manipulation select-none appearance-none items-center justify-center gap-1.5 overflow-hidden font-semibold shadow-gray-200 transition-colors',
     'focus:outline-none focus:ring-4 focus:ring-opacity-30',
     'dark:shadow-none',
   ],
@@ -52,7 +52,7 @@ export const button = cva(
 
 export const action = cva(
   [
-    'cursor-default appearance-none rounded-lg text-gray-600',
+    'cursor-default touch-manipulation appearance-none rounded-lg text-gray-600',
     'hover:bg-gray-200',
     'focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-30',
     'dark:text-gray-400 dark:focus:ring-gray-600 dark:hover:bg-gray-700',

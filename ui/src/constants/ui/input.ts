@@ -2,7 +2,7 @@ import { cva } from 'class-variance-authority';
 
 export const input = cva(
   [
-    'form-input size-full appearance-none rounded-lg border bg-white font-normal shadow-xs transition-[border,box-shadow]',
+    'form-input size-full touch-manipulation appearance-none rounded-lg border bg-white font-normal shadow-xs transition-[border,box-shadow]',
     'focus:outline-none focus:ring-4 focus:ring-opacity-30',
     'placeholder:select-none placeholder:text-gray-400 dark:placeholder:text-gray-500',
     'dark:bg-gray-900 dark:text-gray-100',
