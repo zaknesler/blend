@@ -136,7 +136,7 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => {
   ]);
 
   return (
-    <A {...rest} href={local.href} class={feedClasses.item({ active: local.active })}>
+    <A {...rest} href={local.href} class={feedClasses.item({ active: local.active, class: 'gap-2' })}>
       <div class="relative flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-md md:size-5 md:rounded">
         <Switch fallback={<RssIcon />}>
           <Match when={local.favicon_src}>

@@ -1,7 +1,7 @@
 import { cva, cx } from 'class-variance-authority';
 
 const base = cx(
-  'flex touch-manipulation select-none items-center gap-2 rounded-lg border p-1 text-base no-underline transition focus:outline-none md:rounded-md md:text-sm',
+  'flex touch-manipulation select-none items-center rounded-lg border p-1 text-base no-underline transition focus:outline-none md:rounded-md md:text-sm',
   'text-gray-600 focus:border-gray-400 dark:text-gray-300 dark:focus:border-gray-600',
 );
 

@@ -11,8 +11,8 @@
     "test": "vitest run --root ui",
     "test:watch": "vitest watch --root ui",
     "test:cov": "vitest run --root ui --coverage",
-    "watch": "mprocs \"pnpm dev\" \"cargo watch -x \\\"run -- start\\\"\"",
-    "watch:trace": "mprocs \"pnpm dev\" \"cargo watch -x \\\"run -- -ltrace start\\\"\"",
+    "watch": "mprocs \"bun run dev\" \"cargo watch -x \\\"run -- start\\\"\"",
+    "watch:trace": "mprocs \"bun run dev\" \"cargo watch -x \\\"run -- -ltrace start\\\"\"",
     "typeshare:generate": "typeshare ./ --lang typescript --output-file ./ui/src/types/bindings.ts && biome check --write ./ui/src/types/bindings.ts"
   },
   "dependencies": {
@@ -39,7 +39,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.13",
     "@total-typescript/ts-reset": "^0.5.1",
-    "@vitest/coverage-v8": "^2.0.3",
+    "@vitest/coverage-v8": "^2.0.4",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.39",
     "solid-devtools": "^0.30.1",
@@ -48,7 +48,7 @@
     "vite": "^5.3.4",
     "vite-plugin-solid": "^2.10.2",
     "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^2.0.3"
+    "vitest": "^2.0.4"
   },
   "engines": {
     "node": ">=18"

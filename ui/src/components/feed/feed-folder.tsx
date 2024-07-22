@@ -34,7 +34,7 @@ export const FeedFolder: ParentComponent<FeedFolderProps> = props => {
 
   return (
     <Collapsible open={open()} onOpenChange={handleNavigate} class="flex flex-col items-stretch gap-1">
-      <Collapsible.Trigger as="button" class={feedClasses.item({ active: isActive() })}>
+      <Collapsible.Trigger as="button" class={feedClasses.item({ active: isActive(), class: 'gap-1.5' })}>
         <Button class={feedClasses.folderTrigger({ active: isActive() })} onClick={handleClick}>
           <div class="flex size-7 items-center justify-center md:size-5">
             <HiOutlineChevronRight
