@@ -3,7 +3,6 @@ import formsPlugin from '@tailwindcss/forms';
 import typographyPlugin from '@tailwindcss/typography';
 import type { Config } from 'tailwindcss';
 import colors from 'tailwindcss/colors';
-import defaultTheme from 'tailwindcss/defaultTheme';
 import plugin from 'tailwindcss/plugin';
 import { screens } from './ui/src/constants/screens';
 
@@ -12,9 +11,6 @@ export default {
   theme: {
     extend: {
       screens,
-      fontFamily: {
-        serif: ['Lora', ...defaultTheme.fontFamily.serif],
-      },
       colors: {
         gray: colors.stone,
       },
