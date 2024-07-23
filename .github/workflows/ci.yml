@@ -6,7 +6,6 @@ on:
 env:
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: full
-  NODE_VERSION: 21.x
   DATABASE_URL: sqlite:blend.db
 
 jobs:
@@ -29,29 +28,8 @@ jobs:
         with:
           version: latest
 
-      - name: Install Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        id: pnpm-install
-        with:
-          version: 9
-          run_install: false
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - name: Configure pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ matrix.target }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: ${{ matrix.target }}-pnpm-store-
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Create empty dist directory
         run: mkdir $GITHUB_WORKSPACE/ui/dist
@@ -75,8 +53,8 @@ jobs:
       - run: sqlx migrate run --source crates/blend-db/migrations
       - run: cargo test --verbose --workspace
 
-      - run: pnpm install
-      - run: pnpm run ci
-      - run: pnpm run typeshare:generate
-      - run: pnpm run test:cov
-      - run: pnpm run build
+      - run: bun install
+      - run: bun run ci
+      - run: bun run typeshare:generate
+      - run: bun run test:cov
+      - run: bun run build
