@@ -34,16 +34,17 @@ export const FeedFolder: ParentComponent<FeedFolderProps> = props => {
 
   return (
     <Collapsible open={open()} onOpenChange={handleNavigate} class="flex flex-col items-stretch gap-1">
-      <Collapsible.Trigger as="button" class={feedClasses.item({ active: isActive(), class: 'gap-1.5' })}>
-        <Button class={feedClasses.folderTrigger({ active: isActive() })} onClick={handleClick}>
-          <div class="flex size-7 items-center justify-center md:size-5">
-            <HiOutlineChevronRight
-              class={cx(
-                'size-4 text-gray-500 transition-transform md:size-3 dark:text-gray-400',
-                open() && 'rotate-90',
-              )}
-            />
-          </div>
+      <Collapsible.Trigger as="button" class={feedClasses.item({ active: isActive() })}>
+        <Button
+          class={feedClasses.folderTrigger({
+            active: isActive(),
+            class: 'flex size-7 items-center justify-center md:size-5',
+          })}
+          onClick={handleClick}
+        >
+          <HiOutlineChevronRight
+            class={cx('size-4 text-gray-500 transition-transform md:size-3 dark:text-gray-400', open() && 'rotate-90')}
+          />
         </Button>
 
         <span class="text-base md:text-sm">{props.label}</span>
