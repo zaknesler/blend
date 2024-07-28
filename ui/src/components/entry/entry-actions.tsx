@@ -1,10 +1,10 @@
-import { cx } from 'class-variance-authority';
 import {
   HiOutlineArrowLeft,
   HiOutlineArrowRight,
   HiOutlineArrowTopRightOnSquare,
   HiOutlineBookmark,
   HiOutlineEnvelope,
+  HiOutlineEnvelopeOpen,
   HiSolidBookmark,
 } from 'solid-icons/hi';
 import type { Component } from 'solid-js';
@@ -42,15 +42,10 @@ export const EntryActions: Component<EntryActionsProps> = props => {
   };
 
   return (
-    <div
-      class={cx(
-        'z-10 flex items-center gap-2 bg-gray-50 p-2 shadow-top dark:bg-gray-950',
-        'md:fixed md:top-8 md:right-8 md:gap-1 md:rounded-xl md:border md:border-gray-400/25 md:bg-white/25 md:p-1 md:shadow-none md:backdrop-blur-md dark:shadow-top-xl md:dark:border-gray-500/25 md:dark:bg-black/10',
-      )}
-    >
+    <div class="z-10 flex w-full items-center gap-2 bg-gray-50 p-2 shadow-top md:shadow dark:bg-gray-900 dark:md:shadow-xl">
       <ActionButton
         onClick={handleToggleRead}
-        icon={HiOutlineEnvelope}
+        icon={props.entry.read_at ? HiOutlineEnvelope : HiOutlineEnvelopeOpen}
         tooltip={props.entry.read_at ? 'Mark as unread' : 'Mark as read'}
         showCircle={!props.entry.read_at}
         class="p-2"
@@ -63,7 +58,12 @@ export const EntryActions: Component<EntryActionsProps> = props => {
         class="p-2"
       />
 
-      <ActionButton href={props.entry.url} icon={HiOutlineArrowTopRightOnSquare} tooltip="Open entry URL" class="p-2" />
+      <ActionButton
+        href={props.entry.url}
+        icon={HiOutlineArrowTopRightOnSquare}
+        tooltip="Open entry URL"
+        class="p-2 md:ml-auto"
+      />
 
       <ActionButton
         onClick={handleNavigateBack}

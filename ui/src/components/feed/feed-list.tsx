@@ -49,7 +49,7 @@ export const FeedList = () => {
           </Match>
         </Switch>
 
-        <Switch>
+        {/* <Switch>
           <Match when={feeds.query.isError}>
             <p>Error: {feeds.query.error?.message}</p>
           </Match>
@@ -59,7 +59,7 @@ export const FeedList = () => {
               <For each={feeds.query.data}>{feed => <FeedItem feed={feed} />}</For>
             </Show>
           </Match>
-        </Switch>
+        </Switch> */}
       </div>
     </div>
   );

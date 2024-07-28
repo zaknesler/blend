@@ -22,7 +22,7 @@ const triggerInnerClass = cx(
   'group-focus:!border-gray-400 group-hover:border-gray-200/50 group-hover:bg-gray-200 group-focus:ring-[2px] group-focus:ring-gray-200',
   'dark:group-focus:!border-gray-600 dark:group-hover:!border-gray-700 dark:group-focus:ring-gray-800 dark:group-hover:bg-gray-700',
   'ui-group-selected:bg-white ui-group-selected:shadow',
-  'ui-group-selected:shadow ui-group-selected:dark:bg-gray-900',
+  'ui-group-selected:shadow ui-group-selected:dark:bg-gray-950',
 );
 
 export const NavViewTabs = () => {

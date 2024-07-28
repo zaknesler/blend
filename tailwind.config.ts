@@ -13,6 +13,10 @@ export default {
       screens,
       colors: {
         gray: colors.stone,
+        bg: {
+          light: 'rgb(242, 242, 242)',
+          dark: colors.stone[950],
+        },
       },
       width: {
         sidebar: '16rem',

@@ -3,7 +3,7 @@ import { Image } from '@kobalte/core/image';
 import { A, type AnchorProps, useLocation } from '@solidjs/router';
 import {
   HiOutlineArrowPath,
-  HiOutlineEnvelope,
+  HiOutlineEnvelopeOpen,
   HiOutlineFolder,
   HiOutlinePencilSquare,
   HiOutlineRss,
@@ -69,7 +69,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
         iconClass={isRefreshing() && 'animate-spin'}
         disabled={isRefreshing()}
       />
-      <ContextMenu.Item label="Mark feed as read" disabled icon={HiOutlineEnvelope} />
+      <ContextMenu.Item label="Mark feed as read" disabled icon={HiOutlineEnvelopeOpen} />
       <ContextMenu.Separator />
       <ContextMenu.Item label="Move" disabled icon={HiOutlineFolder} />
       <ContextMenu.Item label="Rename" disabled icon={HiOutlinePencilSquare} />
@@ -109,7 +109,7 @@ export const AllFeedsItem = () => {
         iconClass={!!notifications.feedsRefreshing().length && 'animate-spin'}
         disabled={!!notifications.feedsRefreshing().length}
       />
-      <ContextMenu.Item label="Mark all as read" disabled icon={HiOutlineEnvelope} />
+      <ContextMenu.Item label="Mark all as read" disabled icon={HiOutlineEnvelopeOpen} />
     </ContextMenu>
   );
 };

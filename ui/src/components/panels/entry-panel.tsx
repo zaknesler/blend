@@ -40,15 +40,14 @@ export const EntryPanel = () => {
         </Match>
 
         <Match when={entry.isSuccess}>
-          <Panel id={IDS.ARTICLE} class="relative p-4 lg:p-8">
+          <Panel id={IDS.ARTICLE} class="relative flex flex-col-reverse md:flex-col" overflow={false}>
             <Show when={entry.data} fallback="No data.">
-              <EntryView entry={entry.data!} class="max-w-4xl" />
+              <EntryActions entry={entry.data!} />
+              <div class="overflow-touch-scrolling flex-1 overflow-auto">
+                <EntryView entry={entry.data!} class="max-w-4xl flex-1 p-4 lg:p-8" />
+              </div>
             </Show>
           </Panel>
-
-          <Show when={entry.data}>
-            <EntryActions entry={entry.data!} />
-          </Show>
         </Match>
       </Switch>
     </Show>

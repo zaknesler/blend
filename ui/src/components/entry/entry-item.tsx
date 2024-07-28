@@ -1,7 +1,13 @@
 import type { ContextMenuTriggerProps } from '@kobalte/core/context-menu';
 import { A, type AnchorProps, useMatch } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
-import { HiOutlineArrowTopRightOnSquare, HiOutlineBookmark, HiOutlineEnvelope, HiSolidBookmark } from 'solid-icons/hi';
+import {
+  HiOutlineArrowTopRightOnSquare,
+  HiOutlineBookmark,
+  HiOutlineEnvelope,
+  HiOutlineEnvelopeOpen,
+  HiSolidBookmark,
+} from 'solid-icons/hi';
 import { type Component, Show, splitProps } from 'solid-js';
 import { IDS } from '~/constants/elements';
 import { useQueryState } from '~/contexts/query-state-context';
@@ -92,7 +98,11 @@ export const EntryItem: Component<EntryItemProps> = props => {
         />
       )}
     >
-      <ContextMenu.Item label={isRead() ? 'Mark as unread' : 'Mark as read'} disabled icon={HiOutlineEnvelope} />
+      <ContextMenu.Item
+        label={isRead() ? 'Mark as unread' : 'Mark as read'}
+        disabled
+        icon={isRead() ? HiOutlineEnvelope : HiOutlineEnvelopeOpen}
+      />
       <ContextMenu.Item
         label={isSaved() ? 'Unsave' : 'Save'}
         disabled
