@@ -69,6 +69,7 @@ jobs:
       - run: cargo binstall --no-confirm --force typeshare-cli
 
       - run: cargo binstall --no-confirm --force sqlx-cli
+      - run: touch blend.db
       - run: sqlx db create
       - run: sqlx migrate run --source crates/blend-db/migrations
 
