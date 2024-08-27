@@ -1,7 +1,7 @@
 import { createElementBounds } from '@solid-primitives/bounds';
 import { useBeforeLeave } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
-import { HiOutlineArrowPath, HiOutlineEnvelopeOpen } from 'solid-icons/hi';
+import { HiOutlineArrowPath, HiOutlineCheck } from 'solid-icons/hi';
 import { Match, Show, Switch, createEffect, createSignal } from 'solid-js';
 import { Portal } from 'solid-js/web';
 import { EntryList } from '~/components/entry/entry-list';
@@ -108,7 +108,7 @@ export const ListPanel = () => {
 
                     <IconButton
                       disabled
-                      icon={HiOutlineEnvelopeOpen}
+                      icon={HiOutlineCheck}
                       tooltip="Mark all as read"
                       class="z-10 size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
                       iconClass="size-5 md:size-4"
@@ -131,7 +131,7 @@ export const ListPanel = () => {
 
                     <IconButton
                       disabled
-                      icon={HiOutlineEnvelopeOpen}
+                      icon={HiOutlineCheck}
                       tooltip="Mark all as read"
                       class="z-10 size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
                       iconClass="size-5 md:size-4"
