@@ -1,5 +1,5 @@
 import { createQuery } from '@tanstack/solid-query';
-import { HiOutlineEnvelopeOpen } from 'solid-icons/hi';
+import { HiOutlineCheck } from 'solid-icons/hi';
 import { type Component, Match, Switch, createSignal } from 'solid-js';
 import { getFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
@@ -37,7 +37,7 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
 
           <IconButton
             disabled
-            icon={HiOutlineEnvelopeOpen}
+            icon={HiOutlineCheck}
             tooltip="Mark feed as read"
             class="size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
             iconClass="size-5 md:size-4"
