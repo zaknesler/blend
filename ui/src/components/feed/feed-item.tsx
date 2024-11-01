@@ -16,6 +16,7 @@ import { Transition } from 'solid-transition-group';
 import * as feedClasses from '~/constants/ui/feed';
 import { useNotifications } from '~/contexts/notification-context';
 import { useQueryState } from '~/contexts/query-state-context';
+import { useFeedRead } from '~/hooks/queries/use-feed-read';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
 import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
 import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
@@ -33,6 +34,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
 
   const stats = useFeedsStats();
   const refreshFeed = useRefreshFeed();
+  const markFeedAsRead = useFeedRead();
   const notifications = useNotifications();
 
   const getPath = createMemo(() => `/feeds/${props.feed.uuid}`);
@@ -62,11 +64,15 @@ export const FeedItem: Component<FeedItemProps> = props => {
         />
       )}
     >
-      <ContextMenu.Item label="Mark feed as read" disabled icon={HiOutlineCheck} />
+      <ContextMenu.Item
+        label="Mark feed as read"
+        icon={HiOutlineCheck}
+        onClick={() => markFeedAsRead(props.feed.uuid)}
+      />
       <ContextMenu.Item
         label="Refresh feed"
-        onClick={() => refreshFeed(props.feed.uuid)}
         icon={HiOutlineArrowPath}
+        onClick={() => refreshFeed(props.feed.uuid)}
         iconClass={isRefreshing() && 'animate-spin'}
         disabled={isRefreshing()}
       />

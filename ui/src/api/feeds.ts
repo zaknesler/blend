@@ -33,3 +33,8 @@ export const refreshFeed = async (uuid: string) =>
   wretch(apiUrl(`/feeds/${uuid}/refresh`))
     .post()
     .json<ApiSuccessResponse>();
+
+export const updateFeedAsRead = async (uuid: string) =>
+  wretch(apiUrl(`/feeds/${uuid}/read`))
+    .post()
+    .json<ApiSuccessResponse>();

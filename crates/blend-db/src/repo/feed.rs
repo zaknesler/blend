@@ -99,4 +99,15 @@ impl FeedRepo {
 
         Ok(rows_affected > 0)
     }
+
+    pub async fn update_feed_as_read(&self, feed_uuid: &uuid::Uuid) -> DbResult<bool> {
+        let rows_affected = sqlx::query("UPDATE entries SET read_at = ?1 WHERE feed_uuid = ?2")
+            .bind(Utc::now())
+            .bind(feed_uuid)
+            .execute(&self.db)
+            .await?
+            .rows_affected();
+
+        Ok(rows_affected > 0)
+    }
 }

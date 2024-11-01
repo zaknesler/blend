@@ -14,6 +14,7 @@ use uuid::Uuid;
 pub fn router(ctx: crate::Context) -> Router {
     Router::new()
         .route("/", get(index))
+        .route("/read", post(update_all_read))
         .route("/:entry_uuid", get(view))
         .route("/:entry_uuid/read", post(update_read))
         .route("/:entry_uuid/unread", post(update_unread))
@@ -47,6 +48,12 @@ async fn view(
         .ok_or_else(|| WebError::NotFoundError)?;
 
     Ok(Json(json!({ "data": entry })))
+}
+
+async fn update_all_read(State(ctx): State<crate::Context>) -> WebResult<impl IntoResponse> {
+    let success = repo::entry::EntryRepo::new(ctx.db).update_all_entries_as_read().await?;
+
+    Ok(Json(json!({ "success": success })))
 }
 
 async fn update_read(

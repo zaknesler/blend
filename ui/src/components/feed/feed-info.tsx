@@ -3,6 +3,7 @@ import { HiOutlineCheck } from 'solid-icons/hi';
 import { type Component, Match, Switch, createSignal } from 'solid-js';
 import { getFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
+import { useFeedRead } from '~/hooks/queries/use-feed-read';
 import { FeedMenu } from '../menus/menu-feed';
 import { IconButton } from '../ui/button/icon-button';
 import { FeedHeader } from './feed-header';
@@ -12,6 +13,7 @@ type FeedInfoProps = {
 };
 
 export const FeedInfo: Component<FeedInfoProps> = props => {
+  const markFeedAsRead = useFeedRead();
   const feed = createQuery(() => ({
     queryKey: [QUERY_KEYS.FEEDS_VIEW, props.uuid],
     queryFn: () => getFeed(props.uuid),
@@ -33,14 +35,14 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
 
       <Match when={feed.isSuccess}>
         <div class="flex w-full items-start gap-2">
-          <FeedHeader title={feed.data?.title_display || feed.data?.title} />
+          <FeedHeader title={feed.data!.title_display || feed.data!.title} />
 
           <IconButton
-            disabled
             icon={HiOutlineCheck}
             tooltip="Mark feed as read"
             class="size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
             iconClass="size-5 md:size-4"
+            onClick={() => markFeedAsRead(feed.data!.uuid)}
           />
 
           <FeedMenu

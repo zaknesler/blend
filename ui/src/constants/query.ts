@@ -5,10 +5,12 @@ export const QUERY_KEYS = {
   FEEDS_CREATE: 'feeds.create',
   FEEDS_VIEW: 'feeds.view',
   FEEDS_VIEW_REFRESH: 'feeds.view.refresh',
+  FEEDS_VIEW_READ: 'feeds.view.read',
   FEEDS_STATS: 'feeds.stats',
 
   // Entries
   ENTRIES_INDEX: 'entries.index',
+  ENTRIES_INDEX_READ: 'entries.index.read',
   ENTRIES_VIEW: 'entries.view',
   ENTRIES_VIEW_READ: 'entries.view.read',
   ENTRIES_VIEW_UNREAD: 'entries.view.unread',

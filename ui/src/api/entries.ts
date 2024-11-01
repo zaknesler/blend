@@ -18,6 +18,8 @@ export const getEntry = async (entry_uuid: string, signal: AbortSignal) =>
     .json<ApiResponse<Entry>>()
     .then(res => res.data);
 
+export const updateAllEntriesAsRead = async () => wretch(apiUrl('/entries/read')).post().json<ApiSuccessResponse>();
+
 export const updateEntryAsRead = async (entry_uuid: string) =>
   wretch(apiUrl(`/entries/${entry_uuid}/read`))
     .post()

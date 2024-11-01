@@ -167,6 +167,16 @@ impl EntryRepo {
             .map_err(|err| err.into())
     }
 
+    pub async fn update_all_entries_as_read(&self) -> DbResult<bool> {
+        let rows_affected = sqlx::query("UPDATE entries SET read_at = ?1 WHERE read_at IS NULL")
+            .bind(Utc::now())
+            .execute(&self.db)
+            .await?
+            .rows_affected();
+
+        Ok(rows_affected > 0)
+    }
+
     pub async fn update_entry_as_read(&self, entry_uuid: &uuid::Uuid) -> DbResult<bool> {
         let rows_affected = sqlx::query("UPDATE entries SET read_at = ?1 WHERE uuid = ?2")
             .bind(Utc::now())

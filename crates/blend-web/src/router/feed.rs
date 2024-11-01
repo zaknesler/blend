@@ -6,7 +6,7 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
-use blend_db::repo;
+use blend_db::repo::{self, feed::FeedRepo};
 use serde::Deserialize;
 use serde_json::json;
 use typeshare::typeshare;
@@ -20,13 +20,14 @@ pub fn router(ctx: crate::Context) -> Router {
         .route("/refresh", post(refresh_feeds))
         .route("/stats", get(stats))
         .route("/:uuid", get(view))
+        .route("/:uuid/read", post(update_read))
         .route("/:uuid/refresh", post(refresh_feed))
         .route_layer(from_fn_with_state(ctx.clone(), crate::middleware::auth))
         .with_state(ctx)
 }
 
 async fn index(State(ctx): State<crate::Context>) -> WebResult<impl IntoResponse> {
-    let feeds = repo::feed::FeedRepo::new(ctx.db).get_feeds().await?;
+    let feeds = FeedRepo::new(ctx.db).get_feeds().await?;
     Ok(Json(json!({ "data": feeds })))
 }
 
@@ -44,7 +45,7 @@ async fn create(
     data.validate()?;
 
     let parsed = blend_feed::parse_feed(&data.url).await?;
-    let feed = repo::feed::FeedRepo::new(ctx.db)
+    let feed = FeedRepo::new(ctx.db)
         .create_feed(repo::feed::CreateFeedParams {
             id: parsed.id,
             title: parsed.title.unwrap_or_else(|| data.url.clone()),
@@ -64,7 +65,7 @@ async fn create(
 }
 
 async fn stats(State(ctx): State<crate::Context>) -> WebResult<impl IntoResponse> {
-    let stats = repo::feed::FeedRepo::new(ctx.db).get_stats().await?;
+    let stats = FeedRepo::new(ctx.db).get_stats().await?;
 
     Ok(Json(json!({ "data": stats })))
 }
@@ -78,7 +79,7 @@ async fn view(
     State(ctx): State<crate::Context>,
     Path(params): Path<ViewFeedParams>,
 ) -> WebResult<impl IntoResponse> {
-    let feed = repo::feed::FeedRepo::new(ctx.db)
+    let feed = FeedRepo::new(ctx.db)
         .get_feed(params.uuid)
         .await?
         .ok_or_else(|| WebError::NotFoundError)?;
@@ -86,11 +87,20 @@ async fn view(
     Ok(Json(json!({ "data": feed })))
 }
 
+async fn update_read(
+    State(ctx): State<crate::Context>,
+    Path(params): Path<ViewFeedParams>,
+) -> WebResult<impl IntoResponse> {
+    let success = FeedRepo::new(ctx.db).update_feed_as_read(&params.uuid).await?;
+
+    Ok(Json(json!({ "success": success })))
+}
+
 async fn refresh_feed(
     State(ctx): State<crate::Context>,
     Path(params): Path<ViewFeedParams>,
 ) -> WebResult<impl IntoResponse> {
-    let feed = repo::feed::FeedRepo::new(ctx.db)
+    let feed = FeedRepo::new(ctx.db)
         .get_feed(params.uuid)
         .await?
         .ok_or_else(|| WebError::NotFoundError)?;
@@ -108,7 +118,7 @@ async fn refresh_feed(
 }
 
 async fn refresh_feeds(State(ctx): State<crate::Context>) -> WebResult<impl IntoResponse> {
-    let feeds = repo::feed::FeedRepo::new(ctx.db).get_feeds().await?;
+    let feeds = FeedRepo::new(ctx.db).get_feeds().await?;
 
     let notifier = ctx.notif_tx.lock().await;
     let dispatcher = ctx.job_tx.lock().await;
