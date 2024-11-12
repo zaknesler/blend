@@ -27,7 +27,7 @@ sqlx = { workspace = true, features = ["chrono"] }
 thiserror = { workspace = true }
 tokio = { workspace = true }
 tower-cookies = "0.10"
-tower-http = { version = "0.5", features = [
+tower-http = { version = "0.6", features = [
   "trace",
   "cors",
   "fs",
