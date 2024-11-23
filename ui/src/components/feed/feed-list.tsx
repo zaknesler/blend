@@ -1,15 +1,14 @@
 import { Button } from '@kobalte/core/button';
 import { HiSolidPlusSmall } from 'solid-icons/hi';
 import { For, Match, Show, Switch } from 'solid-js';
-import { useFeeds } from '~/hooks/queries/use-feeds';
-import { useFolders } from '~/hooks/queries/use-folders';
+import { useGroupedFeeds } from '~/hooks/queries/use-grouped-feeds';
 import { setModalStore } from '~/stores/modal';
+import { FeedEmptyItem } from './feed-empty-item';
 import { FeedFolder } from './feed-folder';
 import { AllFeedsItem, FeedItem } from './feed-item';
 
 export const FeedList = () => {
-  const feeds = useFeeds();
-  const folders = useFolders();
+  const { feeds, folders, getFoldersWithFeeds, getUngroupedFeeds } = useGroupedFeeds();
 
   const handleOpenNewFolder = () => {
     setModalStore('createFolder', true);
@@ -38,10 +37,12 @@ export const FeedList = () => {
 
           <Match when={folders.query.isSuccess}>
             <Show when={folders.query.data?.length}>
-              <For each={folders.query.data}>
-                {folder => (
+              <For each={getFoldersWithFeeds()}>
+                {({ folder, feeds }) => (
                   <FeedFolder slug={folder.slug} label={folder.label}>
-                    <For each={feeds.query.data}>{feed => <FeedItem feed={feed} />}</For>
+                    <Show when={feeds.length} fallback={<FeedEmptyItem />}>
+                      <For each={feeds}>{feed => <FeedItem feed={feed} />}</For>
+                    </Show>
                   </FeedFolder>
                 )}
               </For>
@@ -49,17 +50,17 @@ export const FeedList = () => {
           </Match>
         </Switch>
 
-        {/* <Switch>
+        <Switch>
           <Match when={feeds.query.isError}>
             <p>Error: {feeds.query.error?.message}</p>
           </Match>
 
           <Match when={feeds.query.isSuccess}>
-            <Show when={feeds.query.data?.length} fallback={<div>No feeds.</div>}>
-              <For each={feeds.query.data}>{feed => <FeedItem feed={feed} />}</For>
+            <Show when={feeds.query.data?.length} fallback={<FeedEmptyItem />}>
+              <For each={getUngroupedFeeds()}>{feed => <FeedItem feed={feed} />}</For>
             </Show>
           </Match>
-        </Switch> */}
+        </Switch>
       </div>
     </div>
   );
