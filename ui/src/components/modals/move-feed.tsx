@@ -15,23 +15,15 @@ import { Modal } from './modal';
 export const MoveFeedModal = () => {
   const navigate = useNavigate();
 
+  const feeds = useFeeds();
   const folders = useFolders();
 
-  const feeds = useFeeds();
-
-  const getFeed = () => {
-    const uuid = getModalData('moveFeed')?.feed_uuid;
-    if (!uuid) return null;
-
-    return feeds.findFeed(uuid as string);
-  };
+  const getFeed = () => feeds.findFeed(getModalData('moveFeed').feed_uuid);
 
   const update = createMutation(() => ({
     mutationKey: [QUERY_KEYS.FEEDS_FOLDERS_UPDATE],
     mutationFn: updateFeedFolders,
   }));
-
-  const [folderUuids, setFolderUuids] = createSignal<string[]>([]);
 
   const isDisabled = () => update.isPending || !open;
 
@@ -39,8 +31,10 @@ export const MoveFeedModal = () => {
     event.preventDefault();
     event.stopPropagation();
 
-    // update.mutateAsync({ uuid: props.feed_uuid, folder_uuids: folderUuids() });
+    // update.mutateAsync({ uuid: getModalData('moveFeed').feed_uuid, folder_uuids: folderUuids() });
   };
+
+  const [folderUuids, setFolderUuids] = createSignal<string[]>([]);
 
   // Reset form state on close
   createEffect(() => {
