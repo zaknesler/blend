@@ -1,3 +1,5 @@
+import { type FilterEntriesParams, SortDirection, View } from '~/types/bindings';
+
 export const QUERY_KEYS = {
   // Feeds
   FEEDS: 'feeds.index',
@@ -22,3 +24,16 @@ export const QUERY_KEYS = {
   FOLDERS: 'folders.index',
   FOLDERS_CREATE: 'folders.create',
 } as const;
+
+export type RouterParams = {
+  entry_uuid?: string;
+  feed_uuid?: string;
+  folder_slug?: string;
+};
+
+export type QueryParams = Partial<Pick<FilterEntriesParams, 'view' | 'sort'>>;
+
+export const DEFAULTS: Required<QueryParams> = {
+  view: View.Unread,
+  sort: SortDirection.Newest,
+};

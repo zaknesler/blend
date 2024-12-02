@@ -2,8 +2,9 @@ import { Tabs } from '@kobalte/core/tabs';
 import { useNavigate } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { For } from 'solid-js';
+import { DEFAULTS } from '~/constants/query';
 import { VIEWS, VIEW_LABELS } from '~/constants/views';
-import { DEFAULTS, useQueryState } from '~/contexts/query-state-context';
+import { useQueryState } from '~/contexts/query-state-context';
 import type { View } from '~/types/bindings';
 import { formatQueryString } from '~/utils/query';
 

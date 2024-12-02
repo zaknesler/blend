@@ -1,5 +1,5 @@
 import { IDS } from '~/constants/elements';
-import { DEFAULTS } from '~/contexts/query-state-context';
+import { DEFAULTS } from '~/constants/query';
 import { type Entry, SortDirection, View } from '~/types/bindings';
 
 /**
