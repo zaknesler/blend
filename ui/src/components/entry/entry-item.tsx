@@ -52,12 +52,12 @@ export const EntryItem: Component<EntryItemProps> = props => {
               href={state.getEntryUrl(local.entry.uuid)}
               class={cx(
                 '-mx-2 flex select-none flex-col gap-1 rounded-lg px-2 py-1.5 ring-gray-300 transition dark:ring-gray-700',
-                'focus:outline-none focus:ring',
+                'focus-visible:outline-none focus-visible:ring',
                 isActive()
                   ? 'bg-gray-600 text-white dark:bg-gray-950'
                   : [
                       'text-gray-950 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-950',
-                      'focus:bg-gray-100 focus:dark:bg-gray-950',
+                      'focus-visible:bg-gray-100 focus-visible:dark:bg-gray-950',
                       state.getView() === 'unread' && isRead() && 'opacity-50',
                     ],
                 local.class,

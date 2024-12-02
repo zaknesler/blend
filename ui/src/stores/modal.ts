@@ -21,7 +21,7 @@ export const [modalStore, setModalStore] = createStore<{
   moveFeed: { open: false },
 });
 
-export const openModal = <M extends ModalName>(modal: M, data: ModalData[M]) => {
+export const openModal = <M extends ModalName>(modal: M, data?: ModalData[M]) => {
   // @ts-ignore weird type thing I can't fix
   setModalStore(modal, { open: true, data });
 };

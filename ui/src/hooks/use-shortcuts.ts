@@ -41,7 +41,7 @@ export const useShortcuts = () => {
     event.stopPropagation();
 
     // Ignore all shortcuts if a modal is open
-    if (Object.values(modalStore).some(Boolean)) return;
+    if (Object.values(modalStore).some(modal => modal.open)) return;
 
     callback(event);
   };

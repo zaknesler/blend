@@ -27,7 +27,7 @@ export const Modal: ParentComponent<ModalProps> = props => {
             class="relative z-50 w-full animate-content-hide ui-expanded:animate-content-show overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-all sm:max-w-sm dark:border-gray-800 dark:bg-gray-950 dark:shadow-xl"
             onOpenAutoFocus={local.onOpenAutoFocus}
           >
-            <Dialog.CloseButton class="absolute top-2 right-2 rounded-lg p-1 text-gray-500 ring-gray-400 transition hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:ring-2 dark:text-gray-400 dark:ring-gray-600 dark:focus:bg-gray-700 dark:hover:bg-gray-700">
+            <Dialog.CloseButton class="absolute top-2 right-2 rounded-lg p-1 text-gray-500 ring-gray-400 transition hover:bg-gray-200 focus-visible:bg-gray-200 focus-visible:outline-none focus-visible:ring-2 dark:text-gray-400 dark:ring-gray-600 dark:focus-visible:bg-gray-700 dark:hover:bg-gray-700">
               <HiOutlineXMark class="size-5" />
             </Dialog.CloseButton>
 
