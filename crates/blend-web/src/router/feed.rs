@@ -6,7 +6,7 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
-use blend_db::repo::{self, feed::FeedRepo};
+use blend_db::repo::{self, feed::FeedRepo, folder::FolderRepo};
 use serde::Deserialize;
 use serde_json::json;
 use typeshare::typeshare;
@@ -22,6 +22,7 @@ pub fn router(ctx: crate::Context) -> Router {
         .route("/:uuid", get(view))
         .route("/:uuid/read", post(update_read))
         .route("/:uuid/refresh", post(refresh_feed))
+        .route("/:uuid/folder", post(update_feed_folders))
         .route_layer(from_fn_with_state(ctx.clone(), crate::middleware::auth))
         .with_state(ctx)
 }
@@ -129,6 +130,24 @@ async fn refresh_feeds(State(ctx): State<crate::Context>) -> WebResult<impl Into
         })?;
         dispatcher.send(blend_worker::Job::FetchEntries(feed.clone())).await?;
     }
+
+    Ok(Json(json!({ "success": true })))
+}
+
+#[typeshare]
+#[derive(Debug, Deserialize, Validate)]
+struct UpdateFeedFoldersParams {
+    uuid: Uuid,
+    folder_uuids: Vec<Uuid>,
+}
+
+async fn update_feed_folders(
+    State(ctx): State<crate::Context>,
+    Json(data): Json<UpdateFeedFoldersParams>,
+) -> WebResult<impl IntoResponse> {
+    let repo = FolderRepo::new(ctx.db);
+
+    //
 
     Ok(Json(json!({ "success": true })))
 }

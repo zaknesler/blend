@@ -20,6 +20,7 @@ import { useFeedRead } from '~/hooks/queries/use-feed-read';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
 import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
 import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
+import { openModal } from '~/stores/modal';
 import type { Feed } from '~/types/bindings';
 import { ContextMenu } from '../menus/context-menu';
 import { Spinner } from '../ui/spinner';
@@ -77,7 +78,12 @@ export const FeedItem: Component<FeedItemProps> = props => {
         disabled={isRefreshing()}
       />
       <ContextMenu.Separator />
-      <ContextMenu.Item label="Move" disabled icon={HiOutlineFolder} />
+      <ContextMenu.Item
+        label="Move"
+        disabled={isRefreshing()}
+        onClick={() => openModal('moveFeed', { feed_uuid: props.feed.uuid })}
+        icon={HiOutlineFolder}
+      />
       <ContextMenu.Item label="Rename" disabled icon={HiOutlinePencilSquare} />
       <ContextMenu.Item label="Delete" disabled icon={HiOutlineTrash} />
     </ContextMenu>

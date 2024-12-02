@@ -15,7 +15,7 @@ export default {
         gray: colors.stone,
         bg: {
           light: 'rgb(238, 238, 238)',
-          dark: colors.stone[950],
+          dark: 'rgb(18, 15, 14)',
         },
       },
       width: {

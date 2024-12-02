@@ -4,7 +4,7 @@ import { Show, createEffect, createSignal } from 'solid-js';
 import { getErrorMessage } from '~/api';
 import { createFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
-import { modalOpen, setModalStore } from '~/stores/modal';
+import { closeModal, isModalOpen } from '~/stores/modal';
 import { Button } from '../ui/button';
 import { TextInput } from '../ui/input';
 import { Spinner } from '../ui/spinner';
@@ -35,7 +35,7 @@ export const CreateFeedModal = () => {
 
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS] });
     navigate(`/feeds/${feed.uuid}`);
-    setModalStore('createFeed', false);
+    closeModal('createFeed');
   };
 
   const handleOpenAutoFocus = (event: Event) => {
@@ -45,7 +45,7 @@ export const CreateFeedModal = () => {
 
   // Reset form state on close
   createEffect(() => {
-    if (modalOpen('createFeed')) return;
+    if (isModalOpen('createFeed')) return;
 
     // Delay 150ms to let animation play out
     setTimeout(() => {

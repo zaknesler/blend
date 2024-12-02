@@ -2,7 +2,7 @@ import { Button } from '@kobalte/core/button';
 import { HiSolidPlusSmall } from 'solid-icons/hi';
 import { For, Match, Show, Switch } from 'solid-js';
 import { useGroupedFeeds } from '~/hooks/queries/use-grouped-feeds';
-import { setModalStore } from '~/stores/modal';
+import { openModal } from '~/stores/modal';
 import { FeedEmptyItem } from './feed-empty-item';
 import { FeedFolder } from './feed-folder';
 import { AllFeedsItem, FeedItem } from './feed-item';
@@ -11,7 +11,7 @@ export const FeedList = () => {
   const { feeds, folders, getFoldersWithFeeds, getUngroupedFeeds } = useGroupedFeeds();
 
   const handleOpenNewFolder = () => {
-    setModalStore('createFolder', true);
+    openModal('createFolder');
   };
 
   return (

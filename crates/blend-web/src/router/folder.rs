@@ -51,7 +51,6 @@ async fn create(
 #[typeshare]
 #[derive(Debug, Deserialize)]
 struct UpdateFolderParams {
-    #[typeshare(skip)]
     slug: String,
     feed_uuids: Vec<uuid::Uuid>,
 }

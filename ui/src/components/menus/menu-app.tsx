@@ -11,7 +11,7 @@ import { TiCog } from 'solid-icons/ti';
 import { type Component, mergeProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { SHORTCUTS } from '~/hooks/use-shortcuts';
-import { setModalStore } from '~/stores/modal';
+import { openModal } from '~/stores/modal';
 import { LogoSquare } from '../ui/logo';
 import { Menu, type MenuProps } from './menu';
 
@@ -48,7 +48,7 @@ export const AppMenu: Component<MenuProps> = props => {
           label="Add feed"
           kbd={SHORTCUTS.OPEN_ADD_FEED_MODAL}
           icon={HiOutlineSquaresPlus}
-          onSelect={() => setModalStore('createFeed', true)}
+          onSelect={() => openModal('createFeed')}
         />
         <Menu.Item label="Import/export" icon={HiOutlineArrowDownTray} disabled />
         <Menu.Item label="Settings" icon={HiOutlineCog6Tooth} disabled />

@@ -7,6 +7,7 @@ export const QUERY_KEYS = {
   FEEDS_VIEW_REFRESH: 'feeds.view.refresh',
   FEEDS_VIEW_READ: 'feeds.view.read',
   FEEDS_STATS: 'feeds.stats',
+  FEEDS_FOLDERS_UPDATE: 'feeds.folders.update',
 
   // Entries
   ENTRIES_INDEX: 'entries.index',

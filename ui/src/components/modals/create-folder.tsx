@@ -5,7 +5,7 @@ import { getErrorMessage } from '~/api';
 import { createFolder } from '~/api/folders';
 import { QUERY_KEYS } from '~/constants/query';
 import { useInvalidateFolders } from '~/hooks/queries/use-invalidate-folders';
-import { modalOpen, setModalStore } from '~/stores/modal';
+import { closeModal, isModalOpen } from '~/stores/modal';
 import { Button } from '../ui/button';
 import { TextInput } from '../ui/input';
 import { Spinner } from '../ui/spinner';
@@ -45,7 +45,7 @@ export const CreateFolderModal = () => {
 
     invalidateFolders();
     navigate(`/folder/${folder.slug}`);
-    setModalStore('createFolder', false);
+    closeModal('createFolder');
   };
 
   const handleOpenAutoFocus = (event: Event) => {
@@ -55,7 +55,7 @@ export const CreateFolderModal = () => {
 
   // Reset form state on close
   createEffect(() => {
-    if (modalOpen('createFolder')) return;
+    if (isModalOpen('createFolder')) return;
 
     // Delay 150ms to let animation play out
     setTimeout(() => {
