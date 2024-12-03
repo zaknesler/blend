@@ -34,10 +34,7 @@ export const FeedMenu: Component<FeedMenuProps> = props => {
 
       <Menu.Item
         label="Move"
-        onSelect={() => {
-          console.log('clicky');
-          openModal('moveFeed', { feed_uuid: props.uuid });
-        }}
+        onSelect={() => openModal('moveFeed', { feed_uuid: props.uuid })}
         icon={HiOutlineFolder}
         disabled={isRefreshing()}
       />
