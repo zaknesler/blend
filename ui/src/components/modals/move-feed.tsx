@@ -1,6 +1,8 @@
 import { ToggleGroup } from '@kobalte/core/toggle-group';
 import { useNavigate } from '@solidjs/router';
 import { createMutation } from '@tanstack/solid-query';
+import { cx } from 'class-variance-authority';
+import { HiOutlineCheckCircle, HiSolidCheckCircle } from 'solid-icons/hi';
 import { For, Show, createEffect, createSignal } from 'solid-js';
 import { getErrorMessage } from '~/api';
 import { updateFeedFolders } from '~/api/feeds';
@@ -31,7 +33,7 @@ export const MoveFeedModal = () => {
     event.preventDefault();
     event.stopPropagation();
 
-    // update.mutateAsync({ uuid: getModalData('moveFeed').feed_uuid, folder_uuids: folderUuids() });
+    update.mutateAsync({ uuid: getModalData('moveFeed').feed_uuid, folder_uuids: folderUuids() });
   };
 
   const [folderUuids, setFolderUuids] = createSignal<string[]>([]);
@@ -48,18 +50,47 @@ export const MoveFeedModal = () => {
   });
 
   return (
-    <Modal modal="moveFeed" title="Move feed" description="Folders are top-level groups for your feeds.">
+    <Modal
+      modal="moveFeed"
+      title={`Move "${getFeed()?.title}"`}
+      description="Keep your feeds organized using folders. You may include a feed in multiple folders."
+    >
       <div class="flex flex-col items-stretch gap-4 p-4">
         <form onSubmit={handleSubmit} class="flex flex-col gap-4">
-          <ToggleGroup multiple value={folderUuids()} onChange={setFolderUuids}>
+          <ToggleGroup
+            multiple
+            value={folderUuids()}
+            onChange={setFolderUuids}
+            orientation="vertical"
+            class="flex flex-col gap-2"
+          >
             <For each={folders.query.data}>
-              {folder => <ToggleGroup.Item value={folder.uuid}>{folder.label}</ToggleGroup.Item>}
+              {folder => (
+                <ToggleGroup.Item
+                  value={folder.uuid}
+                  class={cx(
+                    'group flex items-center justify-between gap-2 rounded-lg border border-gray-200 px-3 py-2 outline-2 outline-offset-2 focus-visible:outline',
+                    'ui-pressed:border-gray-400 bg-gray-50',
+                    'dark:border-gray-700 dark:ui-pressed:border-gray-600 dark:bg-gray-800 dark:text-gray-200',
+                    folderUuids().length && 'ui-not-pressed:opacity-50',
+                  )}
+                >
+                  <span>{folder.label}</span>
+                  <HiSolidCheckCircle class="size-6 text-gray-500 opacity-0 ui-group-pressed:opacity-100 dark:text-gray-400" />
+                </ToggleGroup.Item>
+              )}
             </For>
           </ToggleGroup>
 
           <div class="flex items-center justify-between gap-4">
             <Button size="sm" class="self-start" onClick={handleSubmit} disabled={isDisabled()}>
-              Move "{getFeed()?.title}"
+              Move{' '}
+              <Show when={folderUuids().length !== 0}>
+                to{' '}
+                {folderUuids().length === 1
+                  ? folders.findByUuid(folderUuids()[0])?.label
+                  : `${folderUuids().length} folders`}
+              </Show>
             </Button>
 
             <Show when={isDisabled()}>

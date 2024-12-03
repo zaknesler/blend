@@ -10,10 +10,12 @@ export const useFolders = () => {
     refetchOnMount: false,
   }));
 
-  const findFolder = (slug: string) => query.data?.find(folder => folder.slug === slug);
+  const findBySlug = (slug?: string) => query.data?.find(folder => folder.slug === slug);
+  const findByUuid = (uuid?: string) => query.data?.find(folder => folder.uuid === uuid);
 
   return {
     query,
-    findFolder,
+    findBySlug,
+    findByUuid,
   };
 };
