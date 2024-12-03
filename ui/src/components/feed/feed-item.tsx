@@ -68,12 +68,12 @@ export const FeedItem: Component<FeedItemProps> = props => {
       <ContextMenu.Item
         label="Mark feed as read"
         icon={HiOutlineCheck}
-        onClick={() => markFeedAsRead(props.feed.uuid)}
+        onSelect={() => markFeedAsRead(props.feed.uuid)}
       />
       <ContextMenu.Item
         label="Refresh feed"
         icon={HiOutlineArrowPath}
-        onClick={() => refreshFeed(props.feed.uuid)}
+        onSelect={() => refreshFeed(props.feed.uuid)}
         iconClass={isRefreshing() && 'animate-spin'}
         disabled={isRefreshing()}
       />
@@ -81,7 +81,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
       <ContextMenu.Item
         label="Move"
         disabled={isRefreshing()}
-        onClick={() => openModal('moveFeed', { feed_uuid: props.feed.uuid })}
+        onSelect={() => openModal('moveFeed', { feed_uuid: props.feed.uuid })}
         icon={HiOutlineFolder}
       />
       <ContextMenu.Item label="Rename" disabled icon={HiOutlinePencilSquare} />
@@ -117,7 +117,7 @@ export const AllFeedsItem = () => {
       <ContextMenu.Item label="Mark all as read" disabled icon={HiOutlineCheck} />
       <ContextMenu.Item
         label="Refresh all feeds"
-        onClick={() => refreshFeeds()}
+        onSelect={() => refreshFeeds()}
         icon={HiOutlineArrowPath}
         iconClass={!!notifications.feedsRefreshing().length && 'animate-spin'}
         disabled={!!notifications.feedsRefreshing().length}

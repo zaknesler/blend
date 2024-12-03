@@ -2,6 +2,7 @@ import { HiOutlineArrowPath, HiOutlineFolder, HiOutlinePencilSquare, HiOutlineTr
 import { type Component, mergeProps } from 'solid-js';
 import { useNotifications } from '~/contexts/notification-context';
 import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
+import { openModal } from '~/stores/modal';
 import { Menu, type MenuProps } from './menu';
 
 type FeedMenuProps = MenuProps & {
@@ -25,13 +26,21 @@ export const FeedMenu: Component<FeedMenuProps> = props => {
     <Menu {...local} size="sm">
       <Menu.Item
         label="Refresh"
-        onClick={() => refreshFeed(props.uuid)}
+        onSelect={() => refreshFeed(props.uuid)}
         icon={HiOutlineArrowPath}
         iconClass={isRefreshing() && 'animate-spin'}
         disabled={isRefreshing()}
       />
 
-      <Menu.Item label="Move" disabled icon={HiOutlineFolder} />
+      <Menu.Item
+        label="Move"
+        onSelect={() => {
+          console.log('clicky');
+          openModal('moveFeed', { feed_uuid: props.uuid });
+        }}
+        icon={HiOutlineFolder}
+        disabled={isRefreshing()}
+      />
       <Menu.Item label="Rename" disabled icon={HiOutlinePencilSquare} />
       <Menu.Item label="Delete" disabled icon={HiOutlineTrash} />
     </Menu>

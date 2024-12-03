@@ -42,7 +42,7 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
             tooltip="Mark feed as read"
             class="size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
             iconClass="size-5 md:size-4"
-            onClick={() => markFeedAsRead(feed.data!.uuid)}
+            onSelect={() => markFeedAsRead(feed.data!.uuid)}
           />
 
           <FeedMenu

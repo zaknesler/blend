@@ -27,7 +27,7 @@ export const NavRow: Component<NavRowProps> = props => {
       <div class="flex flex-1 items-center justify-end">
         <Show when={props.showFeedSwitch}>
           <ActionButton
-            onClick={() => props.setOpen(val => !val)}
+            onSelect={() => props.setOpen(val => !val)}
             class="-m-1"
             tooltip={props.open ? 'Hide feeds' : 'Show feeds'}
             icon={props.open ? HiOutlineXMark : HiOutlineQueueList}
@@ -36,7 +36,7 @@ export const NavRow: Component<NavRowProps> = props => {
 
         <Show when={props.showCloseButton}>
           <ActionButton
-            onClick={() => navigate(state.getFeedUrl())}
+            onSelect={() => navigate(state.getFeedUrl())}
             class="-m-1 ml-auto"
             tooltip="Back to entries"
             icon={HiOutlineXMark}
