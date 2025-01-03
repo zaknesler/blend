@@ -3,10 +3,10 @@ use axum::{
     extract::{Path, State},
     middleware::from_fn_with_state,
     response::IntoResponse,
-    routing::{get, post},
+    routing::{get, patch, post},
     Json, Router,
 };
-use blend_db::repo::{self, feed::FeedRepo, folder::FolderRepo};
+use blend_db::repo::{self, feed::FeedRepo};
 use serde::Deserialize;
 use serde_json::json;
 use typeshare::typeshare;
@@ -22,7 +22,7 @@ pub fn router(ctx: crate::Context) -> Router {
         .route("/:uuid", get(view))
         .route("/:uuid/read", post(update_read))
         .route("/:uuid/refresh", post(refresh_feed))
-        .route("/:uuid/folder", post(update_feed_folders))
+        .route("/:uuid/folders", patch(update_folders))
         .route_layer(from_fn_with_state(ctx.clone(), crate::middleware::auth))
         .with_state(ctx)
 }
@@ -34,20 +34,20 @@ async fn index(State(ctx): State<crate::Context>) -> WebResult<impl IntoResponse
 
 #[typeshare]
 #[derive(Debug, Deserialize, Validate)]
-struct CreateFeedParams {
+struct CreateFeedData {
     #[validate(url(message = "Must be a valid URL"))]
     url: String,
 }
 
 async fn create(
     State(ctx): State<crate::Context>,
-    Json(data): Json<CreateFeedParams>,
+    Json(data): Json<CreateFeedData>,
 ) -> WebResult<impl IntoResponse> {
     data.validate()?;
 
     let parsed = blend_feed::parse_feed(&data.url).await?;
     let feed = FeedRepo::new(ctx.db)
-        .create_feed(repo::feed::CreateFeedParams {
+        .create_feed(repo::feed::CreateFeedData {
             id: parsed.id,
             title: parsed.title.unwrap_or_else(|| data.url.clone()),
             url_feed: parsed.url_feed,
@@ -135,19 +135,23 @@ async fn refresh_feeds(State(ctx): State<crate::Context>) -> WebResult<impl Into
 }
 
 #[typeshare]
-#[derive(Debug, Deserialize, Validate)]
-struct UpdateFeedFoldersParams {
-    uuid: Uuid,
-    folder_uuids: Vec<Uuid>,
+#[derive(Debug, Deserialize)]
+struct UpdateFeedFoldersData {
+    folder_uuids: Vec<uuid::Uuid>,
 }
 
-async fn update_feed_folders(
+/// Replace the folders to which the given feed is associated.
+async fn update_folders(
     State(ctx): State<crate::Context>,
-    Json(data): Json<UpdateFeedFoldersParams>,
+    Path(params): Path<ViewFeedParams>,
+    Json(data): Json<UpdateFeedFoldersData>,
 ) -> WebResult<impl IntoResponse> {
-    let repo = FolderRepo::new(ctx.db);
+    let repo = repo::folder::FolderRepo::new(ctx.db);
 
-    //
+    // Delete all existing folder_feed pairs where feed_uuid == params.uuid
+    // Create new records associating each data.folder_uuids with params.uuid
 
-    Ok(Json(json!({ "success": true })))
+    let success = true;
+
+    Ok(Json(json!({ "success": success })))
 }

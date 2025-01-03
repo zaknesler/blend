@@ -3,7 +3,7 @@ use base64::{engine::general_purpose::URL_SAFE, Engine as _};
 use blend_db::{
     model::Feed,
     repo::{
-        entry::{CreateEntryParams, EntryRepo},
+        entry::{CreateEntryData, EntryRepo},
         feed::FeedRepo,
     },
 };
@@ -58,7 +58,7 @@ pub async fn fetch_entries(
     let mapped = blend_feed::parse_entries(&feed.url_feed)
         .await?
         .into_iter()
-        .map(|entry| CreateEntryParams {
+        .map(|entry| CreateEntryData {
             id: entry.id,
             url: entry.url,
             title: entry.title,

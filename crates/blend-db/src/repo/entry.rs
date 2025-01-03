@@ -10,7 +10,7 @@ pub struct EntryRepo {
     db: sqlx::SqlitePool,
 }
 
-pub struct CreateEntryParams {
+pub struct CreateEntryData {
     pub id: String,
     pub url: Option<String>,
     pub title: Option<String>,
@@ -23,7 +23,7 @@ pub struct CreateEntryParams {
 
 #[typeshare]
 #[derive(Deserialize)]
-pub struct FilterEntriesParams {
+pub struct FilterEntriesData {
     #[serde(default = "SortDirection::latest")]
     pub sort: SortDirection,
     pub cursor: Option<Uuid>,
@@ -84,7 +84,7 @@ impl EntryRepo {
 
     pub async fn get_paginated_entries(
         &self,
-        filter: FilterEntriesParams,
+        filter: FilterEntriesData,
     ) -> DbResult<Paginated<Vec<model::Entry>>> {
         let el = filter.sort.query_elements();
         let el_inv = filter.sort.query_elements_inverse();
@@ -222,7 +222,7 @@ impl EntryRepo {
     pub async fn upsert_entries(
         &self,
         feed_uuid: &uuid::Uuid,
-        entries: &[CreateEntryParams],
+        entries: &[CreateEntryData],
     ) -> DbResult<Vec<uuid::Uuid>> {
         if entries.is_empty() {
             return Ok(vec![]);

@@ -1,8 +1,7 @@
 import { ToggleGroup } from '@kobalte/core/toggle-group';
-import { useNavigate } from '@solidjs/router';
 import { createMutation } from '@tanstack/solid-query';
 import { cx } from 'class-variance-authority';
-import { HiOutlineCheckCircle, HiSolidCheckCircle } from 'solid-icons/hi';
+import { HiSolidCheckCircle } from 'solid-icons/hi';
 import { For, Show, createEffect, createSignal } from 'solid-js';
 import { getErrorMessage } from '~/api';
 import { updateFeedFolders } from '~/api/feeds';
@@ -15,7 +14,7 @@ import { Spinner } from '../ui/spinner';
 import { Modal } from './modal';
 
 export const MoveFeedModal = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const feeds = useFeeds();
   const folders = useFolders();

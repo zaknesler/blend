@@ -15,6 +15,7 @@ import { useNotifications } from '~/contexts/notification-context';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useViewport } from '~/contexts/viewport-context';
 import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
+import { FeedInfoFolder } from '../feed/feed-info-folder';
 import { IconButton } from '../ui/button/icon-button';
 
 export const ListPanel = () => {
@@ -103,25 +104,7 @@ export const ListPanel = () => {
 
                 {/* Showing single folder -- show folder info */}
                 <Match when={state.params.folder_slug}>
-                  <div class="flex w-full select-none items-start justify-between gap-2">
-                    <FeedHeader title="Folder name" />
-
-                    <IconButton
-                      disabled
-                      icon={HiOutlineCheck}
-                      tooltip="Mark all as read"
-                      class="z-10 size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
-                      iconClass="size-5 md:size-4"
-                    />
-
-                    <IconButton
-                      onSelect={() => refreshFeeds()}
-                      icon={HiOutlineArrowPath}
-                      tooltip="Refresh all feeds"
-                      class="z-10 size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
-                      iconClass={cx('size-5 md:size-4', !!notifications.feedsRefreshing().length && 'animate-spin')}
-                    />
-                  </div>
+                  <FeedInfoFolder />
                 </Match>
 
                 {/* Showing all feeds -- create custom label */}

@@ -6,7 +6,7 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
-use blend_db::repo::{self, entry::FilterEntriesParams};
+use blend_db::repo::{self, entry::FilterEntriesData};
 use serde::Deserialize;
 use serde_json::json;
 use uuid::Uuid;
@@ -26,7 +26,7 @@ pub fn router(ctx: crate::Context) -> Router {
 
 async fn index(
     State(ctx): State<crate::Context>,
-    Query(params): Query<FilterEntriesParams>,
+    Query(params): Query<FilterEntriesData>,
 ) -> WebResult<impl IntoResponse> {
     let paginated = repo::entry::EntryRepo::new(ctx.db).get_paginated_entries(params).await?;
 

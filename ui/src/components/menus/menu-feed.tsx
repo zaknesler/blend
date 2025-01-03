@@ -20,6 +20,7 @@ export const FeedMenu: Component<FeedMenuProps> = props => {
 
   const refreshFeed = useRefreshFeed();
   const notifications = useNotifications();
+
   const isRefreshing = () => notifications.isFeedRefreshing(props.uuid);
 
   return (

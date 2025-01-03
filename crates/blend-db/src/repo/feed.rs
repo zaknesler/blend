@@ -5,7 +5,7 @@ pub struct FeedRepo {
     db: sqlx::SqlitePool,
 }
 
-pub struct CreateFeedParams {
+pub struct CreateFeedData {
     pub id: String,
     pub title: String,
     pub url_feed: String,
@@ -53,7 +53,7 @@ impl FeedRepo {
             .map_err(|err| err.into())
     }
 
-    pub async fn create_feed(&self, data: CreateFeedParams) -> DbResult<model::Feed> {
+    pub async fn create_feed(&self, data: CreateFeedData) -> DbResult<model::Feed> {
         let feed = sqlx::query_as::<_, model::Feed>(
             r#"
             INSERT INTO feeds (uuid, id, url_feed, url_site, title, favicon_url, published_at, updated_at)
