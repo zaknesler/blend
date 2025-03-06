@@ -31,7 +31,7 @@ export const Modal: ParentComponent<ModalProps> = props => {
               <HiOutlineXMark class="size-5" />
             </Dialog.CloseButton>
 
-            <div class="flex flex-col gap-2 border-b bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900">
+            <div class="flex flex-col gap-2 border-gray-200 border-b bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900">
               <Dialog.Title class="font-semibold text-base dark:text-gray-200">{local.title}</Dialog.Title>
               <Dialog.Description class="text-gray-600 text-sm dark:text-gray-400">
                 {local.description}

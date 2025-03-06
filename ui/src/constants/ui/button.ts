@@ -13,7 +13,7 @@ export const button = cva(
           'bg-gradient-to-br from-gray-500 to-gray-600 text-white',
           'hover:from-gray-600 hover:to-gray-700',
           'active:from-gray-700 active:to-gray-800',
-          'focus-visible:ring-gray-500',
+          'focus-visible:ring-gray-300',
           'dark:from-gray-700 dark:to-gray-800 dark:focus-visible:ring-gray-500',
           'dark:active:from-gray-500 dark:active:to-gray-600',
         ],

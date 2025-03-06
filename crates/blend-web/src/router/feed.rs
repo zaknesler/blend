@@ -148,10 +148,12 @@ async fn update_folders(
 ) -> WebResult<impl IntoResponse> {
     let repo = repo::folder::FolderRepo::new(ctx.db);
 
-    // Delete all existing folder_feed pairs where feed_uuid == params.uuid
-    // Create new records associating each data.folder_uuids with params.uuid
+    let was_deleted = repo.delete_all_folders_by_feed_uuid(&params.uuid).await?;
+    let inserted_uuids =
+        repo.insert_folder_uuids_by_feed_uuid(&params.uuid, &data.folder_uuids).await?;
 
-    let success = true;
+    // If the number of inserted feeds matches what we expected, it's a great success!
+    let success = was_deleted && inserted_uuids.len() == data.folder_uuids.len();
 
     Ok(Json(json!({ "success": success })))
 }

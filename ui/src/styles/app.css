@@ -1,14 +1,14 @@
-@tailwind base;
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
 
-/* Fix top margin on image in first element */
-.prose *:first-child img:first-child {
-  margin-top: 0;
+@layer components {
+  /* Fix top margin on image in first element */
+  .prose *:first-child img:first-child {
+    margin-top: 0;
+  }
+
+  /* Fix padding for multiple images in a figure */
+  .prose figure img:has(+ img) {
+    margin-bottom: 2em;
+  }
 }
-
-/* Fix padding for multiple images in a figure */
-.prose figure img:has(+ img) {
-  margin-bottom: 2em;
-}
-
-@tailwind components;
-@tailwind utilities;

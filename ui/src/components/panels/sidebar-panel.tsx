@@ -1,13 +1,13 @@
 import { cx } from 'class-variance-authority';
-import { type Component, createSignal } from 'solid-js';
-import { FeedList } from '../../feed/feed-list';
-import { AppMenu } from '../../menus/menu-app';
+import { createSignal } from 'solid-js';
+import { FeedList } from '../feed/feed-list';
+import { AppMenu } from '../menus/menu-app';
 
 type SidebarProps = {
   class?: string;
 };
 
-export const Sidebar: Component<SidebarProps> = props => {
+export default (props: SidebarProps) => {
   const [settingsOpen, setSettingsOpen] = createSignal(false);
 
   return (

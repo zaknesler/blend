@@ -85,7 +85,7 @@ export interface UpdateFeedFoldersData {
   folder_uuids: string[];
 }
 
-export interface UpdateFolderUuidsData {
+export interface UpdateFolderFeedsData {
   feed_uuids: string[];
 }
 

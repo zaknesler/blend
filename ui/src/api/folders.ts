@@ -1,5 +1,5 @@
 import wretch from 'wretch';
-import type { CreateFolderData, Folder, FolderFeedMap, UpdateFolderUuidsData } from '~/types/bindings';
+import type { CreateFolderData, Folder, FolderFeedMap, UpdateFolderFeedsData } from '~/types/bindings';
 import type { ApiResponse, ApiSuccessResponse } from '.';
 import { apiUrl } from '../utils/url';
 
@@ -15,7 +15,7 @@ export const createFolder = async (data: CreateFolderData) =>
     .json<ApiResponse<Folder>>()
     .then(res => res.data);
 
-export const updateFolderUuids = async (data: { uuid: string } & UpdateFolderUuidsData) => {
+export const updateFolderFeeds = async (data: { uuid: string } & UpdateFolderFeedsData) => {
   const { uuid, ...rest } = data;
 
   return wretch(apiUrl(`/folders/${uuid}`))

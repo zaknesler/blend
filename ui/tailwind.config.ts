@@ -4,10 +4,10 @@ import typographyPlugin from '@tailwindcss/typography';
 import type { Config } from 'tailwindcss';
 import colors from 'tailwindcss/colors';
 import plugin from 'tailwindcss/plugin';
-import { screens } from './ui/src/constants/screens';
+import { screens } from './src/constants/screens';
 
 export default {
-  content: ['./ui/**/*.{js,ts,jsx,tsx,html}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx,html}'],
   theme: {
     extend: {
       screens,
