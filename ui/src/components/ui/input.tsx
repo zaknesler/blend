@@ -8,18 +8,23 @@ import * as classes from '~/constants/ui/input';
 type TextInputProps = Omit<TextFieldRootProps<HTMLInputElement>, 'validationState' | 'name'> & {
   name: string;
   label: string;
+  class?: string;
   error?: Error | null;
   placeholder?: string;
   multiline?: boolean;
 };
 
 export const TextInput: Component<TextInputProps> = props => {
-  const [local, rest] = splitProps(props, ['name', 'label', 'error', 'ref', 'placeholder', 'multiline']);
+  const [local, rest] = splitProps(props, ['name', 'label', 'class', 'error', 'ref', 'placeholder', 'multiline']);
 
   const error = createMemo(() => getFieldError(local.error, local.name));
 
   return (
-    <TextField {...rest} validationState={error() ? 'invalid' : 'valid'} class="flex flex-col items-stretch gap-1">
+    <TextField
+      {...rest}
+      validationState={error() ? 'invalid' : 'valid'}
+      class={cx('flex flex-col items-stretch gap-1', local.class)}
+    >
       <TextField.Label
         class={cx(
           'select-none text-gray-600 text-sm dark:text-gray-400',

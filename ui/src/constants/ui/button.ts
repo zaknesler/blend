@@ -2,9 +2,9 @@ import { cva } from 'class-variance-authority';
 
 export const button = cva(
   [
-    'inline-flex shrink-0 touch-manipulation select-none appearance-none items-center justify-center gap-1.5 overflow-hidden font-semibold shadow-gray-200 transition',
-    'outline-2 outline-gray-500 outline-offset-2 focus-visible:outline',
-    'dark:shadow-none',
+    'pointer-default inline-flex touch-manipulation select-none appearance-none items-center justify-center gap-1.5 overflow-hidden font-semibold shadow-neutral-300 transition',
+    'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-opacity-30',
+    'inset-shadow-white/15 inset-shadow-xs rounded-lg px-3 py-1.5 text-xs shadow-xs dark:shadow-none',
   ],
   {
     variants: {

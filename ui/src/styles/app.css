@@ -1,5 +1,96 @@
 @import "tailwindcss";
-@config "../../tailwind.config.ts";
+@plugin "@kobalte/tailwindcss";
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --width-sidebar: 16rem;
+
+  --color-gray-50: oklch(0.985 0.001 106.423);
+  --color-gray-100: oklch(0.97 0.001 106.424);
+  --color-gray-200: oklch(0.923 0.003 48.717);
+  --color-gray-300: oklch(0.869 0.005 56.366);
+  --color-gray-400: oklch(0.709 0.01 56.259);
+  --color-gray-500: oklch(0.553 0.013 58.071);
+  --color-gray-600: oklch(0.444 0.011 73.639);
+  --color-gray-700: oklch(0.374 0.01 67.558);
+  --color-gray-800: oklch(0.268 0.007 34.298);
+  --color-gray-900: oklch(0.216 0.006 56.043);
+  --color-gray-950: oklch(0.147 0.004 49.25);
+
+  --color-bg-light: rgb(238, 238, 238);
+  --color-bg-dark: rgb(18, 15, 14);
+
+  --animate-overlay-show: overlay-show 150ms ease-in-out;
+  --animate-overlay-hide: overlay-hide 150ms ease-in-out;
+  --animate-content-show: content-show 150ms ease-in-out;
+  --animate-content-hide: content-hide 150ms ease-in-out;
+  --animate-collapse-up: collapse-up 150ms ease-in-out;
+  --animate-collapse-down: collapse-down 150ms ease-in-out;
+
+  --shadow-top: 0 -1px 3px 0 rgb(0 0 0 / 0.1), 0 -1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-top-xl: 0 -20px 25px -5px rgb(0 0 0 / 0.1),
+    0 -8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Custom Keyframes */
+  @keyframes overlay-show {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes overlay-hide {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes content-show {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(0.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0rem);
+    }
+  }
+
+  @keyframes content-hide {
+    from {
+      opacity: 1;
+      transform: scale(1) translateY(0rem);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.95) translateY(0.25rem);
+    }
+  }
+
+  @keyframes collapse-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--kb-collapsible-content-height);
+    }
+  }
+
+  @keyframes collapse-up {
+    from {
+      height: var(--kb-collapsible-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
 
 @layer components {
   /* Fix top margin on image in first element */
@@ -10,5 +101,20 @@
   /* Fix padding for multiple images in a figure */
   .prose figure img:has(+ img) {
     margin-bottom: 2em;
+  }
+
+  .overflow-touch-scrolling {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      background: transparent;
+    }
   }
 }
