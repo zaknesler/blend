@@ -1,10 +1,10 @@
 use crate::error::{WebError, WebResult};
 use axum::{
+    Json, Router,
     extract::{Path, Query, State},
     middleware::from_fn_with_state,
     response::IntoResponse,
     routing::{get, post},
-    Json, Router,
 };
 use blend_db::repo::{self, entry::FilterEntriesData};
 use serde::Deserialize;
@@ -15,11 +15,11 @@ pub fn router(ctx: crate::Context) -> Router {
     Router::new()
         .route("/", get(index))
         .route("/read", post(update_all_read))
-        .route("/:entry_uuid", get(view))
-        .route("/:entry_uuid/read", post(update_read))
-        .route("/:entry_uuid/unread", post(update_unread))
-        .route("/:entry_uuid/saved", post(update_saved))
-        .route("/:entry_uuid/unsaved", post(update_unsaved))
+        .route("/{entry_uuid}", get(view))
+        .route("/{entry_uuid}/read", post(update_read))
+        .route("/{entry_uuid}/unread", post(update_unread))
+        .route("/{entry_uuid}/saved", post(update_saved))
+        .route("/{entry_uuid}/unsaved", post(update_unsaved))
         .route_layer(from_fn_with_state(ctx.clone(), crate::middleware::auth))
         .with_state(ctx)
 }

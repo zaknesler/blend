@@ -9,21 +9,14 @@ import type { View } from '~/types/bindings';
 import { formatQueryString } from '~/utils/query';
 
 const wrapperClass = cx(
-  '-mx-1 xl:-mt-1 scrollbar-hide flex select-none self-stretch overflow-auto rounded-lg border border-gray-200/50 bg-gray-100 font-medium text-gray-600 text-xs backdrop-blur-sm',
+  '-mx-1 xl:-mt-1 scrollbar-hide flex select-none self-stretch overflow-auto rounded-lg border border-gray-200 bg-gray-100 font-medium text-gray-600 text-xs backdrop-blur-sm',
   'dark:border-gray-950/50 dark:bg-gray-800 dark:text-white dark:shadow-md',
 );
 
 const triggerClass = cx(
-  'group z-20 flex flex-1 cursor-default items-center justify-center rounded-lg p-1 transition',
-  'focus-visible:outline-none',
-);
-
-const triggerInnerClass = cx(
-  'flex w-full items-center justify-center gap-2 rounded-md border border-transparent px-2 py-1.5 transition',
-  'group-focus-visible:!border-gray-400 group-hover:border-gray-200/50 group-hover:bg-gray-200 group-focus-visible:ring-[2px] group-focus-visible:ring-gray-200',
-  'dark:group-focus-visible:!border-gray-600 dark:group-hover:!border-gray-700 dark:group-focus-visible:ring-gray-800 dark:group-hover:bg-gray-700',
-  '!ui-group-selected:bg-white ui-group-selected:shadow',
-  'ui-group-selected:shadow ui-group-selected:dark:bg-gray-950',
+  'group z-20 m-1 flex flex-1 cursor-default items-center justify-center rounded-lg p-2 transition',
+  'inset-ring-gray-300 outline-black outline-offset-1 hover:bg-gray-200 focus-visible:outline-2',
+  'ui-selected:inset-ring ui-selected:bg-white',
 );
 
 export const NavViewTabs = () => {
@@ -49,7 +42,7 @@ export const NavViewTabs = () => {
         <For each={VIEWS}>
           {view => (
             <Tabs.Trigger class={triggerClass} value={view}>
-              <div class={triggerInnerClass}>{VIEW_LABELS[view]}</div>
+              {VIEW_LABELS[view]}
             </Tabs.Trigger>
           )}
         </For>
