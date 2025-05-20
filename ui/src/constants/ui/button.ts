@@ -5,7 +5,8 @@ export const button = cva(
     'pointer-default inline-flex touch-manipulation select-none appearance-none items-center justify-center gap-1.5 overflow-hidden border-0 font-semibold shadow-neutral-300 transition',
     'outline-black focus-visible:outline-2 focus-visible:outline-offset-2',
     'dark:outline-white',
-    'inset-shadow-white/25 inset-shadow-xs rounded-lg px-3 py-1.5 text-xs shadow-xs dark:shadow-none',
+    'inset-shadow-white/25 inset-shadow-xs rounded-lg px-3 py-1.5 text-xs shadow-xs',
+    'dark:inset-shadow-white/15 dark:shadow-none',
   ],
   {
     variants: {
@@ -14,19 +15,23 @@ export const button = cva(
           'bg-gradient-to-br from-gray-500 to-gray-600 text-shadow-2xs text-white',
           'hover:from-gray-600 hover:to-gray-700',
           'active:from-gray-700 active:to-gray-800',
-          'dark:from-gray-700 dark:to-gray-800',
-          'dark:active:from-gray-500 dark:active:to-gray-600',
         ],
         secondary: [
-          'bg-gradient-to-br from-white to-gray-50 text-black',
-          'inset-ring-1 inset-ring-gray-950/20',
+          'inset-ring-1 inset-ring-gray-950/20 bg-gradient-to-br from-white to-gray-50 text-black',
           'hover:inset-ring-gray-950/40 hover:from-gray-50 hover:to-gray-100',
           'active:inset-ring-gray-950/60 active:from-gray-100 active:to-gray-300',
+          'dark:inset-ring-gray-800 dark:from-gray-800 dark:to-gray-900 dark:text-shadow-2xs dark:text-white',
+          'dark:hover:from-gray-700 dark:hover:to-gray-800',
+          'dark:hover:inset-ring-gray-700',
+          'dark:active:inset-ring-gray-600 dark:active:from-gray-600 dark:active:to-gray-700',
         ],
         danger: [
           'bg-gradient-to-br from-red-500 to-red-600 text-shadow-2xs text-white',
           'hover:from-red-600 hover:to-red-700',
           'active:from-red-700 active:to-red-800',
+          'dark:from-red-600 dark:to-red-700',
+          'dark:hover:from-red-700 dark:hover:to-red-800',
+          'dark:active:from-red-800 dark:active:to-red-900',
         ],
       },
       size: {

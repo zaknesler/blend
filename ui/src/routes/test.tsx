@@ -48,7 +48,7 @@ export default () => {
           </Button>
         </div>
 
-        <TextInput name="test" label="Example input" class="w-full max-w-xs" />
+        <TextInput name="test" label="Example input" class="w-full" />
 
         <Tabs
           value={tab()}

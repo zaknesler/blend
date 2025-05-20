@@ -3,14 +3,20 @@ import { cx } from 'class-variance-authority';
 import { type Component, For } from 'solid-js';
 
 const wrapperClass = cx(
-  '-mx-1 xl:-mt-1 scrollbar-hide flex select-none self-stretch overflow-auto rounded-lg border border-gray-200 bg-gray-100 font-medium text-gray-600 text-xs backdrop-blur-sm',
-  'dark:border-gray-950/50 dark:bg-gray-800 dark:text-white dark:shadow-md',
+  '-mx-1 xl:-mt-1 scrollbar-hide flex select-none self-stretch overflow-auto rounded-lg font-medium text-xs backdrop-blur-sm',
+  'border border-gray-200 bg-gray-100 text-gray-600',
+  'dark:border-gray-950/60 dark:bg-gray-800 dark:text-white dark:shadow-md',
 );
 
 const triggerClass = cx(
   'group z-20 m-1 flex flex-1 cursor-default items-center justify-center rounded-lg p-2 transition',
-  'inset-ring-gray-300 outline-black outline-offset-1 hover:bg-gray-200 focus-visible:outline-2',
+  'inset-ring-gray-300 outline-black outline-offset-1',
+  'hover:bg-gray-200',
+  'focus-visible:outline-2',
   'ui-selected:inset-ring ui-selected:bg-white',
+  'dark:hover:bg-gray-900',
+  'dark:ui-selected:inset-ring-0 dark:ui-selected:bg-gray-700',
+  'dark:focus-visible:outline-white',
 );
 
 export type TabItem = {
