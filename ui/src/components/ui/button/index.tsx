@@ -25,7 +25,7 @@ export const Button: ParentComponent<ButtonProps> = props => (
   >
     <Show when={props.icon} fallback={props.children}>
       <Show when={props.iconSide === 'left'}>{props.icon}</Show>
-      <span>{props.children}</span>
+      {props.children}
       <Show when={props.iconSide === 'right'}>{props.icon}</Show>
     </Show>
   </BaseButton>
