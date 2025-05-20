@@ -3,9 +3,7 @@ import { cva } from 'class-variance-authority';
 export const button = cva(
   [
     'pointer-default inline-flex touch-manipulation select-none appearance-none items-center justify-center gap-1.5 overflow-hidden border-0 font-semibold shadow-neutral-300 transition',
-    'outline-black focus-visible:outline-2 focus-visible:outline-offset-2',
-    'dark:outline-white',
-    'inset-shadow-white/25 inset-shadow-xs rounded-lg px-3 py-1.5 text-xs shadow-xs',
+    'inset-shadow-white/25 inset-shadow-xs rounded-lg px-3 py-1.5 shadow-xs',
     'dark:inset-shadow-white/15 dark:shadow-none',
   ],
   {
@@ -36,8 +34,8 @@ export const button = cva(
       },
       size: {
         sm: 'rounded-lg px-3 py-1.5 text-xs shadow-sm',
-        md: 'rounded-lg px-4 py-2 text-base shadow-md',
-        lg: 'rounded-lg px-6 py-3 text-lg shadow-lg',
+        md: 'rounded-lg px-4 py-2 text-xs shadow-md',
+        lg: 'rounded-xl px-6 py-3 text-sm shadow-lg',
       },
       disabled: {
         true: 'pointer-events-auto cursor-not-allowed opacity-60',

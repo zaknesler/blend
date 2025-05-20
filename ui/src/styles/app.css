@@ -91,6 +91,19 @@
   }
 }
 
+@layer base {
+  *:focus-visible {
+    outline-style: var(--tw-outline-style);
+    outline-width: 2px;
+    outline-offset: 1px;
+    outline-color: var(--color-black);
+
+    @media (prefers-color-scheme: dark) {
+      outline-color: var(--color-white);
+    }
+  }
+}
+
 @layer components {
   /* Fix top margin on image in first element */
   .prose *:first-child img:first-child {
