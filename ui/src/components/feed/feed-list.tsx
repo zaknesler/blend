@@ -23,7 +23,7 @@ export const FeedList = () => {
           <h3 class="font-semibold uppercase tracking-wider">Feeds</h3>
           <Button
             onClick={handleOpenNewFolder}
-            class="inline-flex items-center gap-1 opacity-100 transition hover:text-gray-900 hover:underline focus-visible:text-gray-900 focus-visible:opacity-100 group-hover:opacity-100 md:opacity-0 dark:focus-visible:text-gray-100 dark:hover:text-gray-100"
+            class="inline-flex items-center gap-1 rounded-sm opacity-100 transition hover:text-gray-900 hover:underline focus-visible:text-gray-900 focus-visible:opacity-100 group-hover:opacity-100 md:opacity-0 dark:focus-visible:text-gray-100 dark:hover:text-gray-100"
           >
             <HiSolidPlusSmall class="size-3 text-gray-400 dark:text-gray-500" />
             New folder
