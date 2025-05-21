@@ -1,10 +1,10 @@
 use crate::error::{WebError, WebResult};
 use axum::{
+    Json, Router,
     extract::{Path, State},
     middleware::from_fn_with_state,
     response::IntoResponse,
     routing::{get, patch, post},
-    Json, Router,
 };
 use blend_db::repo::{self, feed::FeedRepo};
 use serde::Deserialize;
@@ -19,10 +19,10 @@ pub fn router(ctx: crate::Context) -> Router {
         .route("/", post(create))
         .route("/refresh", post(refresh_feeds))
         .route("/stats", get(stats))
-        .route("/:uuid", get(view))
-        .route("/:uuid/read", post(update_read))
-        .route("/:uuid/refresh", post(refresh_feed))
-        .route("/:uuid/folders", patch(update_folders))
+        .route("/{uuid}", get(view))
+        .route("/{uuid}/read", post(update_read))
+        .route("/{uuid}/refresh", post(refresh_feed))
+        .route("/{uuid}/folders", patch(update_folders))
         .route_layer(from_fn_with_state(ctx.clone(), crate::middleware::auth))
         .with_state(ctx)
 }
@@ -148,10 +148,12 @@ async fn update_folders(
 ) -> WebResult<impl IntoResponse> {
     let repo = repo::folder::FolderRepo::new(ctx.db);
 
-    // Delete all existing folder_feed pairs where feed_uuid == params.uuid
-    // Create new records associating each data.folder_uuids with params.uuid
+    let was_deleted = repo.delete_all_folders_by_feed_uuid(&params.uuid).await?;
+    let inserted_uuids =
+        repo.insert_folder_uuids_by_feed_uuid(&params.uuid, &data.folder_uuids).await?;
 
-    let success = true;
+    // If the number of inserted feeds matches what we expected, it's a great success!
+    let success = was_deleted && inserted_uuids.len() == data.folder_uuids.len();
 
     Ok(Json(json!({ "success": success })))
 }

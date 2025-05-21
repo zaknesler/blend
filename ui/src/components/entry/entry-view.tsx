@@ -66,7 +66,7 @@ export const EntryView: ParentComponent<EntryViewProps> = props => {
           fallback={
             <div class="flex max-w-xs flex-col items-start gap-2 rounded-lg border border-gray-100 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-950">
               <p>There is no content for this entry.</p>
-              <Button size="xs">Re-scrape content</Button>
+              <Button size="sm">Re-scrape content</Button>
             </div>
           }
         >

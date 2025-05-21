@@ -7,9 +7,9 @@ import { NotificationContext, makeNotificationContext } from '~/contexts/notific
 import { QueryStateContext, makeQueryStateContext } from '~/contexts/query-state-context';
 import { useShortcuts } from '~/hooks/use-shortcuts';
 
-const Sidebar = lazy(() => import('~/components/ui/layout/sidebar').then(d => ({ default: d.Sidebar })));
-const EntryPanel = lazy(() => import('~/components/panels/entry-panel').then(d => ({ default: d.EntryPanel })));
-const ListPanel = lazy(() => import('~/components/panels/list-panel').then(d => ({ default: d.ListPanel })));
+const SidebarPanel = lazy(() => import('~/components/panels/sidebar-panel'));
+const EntryPanel = lazy(() => import('~/components/panels/entry-panel'));
+const ListPanel = lazy(() => import('~/components/panels/list-panel'));
 
 export default () => {
   const queryState = makeQueryStateContext();
@@ -30,7 +30,7 @@ const Inner = () => {
   return (
     <EntriesContext.Provider value={entries}>
       <NotificationContext.Provider value={notifications}>
-        <Sidebar class="hidden xl:flex xl:w-sidebar xl:shrink-0" />
+        <SidebarPanel class="hidden xl:flex xl:w-sidebar xl:shrink-0" />
 
         <div class="flex size-full flex-1 flex-col overflow-hidden md:flex-row md:gap-4 md:p-4">
           <ListPanel />

@@ -43,6 +43,6 @@ export const updateFeedFolders = async (data: { uuid: string } & UpdateFeedFolde
   const { uuid, ...rest } = data;
 
   return wretch(apiUrl(`/feeds/${uuid}/folders`))
-    .post(rest)
+    .patch(rest)
     .json<ApiSuccessResponse>();
 };

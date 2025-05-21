@@ -18,7 +18,7 @@ import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
 import { FeedInfoFolder } from '../feed/feed-info-folder';
 import { IconButton } from '../ui/button/icon-button';
 
-export const ListPanel = () => {
+export default () => {
   const state = useQueryState();
   const viewport = useViewport();
 

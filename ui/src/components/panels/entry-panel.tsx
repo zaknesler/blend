@@ -9,7 +9,7 @@ import { EntryActions } from '../entry/entry-actions';
 import { Empty } from '../ui/empty';
 import { Spinner } from '../ui/spinner';
 
-export const EntryPanel = () => {
+export default () => {
   const state = useQueryState();
   const viewport = useViewport();
 

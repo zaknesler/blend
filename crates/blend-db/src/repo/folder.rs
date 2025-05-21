@@ -156,4 +156,43 @@ impl FolderRepo {
             .map(|row| row.try_get("feed_uuid").map_err(|err| err.into()))
             .collect::<DbResult<Vec<uuid::Uuid>>>()
     }
+
+    /// Delete all folders_feeds associated with a given feed_uuid.
+    pub async fn delete_all_folders_by_feed_uuid(&self, feed_uuid: &uuid::Uuid) -> DbResult<bool> {
+        let rows_affected = sqlx::query("DELETE FROM folders_feeds WHERE feed_uuid = ?1")
+            .bind(feed_uuid)
+            .execute(&self.db)
+            .await?
+            .rows_affected();
+
+        Ok(rows_affected > 0)
+    }
+
+    /// Associate a list of folder UUIDs with a given feed via its feed_uuid.
+    pub async fn insert_folder_uuids_by_feed_uuid(
+        &self,
+        feed_uuid: &uuid::Uuid,
+        folder_uuids: &[uuid::Uuid],
+    ) -> DbResult<Vec<uuid::Uuid>> {
+        if folder_uuids.is_empty() {
+            return Ok(vec![]);
+        }
+
+        let mut query =
+            QueryBuilder::<Sqlite>::new("INSERT INTO folders_feeds (feed_uuid, folder_uuid) ");
+
+        // Bulk insert each feed-folder UUID pair
+        query.push_values(folder_uuids.iter(), |mut b, folder_uuid| {
+            b.push_bind(feed_uuid).push_bind(folder_uuid);
+        });
+        query.push("RETURNING folder_uuid");
+
+        query
+            .build()
+            .fetch_all(&self.db)
+            .await?
+            .into_iter()
+            .map(|row| row.try_get("folder_uuid").map_err(|err| err.into()))
+            .collect::<DbResult<Vec<uuid::Uuid>>>()
+    }
 }

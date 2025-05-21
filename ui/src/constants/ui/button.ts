@@ -2,38 +2,40 @@ import { cva } from 'class-variance-authority';
 
 export const button = cva(
   [
-    'inline-flex shrink-0 touch-manipulation select-none appearance-none items-center justify-center gap-1.5 overflow-hidden font-semibold shadow-gray-200 transition',
-    'outline-2 outline-gray-500 outline-offset-2 focus-visible:outline',
-    'dark:shadow-none',
+    'pointer-default inline-flex touch-manipulation select-none appearance-none items-center justify-center gap-1.5 overflow-hidden border-0 font-semibold shadow-neutral-300 transition',
+    'inset-shadow-white/25 inset-shadow-xs rounded-lg px-3 py-1.5 shadow-xs',
+    'dark:inset-shadow-white/15 dark:shadow-none',
   ],
   {
     variants: {
       variant: {
         primary: [
-          'bg-gradient-to-br from-gray-500 to-gray-600 text-white',
+          'bg-gradient-to-br from-gray-500 to-gray-600 text-shadow-2xs text-white',
           'hover:from-gray-600 hover:to-gray-700',
           'active:from-gray-700 active:to-gray-800',
-          'focus-visible:ring-gray-500',
-          'dark:from-gray-700 dark:to-gray-800 dark:focus-visible:ring-gray-500',
-          'dark:active:from-gray-500 dark:active:to-gray-600',
         ],
         secondary: [
-          'border border-transparent bg-white text-black ring-1 ring-gray-200 focus-visible:ring-gray-500',
-          'hover:border-gray-100 hover:bg-gray-100',
-          'focus-visible:border-gray-500',
-          'dark:bg-gray-900 dark:text-gray-100 dark:ring-gray-800 dark:focus-visible:border-gray-600 dark:hover:border-gray-800 dark:hover:bg-gray-800',
+          'inset-ring-1 inset-ring-gray-950/20 bg-gradient-to-br from-white to-gray-50 text-black',
+          'hover:inset-ring-gray-950/40 hover:from-gray-50 hover:to-gray-100',
+          'active:inset-ring-gray-950/60 active:from-gray-100 active:to-gray-300',
+          'dark:inset-ring-gray-800 dark:from-gray-800 dark:to-gray-900 dark:text-shadow-2xs dark:text-white',
+          'dark:hover:from-gray-700 dark:hover:to-gray-800',
+          'dark:hover:inset-ring-gray-700',
+          'dark:active:inset-ring-gray-600 dark:active:from-gray-600 dark:active:to-gray-700',
         ],
         danger: [
-          'bg-gradient-to-br from-red-500 to-red-600 text-white',
+          'bg-gradient-to-br from-red-500 to-red-600 text-shadow-2xs text-white',
           'hover:from-red-600 hover:to-red-700',
-          'focus-visible:ring-red-500',
+          'active:from-red-700 active:to-red-800',
+          'dark:from-red-600 dark:to-red-700',
+          'dark:hover:from-red-700 dark:hover:to-red-800',
+          'dark:active:from-red-800 dark:active:to-red-900',
         ],
       },
       size: {
-        xs: 'rounded-md px-3 py-1.5 text-xs shadow-sm',
-        sm: 'rounded-lg px-3.5 py-1.5 text-sm shadow-sm',
-        md: 'rounded-lg px-5 py-2.5 text-base shadow-md',
-        lg: 'rounded-lg px-6 py-4 text-lg shadow-lg',
+        sm: 'rounded-lg px-3 py-1.5 text-xs shadow-sm',
+        md: 'rounded-lg px-4 py-2 text-xs shadow-md',
+        lg: 'rounded-xl px-6 py-3 text-sm shadow-lg',
       },
       disabled: {
         true: 'pointer-events-auto cursor-not-allowed opacity-60',

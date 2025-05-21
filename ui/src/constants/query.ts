@@ -23,7 +23,7 @@ export const QUERY_KEYS = {
   // Folders
   FOLDERS: 'folders.index',
   FOLDERS_CREATE: 'folders.create',
-  FOLDERS_UUIDS_UPDATE: 'folders.uuids.update',
+  FOLDERS_FEEDS_UPDATE: 'folders.feeds.update',
 } as const;
 
 export type RouterParams = {

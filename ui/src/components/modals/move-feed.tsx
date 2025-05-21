@@ -1,4 +1,5 @@
 import { ToggleGroup } from '@kobalte/core/toggle-group';
+import { useNavigate } from '@solidjs/router';
 import { createMutation } from '@tanstack/solid-query';
 import { cx } from 'class-variance-authority';
 import { HiSolidCheckCircle } from 'solid-icons/hi';
@@ -8,18 +9,23 @@ import { updateFeedFolders } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useFolders } from '~/hooks/queries/use-folders';
-import { getModalData, isModalOpen } from '~/stores/modal';
+import { useInvalidateFolders } from '~/hooks/queries/use-invalidate-folders';
+import { closeModal, getModalData, isModalOpen } from '~/stores/modal';
 import { Button } from '../ui/button';
 import { Spinner } from '../ui/spinner';
 import { Modal } from './modal';
 
 export const MoveFeedModal = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const feeds = useFeeds();
   const folders = useFolders();
+  const invalidateFolders = useInvalidateFolders();
 
-  const getFeed = () => feeds.findFeed(getModalData('moveFeed').feed_uuid);
+  const getFeed = () => {
+    if (!isModalOpen('moveFeed')) return null;
+    return feeds.findFeed(getModalData('moveFeed').feed_uuid);
+  };
 
   const update = createMutation(() => ({
     mutationKey: [QUERY_KEYS.FEEDS_FOLDERS_UPDATE],
@@ -32,7 +38,11 @@ export const MoveFeedModal = () => {
     event.preventDefault();
     event.stopPropagation();
 
-    update.mutateAsync({ uuid: getModalData('moveFeed').feed_uuid, folder_uuids: folderUuids() });
+    await update.mutateAsync({ uuid: getModalData('moveFeed').feed_uuid, folder_uuids: folderUuids() });
+
+    invalidateFolders();
+    navigate('/');
+    closeModal('moveFeed');
   };
 
   const [folderUuids, setFolderUuids] = createSignal<string[]>([]);

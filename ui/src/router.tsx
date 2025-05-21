@@ -20,6 +20,7 @@ export default () => (
       ]}
       component={lazy(() => import('./routes/feed'))}
     />
+    <Route path="/test" component={lazy(() => import('./routes/test'))} />
     <Route path="*" component={lazy(() => import('./routes/404'))} />
   </Router>
 );
