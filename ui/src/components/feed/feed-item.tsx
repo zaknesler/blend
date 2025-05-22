@@ -22,6 +22,7 @@ import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
 import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
 import { openModal } from '~/stores/modal';
 import type { Feed } from '~/types/bindings';
+import { formatNumber } from '~/utils/format';
 import { ContextMenu } from '../menus/context-menu';
 import { Spinner } from '../ui/spinner';
 
@@ -183,7 +184,7 @@ export const BaseFeedItem: Component<BaseFeedItemProps> = props => {
 
       <Show when={local.unread_count}>
         <span class="shrink-0 px-1 text-right text-gray-400 text-sm md:text-xs/4 dark:text-gray-300">
-          {local.unread_count}
+          {formatNumber(local.unread_count!)}
         </span>
       </Show>
     </A>
