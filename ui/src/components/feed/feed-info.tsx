@@ -1,9 +1,9 @@
 import { createQuery } from '@tanstack/solid-query';
-import { HiOutlineArrowPath } from 'solid-icons/hi';
+import { HiOutlineCheck } from 'solid-icons/hi';
 import { type Component, Match, Switch, createSignal } from 'solid-js';
 import { getFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
-import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
+import { useFeedRead } from '~/hooks/queries/use-feed-read';
 import { FeedMenu } from '../menus/menu-feed';
 import { IconButton } from '../ui/button/icon-button';
 import { FeedHeader } from './feed-header';
@@ -13,8 +13,7 @@ type FeedInfoProps = {
 };
 
 export const FeedInfo: Component<FeedInfoProps> = props => {
-  const refresh = useRefreshFeed();
-
+  const markFeedAsRead = useFeedRead();
   const feed = createQuery(() => ({
     queryKey: [QUERY_KEYS.FEEDS_VIEW, props.uuid],
     queryFn: () => getFeed(props.uuid),
@@ -36,20 +35,22 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
 
       <Match when={feed.isSuccess}>
         <div class="flex w-full items-start gap-2">
-          <FeedHeader title={feed.data?.title_display || feed.data?.title} subtitle={feed.data?.url_feed} />
+          <FeedHeader title={feed.data!.title_display || feed.data!.title} />
 
           <IconButton
-            onClick={() => refresh.refreshFeed(props.uuid)}
-            icon={HiOutlineArrowPath}
-            tooltip="Refresh feed"
-            class="size-6 rounded-md text-gray-500"
+            icon={HiOutlineCheck}
+            tooltip="Mark feed as read"
+            class="size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
+            iconClass="size-5 md:size-4"
+            onSelect={() => markFeedAsRead(feed.data!.uuid)}
           />
 
           <FeedMenu
             uuid={props.uuid}
             open={contextMenuOpen()}
             setOpen={setContextMenuOpen}
-            triggerClass="size-6 rounded-md"
+            triggerClass="size-8 md:size-6 rounded-lg lg:rounded-md"
+            triggerIconClass="size-5 md:size-4"
             gutter={4}
           />
         </div>

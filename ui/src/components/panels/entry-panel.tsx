@@ -1,48 +1,27 @@
-import { useQueryClient } from '@tanstack/solid-query';
-import { createMutation } from '@tanstack/solid-query';
-import { Match, Show, Switch, createEffect } from 'solid-js';
-import { updateEntryAsRead } from '~/api/entries';
+import { Match, Show, Switch } from 'solid-js';
 import { EntryView } from '~/components/entry/entry-view';
-import { Panel } from '~/components/layout/panel';
-import { QUERY_KEYS } from '~/constants/query';
+import { Panel } from '~/components/ui/layout/panel';
+import { IDS } from '~/constants/elements';
 import { useQueryState } from '~/contexts/query-state-context';
+import { useViewport } from '~/contexts/viewport-context';
 import { useEntry } from '~/hooks/queries/use-entry';
-import { useInvalidateStats } from '~/hooks/queries/use-invalidate-stats';
-import { useViewport } from '~/hooks/use-viewport';
+import { EntryActions } from '../entry/entry-actions';
 import { Empty } from '../ui/empty';
 import { Spinner } from '../ui/spinner';
 
-export const EntryPanel = () => {
+export default () => {
   const state = useQueryState();
   const viewport = useViewport();
-  const queryClient = useQueryClient();
-  const invalidateStats = useInvalidateStats();
 
   const entry = useEntry(() => ({ entry_uuid: state.params.entry_uuid }));
-
-  const markAsRead = createMutation(() => ({
-    mutationKey: [QUERY_KEYS.ENTRIES_VIEW_READ],
-    mutationFn: updateEntryAsRead,
-  }));
-
-  createEffect(() => {
-    if (!entry.isSuccess || !entry.data || entry.data.read_at) return;
-
-    markAsRead.mutateAsync(entry.data.uuid).then(() => {
-      invalidateStats();
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.ENTRIES_VIEW, entry.data.uuid],
-      });
-    });
-  });
 
   return (
     <Show
       when={state.params.entry_uuid}
       fallback={
-        <Show when={viewport.gtBreakpoint('md')}>
+        <Show when={viewport.gt('md')}>
           <Panel class="size-full p-4 lg:p-8">
-            <Empty />
+            <Empty dashed={false} />
           </Panel>
         </Show>
       }
@@ -50,7 +29,7 @@ export const EntryPanel = () => {
       <Switch>
         <Match when={entry.isPending}>
           <Panel class="size-full p-4 lg:p-8">
-            <Empty>
+            <Empty dashed={false}>
               <Spinner />
             </Empty>
           </Panel>
@@ -61,9 +40,12 @@ export const EntryPanel = () => {
         </Match>
 
         <Match when={entry.isSuccess}>
-          <Panel class="p-4 lg:p-8">
+          <Panel id={IDS.ARTICLE} class="relative flex flex-col-reverse md:flex-col" overflow={false}>
             <Show when={entry.data} fallback="No data.">
-              <EntryView entry={entry.data!} class="max-w-4xl" />
+              <EntryActions entry={entry.data!} />
+              <div class="overflow-touch-scrolling flex-1 overflow-auto">
+                <EntryView entry={entry.data!} class="max-w-4xl flex-1 p-4 lg:p-8" />
+              </div>
             </Show>
           </Panel>
         </Match>

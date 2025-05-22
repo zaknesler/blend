@@ -3,13 +3,14 @@ import type { Component } from 'solid-js';
 
 const skeletonClass = cva('w-full animate-pulse rounded-lg', {
   variants: {
-    color: {
-      light: 'bg-white dark:bg-gray-950',
-      muted: 'bg-gray-100 dark:bg-gray-800',
+    variant: {
+      white: 'bg-white dark:bg-gray-950',
+      light: 'bg-gray-100 dark:bg-gray-950',
+      dark: 'bg-gray-200 dark:bg-gray-800',
     },
   },
   defaultVariants: {
-    color: 'muted',
+    variant: 'light',
   },
 });
 
@@ -19,7 +20,7 @@ export const Skeleton: Component<SkeletonProps> = props => (
   <div
     class={skeletonClass({
       class: props.class,
-      color: props.color,
+      variant: props.variant,
     })}
   />
 );

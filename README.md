@@ -20,9 +20,9 @@ Demo is available at [blend.zak.fm](https://blend.zak.fm).
 - [x] Notifications via websocket
 - [x] Automatic + manual refreshing
 - [x] Scrape HTML if entries do not contain article content
-- [ ] Organize feeds into folders
+- [x] Organize feeds into folders
+- [x] Keyboard shortcuts
 - [ ] UI options for theme, font, etc.
-- [ ] Keyboard shortcuts
 - [ ] Linear-style command palette
 - [ ] Authentication
 - [ ] Multiple user accounts (maybe; I haven't decided yet)

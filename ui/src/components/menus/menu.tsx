@@ -4,10 +4,12 @@ import {
   type DropdownMenuRootProps,
   type DropdownMenuTriggerProps,
 } from '@kobalte/core/dropdown-menu';
+import type { KbdKey } from '@solid-primitives/keyboard';
 import { type VariantProps, cx } from 'class-variance-authority';
+import type { ClassValue } from 'class-variance-authority/types';
 import type { IconTypes } from 'solid-icons';
-import { HiSolidEllipsisHorizontal } from 'solid-icons/hi';
-import { type Component, type JSX, type ParentComponent, type Setter, Show, splitProps } from 'solid-js';
+import { HiOutlineEllipsisHorizontal } from 'solid-icons/hi';
+import { type Component, For, type JSX, type ParentComponent, type Setter, Show, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import * as menuClasses from '~/constants/ui/menu';
 
@@ -39,7 +41,7 @@ const MenuRoot: ParentComponent<MenuProps> = props => {
         when={local.trigger}
         fallback={
           <MenuTrigger class={cx('relative', local.triggerClass)}>
-            <Dynamic component={local.triggerIcon || HiSolidEllipsisHorizontal} class={local.triggerIconClass} />
+            <Dynamic component={local.triggerIcon || HiOutlineEllipsisHorizontal} class={local.triggerIconClass} />
           </MenuTrigger>
         }
       >
@@ -69,19 +71,34 @@ const MenuTrigger: ParentComponent<MenuTrigger> = props => {
 
 type MenuItemProps = DropdownMenuItemProps & {
   label: string;
-  kbd?: string;
+  kbd?: KbdKey[];
   icon?: IconTypes;
+  iconClass?: ClassValue;
 };
 
 const MenuItem: Component<MenuItemProps> = props => {
-  const [local, rest] = splitProps(props, ['icon', 'label', 'kbd']);
+  const [local, rest] = splitProps(props, ['icon', 'label', 'kbd', 'iconClass']);
+
+  const key = (value: KbdKey) => {
+    if (value === 'Shift') return '⇧';
+    return value;
+  };
+
+  const keyClass = (value: KbdKey) => {
+    if (value === 'Shift') return 'text-lg';
+    return undefined;
+  };
 
   return (
     <DropdownMenu.Item {...rest} class={menuClasses.item()}>
-      <Dynamic component={local.icon} class="size-4 text-gray-400 dark:text-gray-500" />
+      <Dynamic component={local.icon} class={menuClasses.itemIcon({ class: local.iconClass })} />
+
       {local.label}
+
       <Show when={local.kbd}>
-        <kbd class="ml-auto font-mono text-gray-400 text-xs dark:text-gray-500">{local.kbd}</kbd>
+        <kbd class={menuClasses.itemKbd()} title={local.kbd!.join(' + ')}>
+          <For each={local.kbd!}>{value => <span class={cx(keyClass(value), 'leading-none')}>{key(value)}</span>}</For>
+        </kbd>
       </Show>
     </DropdownMenu.Item>
   );
@@ -91,7 +108,10 @@ type MenuContentProps = VariantProps<typeof menuClasses.content>;
 
 const MenuContent: ParentComponent<MenuContentProps> = props => (
   <DropdownMenu.Content
-    class={menuClasses.content({ class: 'origin-[--kb-menu-content-transform-origin]', size: props.size })}
+    class={menuClasses.content({
+      class: 'origin-[--kb-menu-content-transform-origin]',
+      size: props.size,
+    })}
   >
     <div class={menuClasses.contentInner()}>{props.children}</div>
   </DropdownMenu.Content>

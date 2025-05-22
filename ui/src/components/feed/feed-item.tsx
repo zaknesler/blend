@@ -1,14 +1,29 @@
+import type { ContextMenuTriggerProps } from '@kobalte/core/context-menu';
 import { Image } from '@kobalte/core/image';
-import { A, useLocation } from '@solidjs/router';
-import { cx } from 'class-variance-authority';
-import { HiSolidRss } from 'solid-icons/hi';
-import { type Component, type JSX, Match, type Setter, Show, Switch, createMemo, createSignal } from 'solid-js';
+import { A, type AnchorProps, useLocation } from '@solidjs/router';
+import {
+  HiOutlineArrowPath,
+  HiOutlineCheck,
+  HiOutlineFolder,
+  HiOutlinePencilSquare,
+  HiOutlineRss,
+  HiOutlineSquare3Stack3d,
+  HiOutlineTrash,
+} from 'solid-icons/hi';
+import { type Component, type JSX, Match, Show, Switch, createMemo, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { Transition } from 'solid-transition-group';
+import * as feedClasses from '~/constants/ui/feed';
 import { useNotifications } from '~/contexts/notification-context';
 import { useQueryState } from '~/contexts/query-state-context';
+import { useFeedRead } from '~/hooks/queries/use-feed-read';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
+import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
+import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
+import { openModal } from '~/stores/modal';
 import type { Feed } from '~/types/bindings';
+import { formatNumber } from '~/utils/format';
+import { ContextMenu } from '../menus/context-menu';
 import { Spinner } from '../ui/spinner';
 
 type FeedItemProps = {
@@ -19,37 +34,101 @@ export const FeedItem: Component<FeedItemProps> = props => {
   const state = useQueryState();
   const location = useLocation();
 
-  const { stats } = useFeedsStats();
+  const stats = useFeedsStats();
+  const refreshFeed = useRefreshFeed();
+  const markFeedAsRead = useFeedRead();
   const notifications = useNotifications();
-
-  const [open, setOpen] = createSignal(false);
 
   const getPath = createMemo(() => `/feeds/${props.feed.uuid}`);
   const isActive = createMemo(() => location.pathname.startsWith(getPath()));
-  const getStats = createMemo(() => stats.data?.find(item => item.uuid === props.feed.uuid));
+  const getStats = createMemo(() => stats.query.data?.find(item => item.uuid === props.feed.uuid));
 
   const getFaviconSrc = () => props.feed.favicon_b64 || props.feed.favicon_url;
 
-  const isLoading = createMemo(() => notifications.feedsRefreshing().includes(props.feed.uuid));
+  const isRefreshing = () => notifications.isFeedRefreshing(props.feed.uuid);
 
   return (
-    <BaseFeedItem
-      href={getPath().concat(state.getQueryString())}
-      title={props.feed.title_display || props.feed.title}
-      open={open()}
-      setOpen={setOpen}
-      active={isActive()}
-      loading={isLoading()}
-      unread_count={getStats()?.count_unread}
-      favicon_src={getFaviconSrc()}
-    />
+    <ContextMenu
+      size="md"
+      trigger={() => (
+        <ContextMenu.Trigger
+          as={(polyProps: ContextMenuTriggerProps<'a'>) => (
+            <BaseFeedItem
+              {...polyProps}
+              href={getPath().concat(state.getQueryString())}
+              title={props.feed.title_display || props.feed.title}
+              active={isActive()}
+              loading={isRefreshing()}
+              unread_count={getStats()?.count_unread}
+              favicon_src={getFaviconSrc()}
+            />
+          )}
+        />
+      )}
+    >
+      <ContextMenu.Item
+        label="Mark feed as read"
+        icon={HiOutlineCheck}
+        onSelect={() => markFeedAsRead(props.feed.uuid)}
+      />
+      <ContextMenu.Item
+        label="Refresh feed"
+        icon={HiOutlineArrowPath}
+        onSelect={() => refreshFeed(props.feed.uuid)}
+        iconClass={isRefreshing() && 'animate-spin'}
+        disabled={isRefreshing()}
+      />
+      <ContextMenu.Separator />
+      <ContextMenu.Item
+        label="Move"
+        disabled={isRefreshing()}
+        onSelect={() => openModal('moveFeed', { feed_uuid: props.feed.uuid })}
+        icon={HiOutlineFolder}
+      />
+      <ContextMenu.Item label="Rename" disabled icon={HiOutlinePencilSquare} />
+      <ContextMenu.Item label="Delete" disabled icon={HiOutlineTrash} />
+    </ContextMenu>
   );
 };
 
-type BaseFeedItemProps = {
+export const AllFeedsItem = () => {
+  const state = useQueryState();
+  const notifications = useNotifications();
+
+  const stats = useFeedsStats();
+  const refreshFeeds = useRefreshFeeds();
+
+  return (
+    <ContextMenu
+      trigger={() => (
+        <ContextMenu.Trigger
+          as={(polyProps: ContextMenuTriggerProps<'a'>) => (
+            <BaseFeedItem
+              {...polyProps}
+              href={'/'.concat(state.getQueryString())}
+              title="All feeds"
+              icon={() => <HiOutlineSquare3Stack3d class="size-6 text-gray-600 md:size-5 dark:text-gray-500" />}
+              active={!state.params.feed_uuid && !state.params.folder_slug}
+              unread_count={stats.total()?.count_unread}
+            />
+          )}
+        />
+      )}
+    >
+      <ContextMenu.Item label="Mark all as read" disabled icon={HiOutlineCheck} />
+      <ContextMenu.Item
+        label="Refresh all feeds"
+        onSelect={() => refreshFeeds()}
+        icon={HiOutlineArrowPath}
+        iconClass={!!notifications.feedsRefreshing().length && 'animate-spin'}
+        disabled={!!notifications.feedsRefreshing().length}
+      />
+    </ContextMenu>
+  );
+};
+
+type BaseFeedItemProps = Omit<AnchorProps, 'href' | 'title'> & {
   href: string;
-  open: boolean;
-  setOpen: Setter<boolean>;
   active: boolean;
   title?: string;
   loading?: boolean;
@@ -58,61 +137,62 @@ type BaseFeedItemProps = {
   icon?: () => JSX.Element;
 };
 
-export const BaseFeedItem: Component<BaseFeedItemProps> = props => (
-  <A
-    href={props.href}
-    class={cx(
-      'group -mx-1 flex select-none items-center gap-2 rounded-lg border p-1 text-base no-underline outline-none transition',
-      'md:-mx-1 md:rounded-md md:p-1 md:text-sm',
-      'text-gray-600 ring-gray-200 dark:text-gray-300 dark:ring-gray-700',
-      'dark:focus:border-gray-600 focus:border-gray-400',
-      props.active
-        ? 'border-gray-200 bg-white text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-white'
-        : 'border-transparent dark:hover:bg-gray-800 hover:bg-gray-200 dark:hover:text-white hover:text-gray-900',
-    )}
-  >
-    <div class="relative flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-md md:size-5 md:rounded">
-      <Switch fallback={<RssIcon />}>
-        <Match when={props.favicon_src}>
-          <Image fallbackDelay={500} class="size-full">
-            <Image.Img class="size-full object-fill" src={props.favicon_src} alt={`${props.title} favicon`} />
-            <Image.Fallback as={RssIcon} />
-          </Image>
-        </Match>
+export const BaseFeedItem: Component<BaseFeedItemProps> = props => {
+  const [local, rest] = splitProps(props, [
+    'href',
+    'active',
+    'title',
+    'loading',
+    'unread_count',
+    'favicon_src',
+    'icon',
+  ]);
 
-        <Match when={props.icon}>
-          <Dynamic component={props.icon} />
-        </Match>
-      </Switch>
+  return (
+    <A {...rest} href={local.href} class={feedClasses.item({ active: local.active })}>
+      <div class="relative flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-md md:size-5 md:rounded">
+        <Switch fallback={<RssIcon />}>
+          <Match when={local.favicon_src}>
+            <Image fallbackDelay={500} class="size-full">
+              <Image.Img class="size-full object-fill" src={local.favicon_src} alt={`${local.title} favicon`} />
+              <Image.Fallback as={RssIcon} />
+            </Image>
+          </Match>
 
-      <Transition
-        enterActiveClass="transition duration-50 ease-in-out"
-        exitActiveClass="transition duration-50 ease-in-out"
-        enterClass="opacity-0"
-        exitToClass="opacity-0"
-      >
-        <Show when={props.loading}>
-          <div class="absolute z-10 size-full bg-gray-100/50 backdrop-blur">
-            <div class="size-full scale-75">
-              <Spinner class="size-full" />
+          <Match when={local.icon}>
+            <Dynamic component={local.icon} />
+          </Match>
+        </Switch>
+
+        <Transition
+          enterActiveClass="transition duration-50 ease-in-out"
+          exitActiveClass="transition duration-50 ease-in-out"
+          enterClass="opacity-0"
+          exitToClass="opacity-0"
+        >
+          <Show when={local.loading}>
+            <div class="absolute z-10 size-full bg-gray-100/50 backdrop-blur">
+              <div class="size-full scale-75">
+                <Spinner class="size-full" />
+              </div>
             </div>
-          </div>
-        </Show>
-      </Transition>
-    </div>
+          </Show>
+        </Transition>
+      </div>
 
-    <span class="flex-1 overflow-x-hidden truncate">{props.title}</span>
+      <span class="flex-1 overflow-hidden truncate break-all" innerHTML={local.title} />
 
-    <Show when={props.unread_count}>
-      <span class="min-w-6 shrink-0 rounded px-1 py-0.5 text-center text-gray-500 text-sm md:bg-white md:dark:bg-gray-800 dark:text-gray-300 md:text-xs/4">
-        {props.unread_count}
-      </span>
-    </Show>
-  </A>
-);
+      <Show when={local.unread_count}>
+        <span class="shrink-0 px-1 text-right text-gray-400 text-sm md:text-xs/4 dark:text-gray-300">
+          {formatNumber(local.unread_count!)}
+        </span>
+      </Show>
+    </A>
+  );
+};
 
 const RssIcon = () => (
   <div class="flex size-full items-center justify-center bg-gray-400 text-white dark:bg-gray-700 dark:text-gray-400">
-    <HiSolidRss class="size-5 md:h-4 md:w-4" />
+    <HiOutlineRss class="size-5 md:h-4 md:w-4" />
   </div>
 );

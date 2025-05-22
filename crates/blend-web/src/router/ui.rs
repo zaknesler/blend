@@ -1,4 +1,4 @@
-use axum::{middleware, Router};
+use axum::{Router, middleware};
 use axum_embed::ServeEmbed;
 use rust_embed::RustEmbed;
 
@@ -14,6 +14,6 @@ pub fn router() -> Router {
     );
 
     Router::new()
-        .nest_service("/", serve_assets)
+        .fallback_service(serve_assets)
         .layer(middleware::from_fn(crate::middleware::cache))
 }

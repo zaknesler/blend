@@ -25,12 +25,14 @@ export const makeNotificationContext = () => {
   const invalidateFeed = useInvalidateFeed();
   const invalidateEntry = useInvalidateEntry();
 
-  const [feedsRefreshing, setFeedsRefreshing] = createSignal<string[]>([]);
-
   const socket = new WebSocket(wsUrl('/notifications'), undefined, {
     connectionTimeout: 1000,
     maxRetries: 20,
   });
+
+  const [feedsRefreshing, setFeedsRefreshing] = createSignal<string[]>([]);
+
+  const isFeedRefreshing = (feed_uuid: string) => feedsRefreshing().includes(feed_uuid);
 
   const maybeInvalidateCurrentEntry = (feed_uuid: string) => {
     if (!state.params.entry_uuid || currentEntry.data?.feed_uuid !== feed_uuid) return;
@@ -46,7 +48,7 @@ export const makeNotificationContext = () => {
   socket.addEventListener('message', event => {
     const notif = JSON.parse(event.data) as Notification;
 
-    console.info('[ws] received message:', notif);
+    console.debug('[ws] received message:', notif);
 
     switch (notif.type) {
       case 'StartedFeedRefresh': {
@@ -72,5 +74,6 @@ export const makeNotificationContext = () => {
 
   return {
     feedsRefreshing,
+    isFeedRefreshing,
   };
 };

@@ -1,15 +1,40 @@
+import { type FilterEntriesData, SortDirection, View } from '~/types/bindings';
+
 export const QUERY_KEYS = {
   // Feeds
   FEEDS: 'feeds.index',
-  FEEDS_REFRESH: 'mut.feeds.refresh',
-  FEEDS_ADD: 'mut.feeds.add',
-  FEEDS_VIEW: 'feed.view',
-  FEEDS_VIEW_REFRESH: 'mut.feed.view',
+  FEEDS_REFRESH: 'feeds.refresh',
+  FEEDS_CREATE: 'feeds.create',
+  FEEDS_VIEW: 'feeds.view',
+  FEEDS_VIEW_REFRESH: 'feeds.view.refresh',
+  FEEDS_VIEW_READ: 'feeds.view.read',
   FEEDS_STATS: 'feeds.stats',
+  FEEDS_FOLDERS_UPDATE: 'feeds.folders.update',
 
   // Entries
   ENTRIES_INDEX: 'entries.index',
+  ENTRIES_INDEX_READ: 'entries.index.read',
   ENTRIES_VIEW: 'entries.view',
-  ENTRIES_VIEW_READ: 'mut.entries.view.read',
-  ENTRIES_VIEW_UNREAD: 'mut.entries.view.unread',
+  ENTRIES_VIEW_READ: 'entries.view.read',
+  ENTRIES_VIEW_UNREAD: 'entries.view.unread',
+  ENTRIES_VIEW_SAVED: 'entries.view.saved',
+  ENTRIES_VIEW_UNSAVED: 'entries.view.unsaved',
+
+  // Folders
+  FOLDERS: 'folders.index',
+  FOLDERS_CREATE: 'folders.create',
+  FOLDERS_FEEDS_UPDATE: 'folders.feeds.update',
 } as const;
+
+export type RouterParams = {
+  entry_uuid?: string;
+  feed_uuid?: string;
+  folder_slug?: string;
+};
+
+export type QueryParams = Partial<Pick<FilterEntriesData, 'view' | 'sort'>>;
+
+export const DEFAULTS: Required<QueryParams> = {
+  view: View.Unread,
+  sort: SortDirection.Newest,
+};

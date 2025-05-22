@@ -10,7 +10,7 @@ pub struct EntryRepo {
     db: sqlx::SqlitePool,
 }
 
-pub struct CreateEntryParams {
+pub struct CreateEntryData {
     pub id: String,
     pub url: Option<String>,
     pub title: Option<String>,
@@ -23,11 +23,12 @@ pub struct CreateEntryParams {
 
 #[typeshare]
 #[derive(Deserialize)]
-pub struct FilterEntriesParams {
+pub struct FilterEntriesData {
     #[serde(default = "SortDirection::latest")]
     pub sort: SortDirection,
     pub cursor: Option<Uuid>,
     pub feed: Option<Uuid>,
+    pub folder: Option<String>,
     #[serde(default)]
     pub view: View,
 }
@@ -47,6 +48,7 @@ pub enum View {
     All,
     Read,
     Unread,
+    Saved,
 }
 
 impl Default for View {
@@ -82,7 +84,7 @@ impl EntryRepo {
 
     pub async fn get_paginated_entries(
         &self,
-        filter: FilterEntriesParams,
+        filter: FilterEntriesData,
     ) -> DbResult<Paginated<Vec<model::Entry>>> {
         let el = filter.sort.query_elements();
         let el_inv = filter.sort.query_elements_inverse();
@@ -90,15 +92,22 @@ impl EntryRepo {
         let mut query = QueryBuilder::<Sqlite>::new("SELECT uuid, feed_uuid, id, url, title, summary_html, media_url, published_at, updated_at, read_at, saved_at, scraped_at FROM entries WHERE 1=1");
 
         match filter.view {
-            View::All => query.push(""),
+            View::All => &mut query,
             View::Read => query.push(" AND read_at IS NOT NULL"),
             View::Unread => query.push(" AND read_at IS NULL"),
+            View::Saved => query.push(" AND saved_at IS NOT NULL"),
         };
 
-        match filter.feed {
-            Some(uuid) => query.push(" AND feed_uuid = ").push_bind(uuid),
-            _ => query.push(""),
-        };
+        if let Some(uuid) = filter.feed {
+            query.push(" AND feed_uuid = ").push_bind(uuid);
+        }
+
+        if let Some(slug) = filter.folder {
+            query
+                .push(" AND feed_uuid IN (SELECT feed_uuid FROM folders INNER JOIN folders_feeds ON folders.uuid = folders_feeds.folder_uuid WHERE folders.slug = ")
+                .push_bind(slug)
+                .push(")");
+        }
 
         // Use the cursor to find the next batch of items, based on the published/updated date and the rowid (opposite direction) as a fallback
         match filter.cursor {
@@ -158,6 +167,16 @@ impl EntryRepo {
             .map_err(|err| err.into())
     }
 
+    pub async fn update_all_entries_as_read(&self) -> DbResult<bool> {
+        let rows_affected = sqlx::query("UPDATE entries SET read_at = ?1 WHERE read_at IS NULL")
+            .bind(Utc::now())
+            .execute(&self.db)
+            .await?
+            .rows_affected();
+
+        Ok(rows_affected > 0)
+    }
+
     pub async fn update_entry_as_read(&self, entry_uuid: &uuid::Uuid) -> DbResult<bool> {
         let rows_affected = sqlx::query("UPDATE entries SET read_at = ?1 WHERE uuid = ?2")
             .bind(Utc::now())
@@ -179,10 +198,31 @@ impl EntryRepo {
         Ok(rows_affected > 0)
     }
 
+    pub async fn update_entry_as_saved(&self, entry_uuid: &uuid::Uuid) -> DbResult<bool> {
+        let rows_affected = sqlx::query("UPDATE entries SET saved_at = ?1 WHERE uuid = ?2")
+            .bind(Utc::now())
+            .bind(entry_uuid)
+            .execute(&self.db)
+            .await?
+            .rows_affected();
+
+        Ok(rows_affected > 0)
+    }
+
+    pub async fn update_entry_as_unsaved(&self, entry_uuid: &uuid::Uuid) -> DbResult<bool> {
+        let rows_affected = sqlx::query("UPDATE entries SET saved_at = NULL WHERE uuid = ?1")
+            .bind(entry_uuid)
+            .execute(&self.db)
+            .await?
+            .rows_affected();
+
+        Ok(rows_affected > 0)
+    }
+
     pub async fn upsert_entries(
         &self,
         feed_uuid: &uuid::Uuid,
-        entries: &[CreateEntryParams],
+        entries: &[CreateEntryData],
     ) -> DbResult<Vec<uuid::Uuid>> {
         if entries.is_empty() {
             return Ok(vec![]);

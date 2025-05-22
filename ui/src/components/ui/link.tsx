@@ -8,7 +8,7 @@ export const Link: Component<Props> = props => (
   <A
     {...props}
     class={cx(
-      'font-sans font-semibold text-gray-500 transition-colors dark:hover:text-white dark:text-gray-200 hover:text-gray-800 hover:underline',
+      'font-sans font-semibold text-gray-500 transition-colors hover:text-gray-800 hover:underline dark:text-gray-200 dark:hover:text-white',
       props.class,
     )}
   >

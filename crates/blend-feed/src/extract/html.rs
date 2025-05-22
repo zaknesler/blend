@@ -11,7 +11,12 @@ pub fn extract_html(src: &str, base_url: &str) -> String {
         builder.url_relative(ammonia::UrlRelative::RewriteWithBase(base_url));
     }
 
-    builder.rm_tags(HashSet::from(REMOVE_TAGS)).clean(src).to_string()
+    builder
+        .rm_tags(HashSet::from(REMOVE_TAGS))
+        .set_tag_attribute_value("img", "loading", "lazy")
+        .set_tag_attribute_value("img", "decoding", "async")
+        .clean(src)
+        .to_string()
 }
 
 #[cfg(test)]

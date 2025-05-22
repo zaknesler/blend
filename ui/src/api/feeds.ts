@@ -1,5 +1,5 @@
 import wretch from 'wretch';
-import type { Feed, FeedStats } from '~/types/bindings';
+import type { CreateFeedData, Feed, FeedStats, UpdateFeedFoldersData } from '~/types/bindings';
 import type { ApiResponse, ApiSuccessResponse } from '.';
 import { apiUrl } from '../utils/url';
 
@@ -17,7 +17,7 @@ export const getFeedStats = async () =>
 
 export const refreshFeeds = async () => wretch(apiUrl('/feeds/refresh')).post({}).json<ApiSuccessResponse>();
 
-export const addFeed = async (params: { url: string }) =>
+export const createFeed = async (params: CreateFeedData) =>
   wretch(apiUrl('/feeds'))
     .post(params)
     .json<ApiResponse<Feed>>()
@@ -33,3 +33,16 @@ export const refreshFeed = async (uuid: string) =>
   wretch(apiUrl(`/feeds/${uuid}/refresh`))
     .post()
     .json<ApiSuccessResponse>();
+
+export const updateFeedAsRead = async (uuid: string) =>
+  wretch(apiUrl(`/feeds/${uuid}/read`))
+    .post()
+    .json<ApiSuccessResponse>();
+
+export const updateFeedFolders = async (data: { uuid: string } & UpdateFeedFoldersData) => {
+  const { uuid, ...rest } = data;
+
+  return wretch(apiUrl(`/feeds/${uuid}/folders`))
+    .patch(rest)
+    .json<ApiSuccessResponse>();
+};
