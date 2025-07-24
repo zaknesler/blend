@@ -1,6 +1,6 @@
 import { createQuery } from '@tanstack/solid-query';
 import { HiOutlineCheck } from 'solid-icons/hi';
-import { type Component, Match, Switch, createSignal } from 'solid-js';
+import { type Component, createSignal, Match, Switch } from 'solid-js';
 import { getFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
 import { useFeedRead } from '~/hooks/queries/use-feed-read';

@@ -1,6 +1,6 @@
-import { type NullableBounds, createElementBounds } from '@solid-primitives/bounds';
+import { createElementBounds, type NullableBounds } from '@solid-primitives/bounds';
 import { HiOutlineInbox } from 'solid-icons/hi';
-import { type Component, For, Match, Show, Switch, createEffect, createSignal } from 'solid-js';
+import { type Component, createEffect, createSignal, For, Match, Show, Switch } from 'solid-js';
 import { useEntries } from '~/contexts/entries-context';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { Empty } from '../ui/empty';

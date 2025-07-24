@@ -1,6 +1,6 @@
 import { A, type AnchorProps } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
-import { type Component, Show, createUniqueId, mergeProps, splitProps } from 'solid-js';
+import { type Component, createUniqueId, mergeProps, Show, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 
 type LogoProps = Omit<AnchorProps, 'href'> & {

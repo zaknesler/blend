@@ -2,7 +2,7 @@ import { createElementBounds } from '@solid-primitives/bounds';
 import { useBeforeLeave } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { HiOutlineArrowPath, HiOutlineCheck } from 'solid-icons/hi';
-import { Match, Show, Switch, createEffect, createSignal } from 'solid-js';
+import { createEffect, createSignal, Match, Show, Switch } from 'solid-js';
 import { Portal } from 'solid-js/web';
 import { EntryList } from '~/components/entry/entry-list';
 import { FeedHeader } from '~/components/feed/feed-header';

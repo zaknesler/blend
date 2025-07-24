@@ -5,7 +5,7 @@ import {
   type DropdownMenuTriggerProps,
 } from '@kobalte/core/dropdown-menu';
 import type { KbdKey } from '@solid-primitives/keyboard';
-import { type VariantProps, cx } from 'class-variance-authority';
+import { cx, type VariantProps } from 'class-variance-authority';
 import type { ClassValue } from 'class-variance-authority/types';
 import type { IconTypes } from 'solid-icons';
 import { HiOutlineEllipsisHorizontal } from 'solid-icons/hi';

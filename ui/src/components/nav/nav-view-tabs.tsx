@@ -1,6 +1,6 @@
 import { useNavigate } from '@solidjs/router';
 import { DEFAULTS } from '~/constants/query';
-import { VIEWS, VIEW_LABELS } from '~/constants/views';
+import { VIEW_LABELS, VIEWS } from '~/constants/views';
 import { useQueryState } from '~/contexts/query-state-context';
 import type { View } from '~/types/bindings';
 import { formatQueryString } from '~/utils/query';

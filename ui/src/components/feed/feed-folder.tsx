@@ -3,7 +3,7 @@ import { Collapsible } from '@kobalte/core/collapsible';
 import { useNavigate } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { HiOutlineChevronRight } from 'solid-icons/hi';
-import { type ParentComponent, createSignal } from 'solid-js';
+import { createSignal, type ParentComponent } from 'solid-js';
 import * as feedClasses from '~/constants/ui/feed';
 import { useQueryState } from '~/contexts/query-state-context';
 

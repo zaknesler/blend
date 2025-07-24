@@ -3,8 +3,8 @@ import { CreateFeedModal } from '~/components/modals/create-feed';
 import { CreateFolderModal } from '~/components/modals/create-folder';
 import { MoveFeedModal } from '~/components/modals/move-feed';
 import { EntriesContext, makeEntriesContext } from '~/contexts/entries-context';
-import { NotificationContext, makeNotificationContext } from '~/contexts/notification-context';
-import { QueryStateContext, makeQueryStateContext } from '~/contexts/query-state-context';
+import { makeNotificationContext, NotificationContext } from '~/contexts/notification-context';
+import { makeQueryStateContext, QueryStateContext } from '~/contexts/query-state-context';
 import { useShortcuts } from '~/hooks/use-shortcuts';
 
 const SidebarPanel = lazy(() => import('~/components/panels/sidebar-panel'));

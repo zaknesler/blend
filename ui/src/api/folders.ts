@@ -1,7 +1,7 @@
 import wretch from 'wretch';
 import type { CreateFolderData, Folder, FolderFeedMap, UpdateFolderFeedsData } from '~/types/bindings';
-import type { ApiResponse, ApiSuccessResponse } from '.';
 import { apiUrl } from '../utils/url';
+import type { ApiResponse, ApiSuccessResponse } from '.';
 
 export const getFolders = async () =>
   wretch(apiUrl('/folders'))

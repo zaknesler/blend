@@ -1,7 +1,7 @@
 import { cx } from 'class-variance-authority';
 import type { IconTypes } from 'solid-icons';
 import type { ParentComponent } from 'solid-js';
-import { Dynamic, Show, mergeProps } from 'solid-js/web';
+import { Dynamic, mergeProps, Show } from 'solid-js/web';
 import styles from './styles.module.css';
 
 type EmptyProps = {

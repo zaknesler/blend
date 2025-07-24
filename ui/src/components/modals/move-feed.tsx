@@ -3,7 +3,7 @@ import { useNavigate } from '@solidjs/router';
 import { createMutation } from '@tanstack/solid-query';
 import { cx } from 'class-variance-authority';
 import { HiSolidCheckCircle } from 'solid-icons/hi';
-import { For, Show, createEffect, createSignal } from 'solid-js';
+import { createEffect, createSignal, For, Show } from 'solid-js';
 import { getErrorMessage } from '~/api';
 import { updateFeedFolders } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';

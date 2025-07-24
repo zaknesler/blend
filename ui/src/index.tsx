@@ -1,6 +1,6 @@
 import { lazy } from 'solid-js';
 import { render } from 'solid-js/web';
-import { ViewportContext, makeViewportContext } from './contexts/viewport-context';
+import { makeViewportContext, ViewportContext } from './contexts/viewport-context';
 import 'solid-devtools';
 import './styles/app.css';
 

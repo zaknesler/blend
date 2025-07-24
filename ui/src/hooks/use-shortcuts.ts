@@ -1,4 +1,4 @@
-import { type KbdKey, createShortcut } from '@solid-primitives/keyboard';
+import { createShortcut, type KbdKey } from '@solid-primitives/keyboard';
 import { useQueryState } from '~/contexts/query-state-context';
 import { modalStore, openModal } from '~/stores/modal';
 import { View } from '~/types/bindings';

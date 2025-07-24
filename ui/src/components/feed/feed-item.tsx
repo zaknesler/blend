@@ -10,7 +10,7 @@ import {
   HiOutlineSquare3Stack3d,
   HiOutlineTrash,
 } from 'solid-icons/hi';
-import { type Component, type JSX, Match, Show, Switch, createMemo, splitProps } from 'solid-js';
+import { type Component, createMemo, type JSX, Match, Show, Switch, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { Transition } from 'solid-transition-group';
 import * as feedClasses from '~/constants/ui/feed';

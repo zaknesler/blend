@@ -1,7 +1,7 @@
 import type { PolymorphicProps } from '@kobalte/core/polymorphic';
 import * as TooltipPrimitive from '@kobalte/core/tooltip';
 import type { VariantProps } from 'class-variance-authority';
-import { type JSX, Show, type ValidComponent, mergeProps, splitProps } from 'solid-js';
+import { type JSX, mergeProps, Show, splitProps, type ValidComponent } from 'solid-js';
 import * as classes from '~/constants/ui/tooltip';
 
 const TooltipBase = (props: TooltipPrimitive.TooltipRootProps) => <TooltipPrimitive.Root {...props} />;

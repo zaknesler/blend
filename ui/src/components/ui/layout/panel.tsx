@@ -1,5 +1,5 @@
 import { cx } from 'class-variance-authority';
-import { type JSX, type ParentComponent, mergeProps, splitProps } from 'solid-js';
+import { type JSX, mergeProps, type ParentComponent, splitProps } from 'solid-js';
 
 type PanelProps = JSX.IntrinsicElements['div'] & {
   overflow?: boolean;
