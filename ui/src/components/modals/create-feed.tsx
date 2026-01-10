@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/solid-query';
 import { createEffect, createSignal, Show } from 'solid-js';
 import { getErrorMessage } from '~/api';
 import { createFeed } from '~/api/feeds';
+import { ModalName } from '~/constants/modals';
 import { QUERY_KEYS } from '~/constants/query';
 import { closeModal, isModalOpen } from '~/stores/modal';
 import { Button } from '../ui/button';
@@ -35,7 +36,7 @@ export const CreateFeedModal = () => {
 
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS] });
     navigate(`/feeds/${feed.uuid}`);
-    closeModal('createFeed');
+    closeModal(ModalName.CreateFeed);
   };
 
   const handleOpenAutoFocus = (event: Event) => {
@@ -45,7 +46,7 @@ export const CreateFeedModal = () => {
 
   // Reset form state on close
   createEffect(() => {
-    if (isModalOpen('createFeed')) return;
+    if (isModalOpen(ModalName.CreateFeed)) return;
 
     // Delay 150ms to let animation play out
     setTimeout(() => {

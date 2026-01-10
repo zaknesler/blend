@@ -13,6 +13,7 @@ import {
 import { type Component, createMemo, type JSX, Match, Show, Switch, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { Transition } from 'solid-transition-group';
+import { ModalName } from '~/constants/modals';
 import * as feedClasses from '~/constants/ui/feed';
 import { useNotifications } from '~/contexts/notification-context';
 import { useQueryState } from '~/contexts/query-state-context';
@@ -82,7 +83,7 @@ export const FeedItem: Component<FeedItemProps> = props => {
       <ContextMenu.Item
         label="Move"
         disabled={isRefreshing()}
-        onSelect={() => openModal('moveFeed', { feed_uuid: props.feed.uuid })}
+        onSelect={() => openModal(ModalName.MoveFeed, { feed_uuid: props.feed.uuid })}
         icon={HiOutlineFolder}
       />
       <ContextMenu.Item label="Rename" disabled icon={HiOutlinePencilSquare} />

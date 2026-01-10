@@ -6,6 +6,7 @@ import { HiSolidCheckCircle } from 'solid-icons/hi';
 import { createEffect, createSignal, For, Show } from 'solid-js';
 import { getErrorMessage } from '~/api';
 import { updateFeedFolders } from '~/api/feeds';
+import { ModalName } from '~/constants/modals';
 import { QUERY_KEYS } from '~/constants/query';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { useFolders } from '~/hooks/queries/use-folders';
@@ -34,8 +35,8 @@ export const MoveFeedModal = () => {
   const invalidateFolders = useInvalidateFolders();
 
   const getFeed = () => {
-    if (!isModalOpen('moveFeed')) return null;
-    return feeds.findFeed(getModalData('moveFeed').feed_uuid);
+    if (!isModalOpen(ModalName.MoveFeed)) return null;
+    return feeds.findFeed(getModalData(ModalName.MoveFeed).feed_uuid);
   };
 
   const update = useMutation(() => ({
@@ -50,20 +51,20 @@ export const MoveFeedModal = () => {
     event.stopPropagation();
 
     await update.mutateAsync({
-      uuid: getModalData('moveFeed').feed_uuid,
+      uuid: getModalData(ModalName.MoveFeed).feed_uuid,
       folder_uuids: folderUuids(),
     });
 
     invalidateFolders();
     navigate('/');
-    closeModal('moveFeed');
+    closeModal(ModalName.MoveFeed);
   };
 
   const [folderUuids, setFolderUuids] = createSignal<string[]>([]);
 
   // Reset form state on close
   createEffect(() => {
-    if (isModalOpen('moveFeed')) return;
+    if (isModalOpen(ModalName.MoveFeed)) return;
 
     // Delay 150ms to let animation play out
     setTimeout(() => {

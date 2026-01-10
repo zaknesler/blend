@@ -1,4 +1,5 @@
 import { createShortcut, type KbdKey } from '@solid-primitives/keyboard';
+import { ModalName } from '~/constants/modals';
 import { useQueryState } from '~/contexts/query-state-context';
 import { modalStore, openModal } from '~/stores/modal';
 import { View } from '~/types/bindings';
@@ -48,7 +49,7 @@ export const useShortcuts = () => {
 
   createShortcut(
     SHORTCUTS.OPEN_ADD_FEED_MODAL,
-    handle(() => openModal('createFeed')),
+    handle(() => openModal(ModalName.CreateFeed)),
     DEFAULT_OPTIONS,
   );
 

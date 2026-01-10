@@ -1,12 +1,5 @@
 import { createStore } from 'solid-js/store';
-
-export type ModalData = {
-  createFeed: undefined;
-  createFolder: undefined;
-  moveFeed: { feed_uuid: string };
-};
-
-export type ModalName = keyof ModalData;
+import type { ModalData, ModalName } from '~/constants/modals';
 
 type ModalType<M extends ModalName> = {
   open: boolean;

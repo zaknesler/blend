@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/solid-query';
 import { createEffect, createSignal, Show } from 'solid-js';
 import { getErrorMessage } from '~/api';
 import { createFolder } from '~/api/folders';
+import { ModalName } from '~/constants/modals';
 import { QUERY_KEYS } from '~/constants/query';
 import { useInvalidateFolders } from '~/hooks/queries/use-invalidate-folders';
 import { closeModal, isModalOpen } from '~/stores/modal';
@@ -45,7 +46,7 @@ export const CreateFolderModal = () => {
 
     invalidateFolders();
     navigate(`/folder/${folder.slug}`);
-    closeModal('createFolder');
+    closeModal(ModalName.CreateFolder);
   };
 
   const handleOpenAutoFocus = (event: Event) => {
@@ -55,7 +56,7 @@ export const CreateFolderModal = () => {
 
   // Reset form state on close
   createEffect(() => {
-    if (isModalOpen('createFolder')) return;
+    if (isModalOpen(ModalName.CreateFolder)) return;
 
     // Delay 150ms to let animation play out
     setTimeout(() => {

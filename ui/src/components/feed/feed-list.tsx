@@ -1,6 +1,7 @@
 import { Button } from '@kobalte/core/button';
 import { HiSolidPlusSmall } from 'solid-icons/hi';
 import { For, Match, Show, Switch } from 'solid-js';
+import { ModalName } from '~/constants/modals';
 import { useGroupedFeeds } from '~/hooks/queries/use-grouped-feeds';
 import { openModal } from '~/stores/modal';
 import { FeedEmptyItem } from './feed-empty-item';
@@ -11,7 +12,7 @@ export const FeedList = () => {
   const { feeds, folders, getFoldersWithFeeds, getUngroupedFeeds } = useGroupedFeeds();
 
   const handleOpenNewFolder = () => {
-    openModal('createFolder');
+    openModal(ModalName.CreateFolder);
   };
 
   return (

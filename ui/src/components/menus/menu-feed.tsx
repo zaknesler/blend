@@ -1,5 +1,6 @@
 import { HiOutlineArrowPath, HiOutlineFolder, HiOutlinePencilSquare, HiOutlineTrash } from 'solid-icons/hi';
 import { type Component, mergeProps } from 'solid-js';
+import { ModalName } from '~/constants/modals';
 import { useNotifications } from '~/contexts/notification-context';
 import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
 import { openModal } from '~/stores/modal';
@@ -35,7 +36,7 @@ export const FeedMenu: Component<FeedMenuProps> = props => {
 
       <Menu.Item
         label="Move"
-        onSelect={() => openModal('moveFeed', { feed_uuid: props.uuid })}
+        onSelect={() => openModal(ModalName.MoveFeed, { feed_uuid: props.uuid })}
         icon={HiOutlineFolder}
         disabled={isRefreshing()}
       />
