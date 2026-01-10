@@ -31,7 +31,7 @@ type TabsProps = {
 export const Tabs: Component<TabsProps> = props => {
   return (
     <BaseTabs value={props.value} onChange={props.onChange} class={wrapperClass}>
-      <BaseTabs.List class="-space-x-1 relative flex w-full">
+      <BaseTabs.List class="relative flex w-full -space-x-1">
         <For each={props.items}>
           {item => (
             <BaseTabs.Trigger class={triggerClass} value={item.value}>

@@ -1,5 +1,5 @@
 import { useNavigate } from '@solidjs/router';
-import { createMutation, useQueryClient } from '@tanstack/solid-query';
+import { useMutation, useQueryClient } from '@tanstack/solid-query';
 import { createEffect, createSignal, Show } from 'solid-js';
 import { getErrorMessage } from '~/api';
 import { createFeed } from '~/api/feeds';
@@ -17,7 +17,7 @@ export const CreateFeedModal = () => {
   const [value, setValue] = createSignal('');
   const [inputElement, setInputElement] = createSignal<HTMLDivElement>();
 
-  const create = createMutation(() => ({
+  const create = useMutation(() => ({
     mutationKey: [QUERY_KEYS.FEEDS_CREATE],
     mutationFn: createFeed,
   }));

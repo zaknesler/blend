@@ -1,9 +1,9 @@
-import { createQuery } from '@tanstack/solid-query';
+import { useQuery } from '@tanstack/solid-query';
 import { getFeeds } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
 
 export const useFeeds = () => {
-  const query = createQuery(() => ({
+  const query = useQuery(() => ({
     queryKey: [QUERY_KEYS.FEEDS],
     queryFn: getFeeds,
     refetchOnWindowFocus: false,

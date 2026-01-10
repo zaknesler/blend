@@ -1,5 +1,5 @@
 import { debounce, leading } from '@solid-primitives/scheduled';
-import { createInfiniteQuery } from '@tanstack/solid-query';
+import { useInfiniteQuery } from '@tanstack/solid-query';
 import { createEffect, createSignal } from 'solid-js';
 import type { ApiPaginatedResponse } from '~/api';
 import { getEntries } from '~/api/entries';
@@ -21,7 +21,7 @@ export const useInfiniteEntries = () => {
 
   const entry = useEntry(() => ({ entry_uuid: state.params.entry_uuid }));
 
-  const query = createInfiniteQuery<ApiPaginatedResponse<Entry[]>>(() => ({
+  const query = useInfiniteQuery<ApiPaginatedResponse<Entry[]>>(() => ({
     queryKey: [QUERY_KEYS.ENTRIES_INDEX, state.params.feed_uuid, state.getView()],
     queryFn: fetchParams =>
       getEntries({

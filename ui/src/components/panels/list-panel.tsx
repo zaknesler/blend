@@ -63,7 +63,7 @@ export default () => {
       <Portal>
         <button
           type="button"
-          class="-translate-y-[9999px] absolute top-2 left-2 z-[9999] hidden select-none appearance-none rounded-lg border bg-white px-3 py-2 text-black text-sm shadow-lg focus-visible:translate-y-0 focus-visible:border-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-opacity-30 active:bg-gray-100 md:flex dark:bg-gray-950 dark:text-gray-300 dark:focus-visible:border-gray-400 dark:focus-visible:ring-gray-600"
+          class="absolute top-2 left-2 z-[9999] hidden -translate-y-[9999px] select-none appearance-none rounded-lg border bg-white px-3 py-2 text-black text-sm shadow-lg focus-visible:translate-y-0 focus-visible:border-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-opacity-30 active:bg-gray-100 md:flex dark:bg-gray-950 dark:text-gray-300 dark:focus-visible:border-gray-400 dark:focus-visible:ring-gray-600"
           tabindex={1}
           onClick={handleSkipToContent}
         >

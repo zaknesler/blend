@@ -1,5 +1,5 @@
 import { useNavigate } from '@solidjs/router';
-import { createMutation } from '@tanstack/solid-query';
+import { useMutation } from '@tanstack/solid-query';
 import { createEffect, createSignal, Show } from 'solid-js';
 import { getErrorMessage } from '~/api';
 import { createFolder } from '~/api/folders';
@@ -23,7 +23,7 @@ export const CreateFolderModal = () => {
 
   const invalidateFolders = useInvalidateFolders();
 
-  const create = createMutation(() => ({
+  const create = useMutation(() => ({
     mutationKey: [QUERY_KEYS.FOLDERS_CREATE],
     mutationFn: createFolder,
   }));

@@ -1,4 +1,4 @@
-import { createMutation, useQueryClient } from '@tanstack/solid-query';
+import { useMutation, useQueryClient } from '@tanstack/solid-query';
 import { updateEntryAsRead, updateEntryAsUnread } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import { useQueryState } from '~/contexts/query-state-context';
@@ -9,22 +9,26 @@ export const useEntryRead = () => {
   const queryClient = useQueryClient();
   const invalidateStats = useInvalidateStats();
 
-  const markAsRead = createMutation(() => ({
+  const markAsRead = useMutation(() => ({
     mutationKey: [QUERY_KEYS.ENTRIES_VIEW_READ],
     mutationFn: updateEntryAsRead,
   }));
 
-  const markAsUnread = createMutation(() => ({
+  const markAsUnread = useMutation(() => ({
     mutationKey: [QUERY_KEYS.ENTRIES_VIEW_UNREAD],
     mutationFn: updateEntryAsUnread,
   }));
 
   const invalidate = (entry_uuid: string, invalidateIndex: boolean) => {
     invalidateStats();
-    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_VIEW, entry_uuid] });
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEYS.ENTRIES_VIEW, entry_uuid],
+    });
 
     if (invalidateIndex)
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX, undefined, state.getView()] });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.ENTRIES_INDEX, undefined, state.getView()],
+      });
   };
 
   const handleMarkRead = (entry_uuid: string, invalidateIndex = false) =>

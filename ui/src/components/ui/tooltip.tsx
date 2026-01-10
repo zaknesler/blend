@@ -27,7 +27,7 @@ const TooltipContent = <T extends ValidComponent = 'div'>(props: PolymorphicProp
         })}
       >
         <Show when={merge.showArrow}>
-          <Tooltip.Arrow class="-mb-px z-50" />
+          <Tooltip.Arrow class="z-50 -mb-px" />
         </Show>
 
         {merge.children}

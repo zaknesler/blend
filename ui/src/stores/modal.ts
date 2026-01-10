@@ -22,16 +22,16 @@ export const [modalStore, setModalStore] = createStore<{
 });
 
 export const openModal = <M extends ModalName>(modal: M, data?: ModalData[M]) => {
-  // @ts-ignore weird type thing I can't fix
+  // @ts-expect-error weird type thing I can't fix
   setModalStore(modal, { open: true, data });
 };
 
 export const closeModal = <M extends ModalName>(modal: M) => {
-  // @ts-ignore weird type thing I can't fix
+  // @ts-expect-error weird type thing I can't fix
   setModalStore(modal, { open: false, data: undefined });
 };
 
-// @ts-ignore weird type thing I can't fix
+// @ts-expect-error weird type thing I can't fix
 export const getModalData = <M extends ModalName>(modal: M): ModalData[M] => modalStore[modal]?.data;
 
 export const isModalOpen = (modal: ModalName) => modalStore[modal]?.open;

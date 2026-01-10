@@ -112,7 +112,8 @@
 
   /* Fix padding for multiple images in a figure */
   .prose figure img:has(+ img) {
-    margin-bottom: 2em;
+    /* biome-ignore lint/complexity/noImportantStyles: we need to override tailwind */
+    margin-bottom: 2em !important;
   }
 
   .overflow-touch-scrolling {
