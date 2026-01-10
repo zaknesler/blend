@@ -1,7 +1,8 @@
 import { Dialog, type DialogContentProps, type DialogRootProps } from '@kobalte/core/dialog';
 import { HiOutlineXMark } from 'solid-icons/hi';
 import { type ParentComponent, splitProps } from 'solid-js';
-import { isModalOpen, type ModalName, setModalStore } from '~/stores/modal';
+import type { ModalName } from '~/constants/modals';
+import { isModalOpen, setModalStore } from '~/stores/modal';
 
 type ModalProps = Omit<DialogRootProps, 'modal' | 'open' | 'onOpenChange'> &
   Pick<DialogContentProps, 'onOpenAutoFocus'> & {
