@@ -71,7 +71,7 @@ export const CreateFolderModal = () => {
 
   return (
     <Modal
-      modal="createFolder"
+      modal={ModalName.CreateFolder}
       title="Create new folder"
       description="Folders are top-level groups for your feeds."
       onOpenAutoFocus={handleOpenAutoFocus}

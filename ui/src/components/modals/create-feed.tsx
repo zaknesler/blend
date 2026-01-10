@@ -57,7 +57,7 @@ export const CreateFeedModal = () => {
 
   return (
     <Modal
-      modal="createFeed"
+      modal={ModalName.CreateFeed}
       title="Add a new feed"
       description="Add an RSS feed link or the website's URL. Feed entries will be fetched in the background."
       onOpenAutoFocus={handleOpenAutoFocus}

@@ -75,7 +75,7 @@ export const MoveFeedModal = () => {
 
   return (
     <Modal
-      modal="moveFeed"
+      modal={ModalName.MoveFeed}
       title={`Move "${getFeed()?.title}"`}
       description="Keep your feeds organized using folders. You may include a feed in multiple folders."
     >

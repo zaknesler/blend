@@ -1,5 +1,5 @@
 import { createStore } from 'solid-js/store';
-import type { ModalData, ModalName } from '~/constants/modals';
+import { type ModalData, ModalName } from '~/constants/modals';
 
 type ModalType<M extends ModalName> = {
   open: boolean;
@@ -9,9 +9,9 @@ type ModalType<M extends ModalName> = {
 export const [modalStore, setModalStore] = createStore<{
   [K in ModalName]: ModalType<K>;
 }>({
-  createFeed: { open: false },
-  createFolder: { open: false },
-  moveFeed: { open: false },
+  [ModalName.CreateFeed]: { open: false },
+  [ModalName.CreateFolder]: { open: false },
+  [ModalName.MoveFeed]: { open: false },
 });
 
 export const openModal = <M extends ModalName>(modal: M, data?: ModalData[M]) => {
@@ -24,7 +24,6 @@ export const closeModal = <M extends ModalName>(modal: M) => {
   setModalStore(modal, { open: false, data: undefined });
 };
 
-// @ts-expect-error weird type thing I can't fix
-export const getModalData = <M extends ModalName>(modal: M): ModalData[M] => modalStore[modal]?.data;
+export const getModalData = <M extends ModalName>(modal: M): ModalData[M] => modalStore[modal].data as ModalData[M];
 
 export const isModalOpen = (modal: ModalName) => modalStore[modal]?.open;

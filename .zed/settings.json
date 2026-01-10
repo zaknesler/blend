@@ -1,4 +1,11 @@
 {
+  "auto_install_extensions": {
+    "biome": true,
+    "crates-lsp": true,
+    "emmet": true,
+    "html": true,
+    "toml": true,
+  },
   "format_on_save": "on",
   "languages": {
     "JavaScript": {
