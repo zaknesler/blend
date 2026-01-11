@@ -1,5 +1,7 @@
+const LOCALE = 'en-US';
+
 export const formatDate = (value: string) =>
-  new Intl.DateTimeFormat('en-US', {
+  new Intl.DateTimeFormat(LOCALE, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -8,13 +10,13 @@ export const formatDate = (value: string) =>
 export const formatDateTime = (value: string) => {
   const date = new Date(value);
 
-  const formattedDate = new Intl.DateTimeFormat('en-US', {
+  const formattedDate = new Intl.DateTimeFormat(LOCALE, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
   }).format(date);
 
-  const formattedTime = new Intl.DateTimeFormat('en-US', {
+  const formattedTime = new Intl.DateTimeFormat(LOCALE, {
     hour: 'numeric',
     minute: 'numeric',
     hour12: true,
@@ -23,4 +25,4 @@ export const formatDateTime = (value: string) => {
   return `${formattedDate} at ${formattedTime}`;
 };
 
-export const formatNumber = (value: number | string) => Number(value).toLocaleString();
+export const formatNumber = (value: number | string) => Number(value).toLocaleString(LOCALE);

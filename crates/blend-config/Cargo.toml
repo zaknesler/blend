@@ -7,7 +7,7 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
-directories = "5.0"
+directories = "6.0"
 figment = { version = "0.10", features = ["env", "toml"] }
 rust-embed = { workspace = true, features = ["interpolate-folder-path"] }
 serde = { workspace = true }
