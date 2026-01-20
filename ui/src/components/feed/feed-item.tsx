@@ -22,8 +22,8 @@ import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
 import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
 import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
 import { openModal } from '~/stores/modal';
-import type { Feed } from '~/types/bindings';
 import { formatNumber } from '~/utils/format';
+import type { Feed } from '~types/bindings';
 import { ContextMenu } from '../menus/context-menu';
 import { Spinner } from '../ui/spinner';
 

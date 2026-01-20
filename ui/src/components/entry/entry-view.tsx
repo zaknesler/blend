@@ -3,8 +3,8 @@ import { createEffect, createSignal, type JSX, type ParentComponent, Show, split
 import { useQueryState } from '~/contexts/query-state-context';
 import { useEntryRead } from '~/hooks/queries/use-entry-read';
 import { useFeeds } from '~/hooks/queries/use-feeds';
-import type { Entry } from '~/types/bindings';
 import { formatDateTime } from '~/utils/format';
+import type { Entry } from '~types/bindings';
 import { Button } from '../ui/button';
 import { Link } from '../ui/link';
 

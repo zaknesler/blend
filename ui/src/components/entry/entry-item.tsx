@@ -13,8 +13,8 @@ import { IDS } from '~/constants/elements';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useEntry } from '~/hooks/queries/use-entry';
 import { useFeeds } from '~/hooks/queries/use-feeds';
-import type { Entry } from '~/types/bindings';
 import { formatDate } from '~/utils/format';
+import type { Entry } from '~types/bindings';
 import { ContextMenu } from '../menus/context-menu';
 
 type EntryItemProps = Omit<AnchorProps, 'href' | 'activeClass' | 'inactiveClass'> & {

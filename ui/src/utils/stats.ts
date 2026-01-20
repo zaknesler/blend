@@ -1,4 +1,4 @@
-import type { FeedStats } from '~/types/bindings';
+import type { FeedStats } from '~types/bindings';
 
 /**
  * Sum a list of feed stats items into a single object of values.

@@ -5,8 +5,8 @@ import type { ApiPaginatedResponse } from '~/api';
 import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import { useViewport } from '~/contexts/viewport-context';
-import type { Entry } from '~/types/bindings';
 import { entryMayExistInView, findEntryItemElement } from '~/utils/entries';
+import type { Entry } from '~types/bindings';
 import { useQueryState } from '../../contexts/query-state-context';
 import { useEntry } from './use-entry';
 

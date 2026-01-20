@@ -18,9 +18,10 @@
     "noFallthroughCasesInSwitch": true,
     "types": ["vite/client", "vitest"],
     "paths": {
-      "~/*": ["./ui/src/*"]
-    }
+      "~/*": ["./ui/src/*"],
+      "~types/*": ["./ui/types/*"],
+    },
   },
   "include": ["ui"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "./tsconfig.node.json" }],
 }

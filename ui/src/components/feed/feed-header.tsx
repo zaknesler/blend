@@ -1,8 +1,8 @@
 import { type Component, Match, Show, Switch } from 'solid-js';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
-import { View } from '~/types/bindings';
 import { formatNumber } from '~/utils/format';
+import { View } from '~types/bindings';
 
 type FeedHeaderProps = {
   title?: string | null;

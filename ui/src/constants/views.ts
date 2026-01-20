@@ -1,4 +1,4 @@
-import { View } from '~/types/bindings';
+import { View } from '~types/bindings';
 
 export const VIEWS = [View.Unread, View.Saved, View.All];
 export const VIEW_LABELS: Record<View, string> = {

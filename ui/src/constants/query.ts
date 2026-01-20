@@ -1,4 +1,4 @@
-import { type FilterEntriesData, SortDirection, View } from '~/types/bindings';
+import { type FilterEntriesData, SortDirection, View } from '~types/bindings';
 
 export const QUERY_KEYS = {
   // Feeds

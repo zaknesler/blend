@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { type Entry, SortDirection } from '~/types/bindings';
+import { type Entry, SortDirection } from '~types/bindings';
 import { getEntryComparator } from '.';
 
 const fakeEntry = (params: Pick<Entry, 'id' | 'published_at' | 'updated_at'>) => ({

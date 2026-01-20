@@ -1,8 +1,8 @@
 import { useParams, useSearchParams } from '@solidjs/router';
 import { createContext, useContext } from 'solid-js';
 import { DEFAULTS, type QueryParams, type RouterParams } from '~/constants/query';
-import type { SortDirection, View } from '~/types/bindings';
 import { formatQueryString } from '~/utils/query';
+import type { SortDirection, View } from '~types/bindings';
 
 type QueryStateContext = ReturnType<typeof makeQueryStateContext>;
 export const QueryStateContext = createContext<QueryStateContext>();
