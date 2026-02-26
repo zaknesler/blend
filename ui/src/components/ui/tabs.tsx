@@ -1,6 +1,6 @@
 import { Tabs as BaseTabs } from '@kobalte/core/tabs';
 import { cx } from 'class-variance-authority';
-import { type Component, For } from 'solid-js';
+import { For } from 'solid-js';
 
 const wrapperClass = cx(
   '-mx-1 xl:-mt-1 scrollbar-hide flex select-none self-stretch overflow-auto rounded-xl font-medium text-xs backdrop-blur-sm',
@@ -28,7 +28,7 @@ type TabsProps = {
   onChange: (value: string) => void;
 };
 
-export const Tabs: Component<TabsProps> = props => {
+export const Tabs = (props: TabsProps) => {
   return (
     <BaseTabs value={props.value} onChange={props.onChange} class={wrapperClass}>
       <BaseTabs.List class="relative flex w-full -space-x-1">

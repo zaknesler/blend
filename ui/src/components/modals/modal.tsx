@@ -1,6 +1,6 @@
 import { Dialog, type DialogContentProps, type DialogRootProps } from '@kobalte/core/dialog';
 import { HiOutlineXMark } from 'solid-icons/hi';
-import { type ParentComponent, splitProps } from 'solid-js';
+import { type ParentProps, splitProps } from 'solid-js';
 import type { ModalName } from '~/constants/modals';
 import { isModalOpen, setModalStore } from '~/stores/modal';
 
@@ -11,7 +11,7 @@ type ModalProps = Omit<DialogRootProps, 'modal' | 'open' | 'onOpenChange'> &
     description: string;
   };
 
-export const Modal: ParentComponent<ModalProps> = props => {
+export const Modal = (props: ParentProps<ModalProps>) => {
   const [local, rest] = splitProps(props, ['title', 'modal', 'description', 'onOpenAutoFocus', 'children']);
 
   return (

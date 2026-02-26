@@ -1,7 +1,7 @@
 import { useNavigate } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
 import { HiOutlineQueueList, HiOutlineXMark } from 'solid-icons/hi';
-import { type Component, createSignal, type Setter, Show } from 'solid-js';
+import { createSignal, type Setter, Show } from 'solid-js';
 import { useQueryState } from '~/contexts/query-state-context';
 import { AppMenu } from '../menus/menu-app';
 import { ActionButton } from '../ui/button/action-button';
@@ -14,7 +14,7 @@ type NavRowProps = {
   showCloseButton: boolean;
 };
 
-export const NavRow: Component<NavRowProps> = props => {
+export const NavRow = (props: NavRowProps) => {
   const state = useQueryState();
   const navigate = useNavigate();
 

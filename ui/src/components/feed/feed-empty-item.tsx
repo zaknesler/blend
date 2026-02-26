@@ -1,11 +1,10 @@
 import { cx } from 'class-variance-authority';
-import type { Component } from 'solid-js';
 
 type FeedEmptyItemProps = {
   class?: string;
 };
 
-export const FeedEmptyItem: Component<FeedEmptyItemProps> = props => {
+export const FeedEmptyItem = (props: FeedEmptyItemProps) => {
   return (
     <div
       class={cx(

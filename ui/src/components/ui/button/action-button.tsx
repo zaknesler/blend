@@ -2,7 +2,7 @@ import { Button, type ButtonRootProps } from '@kobalte/core/button';
 import type { TooltipTriggerProps } from '@kobalte/core/tooltip';
 import { cx } from 'class-variance-authority';
 import type { IconTypes } from 'solid-icons';
-import { type Component, type JSX, splitProps } from 'solid-js';
+import { type JSX, splitProps } from 'solid-js';
 import { Dynamic, Show } from 'solid-js/web';
 import * as classes from '~/constants/ui/button';
 import { Tooltip } from '../tooltip';
@@ -16,7 +16,7 @@ type ActionButtonProps = JSX.IntrinsicElements['button'] &
     href?: string;
   };
 
-export const ActionButton: Component<ActionButtonProps> = props => {
+export const ActionButton = (props: ActionButtonProps) => {
   const [local, rest] = splitProps(props, ['tooltip', 'icon', 'showCircle', 'class', 'href']);
 
   return (

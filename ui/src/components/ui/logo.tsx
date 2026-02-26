@@ -1,13 +1,13 @@
 import { A, type AnchorProps } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
-import { type Component, createUniqueId, mergeProps, Show, splitProps } from 'solid-js';
+import { createUniqueId, mergeProps, Show, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 
 type LogoProps = Omit<AnchorProps, 'href'> & {
   iconOnly?: boolean;
 };
 
-export const Logo: Component<LogoProps> = props => {
+export const Logo = (props: LogoProps) => {
   // Create a unique ID so the IDs don't clash when the component is used multiple times
   const id = createUniqueId();
 
@@ -93,7 +93,7 @@ export const Logo: Component<LogoProps> = props => {
   );
 };
 
-export const LogoSquare: Component<LogoProps> = props => {
+export const LogoSquare = (props: LogoProps) => {
   // Create a unique ID so the IDs don't clash when the component is used multiple times
   const id = createUniqueId();
 

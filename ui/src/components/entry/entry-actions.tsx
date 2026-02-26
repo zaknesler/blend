@@ -7,7 +7,6 @@ import {
   HiOutlineEnvelopeOpen,
   HiSolidBookmark,
 } from 'solid-icons/hi';
-import type { Component } from 'solid-js';
 import { useEntries } from '~/contexts/entries-context';
 import { useEntryRead } from '~/hooks/queries/use-entry-read';
 import { useEntrySaved } from '~/hooks/queries/use-entry-saved';
@@ -18,7 +17,7 @@ type EntryActionsProps = {
   entry: Entry;
 };
 
-export const EntryActions: Component<EntryActionsProps> = props => {
+export const EntryActions = (props: EntryActionsProps) => {
   const entries = useEntries();
   const entryRead = useEntryRead();
   const entrySaved = useEntrySaved();

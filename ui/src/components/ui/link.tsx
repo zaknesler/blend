@@ -1,10 +1,10 @@
 import { A, type AnchorProps } from '@solidjs/router';
 import { cx } from 'class-variance-authority';
-import type { Component, ParentProps } from 'solid-js';
+import type { ParentProps } from 'solid-js';
 
 type Props = ParentProps<AnchorProps>;
 
-export const Link: Component<Props> = props => (
+export const Link = (props: Props) => (
   <A
     {...props}
     class={cx(

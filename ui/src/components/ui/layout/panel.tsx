@@ -1,11 +1,11 @@
 import { cx } from 'class-variance-authority';
-import { type JSX, mergeProps, type ParentComponent, splitProps } from 'solid-js';
+import { type JSX, mergeProps, type ParentProps, splitProps } from 'solid-js';
 
 type PanelProps = JSX.IntrinsicElements['div'] & {
   overflow?: boolean;
 };
 
-export const Panel: ParentComponent<PanelProps> = props => {
+export const Panel = (props: ParentProps<PanelProps>) => {
   const [local, rest] = splitProps(props, ['class', 'overflow']);
   const merged = mergeProps({ overflow: true }, local);
 

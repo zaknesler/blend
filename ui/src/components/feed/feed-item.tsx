@@ -10,7 +10,7 @@ import {
   HiOutlineSquare3Stack3d,
   HiOutlineTrash,
 } from 'solid-icons/hi';
-import { type Component, createMemo, type JSX, Match, Show, Switch, splitProps } from 'solid-js';
+import { createMemo, type JSX, Match, Show, Switch, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { Transition } from 'solid-transition-group';
 import { ModalName } from '~/constants/modals';
@@ -31,7 +31,7 @@ type FeedItemProps = {
   feed: Feed;
 };
 
-export const FeedItem: Component<FeedItemProps> = props => {
+export const FeedItem = (props: FeedItemProps) => {
   const state = useQueryState();
   const location = useLocation();
 
@@ -138,7 +138,7 @@ type BaseFeedItemProps = Omit<AnchorProps, 'href' | 'title'> & {
   icon?: () => JSX.Element;
 };
 
-export const BaseFeedItem: Component<BaseFeedItemProps> = props => {
+export const BaseFeedItem = (props: BaseFeedItemProps) => {
   const [local, rest] = splitProps(props, [
     'href',
     'active',

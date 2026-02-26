@@ -1,5 +1,4 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import type { Component } from 'solid-js';
 
 const skeletonClass = cva('w-full animate-pulse rounded-lg', {
   variants: {
@@ -16,7 +15,7 @@ const skeletonClass = cva('w-full animate-pulse rounded-lg', {
 
 type SkeletonProps = VariantProps<typeof skeletonClass> & { class?: string };
 
-export const Skeleton: Component<SkeletonProps> = props => (
+export const Skeleton = (props: SkeletonProps) => (
   <div
     class={skeletonClass({
       class: props.class,

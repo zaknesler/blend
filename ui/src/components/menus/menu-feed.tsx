@@ -1,5 +1,5 @@
 import { HiOutlineArrowPath, HiOutlineFolder, HiOutlinePencilSquare, HiOutlineTrash } from 'solid-icons/hi';
-import { type Component, mergeProps } from 'solid-js';
+import { mergeProps } from 'solid-js';
 import { ModalName } from '~/constants/modals';
 import { useNotifications } from '~/contexts/notification-context';
 import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
@@ -10,7 +10,7 @@ type FeedMenuProps = MenuProps & {
   uuid: string;
 };
 
-export const FeedMenu: Component<FeedMenuProps> = props => {
+export const FeedMenu = (props: FeedMenuProps) => {
   const local = mergeProps(
     {
       triggerClass: 'size-5 rounded',

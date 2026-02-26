@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/solid-query';
 import { HiOutlineCheck } from 'solid-icons/hi';
-import { type Component, createSignal, Match, Switch } from 'solid-js';
+import { createSignal, Match, Switch } from 'solid-js';
 import { getFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
 import { useFeedRead } from '~/hooks/queries/use-feed-read';
@@ -12,7 +12,7 @@ type FeedInfoProps = {
   uuid: string;
 };
 
-export const FeedInfo: Component<FeedInfoProps> = props => {
+export const FeedInfo = (props: FeedInfoProps) => {
   const markFeedAsRead = useFeedRead();
   const feed = useQuery(() => ({
     queryKey: [QUERY_KEYS.FEEDS_VIEW, props.uuid],
