@@ -1,4 +1,4 @@
-import { createMutation, useQueryClient } from '@tanstack/solid-query';
+import { useMutation, useQueryClient } from '@tanstack/solid-query';
 import { updateEntryAsSaved, updateEntryAsUnsaved } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import { useQueryState } from '~/contexts/query-state-context';
@@ -9,12 +9,12 @@ export const useEntrySaved = () => {
   const queryClient = useQueryClient();
   const invalidateStats = useInvalidateStats();
 
-  const markAsSaved = createMutation(() => ({
+  const markAsSaved = useMutation(() => ({
     mutationKey: [QUERY_KEYS.ENTRIES_VIEW_SAVED],
     mutationFn: updateEntryAsSaved,
   }));
 
-  const markAsUnsaved = createMutation(() => ({
+  const markAsUnsaved = useMutation(() => ({
     mutationKey: [QUERY_KEYS.ENTRIES_VIEW_UNSAVED],
     mutationFn: updateEntryAsUnsaved,
   }));

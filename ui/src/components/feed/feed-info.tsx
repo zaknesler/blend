@@ -1,4 +1,4 @@
-import { createQuery } from '@tanstack/solid-query';
+import { useQuery } from '@tanstack/solid-query';
 import { HiOutlineCheck } from 'solid-icons/hi';
 import { type Component, createSignal, Match, Switch } from 'solid-js';
 import { getFeed } from '~/api/feeds';
@@ -14,7 +14,7 @@ type FeedInfoProps = {
 
 export const FeedInfo: Component<FeedInfoProps> = props => {
   const markFeedAsRead = useFeedRead();
-  const feed = createQuery(() => ({
+  const feed = useQuery(() => ({
     queryKey: [QUERY_KEYS.FEEDS_VIEW, props.uuid],
     queryFn: () => getFeed(props.uuid),
     refetchOnWindowFocus: false,
@@ -36,15 +36,13 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
       <Match when={feed.isSuccess}>
         <div class="flex w-full items-start gap-2">
           <FeedHeader title={feed.data!.title_display || feed.data!.title} />
-
           <IconButton
             icon={HiOutlineCheck}
             tooltip="Mark feed as read"
             class="size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
             iconClass="size-5 md:size-4"
-            onSelect={() => markFeedAsRead(feed.data!.uuid)}
+            onClick={() => markFeedAsRead(feed.data!.uuid)}
           />
-
           <FeedMenu
             uuid={props.uuid}
             open={contextMenuOpen()}

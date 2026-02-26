@@ -52,6 +52,7 @@ async fn create(
 struct UpdateFolderUuidsParams {
     uuid: uuid::Uuid,
 }
+
 #[typeshare]
 #[derive(Debug, Deserialize)]
 struct UpdateFolderFeedsData {
