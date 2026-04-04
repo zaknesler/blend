@@ -1,14 +1,9 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "composite": true,
-    "skipLibCheck": true,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "allowSyntheticDefaultImports": true,
-    "paths": {
-      "~/*": ["./ui/src/*"],
-      "~types/*": ["./ui/types/*"],
-    },
+    "types": ["node"],
+    "lib": ["ES2022"],
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
   },
   "include": ["./ui/vite.config.ts"],
 }
