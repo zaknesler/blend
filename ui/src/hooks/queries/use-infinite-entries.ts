@@ -44,7 +44,7 @@ export const useInfiniteEntries = () => {
   // Only fetch more if we have more to fetch and we're not already fetching
   const fetchMore = leading(debounce, () => canFetchMore() && query.fetchNextPage(), 100);
 
-  const getNextCursor = () => query.data?.pages[query.data?.pages.length - 1].next_cursor;
+  const getNextCursor = () => query.data?.pages[query.data?.pages.length - 1]?.next_cursor;
 
   const [init, setInit] = createSignal(false);
   const [initFeed] = createSignal(state.getFeedUrl());

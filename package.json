@@ -16,7 +16,7 @@
     "lint:fix": "biome check --write ./ui/src",
     "test": "vitest run --root ui",
     "test:cov": "vitest run --root ui --coverage",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --build --noEmit",
     "watch": "mprocs \"bun run dev\" \"cargo watch -x \\\"run -- start\\\"\"",
     "watch:trace": "mprocs \"bun run dev\" \"cargo watch -x \\\"run -- -ltrace start\\\"\"",
     "typeshare:generate": "typeshare ./ --lang typescript --output-file ./ui/types/bindings.ts && biome check --write ./ui/types/bindings.ts"
