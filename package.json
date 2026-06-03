@@ -3,10 +3,10 @@
   "type": "module",
   "version": "0.0.0",
   "author": "Zak Nesler (https://nesler.dev)",
-  "packageManager": "bun@1.3.10",
   "engines": {
-    "node": ">=18"
+    "node": ">=24"
   },
+  "packageManager": "pnpm@11.5.1",
   "scripts": {
     "dev": "vite ui",
     "build": "vite build ui",
@@ -17,8 +17,8 @@
     "test": "vitest run --root ui",
     "test:cov": "vitest run --root ui --coverage",
     "typecheck": "tsc --build --noEmit",
-    "watch": "mprocs \"bun run dev\" \"cargo watch -x \\\"run -- start\\\"\"",
-    "watch:trace": "mprocs \"bun run dev\" \"cargo watch -x \\\"run -- -ltrace start\\\"\"",
+    "watch": "mprocs \"pnpm run dev\" \"cargo watch -x \\\"run -- start\\\"\"",
+    "watch:trace": "mprocs \"pnpm run dev\" \"cargo watch -x \\\"run -- -ltrace start\\\"\"",
     "typeshare:generate": "typeshare ./ --lang typescript --output-file ./ui/types/bindings.ts && biome check --write ./ui/types/bindings.ts"
   },
   "dependencies": {
@@ -31,30 +31,30 @@
     "@solid-primitives/scheduled": "^1.5.3",
     "@solid-primitives/scroll": "^2.1.5",
     "@solidjs/router": "^0.16.1",
-    "@tanstack/solid-query": "^5.96.2",
-    "@tanstack/solid-query-devtools": "^5.96.2",
+    "@tanstack/solid-query": "^5.101.0",
+    "@tanstack/solid-query-devtools": "^5.101.0",
     "class-variance-authority": "^0.7.1",
-    "partysocket": "^1.1.16",
+    "partysocket": "^1.1.19",
     "solid-icons": "^1.2.0",
-    "solid-js": "^1.9.12",
+    "solid-js": "^1.9.13",
     "solid-transition-group": "^0.3.0",
-    "wretch": "^3.0.7"
+    "wretch": "^3.0.8"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.10",
+    "@biomejs/biome": "2.4.16",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/typography": "^0.5.19",
-    "@tailwindcss/vite": "^4.2.2",
+    "@tailwindcss/vite": "^4.3.0",
     "@total-typescript/ts-reset": "^0.6.1",
-    "@vitest/coverage-v8": "^4.1.2",
-    "autoprefixer": "^10.4.27",
-    "jsdom": "^29.0.1",
-    "postcss": "^8.5.8",
+    "@vitest/coverage-v8": "^4.1.8",
+    "autoprefixer": "^10.5.0",
+    "jsdom": "^29.1.1",
+    "postcss": "^8.5.15",
     "solid-devtools": "^0.34.5",
-    "tailwindcss": "^4.2.2",
-    "typescript": "^6.0.2",
-    "vite": "^8.0.3",
-    "vite-plugin-solid": "^2.11.11",
-    "vitest": "^4.1.2"
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16",
+    "vite-plugin-solid": "^2.11.12",
+    "vitest": "^4.1.8"
   }
 }
