@@ -37,7 +37,7 @@ jobs:
             target: aarch64-apple-darwin
             command: cargo
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Biome
         uses: biomejs/setup-biome@v2
@@ -45,7 +45,7 @@ jobs:
           version: latest
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v6
 
       - name: Create empty dist directory
         shell: bash
@@ -107,7 +107,7 @@ jobs:
           # Move the built binary where you want it
           mv "${BIN_OUTPUT}" "${GITHUB_WORKSPACE}/_artifacts/${BIN_FILENAME}"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: blend-${{ matrix.name }}
           path: ${{ github.workspace }}/_artifacts/*
