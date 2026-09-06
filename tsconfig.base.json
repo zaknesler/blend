@@ -13,7 +13,7 @@
     "moduleResolution": "bundler",
     "moduleDetection": "force",
 
-    // Contraints
+    // Constraints
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
@@ -40,7 +40,7 @@
     // Aliases
     "paths": {
       "~/*": ["./ui/src/*"],
-      "~types/*": ["./ui/types/*"],
-    },
-  },
+      "~types/*": ["./ui/types/*"]
+    }
+  }
 }
