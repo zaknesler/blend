@@ -3,6 +3,7 @@ import { createEffect, createSignal, type JSX, type ParentProps, Show, splitProp
 import { useQueryState } from '~/contexts/query-state-context';
 import { useEntryRead } from '~/hooks/queries/use-entry-read';
 import { useFeeds } from '~/hooks/queries/use-feeds';
+import { getEntryDate } from '~/utils/entries';
 import { formatDateTime } from '~/utils/format';
 import type { Entry } from '~types/bindings';
 import { Button } from '../ui/button';
@@ -27,7 +28,7 @@ export const EntryView = (props: ParentProps<EntryViewProps>) => {
     markRead.markRead(props.entry.uuid, false).then(() => setIsRead(true));
   });
 
-  const getDate = () => local.entry.published_at || local.entry.updated_at;
+  const getDate = () => getEntryDate(local.entry);
   const getFeed = () => feeds.findFeed(local.entry.feed_uuid);
   const feedName = () => getFeed()?.title_display || getFeed()?.title;
 

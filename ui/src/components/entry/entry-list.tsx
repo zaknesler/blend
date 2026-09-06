@@ -3,6 +3,7 @@ import { HiOutlineInbox } from 'solid-icons/hi';
 import { createEffect, createSignal, For, Match, Show, Switch } from 'solid-js';
 import { useEntries } from '~/contexts/entries-context';
 import { useFeeds } from '~/hooks/queries/use-feeds';
+import { formatRelativeDate } from '~/utils/format';
 import { Empty } from '../ui/empty';
 import { Spinner } from '../ui/spinner';
 import { EntryItem } from './entry-item';
@@ -51,13 +52,20 @@ export const EntryList = (props: EntryListProps) => {
             </div>
           }
         >
-          <div class="flex flex-col gap-2 px-4 py-2">
-            <For each={entries.data.allEntries()}>
-              {(entry, index) => (
-                <EntryItem
-                  tabIndex={index() === 0 ? 0 : -1} // Disable tabindex so we can override it with arrow keys
-                  entry={entry}
-                />
+          <div class="flex flex-col gap-4 py-2">
+            <For each={Object.entries(entries.data.groupedEntries())}>
+              {([date, dateEntries]) => (
+                <div class="flex flex-col gap-1 px-4">
+                  <span class="text-gray-500 text-xs">{formatRelativeDate(date)}</span>
+                  <For each={dateEntries}>
+                    {(entry, index) => (
+                      <EntryItem
+                        tabIndex={index() === 0 ? 0 : -1} // Disable tabindex so we can override it with arrow keys
+                        entry={entry}
+                      />
+                    )}
+                  </For>
+                </div>
               )}
             </For>
 

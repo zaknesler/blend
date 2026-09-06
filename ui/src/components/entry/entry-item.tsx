@@ -13,6 +13,7 @@ import { IDS } from '~/constants/elements';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useEntry } from '~/hooks/queries/use-entry';
 import { useFeeds } from '~/hooks/queries/use-feeds';
+import { getEntryDate } from '~/utils/entries';
 import { formatDate } from '~/utils/format';
 import type { Entry } from '~types/bindings';
 import { ContextMenu } from '../menus/context-menu';
@@ -36,7 +37,7 @@ export const EntryItem = (props: EntryItemProps) => {
   const feed = () => feeds.findFeed(local.entry.feed_uuid);
   const isRead = () => !!local.entry.read_at || !!entryData.data?.read_at;
   const isSaved = () => !!local.entry.saved_at || !!entryData.data?.saved_at;
-  const getDate = () => local.entry.published_at || local.entry.updated_at;
+  const getDate = () => getEntryDate(local.entry);
 
   const entryRouteMatch = useMatch(() => state.getEntryUrl(local.entry.uuid, false));
   const isActive = () => !!entryRouteMatch();
