@@ -3,6 +3,7 @@ use axum::{response::IntoResponse, routing::get, Router};
 
 mod entry;
 mod feed;
+mod folder;
 mod ui;
 mod user;
 mod ws;
@@ -24,6 +25,7 @@ pub fn api_router(ctx: crate::Context) -> Router {
         .nest("/users", user::router(ctx.clone()))
         .nest("/feeds", feed::router(ctx.clone()))
         .nest("/entries", entry::router(ctx.clone()))
+        .nest("/folders", folder::router(ctx.clone()))
         .nest("/ws", ws::router(ctx))
 }
 

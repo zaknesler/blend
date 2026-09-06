@@ -30,19 +30,19 @@ pub enum WebError {
     ValidationErrorMap(#[from] validator::ValidationErrors),
 
     #[error(transparent)]
-    CryptoError(#[from] blend_crypto::Error),
-
-    #[error(transparent)]
-    DbError(#[from] blend_db::Error),
-
-    #[error(transparent)]
-    FeedError(#[from] blend_feed::Error),
-
-    #[error(transparent)]
     WorkerJobSendError(#[from] tokio::sync::mpsc::error::SendError<blend_worker::Job>),
 
     #[error(transparent)]
     NotificationSendError(
         #[from] tokio::sync::broadcast::error::SendError<blend_worker::Notification>,
     ),
+
+    #[error(transparent)]
+    CryptoError(#[from] crate::crypto::Error),
+
+    #[error(transparent)]
+    DbError(#[from] blend_db::Error),
+
+    #[error(transparent)]
+    FeedError(#[from] blend_feed::Error),
 }

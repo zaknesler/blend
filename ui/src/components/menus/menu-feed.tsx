@@ -1,32 +1,47 @@
-import { type Component, mergeProps } from 'solid-js';
+import { HiOutlineArrowPath, HiOutlineFolder, HiOutlinePencilSquare, HiOutlineTrash } from 'solid-icons/hi';
+import { mergeProps } from 'solid-js';
+import { ModalName } from '~/constants/modals';
+import { useNotifications } from '~/contexts/notification-context';
 import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
+import { openModal } from '~/stores/modal';
 import { Menu, type MenuProps } from './menu';
 
 type FeedMenuProps = MenuProps & {
   uuid: string;
 };
 
-export const MenuFeed: Component<FeedMenuProps> = props => {
+export const FeedMenu = (props: FeedMenuProps) => {
   const local = mergeProps(
     {
-      triggerClass: 'h-5 w-5 rounded',
-      triggerIconClass: 'h-4 w-4 text-gray-500',
+      triggerClass: 'size-5 rounded',
+      triggerIconClass: 'size-4',
     } as MenuProps,
     props,
   );
 
-  const refresh = useRefreshFeed();
+  const refreshFeed = useRefreshFeed();
+  const notifications = useNotifications();
 
-  const handleRefresh = () => {
-    refresh.refreshFeed(props.uuid);
-    props.setOpen(false);
-  };
+  const isRefreshing = () => notifications.isFeedRefreshing(props.uuid);
 
   return (
-    <Menu {...local}>
-      <Menu.Item onSelect={handleRefresh}>Refresh</Menu.Item>
-      <Menu.Item disabled>Rename</Menu.Item>
-      <Menu.Item disabled>Delete</Menu.Item>
+    <Menu {...local} size="sm">
+      <Menu.Item
+        label="Refresh"
+        onSelect={() => refreshFeed(props.uuid)}
+        icon={HiOutlineArrowPath}
+        iconClass={isRefreshing() && 'animate-spin'}
+        disabled={isRefreshing()}
+      />
+
+      <Menu.Item
+        label="Move"
+        onSelect={() => openModal(ModalName.MoveFeed, { feed_uuid: props.uuid })}
+        icon={HiOutlineFolder}
+        disabled={isRefreshing()}
+      />
+      <Menu.Item label="Rename" disabled icon={HiOutlinePencilSquare} />
+      <Menu.Item label="Delete" disabled icon={HiOutlineTrash} />
     </Menu>
   );
 };

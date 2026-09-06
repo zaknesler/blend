@@ -1,7 +1,7 @@
 import { debounce, leadingAndTrailing } from '@solid-primitives/scheduled';
 import { useQueryClient } from '@tanstack/solid-query';
 import { QUERY_KEYS } from '~/constants/query';
-import { useQueryState } from '../use-query-state';
+import { useQueryState } from '../../contexts/query-state-context';
 
 const DEBOUNCE_MS = 500;
 
@@ -18,7 +18,7 @@ export const useInvalidateFeed = () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS_STATS] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.FEEDS_VIEW, feed_uuid] });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX, undefined, state.getView()] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ENTRIES_INDEX, feed_uuid, state.getView()] });
     },
     DEBOUNCE_MS,

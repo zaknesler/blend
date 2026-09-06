@@ -12,6 +12,7 @@ pub async fn init(blend: Config) -> DbResult<SqlitePool> {
 
     // Ensure database file exists
     if !db_path.try_exists()? {
+        tracing::info!("Creating database at {}", db_path_str);
         File::create(db_path_str)?;
     }
 

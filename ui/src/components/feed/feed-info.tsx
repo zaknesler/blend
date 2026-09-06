@@ -1,23 +1,27 @@
-import { createQuery } from '@tanstack/solid-query';
-import { type Component, Match, Switch, createSignal } from 'solid-js';
+import { useQuery } from '@tanstack/solid-query';
+import { HiOutlineCheck } from 'solid-icons/hi';
+import { createSignal, Match, Switch } from 'solid-js';
 import { getFeed } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
-import { MenuFeed } from '../menus/menu-feed';
+import { useFeedRead } from '~/hooks/queries/use-feed-read';
+import { FeedMenu } from '../menus/menu-feed';
+import { IconButton } from '../ui/button/icon-button';
 import { FeedHeader } from './feed-header';
 
 type FeedInfoProps = {
   uuid: string;
 };
 
-export const FeedInfo: Component<FeedInfoProps> = props => {
-  const [contextMenuOpen, setContextMenuOpen] = createSignal(false);
-
-  const feed = createQuery(() => ({
+export const FeedInfo = (props: FeedInfoProps) => {
+  const markFeedAsRead = useFeedRead();
+  const feed = useQuery(() => ({
     queryKey: [QUERY_KEYS.FEEDS_VIEW, props.uuid],
     queryFn: () => getFeed(props.uuid),
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   }));
+
+  const [contextMenuOpen, setContextMenuOpen] = createSignal(false);
 
   return (
     <Switch>
@@ -30,14 +34,21 @@ export const FeedInfo: Component<FeedInfoProps> = props => {
       </Match>
 
       <Match when={feed.isSuccess}>
-        <div class="flex w-full items-start gap-4 overflow-hidden">
-          <FeedHeader title={feed.data?.title_display || feed.data?.title} subtitle={feed.data?.url_feed} />
-
-          <MenuFeed
+        <div class="flex w-full items-start gap-2">
+          <FeedHeader title={feed.data!.title_display || feed.data!.title} />
+          <IconButton
+            icon={HiOutlineCheck}
+            tooltip="Mark feed as read"
+            class="size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
+            iconClass="size-5 md:size-4"
+            onClick={() => markFeedAsRead(feed.data!.uuid)}
+          />
+          <FeedMenu
             uuid={props.uuid}
             open={contextMenuOpen()}
             setOpen={setContextMenuOpen}
-            triggerClass="h-6 w-6 rounded-md"
+            triggerClass="size-8 md:size-6 rounded-lg lg:rounded-md"
+            triggerIconClass="size-5 md:size-4"
             gutter={4}
           />
         </div>

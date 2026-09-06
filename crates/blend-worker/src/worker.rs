@@ -1,7 +1,7 @@
-use crate::{error::WorkerResult, handler, Job, Notification};
+use crate::{Job, Notification, error::WorkerResult, handler};
 use blend_db::repo;
 use std::{sync::Arc, time::Duration};
-use tokio::sync::{broadcast, mpsc, Mutex};
+use tokio::sync::{Mutex, broadcast, mpsc};
 
 const REFRESH_INTERVAL_MINS: u64 = 30;
 

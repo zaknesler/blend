@@ -1,49 +1,65 @@
-import { useLocation } from '@solidjs/router';
-import { HiOutlineSquare3Stack3d } from 'solid-icons/hi';
-import { For, Match, Switch, createSignal } from 'solid-js';
-import { useFeeds } from '~/hooks/queries/use-feeds';
-import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
-import { useQueryState } from '~/hooks/use-query-state';
-import { MenuFeeds } from '../menus/menu-feeds';
-import { BaseFeedItem, FeedItem } from './feed-item';
+import { Button } from '@kobalte/core/button';
+import { HiSolidPlusSmall } from 'solid-icons/hi';
+import { For, Match, Show, Switch } from 'solid-js';
+import { ModalName } from '~/constants/modals';
+import { useGroupedFeeds } from '~/hooks/queries/use-grouped-feeds';
+import { openModal } from '~/stores/modal';
+import { FeedEmptyItem } from './feed-empty-item';
+import { FeedFolder } from './feed-folder';
+import { AllFeedsItem, FeedItem } from './feed-item';
 
 export const FeedList = () => {
-  const location = useLocation();
-  const state = useQueryState();
+  const { feeds, folders, getFoldersWithFeeds, getUngroupedFeeds } = useGroupedFeeds();
 
-  const [allFeedsMenuOpen, setAllFeedsMenuOpen] = createSignal(false);
-
-  const { feeds } = useFeeds();
-  const { totalStats } = useFeedsStats();
+  const handleOpenNewFolder = () => {
+    openModal(ModalName.CreateFolder);
+  };
 
   return (
-    <div class="flex w-full flex-col gap-4">
-      <BaseFeedItem
-        href={'/'.concat(state.getQueryString())}
-        title="All feeds"
-        icon={() => <HiOutlineSquare3Stack3d class="h-6 w-6 text-gray-600 md:h-5 md:w-5" />}
-        open={allFeedsMenuOpen()}
-        active={location.pathname === '/'}
-        setOpen={setAllFeedsMenuOpen}
-        unread_count={totalStats()?.count_unread}
-        menu={() => (
-          <MenuFeeds onlyDisplayForGroup open={allFeedsMenuOpen()} setOpen={setAllFeedsMenuOpen} gutter={4} />
-        )}
-      />
+    <div class="flex h-full w-full flex-col gap-4 px-3 py-4 xl:p-0">
+      <AllFeedsItem />
 
-      <div class="flex w-full flex-col gap-1">
-        <h3 class="font-semibold text-gray-500 text-xs uppercase tracking-wider dark:text-gray-400">Feeds</h3>
+      <div class="group flex w-full flex-1 flex-col gap-1">
+        <div class="mx-1 flex select-none items-baseline justify-between text-gray-500 text-xs dark:text-gray-400">
+          <h3 class="font-semibold uppercase tracking-wider">Feeds</h3>
+          <Button
+            onClick={handleOpenNewFolder}
+            class="inline-flex items-center gap-1 rounded-sm opacity-100 transition hover:text-gray-900 hover:underline focus-visible:text-gray-900 focus-visible:opacity-100 group-hover:opacity-100 md:opacity-0 dark:focus-visible:text-gray-100 dark:hover:text-gray-100"
+          >
+            <HiSolidPlusSmall class="size-3 text-gray-400 dark:text-gray-500" />
+            New folder
+          </Button>
+        </div>
+
         <Switch>
-          <Match when={feeds.isError}>
-            <p>Error: {feeds.error?.message}</p>
+          <Match when={folders.query.isError}>
+            <p>Error: {folders.query.error?.message}</p>
           </Match>
 
-          <Match when={feeds.isSuccess}>
-            {feeds.data?.length ? (
-              <For each={feeds.data}>{feed => <FeedItem feed={feed} />}</For>
-            ) : (
-              <div>No feeds.</div>
-            )}
+          <Match when={folders.query.isSuccess}>
+            <Show when={folders.query.data?.length}>
+              <For each={getFoldersWithFeeds()}>
+                {({ folder, feeds }) => (
+                  <FeedFolder slug={folder.slug} label={folder.label}>
+                    <Show when={feeds.length} fallback={<FeedEmptyItem />}>
+                      <For each={feeds}>{feed => <FeedItem feed={feed} />}</For>
+                    </Show>
+                  </FeedFolder>
+                )}
+              </For>
+            </Show>
+          </Match>
+        </Switch>
+
+        <Switch>
+          <Match when={feeds.query.isError}>
+            <p>Error: {feeds.query.error?.message}</p>
+          </Match>
+
+          <Match when={feeds.query.isSuccess}>
+            <Show when={feeds.query.data?.length} fallback={<FeedEmptyItem />}>
+              <For each={getUngroupedFeeds()}>{feed => <FeedItem feed={feed} />}</For>
+            </Show>
           </Match>
         </Switch>
       </div>

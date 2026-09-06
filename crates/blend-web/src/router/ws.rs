@@ -1,10 +1,10 @@
 use crate::error::WebResult;
 use axum::{
-    extract::{ws::WebSocket, State, WebSocketUpgrade},
+    Router,
+    extract::{State, WebSocketUpgrade, ws::WebSocket},
     middleware::from_fn_with_state,
     response::IntoResponse,
     routing::get,
-    Router,
 };
 use futures_util::{sink::SinkExt, stream::StreamExt};
 
@@ -29,7 +29,7 @@ async fn handle_socket(socket: WebSocket, ctx: crate::Context) {
     while let Ok(notif) = rx.recv().await {
         let json = serde_json::to_string(&notif).unwrap();
 
-        if ws_sender.send(axum::extract::ws::Message::Text(json)).await.is_err() {
+        if ws_sender.send(axum::extract::ws::Message::Text(json.into())).await.is_err() {
             break;
         }
     }

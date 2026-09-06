@@ -1,0 +1,17 @@
+import { useQuery } from '@tanstack/solid-query';
+import { getEntry } from '~/api/entries';
+import { QUERY_KEYS } from '~/constants/query';
+
+type UseEntryParams = {
+  entry_uuid?: string;
+  enabled?: boolean;
+};
+
+export const useEntry = (params: () => UseEntryParams) =>
+  useQuery(() => ({
+    enabled: (params().enabled ?? true) && !!params().entry_uuid,
+    queryKey: [QUERY_KEYS.ENTRIES_VIEW, params().entry_uuid],
+    queryFn: ({ signal }) => getEntry(params().entry_uuid!, signal),
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  }));

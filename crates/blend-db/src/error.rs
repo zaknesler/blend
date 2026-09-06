@@ -8,6 +8,9 @@ pub enum DbError {
     #[error("could not fetch row after insertion")]
     CouldNotFetchRowAfterInsertion,
 
+    #[error("resource not found")]
+    ResourceNotFound,
+
     #[error(transparent)]
     SqlError(#[from] sqlx::Error),
 
