@@ -46,6 +46,7 @@
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
     "@total-typescript/ts-reset": "^0.6.1",
+    "@types/node": "^26.4.1",
     "@vitest/coverage-v8": "^5.0.0",
     "autoprefixer": "^10.5.5",
     "jsdom": "^30.0.1",

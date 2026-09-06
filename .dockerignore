@@ -1,0 +1,8 @@
+target
+.git
+.github
+.vscode
+.zed
+node_modules
+ui/dist
+*.md
