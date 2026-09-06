@@ -11,6 +11,10 @@ Development builds are released manually and may be downloaded [here](https://gi
 
 Demo is available at [blend.zak.fm](https://blend.zak.fm).
 
+### Usage
+
+A docker image is published at `ghcr.io/zaknesler/blend:latest`, use the example [compose.yml](./compose.yml) file to get started.
+
 #### Roadmap
 
 > There will only be development builds until most of these are finished.

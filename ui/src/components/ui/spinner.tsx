@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import type { Component, JSX } from 'solid-js';
+import type { JSX } from 'solid-js';
 
 const spinner = cva('animate-spin', {
   variants: {
@@ -23,7 +23,7 @@ const spinner = cva('animate-spin', {
 
 type SpinnerProps = JSX.IntrinsicElements['svg'] & VariantProps<typeof spinner>;
 
-export const Spinner: Component<SpinnerProps> = props => (
+export const Spinner = (props: SpinnerProps) => (
   <svg
     viewBox="0 0 15 15"
     fill="none"

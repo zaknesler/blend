@@ -6,7 +6,7 @@ import {
 import type { VariantProps } from 'class-variance-authority';
 import type { ClassValue } from 'class-variance-authority/types';
 import type { IconTypes } from 'solid-icons';
-import { type Component, type JSX, type ParentComponent, splitProps } from 'solid-js';
+import { type JSX, type ParentProps, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import * as menuClasses from '~/constants/ui/menu';
 
@@ -15,7 +15,7 @@ export type ContextMenuProps = ContextMenuRootProps &
     trigger?: () => JSX.Element;
   };
 
-const ContextMenuRoot: ParentComponent<ContextMenuProps> = props => {
+const ContextMenuRoot = (props: ParentProps<ContextMenuProps>) => {
   const [local, rest] = splitProps(props, ['size', 'children', 'trigger']);
 
   return (
@@ -35,7 +35,7 @@ type ContextMenuItemProps = KbContextMenuItemProps & {
   iconClass?: ClassValue;
 };
 
-const ContextMenuItem: Component<ContextMenuItemProps> = props => {
+const ContextMenuItem = (props: ContextMenuItemProps) => {
   const [local, rest] = splitProps(props, ['icon', 'label', 'iconClass']);
 
   return (
@@ -48,7 +48,7 @@ const ContextMenuItem: Component<ContextMenuItemProps> = props => {
 
 type ContextMenuContentProps = VariantProps<typeof menuClasses.content>;
 
-const ContextMenuContent: ParentComponent<ContextMenuContentProps> = props => (
+const ContextMenuContent = (props: ParentProps<ContextMenuContentProps>) => (
   <KbContextMenu.Content
     class={menuClasses.content({ class: 'origin-[--kb-menu-content-transform-origin]', size: props.size })}
   >

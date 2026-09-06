@@ -1,5 +1,5 @@
 import wretch from 'wretch';
-import type { Entry, FilterEntriesData } from '~/types/bindings';
+import type { Entry, FilterEntriesData } from '~types/bindings';
 import { apiUrl } from '../utils/url';
 import type { ApiPaginatedResponse, ApiResponse, ApiSuccessResponse } from '.';
 

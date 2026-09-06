@@ -1,10 +1,10 @@
 import { cx } from 'class-variance-authority';
-import { createEffect, createSignal, type JSX, type ParentComponent, Show, splitProps } from 'solid-js';
+import { createEffect, createSignal, type JSX, type ParentProps, Show, splitProps } from 'solid-js';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useEntryRead } from '~/hooks/queries/use-entry-read';
 import { useFeeds } from '~/hooks/queries/use-feeds';
-import type { Entry } from '~/types/bindings';
 import { formatDateTime } from '~/utils/format';
+import type { Entry } from '~types/bindings';
 import { Button } from '../ui/button';
 import { Link } from '../ui/link';
 
@@ -12,7 +12,7 @@ type EntryViewProps = JSX.IntrinsicElements['div'] & {
   entry: Entry;
 };
 
-export const EntryView: ParentComponent<EntryViewProps> = props => {
+export const EntryView = (props: ParentProps<EntryViewProps>) => {
   const [local, rest] = splitProps(props, ['class', 'entry']);
 
   const state = useQueryState();

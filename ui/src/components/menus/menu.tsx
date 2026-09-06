@@ -9,7 +9,7 @@ import { cx, type VariantProps } from 'class-variance-authority';
 import type { ClassValue } from 'class-variance-authority/types';
 import type { IconTypes } from 'solid-icons';
 import { HiOutlineEllipsisHorizontal } from 'solid-icons/hi';
-import { type Component, For, type JSX, type ParentComponent, type Setter, Show, splitProps } from 'solid-js';
+import { For, type JSX, type ParentProps, type Setter, Show, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import * as menuClasses from '~/constants/ui/menu';
 
@@ -23,7 +23,7 @@ export type MenuProps = Omit<DropdownMenuRootProps, 'open' | 'onOpenChange'> &
     triggerIconClass?: string;
   };
 
-const MenuRoot: ParentComponent<MenuProps> = props => {
+const MenuRoot = (props: ParentProps<MenuProps>) => {
   const [local, rest] = splitProps(props, [
     'size',
     'children',
@@ -59,7 +59,7 @@ type MenuTrigger = DropdownMenuTriggerProps & {
   class?: string;
 };
 
-const MenuTrigger: ParentComponent<MenuTrigger> = props => {
+const MenuTrigger = (props: ParentProps<MenuTrigger>) => {
   const [local, rest] = splitProps(props, ['class']);
 
   return (
@@ -76,7 +76,7 @@ type MenuItemProps = DropdownMenuItemProps & {
   iconClass?: ClassValue;
 };
 
-const MenuItem: Component<MenuItemProps> = props => {
+const MenuItem = (props: MenuItemProps) => {
   const [local, rest] = splitProps(props, ['icon', 'label', 'kbd', 'iconClass']);
 
   const key = (value: KbdKey) => {
@@ -106,7 +106,7 @@ const MenuItem: Component<MenuItemProps> = props => {
 
 type MenuContentProps = VariantProps<typeof menuClasses.content>;
 
-const MenuContent: ParentComponent<MenuContentProps> = props => (
+const MenuContent = (props: ParentProps<MenuContentProps>) => (
   <DropdownMenu.Content
     class={menuClasses.content({
       class: 'origin-[--kb-menu-content-transform-origin]',

@@ -1,4 +1,4 @@
-import { createQuery } from '@tanstack/solid-query';
+import { useQuery } from '@tanstack/solid-query';
 import { getEntry } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 
@@ -8,7 +8,7 @@ type UseEntryParams = {
 };
 
 export const useEntry = (params: () => UseEntryParams) =>
-  createQuery(() => ({
+  useQuery(() => ({
     enabled: (params().enabled ?? true) && !!params().entry_uuid,
     queryKey: [QUERY_KEYS.ENTRIES_VIEW, params().entry_uuid],
     queryFn: ({ signal }) => getEntry(params().entry_uuid!, signal),

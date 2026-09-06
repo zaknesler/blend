@@ -1,9 +1,9 @@
-import { createQuery } from '@tanstack/solid-query';
+import { useQuery } from '@tanstack/solid-query';
 import { getFolders } from '~/api/folders';
 import { QUERY_KEYS } from '~/constants/query';
 
 export const useFolders = () => {
-  const query = createQuery(() => ({
+  const query = useQuery(() => ({
     queryKey: [QUERY_KEYS.FOLDERS],
     queryFn: getFolders,
     refetchOnWindowFocus: false,

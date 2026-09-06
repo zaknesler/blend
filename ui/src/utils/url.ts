@@ -1,4 +1,4 @@
-export const DEV_BASE_URL = 'localhost:4000';
+export const API_DEV_BASE_URL = 'localhost:4000';
 
 /**
  * Get the full API URL for a given path partial.
@@ -6,7 +6,7 @@ export const DEV_BASE_URL = 'localhost:4000';
 export const apiUrl = (path: string) => {
   const withSlash = path.startsWith('/') ? path : `/${path}`;
   const withApiPrefix = path.startsWith('/api') ? withSlash : `/api${path}`;
-  return import.meta.env.PROD ? withApiPrefix : `http://${DEV_BASE_URL}${withApiPrefix}`;
+  return import.meta.env.PROD ? withApiPrefix : `http://${API_DEV_BASE_URL}${withApiPrefix}`;
 };
 
 /**
@@ -20,5 +20,5 @@ export const wsUrl = (path: string) => {
 
   return import.meta.env.PROD
     ? `${prefix}://${location.hostname}${port}${withApiPrefix}`
-    : `${prefix}://${DEV_BASE_URL}${withApiPrefix}`;
+    : `${prefix}://${API_DEV_BASE_URL}${withApiPrefix}`;
 };

@@ -1,5 +1,5 @@
 import wretch from 'wretch';
-import type { CreateFeedData, Feed, FeedStats, UpdateFeedFoldersData } from '~/types/bindings';
+import type { CreateFeedData, Feed, FeedStats, UpdateFeedFoldersData } from '~types/bindings';
 import { apiUrl } from '../utils/url';
 import type { ApiResponse, ApiSuccessResponse } from '.';
 

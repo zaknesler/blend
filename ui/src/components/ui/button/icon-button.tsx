@@ -2,7 +2,7 @@ import { Button as BaseButton, type ButtonRootProps } from '@kobalte/core/button
 import type { TooltipTriggerProps } from '@kobalte/core/tooltip';
 import type { VariantProps } from 'class-variance-authority';
 import type { IconTypes } from 'solid-icons';
-import { type Component, type JSX, Show, splitProps } from 'solid-js';
+import { type JSX, Show, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { trigger } from '~/constants/ui/menu';
 import { Tooltip } from '../tooltip';
@@ -16,7 +16,7 @@ export type IconButtonProps = JSX.IntrinsicElements['button'] &
     iconClass?: string;
   };
 
-export const IconButton: Component<IconButtonProps> = props => {
+export const IconButton = (props: IconButtonProps) => {
   const [local, rest] = splitProps(props, ['class', 'tooltip', 'icon', 'iconClass']);
 
   return (

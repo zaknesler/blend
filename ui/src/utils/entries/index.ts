@@ -1,6 +1,6 @@
 import { IDS } from '~/constants/elements';
 import { DEFAULTS } from '~/constants/query';
-import { type Entry, SortDirection, View } from '~/types/bindings';
+import { type Entry, SortDirection, View } from '~types/bindings';
 
 /**
  * Get the function to compare two entries for sorting by the given sorting direction.

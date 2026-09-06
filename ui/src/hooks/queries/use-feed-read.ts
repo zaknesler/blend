@@ -1,4 +1,4 @@
-import { createMutation, useQueryClient } from '@tanstack/solid-query';
+import { useMutation, useQueryClient } from '@tanstack/solid-query';
 import { updateFeedAsRead } from '~/api/feeds';
 import { QUERY_KEYS } from '~/constants/query';
 import { useQueryState } from '~/contexts/query-state-context';
@@ -9,7 +9,7 @@ export const useFeedRead = () => {
   const queryClient = useQueryClient();
   const invalidateStats = useInvalidateStats();
 
-  const markAsRead = createMutation(() => ({
+  const markAsRead = useMutation(() => ({
     mutationKey: [QUERY_KEYS.FEEDS_VIEW_READ],
     mutationFn: updateFeedAsRead,
   }));

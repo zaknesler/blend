@@ -1,11 +1,4 @@
 {
-  "auto_install_extensions": {
-    "biome": true,
-    "crates-lsp": true,
-    "emmet": true,
-    "html": true,
-    "toml": true,
-  },
   "format_on_save": "on",
   "languages": {
     "JavaScript": {
@@ -37,21 +30,6 @@
         "source.organizeImports.biome": true,
       },
     },
-    "JSON": {
-      "language_servers": ["biome", "json-language-server"],
-      "formatter": { "language_server": { "name": "biome" } },
-      "code_actions_on_format": {
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true,
-      },
-    },
-    "CSS": {
-      "language_servers": ["biome", "vscode-css-language-server"],
-      "formatter": { "language_server": { "name": "biome" } },
-      "code_actions_on_format": {
-        "source.fixAll.biome": true,
-      },
-    },
     "HTML": {
       "language_servers": [
         "biome",
@@ -60,9 +38,22 @@
         "emmet-language-server",
       ],
       "formatter": { "language_server": { "name": "biome" } },
-      "code_actions_on_format": {
-        "source.fixAll.biome": true,
-      },
+      "code_actions_on_format": { "source.fixAll.biome": true },
     },
-  },
+    "JSON": {
+      "language_servers": ["biome", "json-language-server", "npm-package-json-checker-lsp"],
+      "formatter": { "language_server": { "name": "biome" } },
+      "code_actions_on_format": { "source.fixAll.biome": true },
+    },
+    "JSONC": {
+      "language_servers": ["biome", "json-language-server"],
+      "formatter": { "language_server": { "name": "biome" } },
+      "code_actions_on_format": { "source.fixAll.biome": true },
+    },
+    "CSS": {
+      "language_servers": ["biome", "vscode-css-language-server"],
+      "formatter": { "language_server": { "name": "biome" } },
+      "code_actions_on_format": { "source.fixAll.biome": true },
+    },
+  }
 }

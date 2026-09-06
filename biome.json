@@ -1,10 +1,15 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.16/schema.json",
   "assist": {
-    "actions": { "source": { "recommended": true, "organizeImports": "on" } }
+    "actions": {
+      "source": {
+        "recommended": true,
+        "organizeImports": "on"
+      }
+    }
   },
   "files": {
-    "includes": ["./ui/**", "./**/*.{ts,tsx,js,jsx,json,html,css}", "!node_modules", "!dist"]
+    "includes": ["./ui/src/**", "./ui/types/**", "./ui/*.{ts,js,json,html}", "./*.{ts,js,json}"]
   },
   "linter": {
     "enabled": true,
@@ -40,13 +45,22 @@
     }
   },
   "json": {
-    "formatter": { "enabled": true, "trailingCommas": "none" }
+    "formatter": {
+      "enabled": true,
+      "trailingCommas": "none"
+    }
   },
   "html": {
-    "formatter": { "enabled": true }
+    "formatter": {
+      "enabled": true
+    }
   },
   "css": {
-    "formatter": { "enabled": true },
-    "parser": { "tailwindDirectives": true }
+    "formatter": {
+      "enabled": true
+    },
+    "parser": {
+      "tailwindDirectives": true
+    }
   }
 }

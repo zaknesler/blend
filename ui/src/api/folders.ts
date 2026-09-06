@@ -1,5 +1,5 @@
 import wretch from 'wretch';
-import type { CreateFolderData, Folder, FolderFeedMap, UpdateFolderFeedsData } from '~/types/bindings';
+import type { CreateFolderData, Folder, FolderFeedMap, UpdateFolderFeedsData } from '~types/bindings';
 import { apiUrl } from '../utils/url';
 import type { ApiResponse, ApiSuccessResponse } from '.';
 

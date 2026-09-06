@@ -5,8 +5,8 @@ import type { ApiPaginatedResponse } from '~/api';
 import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import { useViewport } from '~/contexts/viewport-context';
-import type { Entry } from '~/types/bindings';
 import { entryMayExistInView, findEntryItemElement } from '~/utils/entries';
+import type { Entry } from '~types/bindings';
 import { useQueryState } from '../../contexts/query-state-context';
 import { useEntry } from './use-entry';
 
@@ -44,7 +44,7 @@ export const useInfiniteEntries = () => {
   // Only fetch more if we have more to fetch and we're not already fetching
   const fetchMore = leading(debounce, () => canFetchMore() && query.fetchNextPage(), 100);
 
-  const getNextCursor = () => query.data?.pages[query.data?.pages.length - 1].next_cursor;
+  const getNextCursor = () => query.data?.pages[query.data?.pages.length - 1]?.next_cursor;
 
   const [init, setInit] = createSignal(false);
   const [initFeed] = createSignal(state.getFeedUrl());

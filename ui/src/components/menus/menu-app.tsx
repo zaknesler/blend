@@ -8,7 +8,7 @@ import {
   HiOutlineSquaresPlus,
 } from 'solid-icons/hi';
 import { TiCog } from 'solid-icons/ti';
-import { type Component, mergeProps } from 'solid-js';
+import { mergeProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { ModalName } from '~/constants/modals';
 import { SHORTCUTS } from '~/hooks/use-shortcuts';
@@ -16,7 +16,7 @@ import { openModal } from '~/stores/modal';
 import { LogoSquare } from '../ui/logo';
 import { Menu, type MenuProps } from './menu';
 
-export const AppMenu: Component<MenuProps> = props => {
+export const AppMenu = (props: MenuProps) => {
   const local = mergeProps(
     {
       triggerClass: 'size-6 rounded-md',

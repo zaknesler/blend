@@ -1,7 +1,8 @@
 import { Dialog, type DialogContentProps, type DialogRootProps } from '@kobalte/core/dialog';
 import { HiOutlineXMark } from 'solid-icons/hi';
-import { type ParentComponent, splitProps } from 'solid-js';
-import { isModalOpen, type ModalName, setModalStore } from '~/stores/modal';
+import { type ParentProps, splitProps } from 'solid-js';
+import type { ModalName } from '~/constants/modals';
+import { isModalOpen, setModalStore } from '~/stores/modal';
 
 type ModalProps = Omit<DialogRootProps, 'modal' | 'open' | 'onOpenChange'> &
   Pick<DialogContentProps, 'onOpenAutoFocus'> & {
@@ -10,7 +11,7 @@ type ModalProps = Omit<DialogRootProps, 'modal' | 'open' | 'onOpenChange'> &
     description: string;
   };
 
-export const Modal: ParentComponent<ModalProps> = props => {
+export const Modal = (props: ParentProps<ModalProps>) => {
   const [local, rest] = splitProps(props, ['title', 'modal', 'description', 'onOpenAutoFocus', 'children']);
 
   return (
@@ -20,7 +21,7 @@ export const Modal: ParentComponent<ModalProps> = props => {
       onOpenChange={value => setModalStore(local.modal, { open: value })}
     >
       <Dialog.Portal>
-        <Dialog.Overlay class="fixed inset-0 z-50 animate-overlay-hide ui-expanded:animate-overlay-show bg-black/25 backdrop-blur-md" />
+        <Dialog.Overlay class="fixed inset-0 z-50 animate-overlay-hide ui-expanded:animate-overlay-show bg-black/25 backdrop-blur-xs" />
 
         <div class="fixed inset-0 z-50 flex items-end justify-center p-8 sm:items-center">
           <Dialog.Content

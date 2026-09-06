@@ -10,7 +10,7 @@ import {
   HiOutlineSquare3Stack3d,
   HiOutlineTrash,
 } from 'solid-icons/hi';
-import { type Component, createMemo, type JSX, Match, Show, Switch, splitProps } from 'solid-js';
+import { createMemo, type JSX, Match, Show, Switch, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { Transition } from 'solid-transition-group';
 import { ModalName } from '~/constants/modals';
@@ -22,8 +22,8 @@ import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
 import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
 import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
 import { openModal } from '~/stores/modal';
-import type { Feed } from '~/types/bindings';
 import { formatNumber } from '~/utils/format';
+import type { Feed } from '~types/bindings';
 import { ContextMenu } from '../menus/context-menu';
 import { Spinner } from '../ui/spinner';
 
@@ -31,7 +31,7 @@ type FeedItemProps = {
   feed: Feed;
 };
 
-export const FeedItem: Component<FeedItemProps> = props => {
+export const FeedItem = (props: FeedItemProps) => {
   const state = useQueryState();
   const location = useLocation();
 
@@ -138,7 +138,7 @@ type BaseFeedItemProps = Omit<AnchorProps, 'href' | 'title'> & {
   icon?: () => JSX.Element;
 };
 
-export const BaseFeedItem: Component<BaseFeedItemProps> = props => {
+export const BaseFeedItem = (props: BaseFeedItemProps) => {
   const [local, rest] = splitProps(props, [
     'href',
     'active',

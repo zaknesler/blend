@@ -2,8 +2,8 @@ import { useNavigate } from '@solidjs/router';
 import { DEFAULTS } from '~/constants/query';
 import { VIEW_LABELS, VIEWS } from '~/constants/views';
 import { useQueryState } from '~/contexts/query-state-context';
-import type { View } from '~/types/bindings';
 import { formatQueryString } from '~/utils/query';
+import type { View } from '~types/bindings';
 import { Tabs } from '../ui/tabs';
 
 export const NavViewTabs = () => {

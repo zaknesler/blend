@@ -2,7 +2,7 @@ import { createShortcut, type KbdKey } from '@solid-primitives/keyboard';
 import { ModalName } from '~/constants/modals';
 import { useQueryState } from '~/contexts/query-state-context';
 import { modalStore, openModal } from '~/stores/modal';
-import { View } from '~/types/bindings';
+import { View } from '~types/bindings';
 import { useRefreshFeed } from './queries/use-refresh-feed';
 import { useRefreshFeeds } from './queries/use-refresh-feeds';
 

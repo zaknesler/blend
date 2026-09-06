@@ -1,6 +1,6 @@
 import { createElementBounds, type NullableBounds } from '@solid-primitives/bounds';
 import { HiOutlineInbox } from 'solid-icons/hi';
-import { type Component, createEffect, createSignal, For, Match, Show, Switch } from 'solid-js';
+import { createEffect, createSignal, For, Match, Show, Switch } from 'solid-js';
 import { useEntries } from '~/contexts/entries-context';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { Empty } from '../ui/empty';
@@ -11,7 +11,7 @@ type EntryListProps = {
   containerBounds?: Readonly<NullableBounds>;
 };
 
-export const EntryList: Component<EntryListProps> = props => {
+export const EntryList = (props: EntryListProps) => {
   const [bottomOfList, setBottomOfList] = createSignal<HTMLElement>();
   const listBounds = createElementBounds(bottomOfList);
 

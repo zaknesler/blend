@@ -1,6 +1,6 @@
 import { cx } from 'class-variance-authority';
 import type { IconTypes } from 'solid-icons';
-import type { ParentComponent } from 'solid-js';
+import type { ParentProps } from 'solid-js';
 import { Dynamic, mergeProps, Show } from 'solid-js/web';
 import styles from './styles.module.css';
 
@@ -10,7 +10,7 @@ type EmptyProps = {
   text?: string;
 };
 
-export const Empty: ParentComponent<EmptyProps> = props => {
+export const Empty = (props: ParentProps<EmptyProps>) => {
   const local = mergeProps({ dashed: true } as EmptyProps, props);
 
   return (

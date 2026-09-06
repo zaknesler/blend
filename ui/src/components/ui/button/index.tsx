@@ -1,6 +1,6 @@
 import { Button as BaseButton, type ButtonRootProps } from '@kobalte/core/button';
 import type { VariantProps } from 'class-variance-authority';
-import { type JSX, type ParentComponent, Show } from 'solid-js';
+import { type JSX, type ParentProps, Show } from 'solid-js';
 import * as classes from '~/constants/ui/button';
 
 export type ButtonProps = JSX.IntrinsicElements['button'] &
@@ -11,7 +11,7 @@ export type ButtonProps = JSX.IntrinsicElements['button'] &
     href?: string;
   };
 
-export const Button: ParentComponent<ButtonProps> = props => (
+export const Button = (props: ParentProps<ButtonProps>) => (
   <BaseButton
     {...props}
     disabled={props.disabled}

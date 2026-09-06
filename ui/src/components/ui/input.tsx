@@ -1,6 +1,6 @@
 import { TextField, type TextFieldRootProps } from '@kobalte/core/text-field';
 import { cx } from 'class-variance-authority';
-import { type Component, createMemo, splitProps } from 'solid-js';
+import { createMemo, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { getFieldError } from '~/api';
 import * as classes from '~/constants/ui/input';
@@ -14,7 +14,7 @@ type TextInputProps = Omit<TextFieldRootProps<HTMLInputElement>, 'validationStat
   multiline?: boolean;
 };
 
-export const TextInput: Component<TextInputProps> = props => {
+export const TextInput = (props: TextInputProps) => {
   const [local, rest] = splitProps(props, ['name', 'label', 'class', 'error', 'ref', 'placeholder', 'multiline']);
 
   const error = createMemo(() => getFieldError(local.error, local.name));
@@ -40,7 +40,7 @@ export const TextInput: Component<TextInputProps> = props => {
         placeholder={local.placeholder}
       />
       <TextField.ErrorMessage class="font-medium text-red-700 text-xs dark:text-red-500">
-        {error()?.[0].message}
+        {error()?.[0]?.message}
       </TextField.ErrorMessage>
     </TextField>
   );

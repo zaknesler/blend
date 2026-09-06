@@ -40,7 +40,7 @@ export const FeedInfoFolder = () => {
           />
 
           <IconButton
-            onSelect={() => refreshFeeds()}
+            onClick={() => refreshFeeds()}
             icon={HiOutlineArrowPath}
             tooltip="Refresh all feeds"
             class="z-10 size-8 rounded-lg text-gray-500 md:size-6 md:rounded-md"
