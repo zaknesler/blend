@@ -3,13 +3,18 @@ import { DEFAULTS } from '~/constants/query';
 import { type Entry, SortDirection, View } from '~types/bindings';
 
 /**
+ * Get the publish date of an entry, falling back to the updated date.
+ */
+export const getEntryDate = (entry: Entry) => entry.published_at || entry.updated_at;
+
+/**
  * Get the function to compare two entries for sorting by the given sorting direction.
  */
 export const getEntryComparator =
   (sort = DEFAULTS.sort) =>
   (a: Entry, b: Entry) => {
-    const dateA = a.published_at || a.updated_at;
-    const dateB = b.published_at || b.updated_at;
+    const dateA = getEntryDate(a);
+    const dateB = getEntryDate(b);
 
     // If we have no dates for comparison, push the item to the end of the list
     if (!dateA || !dateB) return -1;

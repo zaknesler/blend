@@ -5,7 +5,8 @@ import type { ApiPaginatedResponse } from '~/api';
 import { getEntries } from '~/api/entries';
 import { QUERY_KEYS } from '~/constants/query';
 import { useViewport } from '~/contexts/viewport-context';
-import { entryMayExistInView, findEntryItemElement } from '~/utils/entries';
+import { entryMayExistInView, findEntryItemElement, getEntryDate } from '~/utils/entries';
+import { formatDateIso } from '~/utils/format';
 import type { Entry } from '~types/bindings';
 import { useQueryState } from '../../contexts/query-state-context';
 import { useEntry } from './use-entry';
@@ -38,6 +39,18 @@ export const useInfiniteEntries = () => {
   }));
 
   const allEntries = () => query.data?.pages.flatMap(page => page.data) || [];
+
+  const groupedEntries = () =>
+    allEntries().reduce<Record<string, Entry[]>>((groups, entry) => {
+      const date = getEntryDate(entry);
+
+      // Format date as ISO so order is preserved, we should format only when displaying
+      const key = date ? formatDateIso(date) : 'null';
+      groups[key] ||= [];
+      groups[key].push(entry);
+
+      return groups;
+    }, {});
 
   const canFetchMore = () => query.hasNextPage && !query.isFetchingNextPage;
 
@@ -93,7 +106,8 @@ export const useInfiniteEntries = () => {
 
   return {
     query,
-    fetchMore,
     allEntries,
+    groupedEntries,
+    fetchMore,
   };
 };
