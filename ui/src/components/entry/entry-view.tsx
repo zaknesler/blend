@@ -1,10 +1,10 @@
 import { cx } from 'class-variance-authority';
 import { createEffect, createSignal, type JSX, type ParentProps, Show, splitProps } from 'solid-js';
+import type { Entry } from '~types/bindings';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useEntryRead } from '~/hooks/queries/use-entry-read';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { formatDateTime } from '~/utils/format';
-import type { Entry } from '~types/bindings';
 import { Button } from '../ui/button';
 import { Link } from '../ui/link';
 
@@ -36,7 +36,7 @@ export const EntryView = (props: ParentProps<EntryViewProps>) => {
       <article id={local.entry.uuid} class="flex flex-col gap-4">
         <div class="flex flex-col gap-4 md:max-w-[calc(100%-7rem)]">
           <h1
-            class="text-pretty font-bold text-gray-800 text-xl lg:text-2xl dark:text-gray-100"
+            class="text-xl font-bold text-pretty text-gray-800 lg:text-2xl dark:text-gray-100"
             innerHTML={local.entry.title}
           />
 
@@ -54,7 +54,7 @@ export const EntryView = (props: ParentProps<EntryViewProps>) => {
 
         <Show when={local.entry.summary_html}>
           <h4
-            class="prose prose-stone dark:prose-invert max-w-none text-base text-gray-500 lg:text-lg dark:text-gray-300"
+            class="prose max-w-none text-base text-gray-500 prose-stone lg:text-lg dark:text-gray-300 dark:prose-invert"
             innerHTML={local.entry.summary_html}
           />
         </Show>

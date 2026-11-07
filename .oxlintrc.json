@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "jsx-a11y", "oxc"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "off"
+  },
+  "env": {
+    "browser": true,
+    "es2022": true
+  },
+  "rules": {
+    "typescript/no-non-null-assertion": "off",
+    "jsx-a11y/heading-has-content": "off"
+  },
+  "ignorePatterns": ["ui/dist", "ui/public", "target"]
+}

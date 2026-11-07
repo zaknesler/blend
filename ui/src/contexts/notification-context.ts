@@ -1,9 +1,9 @@
 import { WebSocket } from 'partysocket';
 import { createContext, createSignal, useContext } from 'solid-js';
+import type { Notification } from '~types/bindings';
 import { useEntry } from '~/hooks/queries/use-entry';
 import { useInvalidateEntry } from '~/hooks/queries/use-invalidate-entry';
 import { wsUrl } from '~/utils/url';
-import type { Notification } from '~types/bindings';
 import { useInvalidateFeed } from '../hooks/queries/use-invalidate-feed';
 import { useQueryState } from './query-state-context';
 

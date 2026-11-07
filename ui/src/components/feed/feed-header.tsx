@@ -1,8 +1,8 @@
 import { Match, Show, Switch } from 'solid-js';
+import { View } from '~types/bindings';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useFeedsStats } from '~/hooks/queries/use-feeds-stats';
 import { formatNumber } from '~/utils/format';
-import { View } from '~types/bindings';
 
 type FeedHeaderProps = {
   title?: string | null;
@@ -29,12 +29,12 @@ export const FeedHeader = (props: FeedHeaderProps) => {
 
   return (
     <div class="flex flex-1 shrink flex-col overflow-hidden whitespace-nowrap">
-      <h2 class="truncate font-semibold text-sm" innerHTML={props.title || undefined} />
+      <h2 class="truncate text-sm font-semibold" innerHTML={props.title || undefined} />
       <Show when={props.subtitle}>
-        <small class="select-none truncate text-gray-500 text-xs dark:text-gray-400">{props.subtitle}</small>
+        <small class="truncate text-xs text-gray-500 select-none dark:text-gray-400">{props.subtitle}</small>
       </Show>
 
-      <small class="select-none truncate text-gray-500 text-xs dark:text-gray-400">
+      <small class="truncate text-xs text-gray-500 select-none dark:text-gray-400">
         <Switch>
           <Match when={stats.byView() === null}>Loading...</Match>
           <Match when={!stats.byView()}>No {getViewText()} items</Match>

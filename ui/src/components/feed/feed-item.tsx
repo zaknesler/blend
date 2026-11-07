@@ -13,6 +13,7 @@ import {
 import { createMemo, type JSX, Match, Show, Switch, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import { Transition } from 'solid-transition-group';
+import type { Feed } from '~types/bindings';
 import { ModalName } from '~/constants/modals';
 import * as feedClasses from '~/constants/ui/feed';
 import { useNotifications } from '~/contexts/notification-context';
@@ -23,7 +24,6 @@ import { useRefreshFeed } from '~/hooks/queries/use-refresh-feed';
 import { useRefreshFeeds } from '~/hooks/queries/use-refresh-feeds';
 import { openModal } from '~/stores/modal';
 import { formatNumber } from '~/utils/format';
-import type { Feed } from '~types/bindings';
 import { ContextMenu } from '../menus/context-menu';
 import { Spinner } from '../ui/spinner';
 
@@ -181,10 +181,10 @@ export const BaseFeedItem = (props: BaseFeedItemProps) => {
         </Transition>
       </div>
 
-      <span class="flex-1 overflow-hidden truncate break-all" innerHTML={local.title} />
+      <span class="flex-1 truncate overflow-hidden break-all" innerHTML={local.title} />
 
       <Show when={local.unread_count}>
-        <span class="shrink-0 px-1 text-right text-gray-400 text-sm md:text-xs/4 dark:text-gray-300">
+        <span class="shrink-0 px-1 text-right text-sm text-gray-400 md:text-xs/4 dark:text-gray-300">
           {formatNumber(local.unread_count!)}
         </span>
       </Show>

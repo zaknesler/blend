@@ -1,7 +1,7 @@
 import wretch from 'wretch';
 import type { Entry, FilterEntriesData } from '~types/bindings';
-import { apiUrl } from '../utils/url';
 import type { ApiPaginatedResponse, ApiResponse, ApiSuccessResponse } from '.';
+import { apiUrl } from '../utils/url';
 
 export const getEntries = async (params: FilterEntriesData) => {
   const filtered = Object.entries(params).filter(([, value]) => Boolean(value));

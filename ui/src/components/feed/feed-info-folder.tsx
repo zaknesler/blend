@@ -28,7 +28,7 @@ export const FeedInfoFolder = () => {
       </Match>
 
       <Match when={folders.query.isSuccess}>
-        <div class="flex w-full select-none items-start justify-between gap-2">
+        <div class="flex w-full items-start justify-between gap-2 select-none">
           <FeedHeader title={getFolder()?.label} />
 
           <IconButton

@@ -35,7 +35,7 @@ export const AppMenu = (props: MenuProps) => {
           as={(polyProps: DropdownMenuTriggerProps) => (
             <BaseButton
               {...polyProps}
-              class="-m-1 inline-flex items-center gap-2 self-start rounded-lg p-1 pr-2 transition hover:bg-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-opacity-30 dark:focus-visible:ring-gray-600 dark:hover:bg-gray-700"
+              class="focus-visible:ring-opacity-30 -m-1 inline-flex items-center gap-2 self-start rounded-lg p-1 pr-2 transition hover:bg-gray-200 focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:outline-none dark:hover:bg-gray-700 dark:focus-visible:ring-gray-600"
             >
               <LogoSquare iconOnly class="inline-flex size-6" />
               <Dynamic component={HiOutlineBars2} class="size-5 text-gray-500 md:size-4 dark:text-gray-400" />

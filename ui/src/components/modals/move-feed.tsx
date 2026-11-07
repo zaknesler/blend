@@ -100,7 +100,7 @@ export const MoveFeedModal = () => {
                   )}
                 >
                   <span>{folder.label}</span>
-                  <HiSolidCheckCircle class="size-6 text-gray-500 opacity-0 ui-group-pressed:opacity-100 dark:text-gray-400" />
+                  <HiSolidCheckCircle class="ui-group-pressed:opacity-100 size-6 text-gray-500 opacity-0 dark:text-gray-400" />
                 </ToggleGroup.Item>
               )}
             </For>
@@ -124,7 +124,7 @@ export const MoveFeedModal = () => {
         </form>
 
         <Show when={update.isError && getErrorMessage(update.error)}>
-          <p class="font-medium text-red-700 text-sm dark:text-red-500">Error: {getErrorMessage(update.error)}</p>
+          <p class="text-sm font-medium text-red-700 dark:text-red-500">Error: {getErrorMessage(update.error)}</p>
         </Show>
       </div>
     </Modal>

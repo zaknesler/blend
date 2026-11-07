@@ -1,25 +1,22 @@
 {
   "name": "blend-ui",
-  "type": "module",
   "version": "0.0.0",
   "author": "Zak Nesler (https://nesler.dev)",
-  "engines": {
-    "node": ">=24"
-  },
-  "packageManager": "pnpm@12.18.0",
+  "type": "module",
   "scripts": {
     "dev": "vite ui",
     "build": "vite build ui",
     "serve": "vite preview ui",
-    "ci": "biome ci ./ui/src",
-    "lint": "biome check ./ui/src",
-    "lint:fix": "biome check --write ./ui/src",
+    "ci": "oxlint ./ui/src && oxfmt --check ./ui/src ./ui/types",
+    "lint": "oxlint ./ui/src",
+    "lint:fix": "oxlint --fix ./ui/src",
+    "format": "oxfmt ./ui/src ./ui/types",
     "test": "vitest run --root ui",
     "test:cov": "vitest run --root ui --coverage",
     "typecheck": "tsc --build --noEmit",
     "watch": "mprocs \"pnpm run dev\" \"cargo watch -x \\\"run -- start\\\"\"",
     "watch:trace": "mprocs \"pnpm run dev\" \"cargo watch -x \\\"run -- -ltrace start\\\"\"",
-    "typeshare:generate": "typeshare ./ --lang typescript --output-file ./ui/types/bindings.ts && biome check --write ./ui/types/bindings.ts"
+    "typeshare:generate": "typeshare ./ --lang typescript --output-file ./ui/types/bindings.ts && oxfmt ./ui/types/bindings.ts"
   },
   "dependencies": {
     "@kobalte/core": "^0.13.14",
@@ -41,7 +38,6 @@
     "wretch": "^3.0.9"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.6.6",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.5",
@@ -50,12 +46,18 @@
     "@vitest/coverage-v8": "^5.1.0",
     "autoprefixer": "^10.6.2",
     "jsdom": "^31.0.0",
+    "oxfmt": "0.77.0",
+    "oxlint": "1.92.0",
     "postcss": "^8.5.32",
     "solid-devtools": "^0.34.5",
     "tailwindcss": "^4.3.5",
-    "typescript": "^6.0.3",
+    "typescript": "^7.1.0-beta",
     "vite": "^8.3.6",
     "vite-plugin-solid": "^2.11.15",
     "vitest": "^5.1.0"
-  }
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@12.18.0"
 }

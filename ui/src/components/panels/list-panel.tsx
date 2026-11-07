@@ -41,7 +41,7 @@ export default () => {
     if (!el) return;
 
     const focusable = el.querySelector('[tabindex="0"]') as HTMLElement | undefined;
-    focusable?.focus() || el.focus();
+    (focusable ?? el).focus();
   };
 
   // Close the feed selector when routing (i.e. we've clicked a feed link)
@@ -63,7 +63,8 @@ export default () => {
       <Portal>
         <button
           type="button"
-          class="absolute top-2 left-2 z-[9999] hidden -translate-y-[9999px] select-none appearance-none rounded-lg border bg-white px-3 py-2 text-black text-sm shadow-lg focus-visible:translate-y-0 focus-visible:border-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-opacity-30 active:bg-gray-100 md:flex dark:bg-gray-950 dark:text-gray-300 dark:focus-visible:border-gray-400 dark:focus-visible:ring-gray-600"
+          class="focus-visible:ring-opacity-30 absolute top-2 left-2 z-[9999] hidden -translate-y-[9999px] appearance-none rounded-lg border bg-white px-3 py-2 text-sm text-black shadow-lg select-none focus-visible:translate-y-0 focus-visible:border-gray-200 focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:outline-none active:bg-gray-100 md:flex dark:bg-gray-950 dark:text-gray-300 dark:focus-visible:border-gray-400 dark:focus-visible:ring-gray-600"
+          // oxlint-disable-next-line jsx-a11y/tabindex-no-positive -- skip link must be first in tab order
           tabindex={1}
           onClick={handleSkipToContent}
         >
@@ -109,7 +110,7 @@ export default () => {
 
                 {/* Showing all feeds -- create custom label */}
                 <Match when={!state.params.feed_uuid}>
-                  <div class="flex w-full select-none items-start justify-between gap-2">
+                  <div class="flex w-full items-start justify-between gap-2 select-none">
                     <FeedHeader title="All feeds" />
 
                     <IconButton

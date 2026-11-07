@@ -1,59 +1,43 @@
 {
   "format_on_save": "on",
+  "formatter": {
+    "external": {
+      "command": "./node_modules/.bin/oxfmt",
+      "arguments": ["--stdin-filepath", "{buffer_path}"],
+    },
+  },
   "languages": {
     "JavaScript": {
-      "language_servers": ["biome", "vtsls"],
-      "formatter": { "language_server": { "name": "biome" } },
-      "code_actions_on_format": {
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true,
-      },
+      "language_servers": ["oxlint", "typescript-ls", "!vtsls", "!typescript-language-server"],
     },
     "TypeScript": {
-      "language_servers": ["biome", "vtsls"],
-      "formatter": { "language_server": { "name": "biome" } },
-      "code_actions_on_format": {
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true,
-      },
+      "language_servers": ["oxlint", "typescript-ls", "!vtsls", "!typescript-language-server"],
     },
     "TSX": {
       "language_servers": [
-        "biome",
-        "vtsls",
+        "oxlint",
+        "typescript-ls",
+        "!vtsls",
+        "!typescript-language-server",
         "tailwindcss-language-server",
         "emmet-language-server",
       ],
-      "formatter": { "language_server": { "name": "biome" } },
-      "code_actions_on_format": {
-        "source.fixAll.biome": true,
-        "source.organizeImports.biome": true,
-      },
     },
     "HTML": {
       "language_servers": [
-        "biome",
         "vscode-html-language-server",
         "tailwindcss-language-server",
         "emmet-language-server",
       ],
-      "formatter": { "language_server": { "name": "biome" } },
-      "code_actions_on_format": { "source.fixAll.biome": true },
     },
     "JSON": {
-      "language_servers": ["biome", "json-language-server", "npm-package-json-checker-lsp"],
-      "formatter": { "language_server": { "name": "biome" } },
-      "code_actions_on_format": { "source.fixAll.biome": true },
+      "language_servers": ["json-language-server", "npm-package-json-checker-lsp"],
     },
     "JSONC": {
-      "language_servers": ["biome", "json-language-server"],
-      "formatter": { "language_server": { "name": "biome" } },
-      "code_actions_on_format": { "source.fixAll.biome": true },
+      "language_servers": ["json-language-server"],
     },
     "CSS": {
-      "language_servers": ["biome", "vscode-css-language-server"],
-      "formatter": { "language_server": { "name": "biome" } },
-      "code_actions_on_format": { "source.fixAll.biome": true },
+      "language_servers": ["vscode-css-language-server"],
     },
-  }
+  },
 }

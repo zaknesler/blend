@@ -62,7 +62,6 @@ export const useListNav = (params: () => UseListNavParams) => {
     }
   });
 
-  // biome-ignore lint/complexity/useIndexOf: whatever
   const getCurrentIndex = () => params().entryUuids.findIndex(uuid => uuid === state.params.entry_uuid);
 
   const canGoBack = () => getCurrentIndex() > 0;

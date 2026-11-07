@@ -39,7 +39,7 @@ export const TextInput = (props: TextInputProps) => {
         class={classes.input({ disabled: props.disabled, error: !!error() })}
         placeholder={local.placeholder}
       />
-      <TextField.ErrorMessage class="font-medium text-red-700 text-xs dark:text-red-500">
+      <TextField.ErrorMessage class="text-xs font-medium text-red-700 dark:text-red-500">
         {error()?.[0]?.message}
       </TextField.ErrorMessage>
     </TextField>

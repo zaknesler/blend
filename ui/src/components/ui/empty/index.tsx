@@ -25,7 +25,7 @@ export const Empty = (props: ParentProps<EmptyProps>) => {
       </Show>
 
       <Show when={local.text}>
-        <small class="text-gray-400 text-sm dark:text-gray-500">{local.text}</small>
+        <small class="text-sm text-gray-400 dark:text-gray-500">{local.text}</small>
       </Show>
 
       {local.children}

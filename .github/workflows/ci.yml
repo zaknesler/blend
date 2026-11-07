@@ -23,11 +23,6 @@ jobs:
       - name: Check for typos
         uses: crate-ci/typos@master
 
-      - name: Setup Biome
-        uses: biomejs/setup-biome@v2
-        with:
-          version: latest
-
       - name: Install pnpm
         uses: pnpm/action-setup@v6
 

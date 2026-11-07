@@ -20,11 +20,11 @@ export const FeedList = () => {
       <AllFeedsItem />
 
       <div class="group flex w-full flex-1 flex-col gap-1">
-        <div class="mx-1 flex select-none items-baseline justify-between text-gray-500 text-xs dark:text-gray-400">
-          <h3 class="font-semibold uppercase tracking-wider">Feeds</h3>
+        <div class="mx-1 flex items-baseline justify-between text-xs text-gray-500 select-none dark:text-gray-400">
+          <h3 class="font-semibold tracking-wider uppercase">Feeds</h3>
           <Button
             onClick={handleOpenNewFolder}
-            class="inline-flex items-center gap-1 rounded-sm opacity-100 transition hover:text-gray-900 hover:underline focus-visible:text-gray-900 focus-visible:opacity-100 group-hover:opacity-100 md:opacity-0 dark:focus-visible:text-gray-100 dark:hover:text-gray-100"
+            class="inline-flex items-center gap-1 rounded-sm opacity-100 transition group-hover:opacity-100 hover:text-gray-900 hover:underline focus-visible:text-gray-900 focus-visible:opacity-100 md:opacity-0 dark:hover:text-gray-100 dark:focus-visible:text-gray-100"
           >
             <HiSolidPlusSmall class="size-3 text-gray-400 dark:text-gray-500" />
             New folder

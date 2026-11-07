@@ -39,11 +39,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup Biome
-        uses: biomejs/setup-biome@v2
-        with:
-          version: latest
-
       - name: Install pnpm
         uses: pnpm/action-setup@v6
 

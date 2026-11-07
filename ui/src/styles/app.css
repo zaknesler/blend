@@ -112,7 +112,7 @@
 
   /* Fix padding for multiple images in a figure */
   .prose figure img:has(+ img) {
-    /* biome-ignore lint/complexity/noImportantStyles: we need to override tailwind */
+    /* !important needed to override tailwind */
     margin-bottom: 2em !important;
   }
 

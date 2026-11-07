@@ -86,7 +86,7 @@ export const CreateFeedModal = () => {
         </form>
 
         <Show when={create.isError && getErrorMessage(create.error)}>
-          <p class="font-medium text-red-700 text-sm dark:text-red-500">Error: {getErrorMessage(create.error)}</p>
+          <p class="text-sm font-medium text-red-700 dark:text-red-500">Error: {getErrorMessage(create.error)}</p>
         </Show>
       </div>
     </Modal>

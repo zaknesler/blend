@@ -9,12 +9,12 @@ import {
   HiSolidBookmark,
 } from 'solid-icons/hi';
 import { Show, splitProps } from 'solid-js';
+import type { Entry } from '~types/bindings';
 import { IDS } from '~/constants/elements';
 import { useQueryState } from '~/contexts/query-state-context';
 import { useEntry } from '~/hooks/queries/use-entry';
 import { useFeeds } from '~/hooks/queries/use-feeds';
 import { formatDate } from '~/utils/format';
-import type { Entry } from '~types/bindings';
 import { ContextMenu } from '../menus/context-menu';
 
 type EntryItemProps = Omit<AnchorProps, 'href' | 'activeClass' | 'inactiveClass'> & {
@@ -64,7 +64,7 @@ export const EntryItem = (props: EntryItemProps) => {
               )}
               {...rest}
             >
-              <h4 class="text-pretty text-sm xl:text-base/5" innerHTML={local.entry.title} />
+              <h4 class="text-sm text-pretty xl:text-base/5" innerHTML={local.entry.title} />
 
               <small
                 class={cx(
@@ -82,7 +82,7 @@ export const EntryItem = (props: EntryItemProps) => {
                 </Show>
 
                 <Show when={!state.params.feed_uuid}>
-                  <span class="truncate break-all font-medium" innerHTML={feed()?.title_display || feed()?.title} />
+                  <span class="truncate font-medium break-all" innerHTML={feed()?.title_display || feed()?.title} />
 
                   <Show when={getDate()}>
                     <span class="opacity-50">&ndash;</span>

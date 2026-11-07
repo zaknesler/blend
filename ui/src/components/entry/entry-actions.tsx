@@ -7,10 +7,10 @@ import {
   HiOutlineEnvelopeOpen,
   HiSolidBookmark,
 } from 'solid-icons/hi';
+import type { Entry } from '~types/bindings';
 import { useEntries } from '~/contexts/entries-context';
 import { useEntryRead } from '~/hooks/queries/use-entry-read';
 import { useEntrySaved } from '~/hooks/queries/use-entry-saved';
-import type { Entry } from '~types/bindings';
 import { ActionButton } from '../ui/button/action-button';
 
 type EntryActionsProps = {
