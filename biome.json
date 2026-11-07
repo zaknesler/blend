@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.16/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.12/schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -12,7 +12,6 @@
     "includes": ["./ui/src/**", "./ui/types/**", "./ui/*.{ts,js,json,html}", "./*.{ts,js,json}"]
   },
   "linter": {
-    "enabled": true,
     "rules": {
       "recommended": true,
       "style": {
